@@ -1,6 +1,6 @@
 from alpaca.data.models.bars import BarSet
 
-from infra.api.alpaca.marketdata import Timeframe, get_bars
+from infra.api.alpaca.historical import Timeframe, get_bars
 
 
 def test_get_bars():
