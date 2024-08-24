@@ -1,19 +1,31 @@
 from os import getenv
 
 from alpaca.data.historical import StockHistoricalDataClient
+from alpaca.data.models.bars import BarSet
 from alpaca.data.requests import StockBarsRequest
 from alpaca.data.timeframe import TimeFrame
 
 
-def f():
-    cli = StockHistoricalDataClient(
+def create_stock_historical_data_client() -> StockHistoricalDataClient:
+    return StockHistoricalDataClient(
         api_key=getenv('APCA_KEY'),
         secret_key=getenv('APCA_SECRET')
     )
+
+
+def get_bars_day(
+    symbol: str,
+    start: str = '2000-01-01'
+) -> BarSet:
+    """
+    日足のヒストリカルバー情報を取得。
+    デフォルトの開始日は2000年元年とする。
+    """
+    cli = create_stock_historical_data_client()
     rq = StockBarsRequest(
-        symbol_or_symbols='AAPL',
+        symbol_or_symbols=symbol,
         timeframe=TimeFrame.Day,
-        start='2023-01-01'
+        start=start
     )
     bars = cli.get_stock_bars(rq)
     return bars
