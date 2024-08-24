@@ -1,16 +1,10 @@
-def update_bars(date_to: str):
+def fetch_latest_date_of_symbol(symbol: str) -> str:
     """
-    条件:
-        何日地点までアップデートするかの日時。
-        TODO: ただし省略時は現在時刻とする。
-    効果:
-        データベースのbar情報を最新の状態に更新する。
+    指定シンボルの最新のデータの日付を取得する。
     """
-    # IMPL
     pass
 
 
-### PRIVATE
 def update_bars_of_symbol(symbol: str, date_to: str):
     """
     条件:
@@ -20,5 +14,4 @@ def update_bars_of_symbol(symbol: str, date_to: str):
     効果:
         指定シンボルのデータベース上のbar情報を更新する
     """
-    # IMPL
     pass
