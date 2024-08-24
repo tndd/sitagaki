@@ -1,10 +1,12 @@
 import json
 
+import pytest
 from pydantic import BaseModel
 
 from infra.api.alpaca.historical import Timeframe, get_bars
 
 
+@pytest.mark.ext
 def test_get_bars():
     timeframe = Timeframe.Day
     bars = get_bars(
