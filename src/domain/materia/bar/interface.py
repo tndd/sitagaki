@@ -30,4 +30,5 @@ def update_bars(
     効果:
         データベースのbar情報を最新の状態に更新する。
     """
+    rp = BarRepository() # インポートテスト用
     pass
