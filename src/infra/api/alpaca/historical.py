@@ -10,6 +10,13 @@ from pydantic import BaseModel
 class Timeframe(AlpcTimeFrame):
     """
     alpacaのtimeframeモデルをラッピングしただけのクラス
+
+    指定できる形式
+    - Minute
+    - Hour
+    - Day
+    - Week
+    - Month
     """
     pass
 
@@ -30,18 +37,19 @@ def get_bars(
     日足のヒストリカルバー情報を取得。
     デフォルトの開始日は2000年元年とする。
 
-    BaseModelの中身:
-        Barを構成する情報
-        - symbol (str): バーを形成するのティッカー識別子。
-        - timestamp (datetime): バーの終了タイムスタンプ。
-        - open (float): インターバルの開始価格。
-        - high (float): インターバル中の高値。
-        - low (float): インターバル中の安値。
-        - close (float): インターバルの終値。
-        - volume (float): インターバルで取引されたボリューム。
-        - trade_count (Optional[float]): 発生した取引数。
-        - vwap (Optional[float]): ボリューム加重平均価格。
-        - exchange (Optional[float]): バーが形成された取引所。
+    戻り値について:
+        * 条件に合致するBar(BaseModel)のリスト
+        * Barを構成する情報
+            - symbol (str): バーを形成するのティッカー識別子。
+            - timestamp (datetime): バーの終了タイムスタンプ。
+            - open (float): 期間の開始価格。
+            - high (float): 期間中の高値。
+            - low (float): 期間中の安値。
+            - close (float): 期間の終値。
+            - volume (float): 期間で取引されたボリューム。
+            - trade_count (Optional[float]): 発生した取引数。
+            - vwap (Optional[float]): ボリューム加重平均価格。
+            - exchange (Optional[float]): バーが形成された取引所。
     """
     cli = create_stock_historical_data_client()
     rq = StockBarsRequest(
