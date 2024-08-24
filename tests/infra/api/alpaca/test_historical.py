@@ -1,4 +1,4 @@
-from alpaca.data.models.bars import BarSet
+from pydantic import BaseModel
 
 from infra.api.alpaca.historical import Timeframe, get_bars
 
@@ -10,4 +10,5 @@ def test_get_bars():
         start='2023-01-01',
         timeframe=timeframe
     )
-    assert isinstance(bars, BarSet)
+    assert isinstance(bars, list)
+    assert all(isinstance(bar, BaseModel) for bar in bars)
