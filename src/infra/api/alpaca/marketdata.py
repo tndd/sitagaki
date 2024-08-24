@@ -3,7 +3,14 @@ from os import getenv
 from alpaca.data.historical import StockHistoricalDataClient
 from alpaca.data.models.bars import BarSet
 from alpaca.data.requests import StockBarsRequest
-from alpaca.data.timeframe import TimeFrame
+from alpaca.data.timeframe import TimeFrame as AlpcTimeFrame
+
+
+class Timeframe(AlpcTimeFrame):
+    """
+    alpacaのtimeframeモデルをラッピングしただけのクラス
+    """
+    pass
 
 
 def create_stock_historical_data_client() -> StockHistoricalDataClient:
@@ -13,8 +20,9 @@ def create_stock_historical_data_client() -> StockHistoricalDataClient:
     )
 
 
-def get_bars_day(
+def get_bars(
     symbol: str,
+    timeframe: Timeframe,
     start: str = '2000-01-01'
 ) -> BarSet:
     """
@@ -24,7 +32,7 @@ def get_bars_day(
     cli = create_stock_historical_data_client()
     rq = StockBarsRequest(
         symbol_or_symbols=symbol,
-        timeframe=TimeFrame.Day,
+        timeframe=timeframe,
         start=start
     )
     bars = cli.get_stock_bars(rq)
