@@ -15,14 +15,14 @@ def test_get_bars():
         timeframe=timeframe
     )
     # 出力検証用
-    with open('tests/out/test_get_bars.json', 'w') as f:
-        f.write(
-            json.dumps(
-                [bar.model_dump() for bar in bars],
-                default=str,
-                indent=2
-            )
-        )
+    # with open('tests/out/test_get_bars.json', 'w') as f:
+    #     f.write(
+    #         json.dumps(
+    #             [bar.model_dump() for bar in bars],
+    #             default=str,
+    #             indent=2
+    #         )
+    #     )
     # テスト
     assert isinstance(bars, list)
     assert all(isinstance(bar, BaseModel) for bar in bars)
