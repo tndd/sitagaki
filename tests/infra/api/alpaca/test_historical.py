@@ -14,6 +14,7 @@ def test_get_bars():
         start='2023-01-01',
         timeframe=timeframe
     )
+    # NOTE: 将来的にはログなどの方法で中身を確認する方針に変更
     # 出力検証用
     # with open('tests/out/test_get_bars.json', 'w') as f:
     #     f.write(
@@ -23,6 +24,5 @@ def test_get_bars():
     #             indent=2
     #         )
     #     )
-    # テスト
     assert isinstance(bars, list)
     assert all(isinstance(bar, BaseModel) for bar in bars)
