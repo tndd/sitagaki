@@ -1,8 +1,7 @@
-from dataclasses import dataclass
+from pydantic import BaseModel
 
 
-@dataclass
-class BarRepository:
+class BarRepository(BaseModel):
     def pull_bars_from_online(symbol: str, start: str, end: str):
         """
         条件:
