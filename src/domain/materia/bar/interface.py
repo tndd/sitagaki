@@ -6,8 +6,8 @@ from domain.materia.bar.repository import BarRepository
 def fetch_bars(
         rp: BarRepository,
         symbol: str,
-        start: str = '2000-01-01',
-        end: str = datetime.now().strftime('%Y-%m-%d')
+        start: datetime = datetime(2000,1,1),
+        end: datetime = datetime.now()
     ):
     """
     条件:
@@ -23,7 +23,7 @@ def fetch_bars(
 
 
 def update_bars(
-        date_to: str = datetime.now().strftime('%Y-%m-%d')
+        date_to: datetime = datetime.now()
     ):
     """
     条件:
@@ -32,8 +32,4 @@ def update_bars(
         データベースのbar情報を最新の状態に更新する。
     """
     # IMPL
-    # NOTE: インポートテスト用なので実装したい消すこと
-    rp = BarRepository(
-        cli_db='DUMMY'
-    )
     pass
