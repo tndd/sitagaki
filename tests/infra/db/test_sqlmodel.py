@@ -3,7 +3,7 @@ from random import choices
 from string import ascii_letters
 from typing import List
 
-from sqlmodel import Field, SQLModel, create_engine, select
+from sqlmodel import Field, SQLModel, select
 
 from infra.db.sqlmodel import SqlModelClient
 
