@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime
 
 from infra.db.sqlmodel import SqlModelClient
 
@@ -8,7 +9,7 @@ class BarRepository:
     cli_db: SqlModelClient
 
 
-    def pull_bars_from_online(symbol: str, start: str, end: str):
+    def pull_bars_from_online(symbol: str, start: datetime, end: datetime):
         """
         条件:
             シンボルと開始日、終日を指定。
@@ -19,7 +20,7 @@ class BarRepository:
         pass
 
 
-    def fetch_bars_from_local(symbol: str, start: str, end: str):
+    def fetch_bars_from_local(symbol: str, start: datetime, end: datetime):
         """
         条件:
             シンボルと開始日、終日を指定。
