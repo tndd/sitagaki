@@ -8,10 +8,6 @@ from sqlmodel import Field, SQLModel, create_engine, select
 from infra.db.sqlmodel import SqlModelClient
 
 
-def create_engine_for_test():
-    return create_engine("sqlite:///:memory:")
-
-
 # テスト用の追加モデル
 class User(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
@@ -29,11 +25,10 @@ def create_test_user_models() -> List[User]:
     return users
 
 
-def test_insert_models():
-    engine_for_test = create_engine_for_test()
-    cli = SqlModelClient(engine_for_test)
+def test_insert_models(test_engine):
+    cli = SqlModelClient(test_engine)
     # テーブルの作成
-    SQLModel.metadata.create_all(engine_for_test)
+    SQLModel.metadata.create_all(test_engine)
     # ランダムにユーザーを10件作成
     users = create_test_user_models()
     # cli.insert_models(users)実行時にusersの内容が解放されてしまうため
