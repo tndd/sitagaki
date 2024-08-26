@@ -1,36 +1,16 @@
 from copy import deepcopy
-from random import choices
-from string import ascii_letters
-from typing import List
 
-from sqlmodel import Field, SQLModel, select
+from sqlmodel import SQLModel, select
 
 from infra.db.sqlmodel import SqlModelClient
-
-
-# テスト用の追加モデル
-class User(SQLModel, table=True):
-    id: int = Field(default=None, primary_key=True)
-    name: str
-    email: str
-
-
-def create_test_user_models() -> List[User]:
-    # ランダムにユーザーを10件作成
-    users = []
-    for _ in range(10):
-        name = ''.join(choices(ascii_letters, k=8))
-        email = f"{name.lower()}@example.com"
-        users.append(User(name=name, email=email))
-    return users
+from tests.factory.user import User, generate_sample_users
 
 
 def test_insert_models(test_engine):
     cli = SqlModelClient(test_engine)
     # テーブルの作成
     SQLModel.metadata.create_all(test_engine)
-    # ランダムにユーザーを10件作成
-    users = create_test_user_models()
+    users = generate_sample_users()
     # cli.insert_models(users)実行時にusersの内容が解放されてしまうため
     users_copy_for_valid = deepcopy(users)
     ### テスト部分 ###
@@ -46,5 +26,7 @@ def test_insert_models(test_engine):
         users_sorted = sorted(users_copy_for_valid, key=lambda u: u.name)
         for db_user, original_user in zip(db_users_sorted, users_sorted):
             assert db_user.id is not None
+            assert db_user.created_at == original_user.created_at
             assert db_user.name == original_user.name
             assert db_user.email == original_user.email
+            assert db_user.credit == original_user.credit
