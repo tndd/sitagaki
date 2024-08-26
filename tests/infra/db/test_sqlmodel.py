@@ -1,4 +1,5 @@
 from copy import deepcopy
+from datetime import datetime
 
 from sqlmodel import SQLModel, select
 
@@ -56,10 +57,28 @@ def test_select_models(test_engine):
     """
     テスト２:
     日付範囲のテスト
-    - 2000年未満 -> nagisa,kazusa,aliceのデータが取得される
-    - 2000年以降 -> astar,helta,carol,david
-    - 2000年 ~ 2005年 -> astar,helta,carol
+        1: 2000年未満 -> nagisa,kazusa,aliceのデータが取得される
+        2: 2000年以降 -> astar,helta,carol,david
+        3: 2000年 ~ 2005年 -> astar,helta,carol
     """
+    # 2-1
+    db_users_before_2000 = cli.select_models(
+        model=User,
+        conditions={"created_at": select(User.created_at).where(User.created_at < datetime(2000, 1, 1))}
+    )
+    assert all(user.name in ["nagisa", "kazusa", "alice"] for user in db_users_before_2000)
+    # 2-2
+    db_users_after_2000 = cli.select_models(
+        model=User,
+        conditions={"created_at": select(User.created_at).where(User.created_at >= datetime(2000, 1, 1))}
+    )
+    assert all(user.name in ["astar", "helta", "carol", "david"] for user in db_users_after_2000)
+    # 2-3
+    db_users_2000_to_2005 = cli.select_models(
+        model=User,
+        conditions={"created_at": select(User.created_at).where(User.created_at.between(datetime(2000, 1, 1), datetime(2005, 12, 31)))}
+    )
+    assert all(user.name in ["astar", "helta", "carol"] for user in db_users_2000_to_2005)
     """
     テスト３:
     creditによる絞り込み

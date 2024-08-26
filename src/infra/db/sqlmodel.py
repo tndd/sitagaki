@@ -17,9 +17,13 @@ class SqlModelClient:
             session.add_all(models)
             session.commit()
 
-    def select_models(self, model_class: type[SQLModel], conditions: Optional[dict] = None) -> list[SQLModel]:
+    def select_models(
+        self,
+        model: type[SQLModel],
+        conditions: Optional[dict] = None
+    ) -> list[SQLModel]:
         with self.session() as session:
-            stmt = select(model_class)
+            stmt = select(model)
             if conditions:
                 stmt = stmt.filter_by(**conditions)
             return session.exec(stmt).all()
