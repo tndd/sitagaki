@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional
+from typing import List, Optional
 
 from sqlalchemy.engine.base import Engine
 from sqlmodel import Session, SQLModel, select
@@ -21,7 +21,7 @@ class SqlModelClient:
         self,
         model: type[SQLModel],
         conditions: Optional[dict] = None
-    ) -> list[SQLModel]:
+    ) -> List[SQLModel]:
         with self.session() as session:
             stmt = select(model)
             if conditions:
