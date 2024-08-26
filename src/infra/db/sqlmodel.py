@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-from pydantic import BaseModel
 from sqlalchemy.engine import Engine
 from sqlmodel import Session, SQLModel, select
 
