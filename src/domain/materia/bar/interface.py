@@ -18,6 +18,7 @@ def fetch_bars(
         対象期間のローソク足をDBから取得し保存する。
         もしもDBにデータが存在しなければ、オンライン上からの取得を試みる。
     """
+    # IMPL
     pass
 
 
@@ -30,7 +31,9 @@ def update_bars(
     効果:
         データベースのbar情報を最新の状態に更新する。
     """
+    # IMPL
+    # NOTE: インポートテスト用なので実装したい消すこと
     rp = BarRepository(
         cli_db='DUMMY'
-    ) # インポートテスト用
+    )
     pass

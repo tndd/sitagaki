@@ -2,6 +2,7 @@ def fetch_latest_date_of_symbol(symbol: str) -> str:
     """
     指定シンボルの最新のデータの日付を取得する。
     """
+    # IMPL
     pass
 
 
@@ -13,4 +14,5 @@ def update_bars_of_symbol(symbol: str, date_to: str):
     効果:
         指定シンボルのデータベース上のbar情報を更新する
     """
+    # IMPL
     pass

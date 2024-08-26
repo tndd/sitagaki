@@ -28,5 +28,5 @@ class BarRepository:
         効果:
             対象期間のローソク足をDB上から取得し保存する。
         """
-        # TODO
+        # IMPL
         pass
