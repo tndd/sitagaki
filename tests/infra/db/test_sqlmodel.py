@@ -1,7 +1,7 @@
 from copy import deepcopy
 from datetime import datetime
 
-from sqlmodel import SQLModel, and_, select
+from sqlmodel import SQLModel, between, select
 
 from infra.db.sqlmodel import SqlModelClient
 from tests.factory.user import User, generate_sample_users
@@ -77,9 +77,10 @@ def test_select_models(test_engine):
     db_users_2000_to_2005 = cli.select_models(
         model=User,
         conditions={
-            "created_at": and_(
-                User.created_at >= datetime(2000, 1, 1),
-                User.created_at < datetime(2006, 1, 1)
+            "created_at": between(
+                User.created_at,
+                datetime(2000, 1, 1),
+                datetime(2005, 12, 31)
             )
         }
     )
