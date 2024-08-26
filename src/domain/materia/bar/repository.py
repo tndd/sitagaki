@@ -1,7 +1,13 @@
-from pydantic import BaseModel
+from dataclasses import dataclass
+
+from infra.db.sqlmodel import SqlModelClient
 
 
-class BarRepository(BaseModel):
+@dataclass
+class BarRepository:
+    cli_db: SqlModelClient
+
+
     def pull_bars_from_online(symbol: str, start: str, end: str):
         """
         条件:
