@@ -1,8 +1,7 @@
 from copy import deepcopy
 from datetime import datetime
 
-from sqlalchemy import and_
-from sqlmodel import SQLModel, select
+from sqlmodel import SQLModel, and_, select
 
 from infra.db.sqlmodel import SqlModelClient
 from tests.factory.user import User, generate_sample_users
