@@ -88,19 +88,80 @@ def test_select_models(test_engine):
     """
     テスト３:
     creditによる絞り込み
-    - 100 ~ 500 -> helta,carol,david
-    - 10000以上 -> nagisa,astar
+        1: 100 ~ 500 -> helta,carol,david
+        2: 10000以上 -> nagisa,astar
     """
+    # 3-1
+    db_users_credit_100_to_500 = cli.select_models(
+        model=User,
+        conditions={
+            "credit": between(
+                User.credit,
+                100,
+                500
+            )
+        }
+    )
+    assert all(user.name in ["helta", "carol", "david"] for user in db_users_credit_100_to_500)
+    # 3-2
+    db_users_credit_10000_or_above = cli.select_models(
+        model=User,
+        conditions={"credit": User.credit >= 10000}
+    )
+    assert all(user.name in ["nagisa", "astar"] for user in db_users_credit_10000_or_above)
+
     """
     テスト4:
     メールアドレスによる絞り込み
-    - @blmail -> nagisa,kazusa,alice
-    - @stmail -> astar,helta
-    - @blmail.tri -> nagisa,kazusa
+        1: @blmail -> nagisa,kazusa,alice
+        2: @stmail -> astar,helta
+        3: @blmail.tri -> nagisa,kazusa
     """
+    # 4-1
+    db_users_blmail = cli.select_models(
+        model=User,
+        conditions={
+            "email": User.email.like("%@blmail%")
+        }
+    )
+    assert all(user.name in ["nagisa", "kazusa", "alice"] for user in db_users_blmail)
+    # 4-2
+    db_users_stmail = cli.select_models(
+        model=User,
+        conditions={
+            "email": User.email.like("%@stmail%")
+        }
+    )
+    assert all(user.name in ["astar", "helta"] for user in db_users_stmail)
+    # 4-3
+    db_users_blmail_tri = cli.select_models(
+        model=User,
+        conditions={
+            "email": User.email.like("%@blmail.tri%")
+        }
+    )
+    assert all(user.name in ["nagisa", "kazusa"] for user in db_users_blmail_tri)
     """
     テスト5:
     複合条件による絞り込み
-    - @blmailかつcredit10000以上 -> nagisa
-    - @blmailかつ日付が1981以降 -> kazusa,alice
+        1: @blmailかつcredit10000以上 -> nagisa
+        2: @blmailかつ日付が1981以降 -> kazusa,alice
     """
+    # 5-1
+    db_users_blmail_credit_10000_or_above = cli.select_models(
+        model=User,
+        conditions={
+            "email": User.email.like("%@blmail%"),
+            "credit": User.credit >= 10000
+        }
+    )
+    assert all(user.name in ["nagisa"] for user in db_users_blmail_credit_10000_or_above)
+    # 5-2
+    db_users_blmail_after_1981 = cli.select_models(
+        model=User,
+        conditions={
+            "email": User.email.like("%@blmail%"),
+            "created_at": User.created_at >= datetime(1981, 1, 1)
+        }
+    )
+    assert all(user.name in ["kazusa", "alice"] for user in db_users_blmail_after_1981)
