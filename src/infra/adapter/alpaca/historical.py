@@ -3,7 +3,7 @@ from alpaca.data.timeframe import TimeFrame as AlpcTimeFrame
 from domain.materia.bar.model import Timeframe
 
 
-def adapt_timeframe(timeframe: Timeframe) -> AlpcTimeFrame:
+def adapt_to_alpc_timeframe(timeframe: Timeframe) -> AlpcTimeFrame:
     if timeframe is Timeframe.MINUTE:
         return AlpcTimeFrame.Minute
     elif timeframe is Timeframe.HOUR:
