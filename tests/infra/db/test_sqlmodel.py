@@ -4,7 +4,7 @@ from datetime import datetime
 from sqlmodel import SQLModel, between, select
 
 from infra.db.sqlmodel import SqlModelClient
-from tests.factory.sample_user import SampleUser, generate_sample_users
+from tests.utils.factory.sample_user import SampleUser, generate_sample_users
 
 
 def assert_users_equal(db_users, original_users):
