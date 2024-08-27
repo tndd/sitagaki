@@ -4,7 +4,7 @@ from datetime import datetime
 from sqlmodel import SQLModel, between, select
 
 from infra.db.sqlmodel import SqlModelClient
-from tests.factory.user import User, generate_sample_users
+from tests.factory.sample_user import SampleUser, generate_sample_users
 
 
 def assert_users_equal(db_users, original_users):
@@ -33,7 +33,7 @@ def test_insert_models(test_engine):
     # インサートされたかを確認
     with cli.session() as session:
         # データ取得
-        db_users = session.exec(select(User)).all()
+        db_users = session.exec(select(SampleUser)).all()
         assert_users_equal(db_users, users_copy_for_valid)
 
 
@@ -52,7 +52,7 @@ def test_select_models(test_engine):
     select_modelsが機能していることと、
     conditionを渡さなくても問題ないことを確認
     """
-    db_users = cli.select_models(User)
+    db_users = cli.select_models(SampleUser)
     assert_users_equal(db_users, users_copy_for_valid)
     """
     テスト２:
@@ -63,22 +63,22 @@ def test_select_models(test_engine):
     """
     # 2-1
     db_users_before_2000 = cli.select_models(
-        model=User,
-        conditions={"created_at": User.created_at < datetime(2000, 1, 1)}
+        model=SampleUser,
+        conditions={"created_at": SampleUser.created_at < datetime(2000, 1, 1)}
     )
     assert all(user.name in ["nagisa", "kazusa", "alice"] for user in db_users_before_2000)
     # 2-2
     db_users_after_2000 = cli.select_models(
-        model=User,
-        conditions={"created_at": User.created_at >= datetime(2000, 1, 1)}
+        model=SampleUser,
+        conditions={"created_at": SampleUser.created_at >= datetime(2000, 1, 1)}
     )
     assert all(user.name in ["astar", "helta", "carol", "david"] for user in db_users_after_2000)
     # 2-3
     db_users_2000_to_2005 = cli.select_models(
-        model=User,
+        model=SampleUser,
         conditions={
             "created_at": between(
-                User.created_at,
+                SampleUser.created_at,
                 datetime(2000, 1, 1),
                 datetime(2005, 12, 31)
             )
@@ -93,10 +93,10 @@ def test_select_models(test_engine):
     """
     # 3-1
     db_users_credit_100_to_500 = cli.select_models(
-        model=User,
+        model=SampleUser,
         conditions={
             "credit": between(
-                User.credit,
+                SampleUser.credit,
                 100,
                 500
             )
@@ -105,8 +105,8 @@ def test_select_models(test_engine):
     assert all(user.name in ["helta", "carol", "david"] for user in db_users_credit_100_to_500)
     # 3-2
     db_users_credit_10000_or_above = cli.select_models(
-        model=User,
-        conditions={"credit": User.credit >= 10000}
+        model=SampleUser,
+        conditions={"credit": SampleUser.credit >= 10000}
     )
     assert all(user.name in ["nagisa", "astar"] for user in db_users_credit_10000_or_above)
 
@@ -119,25 +119,25 @@ def test_select_models(test_engine):
     """
     # 4-1
     db_users_blmail = cli.select_models(
-        model=User,
+        model=SampleUser,
         conditions={
-            "email": User.email.like("%@blmail%")
+            "email": SampleUser.email.like("%@blmail%")
         }
     )
     assert all(user.name in ["nagisa", "kazusa", "alice"] for user in db_users_blmail)
     # 4-2
     db_users_stmail = cli.select_models(
-        model=User,
+        model=SampleUser,
         conditions={
-            "email": User.email.like("%@stmail%")
+            "email": SampleUser.email.like("%@stmail%")
         }
     )
     assert all(user.name in ["astar", "helta"] for user in db_users_stmail)
     # 4-3
     db_users_blmail_tri = cli.select_models(
-        model=User,
+        model=SampleUser,
         conditions={
-            "email": User.email.like("%@blmail.tri%")
+            "email": SampleUser.email.like("%@blmail.tri%")
         }
     )
     assert all(user.name in ["nagisa", "kazusa"] for user in db_users_blmail_tri)
@@ -149,19 +149,19 @@ def test_select_models(test_engine):
     """
     # 5-1
     db_users_blmail_credit_10000_or_above = cli.select_models(
-        model=User,
+        model=SampleUser,
         conditions={
-            "email": User.email.like("%@blmail%"),
-            "credit": User.credit >= 10000
+            "email": SampleUser.email.like("%@blmail%"),
+            "credit": SampleUser.credit >= 10000
         }
     )
     assert all(user.name in ["nagisa"] for user in db_users_blmail_credit_10000_or_above)
     # 5-2
     db_users_blmail_after_1981 = cli.select_models(
-        model=User,
+        model=SampleUser,
         conditions={
-            "email": User.email.like("%@blmail%"),
-            "created_at": User.created_at >= datetime(1981, 1, 1)
+            "email": SampleUser.email.like("%@blmail%"),
+            "created_at": SampleUser.created_at >= datetime(1981, 1, 1)
         }
     )
     assert all(user.name in ["kazusa", "alice"] for user in db_users_blmail_after_1981)

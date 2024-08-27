@@ -4,7 +4,7 @@ from typing import List
 from sqlmodel import Field, SQLModel
 
 
-class User(SQLModel, table=True):
+class SampleUser(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     created_at: datetime
     name: str
@@ -12,10 +12,10 @@ class User(SQLModel, table=True):
     credit: int
 
 
-def generate_sample_users(n: int = 10) -> List[User]:
+def generate_sample_users(n: int = 10) -> List[SampleUser]:
     users = []
     users.append(
-        User(
+        SampleUser(
             created_at=datetime(1980,12,1),
             name='nagisa',
             email='surenagi333@blmail.tri',
@@ -23,7 +23,7 @@ def generate_sample_users(n: int = 10) -> List[User]:
         )
     )
     users.append(
-        User(
+        SampleUser(
             created_at=datetime(1981,6,12),
             name='kazusa',
             email='casperi666@blmail.tri',
@@ -31,7 +31,7 @@ def generate_sample_users(n: int = 10) -> List[User]:
         )
     )
     users.append(
-        User(
+        SampleUser(
             created_at=datetime(1992,3,15),
             name='alice',
             email='hero810@blmail.ml',
@@ -39,7 +39,7 @@ def generate_sample_users(n: int = 10) -> List[User]:
         )
     )
     users.append(
-        User(
+        SampleUser(
             created_at=datetime(2000,3,22),
             name='astar',
             email='pepe423@stmail.com',
@@ -47,7 +47,7 @@ def generate_sample_users(n: int = 10) -> List[User]:
         )
     )
     users.append(
-        User(
+        SampleUser(
             created_at=datetime(2000,3,22),
             name='helta',
             email='helta81@stmail.com',
@@ -55,7 +55,7 @@ def generate_sample_users(n: int = 10) -> List[User]:
         )
     )
     users.append(
-        User(
+        SampleUser(
             created_at=datetime(2001,9,5),
             name='carol',
             email='carol@mymail.net',
@@ -63,7 +63,7 @@ def generate_sample_users(n: int = 10) -> List[User]:
         )
     )
     users.append(
-        User(
+        SampleUser(
             created_at=datetime(2010,12,31),
             name='david',
             email='david@mymail.org',
