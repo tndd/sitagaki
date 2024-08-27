@@ -40,6 +40,7 @@ class Bar(AlpcBar):
     """
 
 
+# TODO: cliをグローバル宣言させる
 def create_stock_historical_data_client() -> StockHistoricalDataClient:
     return StockHistoricalDataClient(
         api_key=getenv('APCA_KEY'),
