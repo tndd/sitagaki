@@ -2,7 +2,8 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from domain.materia.bar.model import Timeframe
-from infra.adapter.alpaca.historical import adapt_to_alpc_timeframe
+from infra.adapter.alpaca.historical import (adapt_to_alpc_timeframe,
+                                             adapt_to_bar_list)
 from infra.api.alpaca.historical import get_bars
 from infra.db.sqlmodel import SqlModelClient
 
@@ -25,20 +26,13 @@ class BarRepository:
             対象期間のローソク足をオンライン上から取得し保存する。
         """
         # barsデータを取得
-        bars = get_bars(
+        bars_alpc = get_bars(
             symbol=symbol,
             timeframe=adapt_to_alpc_timeframe(timeframe),
             start=start
         )
-        # TODO: barsの処遇検討
-        """
-            barsはalpacaの形式で帰ってくる。
-            barsの目的はDBに保存されることだが、
-            保存するだけならばdomain層側のBarに変換する必要はない。
-
-            しかし一応ルールとしては、ドメイン層側であるリポジトリ内では、
-            ドメイン層側のモデル言語でやり取りするべきではある。
-        """
+        # ドメイン層のbarモデルのリストに変換
+        bars = adapt_to_bar_list(bars_alpc)
         # TODO: barsデータを保存
         """
             1. barsをdbのモデルのリストに変換
