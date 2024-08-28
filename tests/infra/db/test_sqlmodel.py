@@ -1,10 +1,10 @@
 from copy import deepcopy
 from datetime import datetime
 
-from sqlmodel import SQLModel, between, select
+from sqlmodel import between, select
 
-from infra.db.sqlmodel import SqlModelClient
-from tests.utils.factory.tests.sample_user import SampleUser, generate_sample_users
+from tests.utils.factory.tests.sample_user import (SampleUser,
+                                                   generate_sample_users)
 
 
 def assert_users_equal(db_users, original_users):
