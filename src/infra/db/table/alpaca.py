@@ -29,4 +29,4 @@ class TblBarHour(TblBarBase, table=True):
 
 
 class TblBarDay(TblBarBase, table=True):
-    __tablename__ = "alpaca.bar_min"
+    __tablename__ = "alpaca.bar_day"
