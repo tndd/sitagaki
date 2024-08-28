@@ -1,5 +1,5 @@
 from infra.adapter.alpaca.historical import adapt_to_bar_list
-from tests.utils.factory.alpaca import MockBar, generate_barset_mock
+from tests.utils.factory.infra.alpaca import MockBar, generate_barset_mock
 
 
 def test_adapt_to_bar_list():
