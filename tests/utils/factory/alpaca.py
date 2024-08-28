@@ -1,7 +1,6 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 
-from alpaca.data.models import BarSet
 from pydantic import BaseModel
 
 from tests.utils.mock.loader import load
@@ -9,6 +8,8 @@ from tests.utils.mock.loader import load
 
 class MockBar(BaseModel):
     """
+    # WARN: 擬似モデル
+
     alpacaのbarモデルは作成に手間がかかりすぎるので、
     代わりにモックデータでテストするようにする。
     """
@@ -25,6 +26,8 @@ class MockBar(BaseModel):
 
 class MockBarSet(BaseModel):
     """
+    # WARN: 擬似モデル
+
     alpacaのbarsetモデル作成はbarモデルよりはるかに面倒。
     要素さえ揃ってればテストできるだろうからこれで勘弁してくれ。
 
