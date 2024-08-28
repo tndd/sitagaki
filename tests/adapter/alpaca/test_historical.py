@@ -8,6 +8,7 @@ def test_adapt_to_bar_list():
     assert isinstance(bars, list)
     """
     # WARN: 擬似テスト
+
     MockBarについて:
         * MockBarはalpacaのBarとは継承関係にないクラス。
         * 本家のBarモデルの作成が困難であるためモックを使っている。
