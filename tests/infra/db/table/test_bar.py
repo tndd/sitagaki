@@ -1,4 +1,5 @@
-from infra.db.table.alpaca import TblBarDay, TblBarHour, TblBarMin
+from infra.db.table.bar import (TblBarDayAlpaca, TblBarHourAlpaca,
+                                TblBarMinAlpaca)
 
 """
 # Note: 作業メモ
@@ -9,13 +10,13 @@ from infra.db.table.alpaca import TblBarDay, TblBarHour, TblBarMin
 それとBarのfactoryも。
 """
 
-def test_tbl_bar_min(test_sqlm_cli):
+def test_tbl_bar_min_alpaca(test_sqlm_cli):
     pass
 
 
-def test_tbl_bar_hour(test_sqlm_cli):
+def test_tbl_bar_hour_alpaca(test_sqlm_cli):
     pass
 
 
-def test_tbl_bar_day(test_sqlm_cli):
+def test_tbl_bar_day_alpaca(test_sqlm_cli):
     pass

@@ -20,13 +20,13 @@ class TblBarBase(SQLModel):
     vwap: Optional[float] = None
 
 
-class TblBarMin(TblBarBase, table=True):
-    __tablename__ = "alpaca.bar_min"
+class TblBarMinAlpaca(TblBarBase, table=True):
+    __tablename__ = "bar_min_alpaca"
 
 
-class TblBarHour(TblBarBase, table=True):
-    __tablename__ = "alpaca.bar_hour"
+class TblBarHourAlpaca(TblBarBase, table=True):
+    __tablename__ = "bar_hour_alpaca"
 
 
-class TblBarDay(TblBarBase, table=True):
-    __tablename__ = "alpaca.bar_day"
+class TblBarDayAlpaca(TblBarBase, table=True):
+    __tablename__ = "bar_day_alpaca"
