@@ -1,6 +1,10 @@
 from dataclasses import dataclass
 from datetime import datetime
 
+from domain.materia.bar.model import Timeframe
+from infra.adapter.alpaca.historical import (adapt_to_alpc_timeframe,
+                                             adapt_to_bar_list)
+from infra.api.alpaca.historical import get_bars
 from infra.db.sqlmodel import SqlModelClient
 
 
@@ -9,14 +13,31 @@ class BarRepository:
     cli_db: SqlModelClient
 
 
-    def pull_bars_from_online(symbol: str, start: datetime, end: datetime):
+    def pull_bars_from_online(
+            symbol: str,
+            timeframe: Timeframe,
+            start: datetime,
+            end: datetime
+    ) -> None:
         """
         条件:
             シンボルと開始日、終日を指定。
         効果:
             対象期間のローソク足をオンライン上から取得し保存する。
         """
-        # IMPL
+        # barsデータを取得
+        bars_alpc = get_bars(
+            symbol=symbol,
+            timeframe=adapt_to_alpc_timeframe(timeframe),
+            start=start
+        )
+        # ドメイン層のbarモデルのリストに変換
+        bars = adapt_to_bar_list(bars_alpc)
+        # TODO: barsデータを保存
+        """
+            1. barsをdbのモデルのリストに変換
+            2. dbモデルリストを保存
+        """
         pass
 
 
