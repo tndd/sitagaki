@@ -1,4 +1,4 @@
-from infra.adapter.alpaca.historical import adapt_to_bar_list
+from infra.adapter.materia.bar import adapt_to_bar_list
 from tests.utils.factory.infra.alpaca import MockBar, generate_barset_mock
 
 

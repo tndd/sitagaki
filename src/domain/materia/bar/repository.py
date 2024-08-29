@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from domain.materia.bar.model import Timeframe
-from infra.adapter.alpaca.historical import (adapt_to_alpc_timeframe,
+from infra.adapter.materia.bar import (adapt_to_alpc_timeframe,
                                              adapt_to_bar_list)
 from infra.api.alpaca.historical import get_bars
 from infra.db.sqlmodel import SqlModelClient
