@@ -1,10 +1,11 @@
 from typing import List
 
-from alpaca.data.models import Bar as AlpcBar
 from alpaca.data.models import BarSet
 from alpaca.data.timeframe import TimeFrame as AlpcTimeFrame
 
 from domain.materia.bar.model import Bar, Timeframe
+from infra.db.table.bar import (TblBarDayAlpaca, TblBarHourAlpaca,
+                                TblBarMinAlpaca)
 
 
 def adapt_to_alpc_timeframe(timeframe: Timeframe) -> AlpcTimeFrame:
@@ -20,8 +21,8 @@ def adapt_to_alpc_timeframe(timeframe: Timeframe) -> AlpcTimeFrame:
         return AlpcTimeFrame.Month
 
 
-def adapt_to_sqlm_bar(bar: Bar) -> AlpcBar:
-    # TODO: まずはDB側のBarテーブル定義が先
+def adapt_to_tbl_bar_min(bar: Bar) -> TblBarMinAlpaca:
+    # TODO: 実装
     pass
 
 
