@@ -3,7 +3,7 @@ from os import getenv
 from alpaca.data.historical import StockHistoricalDataClient
 from alpaca.data.models.bars import BarSet
 from alpaca.data.requests import StockBarsRequest
-from alpaca.data.timeframe import TimeFrame as AlpcTimeFrame
+from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
 cli = StockHistoricalDataClient(
     api_key=getenv('APCA_KEY'),
@@ -13,7 +13,7 @@ cli = StockHistoricalDataClient(
 
 def get_bars(
     symbol: str,
-    timeframe: AlpcTimeFrame,
+    timeframe: TimeFrameAlpaca,
     start: str = '2000-01-01'
 ) -> BarSet:
     """

@@ -1,13 +1,13 @@
 import pytest
 from alpaca.data.models import BarSet
-from alpaca.data.timeframe import TimeFrame as AlpcTimeFrame
+from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
 from infra.api.alpaca.historical import get_bars
 
 
 @pytest.mark.ext
 def test_get_bars():
-    timeframe = AlpcTimeFrame.Day
+    timeframe = TimeFrameAlpaca.Day
     bars = get_bars(
         symbol='AAPL',
         start='2024-01-01',
