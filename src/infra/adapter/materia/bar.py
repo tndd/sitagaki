@@ -4,7 +4,7 @@ from alpaca.data.models import BarSet
 from alpaca.data.timeframe import TimeFrame as AlpcTimeFrame
 
 from domain.materia.bar.model import Bar, Timeframe
-from infra.db.table.bar import (TblBarBase, TblBarDayAlpaca, TblBarHourAlpaca,
+from infra.db.table.bar import (TblBarDayAlpaca, TblBarHourAlpaca,
                                 TblBarMinAlpaca)
 
 
