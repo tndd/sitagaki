@@ -2,7 +2,7 @@ import pytest
 from alpaca.data.models import BarSet
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
-from infra.api.alpaca.historical import get_bars
+from infra.api.alpaca import get_bars
 
 
 @pytest.mark.ext

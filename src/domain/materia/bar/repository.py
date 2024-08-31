@@ -4,7 +4,7 @@ from datetime import datetime
 from domain.materia.bar.model import Timeframe
 from infra.adapter.materia.bar import (adapt_to_bar_list,
                                        adapt_to_timeframe_alpaca)
-from infra.api.alpaca.historical import get_bars
+from infra.api.alpaca import get_bars
 from infra.db.sqlmodel import SqlModelClient
 
 
