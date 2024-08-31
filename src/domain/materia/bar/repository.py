@@ -12,7 +12,6 @@ from infra.db.sqlmodel import SqlModelClient
 class BarRepository:
     cli_db: SqlModelClient
 
-
     def pull_bars_from_online(
             symbol: str,
             timeframe: Timeframe,
