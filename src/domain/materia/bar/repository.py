@@ -2,8 +2,8 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from domain.materia.bar.model import Timeframe
-from infra.adapter.alpaca.historical import (adapt_to_alpc_timeframe,
-                                             adapt_to_bar_list)
+from infra.adapter.materia.bar import (adapt_to_bar_list,
+                                       adapt_to_timeframe_alpaca)
 from infra.api.alpaca.historical import get_bars
 from infra.db.sqlmodel import SqlModelClient
 
@@ -28,7 +28,7 @@ class BarRepository:
         # barsデータを取得
         bars_alpc = get_bars(
             symbol=symbol,
-            timeframe=adapt_to_alpc_timeframe(timeframe),
+            timeframe=adapt_to_timeframe_alpaca(timeframe),
             start=start
         )
         # ドメイン層のbarモデルのリストに変換
