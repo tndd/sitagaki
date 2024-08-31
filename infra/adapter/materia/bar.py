@@ -9,7 +9,7 @@ from infra.db.table.bar import (TblBarDayAlpaca, TblBarHourAlpaca,
 
 
 def adapt_to_timeframe_alpaca(timeframe: Timeframe) -> TimeFrameAlpaca:
-    if timeframe is Timeframe.MINUTE:
+    if timeframe is Timeframe.MIN:
         return TimeFrameAlpaca.Minute
     elif timeframe is Timeframe.HOUR:
         return TimeFrameAlpaca.Hour

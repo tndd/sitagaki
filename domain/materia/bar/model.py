@@ -6,7 +6,7 @@ from pydantic import BaseModel
 
 
 class Timeframe(Enum):
-    MINUTE = "Minute"
+    MIN = "Minute"
     HOUR = "Hour"
     DAY = "Day"
     WEEK = "Week"

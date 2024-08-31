@@ -12,7 +12,7 @@ def test_adapt_to_timeframe_alpaca():
     TimeFrameAlpacaはEnumであるため、isinstanceによる検証ができない。
     そのためvalueを比較するという形でテストを行っている。
     """
-    assert adapt_to_timeframe_alpaca(Timeframe.MINUTE).value == TimeFrameAlpaca.Minute.value
+    assert adapt_to_timeframe_alpaca(Timeframe.MIN).value == TimeFrameAlpaca.Minute.value
     assert adapt_to_timeframe_alpaca(Timeframe.HOUR).value == TimeFrameAlpaca.Hour.value
     assert adapt_to_timeframe_alpaca(Timeframe.DAY).value == TimeFrameAlpaca.Day.value
     assert adapt_to_timeframe_alpaca(Timeframe.WEEK).value == TimeFrameAlpaca.Week.value
