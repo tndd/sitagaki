@@ -1,3 +1,9 @@
+import sys
+from pathlib import Path
+
+# プロジェクトルートへのパス通し
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+
 import pytest
 from dotenv import load_dotenv
 from sqlmodel import SQLModel, create_engine
