@@ -24,3 +24,7 @@ web上から情報を集めるbotを格納する。
   * toyota
   * wallmart
   * ...
+* sns
+  * twitter
+  * reddit
+  * ...
