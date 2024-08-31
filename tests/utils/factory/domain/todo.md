@@ -1,0 +1,1 @@
+domain側のモデルを作るfactory
