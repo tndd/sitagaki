@@ -1,4 +1,4 @@
-from tests.utils.factory.infra.alpaca import (MockBarSet, generate_barset_mock,
+from tests.utils.factory.infra.api.alpaca import (MockBarSet, generate_barset_mock,
                                         make_barset_mock_from_dict)
 from tests.utils.mock.loader import load
 

@@ -4,7 +4,7 @@ from domain.materia.bar.model import Timeframe
 from infra.adapter.materia.bar import (adapt_to_bar_list,
                                        adapt_to_tbl_bar_alpaca,
                                        adapt_to_timeframe_alpaca)
-from tests.utils.factory.infra.alpaca import MockBar, generate_barset_mock
+from tests.utils.factory.infra.api.alpaca import MockBar, generate_barset_mock
 
 
 def test_adapt_to_timeframe_alpaca():
@@ -17,6 +17,10 @@ def test_adapt_to_timeframe_alpaca():
     assert adapt_to_timeframe_alpaca(Timeframe.DAY).value == TimeFrameAlpaca.Day.value
     assert adapt_to_timeframe_alpaca(Timeframe.WEEK).value == TimeFrameAlpaca.Week.value
     assert adapt_to_timeframe_alpaca(Timeframe.MONTH).value == TimeFrameAlpaca.Month.value
+
+
+def test_adapt_to_tbl_bar_alpaca():
+    pass
 
 
 def test_adapt_to_bar_list():
