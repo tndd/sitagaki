@@ -17,7 +17,13 @@ def adapt_to_timeframe_alpaca(timeframe: Timeframe) -> TimeFrameAlpaca:
         Timeframe.WEEK: TimeFrameAlpaca(amount=1, unit=TimeFrameUnit.Week),
         Timeframe.MONTH: TimeFrameAlpaca(amount=1, unit=TimeFrameUnit.Month)
     }
-    return timeframe_map.get(timeframe, TimeFrameAlpaca.Day)  # デフォルトはDayとします
+    if timeframe not in timeframe_map:
+        raise ValueError(
+            f"無効なTimeframe: {timeframe}。"
+            f"サポートされているTimeframeは "
+            f"{', '.join(map(str, timeframe_map.keys()))} です。"
+        )
+    return timeframe_map[timeframe]
 
 
 def adapt_to_tbl_bar_alpaca(
