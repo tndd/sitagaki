@@ -8,6 +8,7 @@ import pytest
 from dotenv import load_dotenv
 from sqlmodel import SQLModel, create_engine
 
+from domain.materia.bar.repository import BarRepository
 from infra.db.sqlmodel import SqlModelClient
 
 
@@ -28,3 +29,8 @@ def test_engine():
 @pytest.fixture
 def test_sqlm_cli(test_engine):
     return SqlModelClient(test_engine)
+
+
+@pytest.fixture
+def test_bar_repo(test_sqlm_cli):
+    return BarRepository(test_sqlm_cli)
