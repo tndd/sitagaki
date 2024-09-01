@@ -36,7 +36,7 @@ class BarRepository:
         # ドメイン層のbarモデルのリストに変換
         bars = adapt_to_bar_list(bars_alpc)
         # ドメイン層のモデルリストbarsをDBのモデルリストに変換
-        tbl_bars = [adapt_to_tbl_bar_alpaca(bar) for bar in bars]
+        tbl_bars = [adapt_to_tbl_bar_alpaca(bar, timeframe) for bar in bars]
         # DBのモデルリストを保存
         self.cli_db.insert_models(tbl_bars)
 
