@@ -1,5 +1,6 @@
 from datetime import datetime
 from os import getenv
+from typing import Optional
 
 from alpaca.data.historical import StockHistoricalDataClient
 from alpaca.data.models.bars import BarSet
@@ -15,21 +16,17 @@ cli = StockHistoricalDataClient(
 def get_bars(
     symbol: str,
     timeframe: TimeFrameAlpaca,
-    start: datetime
+    start: datetime,
+    end: Optional[datetime] = None
 ) -> BarSet:
     """
     日足のヒストリカルバー情報を取得。
-
-    注意:
-        この関数はデフォルトでは終わりの時期を指定しない。
-        endを指定しなかった場合、sdk側の設計により可能な限り直近のデータを取得するから。
-        そしてonline上からendの時期を指定したいという需要が今の所思い当たらない。
-
-        それとあまりに直近のデータを指定できずnow()を使えないという問題もある。
+    endを指定しなかった場合、可能な限り直近のデータを取得するようになってる。
     """
     rq = StockBarsRequest(
         symbol_or_symbols=symbol,
         timeframe=timeframe,
-        start=start
+        start=start,
+        end=end if end else None
     )
     return cli.get_stock_bars(rq)

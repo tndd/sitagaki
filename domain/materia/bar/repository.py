@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Optional
 
 from domain.materia.bar.model import Timeframe
 from infra.adapter.materia.bar import (adapt_to_bar_list,
@@ -17,18 +18,20 @@ class BarRepository:
             self,
             symbol: str,
             timeframe: Timeframe,
-            start: datetime = datetime(2000,1,1)
+            start: datetime = datetime(2000,1,1),
+            end: Optional[datetime] = None
     ) -> None:
         """
         2000年からのbarデータをonlineから取得し、DBに保存する。
         データ取得開始時期(start)は指定可能。
-        終了時期は指定不可。可能な限り直近のデータを取得する。
+        終了時期(end)省略時は可能な限り直近のデータを取得する。
         """
         # barsデータを取得
         bars_alpc = get_bars(
             symbol=symbol,
             timeframe=adapt_to_timeframe_alpaca(timeframe),
-            start=start
+            start=start,
+            end=end
         )
         # ドメイン層のbarモデルのリストに変換
         bars = adapt_to_bar_list(bars_alpc)
