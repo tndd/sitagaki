@@ -29,12 +29,13 @@ def adapt_to_tbl_bar_alpaca(
     TblBarHourAlpaca,
     TblBarDayAlpaca
 ]:
-    if timeframe is Timeframe.MINUTE:
-        pass
+    data = bar.model_dump()
+    if timeframe is Timeframe.MIN:
+        return TblBarMinAlpaca.model_validate(data)
     elif timeframe is Timeframe.HOUR:
-        pass
+        return TblBarHourAlpaca.model_validate(data)
     elif timeframe is Timeframe.DAY:
-        pass
+        return TblBarDayAlpaca.model_validate(data)
     pass
 
 

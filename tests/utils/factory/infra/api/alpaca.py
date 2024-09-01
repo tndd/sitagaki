@@ -8,7 +8,7 @@ from tests.utils.mock.loader import load
 
 class MockBar(BaseModel):
     """
-    # WARN: 擬似モデル
+    WARN: 擬似モデル
 
     alpacaのbarモデルは作成に手間がかかりすぎるので、
     代わりにモックデータでテストするようにする。
@@ -90,3 +90,17 @@ def generate_barset_mock() -> MockBarSet:
     data = load('barset.json')
     # 生成したbarsetモデルを返す
     return make_barset_mock_from_dict(data)
+
+
+def generate_bar_mock() -> MockBar:
+    return MockBar(
+        symbol='MCKB',
+        timestamp=datetime(2024, 1, 2, 6, 0, 0),
+        open=187.15,
+        high=188.44,
+        low=183.885,
+        close=185.64,
+        volume=82496943.0,
+        trade_count=1009074.0,
+        vwap=185.937347
+    )

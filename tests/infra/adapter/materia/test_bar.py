@@ -4,7 +4,10 @@ from domain.materia.bar.model import Timeframe
 from infra.adapter.materia.bar import (adapt_to_bar_list,
                                        adapt_to_tbl_bar_alpaca,
                                        adapt_to_timeframe_alpaca)
-from tests.utils.factory.infra.api.alpaca import MockBar, generate_barset_mock
+from infra.db.table.bar import (TblBarDayAlpaca, TblBarHourAlpaca,
+                                TblBarMinAlpaca)
+from tests.utils.factory.infra.api.alpaca import (MockBar, generate_bar_mock,
+                                                  generate_barset_mock)
 
 
 def test_adapt_to_timeframe_alpaca():
@@ -17,10 +20,6 @@ def test_adapt_to_timeframe_alpaca():
     assert adapt_to_timeframe_alpaca(Timeframe.DAY).value == TimeFrameAlpaca.Day.value
     assert adapt_to_timeframe_alpaca(Timeframe.WEEK).value == TimeFrameAlpaca.Week.value
     assert adapt_to_timeframe_alpaca(Timeframe.MONTH).value == TimeFrameAlpaca.Month.value
-
-
-def test_adapt_to_tbl_bar_alpaca():
-    pass
 
 
 def test_adapt_to_bar_list():
@@ -40,4 +39,13 @@ def test_adapt_to_bar_list():
 
 
 def test_adapt_to_tbl_bar_alpaca():
-    pass
+    mock_bar = generate_bar_mock()
+    # min
+    tbl_bar_alpaca_min = adapt_to_tbl_bar_alpaca(mock_bar, Timeframe.MIN)
+    assert isinstance(tbl_bar_alpaca_min, TblBarMinAlpaca)
+    # hour
+    tbl_bar_alpaca_hour = adapt_to_tbl_bar_alpaca(mock_bar, Timeframe.HOUR)
+    assert isinstance(tbl_bar_alpaca_hour, TblBarHourAlpaca)
+    # day
+    tbl_bar_alpaca_day = adapt_to_tbl_bar_alpaca(mock_bar, Timeframe.DAY)
+    assert isinstance(tbl_bar_alpaca_day, TblBarDayAlpaca)
