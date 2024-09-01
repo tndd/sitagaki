@@ -2,6 +2,7 @@ from typing import List, Union
 
 from alpaca.data.models import BarSet
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
+from alpaca.data.timeframe import TimeFrameUnit
 
 from domain.materia.bar.model import Bar, Timeframe
 from infra.db.table.bar import (TblBarDayAlpaca, TblBarHourAlpaca,
@@ -9,16 +10,14 @@ from infra.db.table.bar import (TblBarDayAlpaca, TblBarHourAlpaca,
 
 
 def adapt_to_timeframe_alpaca(timeframe: Timeframe) -> TimeFrameAlpaca:
-    if timeframe is Timeframe.MIN:
-        return TimeFrameAlpaca.Minute
-    elif timeframe is Timeframe.HOUR:
-        return TimeFrameAlpaca.Hour
-    elif timeframe is Timeframe.DAY:
-        return TimeFrameAlpaca.Day
-    elif timeframe is Timeframe.WEEK:
-        return TimeFrameAlpaca.Week
-    elif timeframe is Timeframe.MONTH:
-        return TimeFrameAlpaca.Month
+    timeframe_map = {
+        Timeframe.MIN: TimeFrameAlpaca(amount=1, unit=TimeFrameUnit.Minute),
+        Timeframe.HOUR: TimeFrameAlpaca(amount=1, unit=TimeFrameUnit.Hour),
+        Timeframe.DAY: TimeFrameAlpaca(amount=1, unit=TimeFrameUnit.Day),
+        Timeframe.WEEK: TimeFrameAlpaca(amount=1, unit=TimeFrameUnit.Week),
+        Timeframe.MONTH: TimeFrameAlpaca(amount=1, unit=TimeFrameUnit.Month)
+    }
+    return timeframe_map.get(timeframe, TimeFrameAlpaca.Day)  # デフォルトはDayとします
 
 
 def adapt_to_tbl_bar_alpaca(
