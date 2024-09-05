@@ -22,6 +22,26 @@ class SqlModelClient:
         model: type[SQLModel],
         conditions: Optional[dict] = None
     ) -> List[SQLModel]:
+        """
+        NOTE: stmtを直接渡すシンプルな形式に変える？
+
+            modelとconditionsを別々に渡す形式である必要があまりない気がしてきた。
+            なぜならconditionsを作る時点でmodelが密接に関連しているからだ。
+
+            だったらstmtのリストを渡す形にして、それをそのままsession管理しつつ実行、
+            という形のほうが機能として合理的ではないだろうか。
+            今の実装であればこれをリポジトリから呼び出した場合、
+            インフラ層のモデルをリポジトリが意識してしまう状態となるためマズい。
+
+            stmtの作成は、infra/db/queryあたりに集めてそれを呼び出す形とすればいい。
+            そうすればリポジトリ側からインフラ側の実装を秘匿できる上、
+            気にするのはstmtの条件の数値だけで済む。
+
+        懸念:
+            今の所この関数はselectで使うという想定となっている。
+            だがこの関数の機能が実行というところに注力して作られているならば、
+            これがselectにしか使われないということはないのではないだろうか？
+        """
         with self.session() as session:
             stmt = select(model)
             if conditions:
