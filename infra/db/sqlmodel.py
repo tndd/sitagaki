@@ -41,6 +41,14 @@ class SqlModelClient:
             今の所この関数はselectで使うという想定となっている。
             だがこの関数の機能が実行というところに注力して作られているならば、
             これがselectにしか使われないということはないのではないだろうか？
+
+            > 1:
+                ありそうなケースはdelete,updateしてからselectみたいなケース。
+                着地地点はselectというルールでこれを設計するならば、
+                戻り値はこのままのall()でいいのではないか。
+
+                それにupdateやdeleteで終わってall()の結果が帰ったとしても、
+                それを使わなければいいだけの話で動作に支障はない。
         """
         with self.session() as session:
             stmt = select(model)
