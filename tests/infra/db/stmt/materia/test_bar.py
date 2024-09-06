@@ -1,2 +1,2 @@
-def select_stmt_bar():
+def select_bar():
     pass
