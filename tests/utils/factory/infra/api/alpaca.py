@@ -1,7 +1,6 @@
 from datetime import datetime
-from typing import Dict, List, Optional
 
-from alpaca.data.models.bars import BarSet
+from alpaca.data.models.bars import Bar, BarSet
 
 
 def generate_barset() -> BarSet:
@@ -116,3 +115,17 @@ def generate_barset() -> BarSet:
         ]
     }
     return BarSet(raw_data_barset)
+
+
+def generate_bar() -> Bar:
+    raw_data = {
+        "t": datetime(2023, 4, 1, 10, 0),  # timestamp
+        "o": 100.0,  # open
+        "h": 105.0,  # high
+        "l": 99.0,   # low
+        "c": 102.0,  # close
+        "v": 1000,   # volume
+        "n": 50,     # trade_count
+        "vw": 101.5  # vwap
+    }
+    return Bar(symbol="AAPL", raw_data=raw_data)
