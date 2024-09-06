@@ -44,6 +44,17 @@ def adapt_to_tbl_bar_alpaca(
     pass
 
 
+def adapt_to_tbl_bar_alpaca_list(
+        bars: List[Bar],
+        timeframe: Timeframe
+) -> List[Union[
+    TblBarMinAlpaca,
+    TblBarHourAlpaca,
+    TblBarDayAlpaca
+]]:
+    return [adapt_to_tbl_bar_alpaca(bar, timeframe) for bar in bars]
+
+
 
 def adapt_to_bar_list(barset: BarSet) -> List[Bar]:
     return next(iter(barset.data.values()))

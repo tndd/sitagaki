@@ -4,9 +4,11 @@ from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 from domain.materia.bar.model import Timeframe
 from infra.adapter.materia.bar import (adapt_to_bar_list,
                                        adapt_to_tbl_bar_alpaca,
+                                       adapt_to_tbl_bar_alpaca_list,
                                        adapt_to_timeframe_alpaca)
 from infra.db.table.bar import (TblBarDayAlpaca, TblBarHourAlpaca,
                                 TblBarMinAlpaca)
+from tests.utils.factory.domain.materia.bar import generate_bar_list
 from tests.utils.factory.infra.api.alpaca import generate_bar, generate_barset
 
 
@@ -39,3 +41,11 @@ def test_adapt_to_tbl_bar_alpaca():
     # day
     tbl_bar_alpaca_day = adapt_to_tbl_bar_alpaca(bar, Timeframe.DAY)
     assert isinstance(tbl_bar_alpaca_day, TblBarDayAlpaca)
+
+
+def test_adapt_to_tbl_bar_alpaca_list():
+    # WARN: 日足のテストのみ
+    bars = generate_bar_list()
+    tbl_bars_alpaca = adapt_to_tbl_bar_alpaca_list(bars, Timeframe.DAY)
+    assert isinstance(tbl_bars_alpaca, list)
+    assert all(isinstance(tbl_bar, TblBarDayAlpaca) for tbl_bar in tbl_bars_alpaca)
