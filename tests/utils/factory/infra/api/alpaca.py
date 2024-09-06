@@ -5,6 +5,10 @@ from alpaca.data.models.bars import BarSet
 
 
 def generate_barset() -> BarSet:
+    """
+    AAPL,GOOGLのデータを生成する。
+    いずれも2023/4/1 10:00~14:00の1時間足データ。
+    """
     raw_data_barset = {
         "AAPL": [
             {
