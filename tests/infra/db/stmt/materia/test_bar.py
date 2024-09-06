@@ -18,15 +18,17 @@ def test_get_stmt_select_bar(test_sqlm_cli):
         - シンボルが"AAPL"
 
     期待される結果:
-        - シンボルが"AAPL"のbarのみ取得
-        - 取得件数は３件
+        1. 取得件数は３件
+        2. シンボルが"AAPL"のbarのみ取得
     """
     stmt_1 = get_stmt_select_bar(
         symbol="AAPL",
         timeframe=Timeframe.DAY
     )
     bars_result_1 = test_sqlm_cli.select_models(stmt_1)
+    # 1-1 取得件数は３件
     assert len(bars_result_1) == 3
+    # 1-2 シンボルが"AAPL"のbarのみ取得
     assert all(bar.symbol == "AAPL" for bar in bars_result_1)
 
     """
@@ -38,11 +40,11 @@ def test_get_stmt_select_bar(test_sqlm_cli):
         - 日付が2024-01-02から2024-01-04の間
 
     期待される結果:
-        - シンボルが"AAPL"のbarのみ取得
-        - 日付が2024-01-02から2024-01-04の間のbarのみ取得
-        - 取得件数は以下の日付の2件
+        1. 取得件数は以下の日付の2件
             - timestamp=datetime(2024, 1, 2, 5, 0, 0)
             - timestamp=datetime(2024, 1, 3, 5, 0, 0)
+        2. シンボルが"AAPL"のbarのみ取得
+        3. 日付が2024-01-02から2024-01-04の間のbarのみ取得
     """
     stmt_2 = get_stmt_select_bar(
         symbol="AAPL",
@@ -51,6 +53,9 @@ def test_get_stmt_select_bar(test_sqlm_cli):
         end=datetime(2024, 1, 4)
     )
     bars_result_2 = test_sqlm_cli.select_models(stmt_2)
+    # 2-1 取得件数は以下の日付の2件
     assert len(bars_result_2) == 2
+    # 2-2 シンボルが"AAPL"のbarのみ取得
     assert all(bar.symbol == "AAPL" for bar in bars_result_2)
+    # 2-3 日付が2024-01-02から2024-01-04の間のbarのみ取得
     assert all(datetime(2024, 1, 2) <= bar.timestamp <= datetime(2024, 1, 4) for bar in bars_result_2)
