@@ -1,8 +1,9 @@
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List
 
 from sqlalchemy.engine.base import Engine
-from sqlmodel import Session, SQLModel, select
+from sqlmodel import Session, SQLModel
+from sqlmodel.sql.expression import SelectOfScalar
 
 
 @dataclass
@@ -17,13 +18,10 @@ class SqlModelClient:
             session.add_all(models)
             session.commit()
 
-    def select_models(
-        self,
-        model: type[SQLModel],
-        conditions: Optional[dict] = None
-    ) -> List[SQLModel]:
+    def select_models(self, stmt: SelectOfScalar) -> List[SQLModel]:
+        """
+        selectステートメントを実行し、モデルのリストを返す。
+        """
         with self.session() as session:
-            stmt = select(model)
-            if conditions:
-                stmt = stmt.filter_by(**conditions)
-            return session.exec(stmt).all()
+            result = session.exec(stmt).all()
+        return result

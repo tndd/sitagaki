@@ -7,7 +7,10 @@ from tests.utils.factory.tests.sample_user import (SampleUser,
                                                    generate_sample_users)
 
 
-def assert_users_equal(db_users, original_users):
+def assert_sample_users_equal(db_users, original_users):
+    """
+    SampleUserクラスが等しいかを確認する。
+    """
     # 件数確認
     assert len(db_users) == len(original_users)
     # 内容確認: nameでソートし１件ずつ突合
@@ -31,7 +34,7 @@ def test_insert_models(test_sqlm_cli):
     with test_sqlm_cli.session() as session:
         # データ取得
         db_users = session.exec(select(SampleUser)).all()
-        assert_users_equal(db_users, users_copy_for_valid)
+        assert_sample_users_equal(db_users, users_copy_for_valid)
 
 
 def test_select_models(test_sqlm_cli):
@@ -46,8 +49,12 @@ def test_select_models(test_sqlm_cli):
     select_modelsが機能していることと、
     conditionを渡さなくても問題ないことを確認
     """
-    db_users = test_sqlm_cli.select_models(SampleUser)
-    assert_users_equal(db_users, users_copy_for_valid)
+    def select_stmt_all_sample_user():
+        return select(SampleUser)
+
+    stmt = select_stmt_all_sample_user()
+    db_users = test_sqlm_cli.select_models(stmt)
+    assert_sample_users_equal(db_users, users_copy_for_valid)
     """
     テスト２:
     日付範囲のテスト
@@ -55,53 +62,35 @@ def test_select_models(test_sqlm_cli):
         2: 2000年以降 -> astar,helta,carol,david
         3: 2000年 ~ 2005年 -> astar,helta,carol
     """
-    # 2-1
-    db_users_before_2000 = test_sqlm_cli.select_models(
-        model=SampleUser,
-        conditions={"created_at": SampleUser.created_at < datetime(2000, 1, 1)}
-    )
+    # 2-1: 2000年未満
+    stmt = select(SampleUser).where(SampleUser.created_at < datetime(2000, 1, 1))
+    db_users_before_2000 = test_sqlm_cli.select_models(stmt)
     assert all(user.name in ["nagisa", "kazusa", "alice"] for user in db_users_before_2000)
-    # 2-2
-    db_users_after_2000 = test_sqlm_cli.select_models(
-        model=SampleUser,
-        conditions={"created_at": SampleUser.created_at >= datetime(2000, 1, 1)}
-    )
+
+    # 2-2: 2000年以降
+    stmt = select(SampleUser).where(SampleUser.created_at >= datetime(2000, 1, 1))
+    db_users_after_2000 = test_sqlm_cli.select_models(stmt)
     assert all(user.name in ["astar", "helta", "carol", "david"] for user in db_users_after_2000)
-    # 2-3
-    db_users_2000_to_2005 = test_sqlm_cli.select_models(
-        model=SampleUser,
-        conditions={
-            "created_at": between(
-                SampleUser.created_at,
-                datetime(2000, 1, 1),
-                datetime(2005, 12, 31)
-            )
-        }
-    )
+
+    # 2-3: 2000年 ~ 2005年
+    stmt = select(SampleUser).where(between(SampleUser.created_at, datetime(2000, 1, 1), datetime(2005, 12, 31)))
+    db_users_2000_to_2005 = test_sqlm_cli.select_models(stmt)
     assert all(user.name in ["astar", "helta", "carol"] for user in db_users_2000_to_2005)
+
     """
     テスト３:
     creditによる絞り込み
         1: 100 ~ 500 -> helta,carol,david
         2: 10000以上 -> nagisa,astar
     """
-    # 3-1
-    db_users_credit_100_to_500 = test_sqlm_cli.select_models(
-        model=SampleUser,
-        conditions={
-            "credit": between(
-                SampleUser.credit,
-                100,
-                500
-            )
-        }
-    )
+     # 3-1: 100 ~ 500
+    stmt = select(SampleUser).where(between(SampleUser.credit, 100, 500))
+    db_users_credit_100_to_500 = test_sqlm_cli.select_models(stmt)
     assert all(user.name in ["helta", "carol", "david"] for user in db_users_credit_100_to_500)
-    # 3-2
-    db_users_credit_10000_or_above = test_sqlm_cli.select_models(
-        model=SampleUser,
-        conditions={"credit": SampleUser.credit >= 10000}
-    )
+
+    # 3-2: 10000以上
+    stmt = select(SampleUser).where(SampleUser.credit >= 10000)
+    db_users_credit_10000_or_above = test_sqlm_cli.select_models(stmt)
     assert all(user.name in ["nagisa", "astar"] for user in db_users_credit_10000_or_above)
 
     """
@@ -111,51 +100,34 @@ def test_select_models(test_sqlm_cli):
         2: @stmail -> astar,helta
         3: @blmail.tri -> nagisa,kazusa
     """
-    # 4-1
-    db_users_blmail = test_sqlm_cli.select_models(
-        model=SampleUser,
-        conditions={
-            "email": SampleUser.email.like("%@blmail%")
-        }
-    )
+    # 4-1: @blmail
+    stmt = select(SampleUser).where(SampleUser.email.like("%@blmail%"))
+    db_users_blmail = test_sqlm_cli.select_models(stmt)
     assert all(user.name in ["nagisa", "kazusa", "alice"] for user in db_users_blmail)
-    # 4-2
-    db_users_stmail = test_sqlm_cli.select_models(
-        model=SampleUser,
-        conditions={
-            "email": SampleUser.email.like("%@stmail%")
-        }
-    )
+
+    # 4-2: @stmail
+    stmt = select(SampleUser).where(SampleUser.email.like("%@stmail%"))
+    db_users_stmail = test_sqlm_cli.select_models(stmt)
+    db_users_stmail = test_sqlm_cli.select_models(stmt)
     assert all(user.name in ["astar", "helta"] for user in db_users_stmail)
-    # 4-3
-    db_users_blmail_tri = test_sqlm_cli.select_models(
-        model=SampleUser,
-        conditions={
-            "email": SampleUser.email.like("%@blmail.tri%")
-        }
-    )
+
+    # 4-3: @blmail.tri
+    stmt = select(SampleUser).where(SampleUser.email.like("%@blmail.tri%"))
+    db_users_blmail_tri = test_sqlm_cli.select_models(stmt)
     assert all(user.name in ["nagisa", "kazusa"] for user in db_users_blmail_tri)
+
     """
     テスト5:
     複合条件による絞り込み
         1: @blmailかつcredit10000以上 -> nagisa
         2: @blmailかつ日付が1981以降 -> kazusa,alice
     """
-    # 5-1
-    db_users_blmail_credit_10000_or_above = test_sqlm_cli.select_models(
-        model=SampleUser,
-        conditions={
-            "email": SampleUser.email.like("%@blmail%"),
-            "credit": SampleUser.credit >= 10000
-        }
-    )
+    # 5-1: @blmailかつcredit10000以上
+    stmt = select(SampleUser).where(SampleUser.email.like("%@blmail%"), SampleUser.credit >= 10000)
+    db_users_blmail_credit_10000_or_above = test_sqlm_cli.select_models(stmt)
     assert all(user.name in ["nagisa"] for user in db_users_blmail_credit_10000_or_above)
-    # 5-2
-    db_users_blmail_after_1981 = test_sqlm_cli.select_models(
-        model=SampleUser,
-        conditions={
-            "email": SampleUser.email.like("%@blmail%"),
-            "created_at": SampleUser.created_at >= datetime(1981, 1, 1)
-        }
-    )
+
+    # 5-2: @blmailかつ日付が1981以降
+    stmt = select(SampleUser).where(SampleUser.email.like("%@blmail%"), SampleUser.created_at >= datetime(1981, 1, 1))
+    db_users_blmail_after_1981 = test_sqlm_cli.select_models(stmt)
     assert all(user.name in ["kazusa", "alice"] for user in db_users_blmail_after_1981)
