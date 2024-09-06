@@ -3,6 +3,7 @@ from typing import List
 
 from sqlalchemy.engine.base import Engine
 from sqlmodel import Session, SQLModel
+from sqlmodel.sql.expression import SelectOfScalar
 
 
 @dataclass
@@ -17,8 +18,7 @@ class SqlModelClient:
             session.add_all(models)
             session.commit()
 
-
-    def select_models(self, stmt: SQLModel) -> List[SQLModel]:
+    def select_models(self, stmt: SelectOfScalar) -> List[SQLModel]:
         """
         selectステートメントを実行し、モデルのリストを返す。
         """
