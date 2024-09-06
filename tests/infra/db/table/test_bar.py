@@ -2,7 +2,7 @@ from infra.db.table.bar import (TblBarDayAlpaca, TblBarHourAlpaca,
                                 TblBarMinAlpaca)
 
 """
-# Note: 作業メモ
+# TODO: テーブルテストの実装方針
 
 とりあえずテーブルができているかの確認だけでもするか？
 本当はデータの挿入や確認というテストが必要だが、

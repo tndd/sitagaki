@@ -8,7 +8,7 @@ from infra.db.table.bar import TblBarDayAlpaca, TblBarMinAlpaca
 
 @pytest.mark.ext
 def test_pull_bars_from_online(test_bar_repo):
-    # Note: 日足と分足のテストしかしてないので注意。
+    # WARN: 日足と分足のテストしかしてないので注意。
     """
     日足:
         負荷軽減のため、直近一週間分の情報を取得する。
@@ -41,5 +41,5 @@ def test_pull_bars_from_online(test_bar_repo):
 
 
 def test_fetch_bars_from_local(test_bar_repo):
-    # TODO: 実装
+    # TODO: ローカルからbarが取得できるかのテストを書く
     pass
