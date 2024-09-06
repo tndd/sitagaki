@@ -84,18 +84,12 @@ def test_select_models(test_sqlm_cli):
         2: 10000以上 -> nagisa,astar
     """
      # 3-1: 100 ~ 500
-    def select_stmt_users_credit_100_to_500():
-        return select(SampleUser).where(between(SampleUser.credit, 100, 500))
-
-    stmt = select_stmt_users_credit_100_to_500()
+    stmt = select(SampleUser).where(between(SampleUser.credit, 100, 500))
     db_users_credit_100_to_500 = test_sqlm_cli.select_models(stmt)
     assert all(user.name in ["helta", "carol", "david"] for user in db_users_credit_100_to_500)
 
     # 3-2: 10000以上
-    def select_stmt_users_credit_10000_or_above():
-        return select(SampleUser).where(SampleUser.credit >= 10000)
-
-    stmt = select_stmt_users_credit_10000_or_above()
+    stmt = select(SampleUser).where(SampleUser.credit >= 10000)
     db_users_credit_10000_or_above = test_sqlm_cli.select_models(stmt)
     assert all(user.name in ["nagisa", "astar"] for user in db_users_credit_10000_or_above)
 
@@ -107,26 +101,18 @@ def test_select_models(test_sqlm_cli):
         3: @blmail.tri -> nagisa,kazusa
     """
     # 4-1: @blmail
-    def select_stmt_users_blmail():
-        return select(SampleUser).where(SampleUser.email.like("%@blmail%"))
-
-    stmt = select_stmt_users_blmail()
+    stmt = select(SampleUser).where(SampleUser.email.like("%@blmail%"))
     db_users_blmail = test_sqlm_cli.select_models(stmt)
     assert all(user.name in ["nagisa", "kazusa", "alice"] for user in db_users_blmail)
 
     # 4-2: @stmail
-    def select_stmt_users_stmail():
-        return select(SampleUser).where(SampleUser.email.like("%@stmail%"))
-
-    stmt = select_stmt_users_stmail()
+    stmt = select(SampleUser).where(SampleUser.email.like("%@stmail%"))
+    db_users_stmail = test_sqlm_cli.select_models(stmt)
     db_users_stmail = test_sqlm_cli.select_models(stmt)
     assert all(user.name in ["astar", "helta"] for user in db_users_stmail)
 
     # 4-3: @blmail.tri
-    def select_stmt_users_blmail_tri():
-        return select(SampleUser).where(SampleUser.email.like("%@blmail.tri%"))
-
-    stmt = select_stmt_users_blmail_tri()
+    stmt = select(SampleUser).where(SampleUser.email.like("%@blmail.tri%"))
     db_users_blmail_tri = test_sqlm_cli.select_models(stmt)
     assert all(user.name in ["nagisa", "kazusa"] for user in db_users_blmail_tri)
 
@@ -137,17 +123,11 @@ def test_select_models(test_sqlm_cli):
         2: @blmailかつ日付が1981以降 -> kazusa,alice
     """
     # 5-1: @blmailかつcredit10000以上
-    def select_stmt_users_blmail_credit_10000_or_above():
-        return select(SampleUser).where(SampleUser.email.like("%@blmail%"), SampleUser.credit >= 10000)
-
-    stmt = select_stmt_users_blmail_credit_10000_or_above()
+    stmt = select(SampleUser).where(SampleUser.email.like("%@blmail%"), SampleUser.credit >= 10000)
     db_users_blmail_credit_10000_or_above = test_sqlm_cli.select_models(stmt)
     assert all(user.name in ["nagisa"] for user in db_users_blmail_credit_10000_or_above)
 
     # 5-2: @blmailかつ日付が1981以降
-    def select_stmt_users_blmail_after_1981():
-        return select(SampleUser).where(SampleUser.email.like("%@blmail%"), SampleUser.created_at >= datetime(1981, 1, 1))
-
-    stmt = select_stmt_users_blmail_after_1981()
+    stmt = select(SampleUser).where(SampleUser.email.like("%@blmail%"), SampleUser.created_at >= datetime(1981, 1, 1))
     db_users_blmail_after_1981 = test_sqlm_cli.select_models(stmt)
     assert all(user.name in ["kazusa", "alice"] for user in db_users_blmail_after_1981)
