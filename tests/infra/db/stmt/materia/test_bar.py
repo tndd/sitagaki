@@ -5,4 +5,7 @@ def test_get_stmt_select_bar():
     stmtの内容の正誤を検証するには、
     やっぱり実際にstmtを実行してみるしかないか。
     """
+    # 検証用のbarのリストをDBに用意しておく
+    # テスト用のstmtを用意し実行
+    # 結果の検証
     pass
