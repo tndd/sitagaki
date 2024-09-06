@@ -8,9 +8,9 @@ from infra.db.table.bar import (TblBarDayAlpaca, TblBarHourAlpaca,
                                 TblBarMinAlpaca)
 
 
-def select_bar(
+def get_stmt_select_bar(
         symbol: str,
-        timeframe: str,
+        timeframe: Timeframe,
         start: datetime,
         end: datetime
 ) -> SelectOfScalar:
