@@ -14,6 +14,9 @@ class SqlModelClient:
         return Session(self.engine)
 
     def insert_models(self, models: list[SQLModel]):
+        """
+        渡されたモデルそのままDBに登録する。
+        """
         with self.session() as session:
             session.add_all(models)
             session.commit()
