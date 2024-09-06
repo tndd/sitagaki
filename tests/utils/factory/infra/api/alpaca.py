@@ -1,106 +1,114 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 
-from pydantic import BaseModel
-
-from tests.utils.mock.loader import load
+from alpaca.data.models.bars import BarSet
 
 
-class MockBar(BaseModel):
-    """
-    WARN: 擬似モデル
-
-    alpacaのbarモデルは作成に手間がかかりすぎるので、
-    代わりにモックデータでテストするようにする。
-    """
-    symbol: str
-    timestamp: datetime
-    open: float
-    high: float
-    low: float
-    close: float
-    volume: float
-    trade_count: Optional[float]
-    vwap: Optional[float]
-
-
-class MockBarSet(BaseModel):
-    """
-    # WARN: 擬似モデル
-
-    alpacaのbarsetモデル作成はbarモデルよりはるかに面倒。
-    要素さえ揃ってればテストできるだろうからこれで勘弁してくれ。
-
-    参考: クラスの形状
-        data:
-            SYMBOL: [
-                MOCKBAR1,
-                MOCKBAR2,
-                ...
-            ]
-    """
-    data: Dict[str, List[MockBar]] = {}
-
-
-def make_barset_mock_from_dict(data: dict) -> MockBarSet:
-    """
-    BarSetの辞書データからBarSetを作り出す。
-
-    参考: 渡されるデータの例
-        {
-            "data": {
-                "AAPL": [
-                {
-                    "symbol": "AAPL",
-                    "timestamp": "2024-01-02 05:00:00+00:00",
-                    "open": 187.15,
-                    "high": 188.44,
-                    "low": 183.885,
-                    "close": 185.64,
-                    "volume": 82496943.0,
-                    "trade_count": 1009074.0,
-                    "vwap": 185.937347
-                },
-                ...
-                ]
+def generate_barset() -> BarSet:
+    raw_data_barset = {
+        "AAPL": [
+            {
+                "t": datetime(2023, 4, 1, 10, 0),
+                "o": 100.0,
+                "h": 105.0,
+                "l": 99.0,
+                "c": 102.0,
+                "v": 1000,
+                "n": 50,
+                "vw": 101.5
+            },
+            {
+                "t": datetime(2023, 4, 1, 11, 0),
+                "o": 102.0,
+                "h": 106.0,
+                "l": 101.0,
+                "c": 105.0,
+                "v": 1200,
+                "n": 60,
+                "vw": 103.5
+            },
+            {
+                "t": datetime(2023, 4, 1, 12, 0),
+                "o": 105.0,
+                "h": 108.0,
+                "l": 104.0,
+                "c": 107.0,
+                "v": 1500,
+                "n": 70,
+                "vw": 106.0
+            },
+            {
+                "t": datetime(2023, 4, 1, 13, 0),
+                "o": 107.0,
+                "h": 110.0,
+                "l": 106.0,
+                "c": 109.0,
+                "v": 1800,
+                "n": 80,
+                "vw": 108.0
+            },
+            {
+                "t": datetime(2023, 4, 1, 14, 0),
+                "o": 109.0,
+                "h": 112.0,
+                "l": 108.0,
+                "c": 111.0,
+                "v": 2000,
+                "n": 90,
+                "vw": 110.0
             }
-        }
-    """
-    # barモデルのリストの作成: AAPLのvaluesであるリスト部分を取得
-    bar_dicts: List[dict] = next(iter(data['data'].values()))
-    # bars
-    bars: List[MockBar] = []
-    for d in bar_dicts:
-        d['timestamp'] = datetime.fromisoformat(d['timestamp'])
-        bars.append(MockBar(**d))
-    # barsetモデルの作成
-    bars_symbol = next(iter(data['data'].keys()))
-    barset_data = {bars_symbol: bars}
-    # barsetモデルを返す
-    return MockBarSet(
-        data=barset_data
-    )
-
-
-def generate_barset_mock() -> MockBarSet:
-    """
-    mockにある特定のbarsetファイルに基づいたBarSetモデルを生成する
-    """
-    # barsetファイルの読み込み
-    data = load('barset.json')
-    # 生成したbarsetモデルを返す
-    return make_barset_mock_from_dict(data)
-
-
-def generate_bar_mock() -> MockBar:
-    return MockBar(
-        symbol='MCKB',
-        timestamp=datetime(2024, 1, 2, 6, 0, 0),
-        open=187.15,
-        high=188.44,
-        low=183.885,
-        close=185.64,
-        volume=82496943.0,
-        trade_count=1009074.0,
-        vwap=185.937347
-    )
+        ],
+        "GOOGL": [
+            {
+                "t": datetime(2023, 4, 1, 10, 0),
+                "o": 2000.0,
+                "h": 2010.0,
+                "l": 1990.0,
+                "c": 2005.0,
+                "v": 500,
+                "n": 30,
+                "vw": 2002.5
+            },
+            {
+                "t": datetime(2023, 4, 1, 11, 0),
+                "o": 2005.0,
+                "h": 2015.0,
+                "l": 2000.0,
+                "c": 2010.0,
+                "v": 550,
+                "n": 35,
+                "vw": 2007.5
+            },
+            {
+                "t": datetime(2023, 4, 1, 12, 0),
+                "o": 2010.0,
+                "h": 2020.0,
+                "l": 2005.0,
+                "c": 2015.0,
+                "v": 600,
+                "n": 40,
+                "vw": 2012.5
+            },
+            {
+                "t": datetime(2023, 4, 1, 13, 0),
+                "o": 2015.0,
+                "h": 2025.0,
+                "l": 2010.0,
+                "c": 2020.0,
+                "v": 650,
+                "n": 45,
+                "vw": 2017.5
+            },
+            {
+                "t": datetime(2023, 4, 1, 14, 0),
+                "o": 2020.0,
+                "h": 2030.0,
+                "l": 2015.0,
+                "c": 2025.0,
+                "v": 700,
+                "n": 50,
+                "vw": 2022.5
+            }
+        ]
+    }
+    return BarSet(raw_data_barset)
