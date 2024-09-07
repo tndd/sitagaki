@@ -8,8 +8,9 @@ from tests.utils.fixture.materia.bar import prepare_db_bar_day
 
 
 def test_get_stmt_select_bar(test_sqlm_cli):
-    # 検証用のbarのリストをDBに用意
-    prepare_db_bar_day(test_sqlm_cli)
+    # データ準備。日足テーブルで検証する。
+    TIMEFRAME = Timeframe.DAY
+    prepare_db_bar_day(test_sqlm_cli, TIMEFRAME)
     """
     case1: シンボルのみによる絞り込み
 
@@ -23,7 +24,7 @@ def test_get_stmt_select_bar(test_sqlm_cli):
     """
     stmt_1 = get_stmt_select_bar(
         symbol="AAPL",
-        timeframe=Timeframe.DAY,
+        timeframe=TIMEFRAME,
         start=datetime(2000, 1, 1),
         end=datetime.now()
     )
@@ -50,7 +51,7 @@ def test_get_stmt_select_bar(test_sqlm_cli):
     """
     stmt_2 = get_stmt_select_bar(
         symbol="AAPL",
-        timeframe=Timeframe.DAY,
+        timeframe=TIMEFRAME,
         start=datetime(2024, 1, 2),
         end=datetime(2024, 1, 4)
     )

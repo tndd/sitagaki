@@ -49,8 +49,10 @@ def test_fetch_bars_from_local(test_bar_repo):
     だがrepositoryは複数のstmtや変換などの処理も行っている総合テストという性質が強い。
     そのためstmtのテストは省略しないほうがいい気はする。
     """
+    # 日足テーブルで検証を行う
+    TIMEFRAME = Timeframe.DAY
     # データの準備
-    prepare_db_bar_day(test_bar_repo.cli_db)
+    prepare_db_bar_day(test_bar_repo.cli_db, TIMEFRAME)
     """
     case1: シンボルのみによる絞り込み
 
@@ -64,7 +66,7 @@ def test_fetch_bars_from_local(test_bar_repo):
     """
     bars = test_bar_repo.fetch_bars_from_local(
         symbol="AAPL",
-        timeframe=Timeframe.DAY,
+        timeframe=TIMEFRAME,
         start=datetime(2000, 1, 1),
         end=datetime.now()
     )
@@ -93,7 +95,7 @@ def test_fetch_bars_from_local(test_bar_repo):
     """
     bars = test_bar_repo.fetch_bars_from_local(
         symbol="AAPL",
-        timeframe=Timeframe.DAY,
+        timeframe=TIMEFRAME,
         start=datetime(2024, 1, 2),
         end=datetime(2024, 1, 4)
     )
