@@ -68,10 +68,40 @@ def test_fetch_bars_from_local(test_bar_repo):
         start=datetime(2000, 1, 1),
         end=datetime.now()
     )
-    # Barのリストが帰ってるか
+    # 基本テスト: Barのリストが帰ってるか
     assert isinstance(bars, list)
     assert all(isinstance(bar, Bar) for bar in bars)
     # 1-1 取得件数は３件
     assert len(bars) == 3
     # 1-2 シンボルが"AAPL"のbarのみ取得
     assert all(bar.symbol == "AAPL" for bar in bars)
+
+    """
+    case2: シンボルと時間軸による絞り込み
+
+    条件:
+        - シンボルが"AAPL"
+        - 時間軸が"DAY"
+        - 日付が2024-01-02から2024-01-04の間
+
+    期待される結果:
+        1. 取得件数は以下の日付の2件
+            - timestamp=datetime(2024, 1, 2, 5, 0, 0)
+            - timestamp=datetime(2024, 1, 3, 5, 0, 0)
+        2. シンボルが"AAPL"のbarのみ取得
+        3. 日付が2024-01-02から2024-01-04の間のbarのみ取得
+    """
+    bars = test_bar_repo.fetch_bars_from_local(
+        symbol="AAPL",
+        timeframe=Timeframe.DAY,
+        start=datetime(2024, 1, 2),
+        end=datetime(2024, 1, 4)
+    )
+    # 2-1 取得件数は以下の日付の2件
+    assert len(bars) == 2
+    # 2-2 シンボルが"AAPL"のbarのみ取得
+    assert all(bar.symbol == "AAPL" for bar in bars)
+    # 2-3 日付が2024-01-02から2024-01-04の間のbarのみ取得
+    assert all(
+        datetime(2024, 1, 2) <= bar.timestamp <= datetime(2024, 1, 4) for bar in bars
+    )
