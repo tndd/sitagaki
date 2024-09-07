@@ -7,7 +7,7 @@ from alpaca.data.models.bars import BarSet
 from alpaca.data.requests import StockBarsRequest
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
-cli = StockHistoricalDataClient(
+cli_hist = StockHistoricalDataClient(
     api_key=getenv('APCA_KEY'),
     secret_key=getenv('APCA_SECRET')
 )
@@ -29,4 +29,4 @@ def get_bars(
         start=start,
         end=end if end else None
     )
-    return cli.get_stock_bars(rq)
+    return cli_hist.get_stock_bars(rq)
