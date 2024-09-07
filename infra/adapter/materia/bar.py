@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List
 
 from alpaca.data.models import Bar as BarAlpaca
 from alpaca.data.models import BarSet as BarSetAlpaca
@@ -6,8 +6,12 @@ from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 from alpaca.data.timeframe import TimeFrameUnit
 
 from domain.materia.bar.model import Bar, Timeframe
-from infra.db.table.bar import (TblBarBase, TblBarDayAlpaca, TblBarHourAlpaca,
-                                TblBarMinAlpaca)
+from infra.db.table.bar import (
+    TblBarBase,
+    TblBarDayAlpaca,
+    TblBarHourAlpaca,
+    TblBarMinAlpaca,
+)
 
 
 def adapt_timeframe_domain_to_alpaca(timeframe: Timeframe) -> TimeFrameAlpaca:
