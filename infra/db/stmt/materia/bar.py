@@ -11,8 +11,8 @@ from infra.db.table.bar import (TblBarDayAlpaca, TblBarHourAlpaca,
 def get_stmt_select_bar(
         symbol: str,
         timeframe: Timeframe,
-        start: datetime = datetime(2000, 1, 1),
-        end: datetime = datetime.now()
+        start: datetime,
+        end: datetime
 ) -> SelectOfScalar:
     """
     指定されたtimeframeの

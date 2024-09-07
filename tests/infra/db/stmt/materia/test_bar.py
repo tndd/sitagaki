@@ -16,6 +16,7 @@ def test_get_stmt_select_bar(test_sqlm_cli):
 
     条件:
         - シンボルが"AAPL"
+        - 日付については全ての範囲を網羅する2000-01-01~nowとする。
 
     期待される結果:
         1. 取得件数は３件
@@ -23,7 +24,9 @@ def test_get_stmt_select_bar(test_sqlm_cli):
     """
     stmt_1 = get_stmt_select_bar(
         symbol="AAPL",
-        timeframe=Timeframe.DAY
+        timeframe=Timeframe.DAY,
+        start=datetime(2000, 1, 1),
+        end=datetime.now()
     )
     bars_result_1 = test_sqlm_cli.select_models(stmt_1)
     # 1-1 取得件数は３件
