@@ -9,26 +9,12 @@ load_dotenv()
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 import pytest
-from sqlmodel import SQLModel, create_engine
 
-from infra.db.sqlmodel import SQLModelClient
 # テスト用fixture
-from tests.utils.fixture.materia.bar import test_bar_repo
+from tests.utils.fixture.domain.materia.bar import test_bar_repo
+from tests.utils.fixture.infra.db.sqlmodel import test_engine, test_sqlm_cli
 
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_session():
     pass
-
-
-@pytest.fixture
-def test_engine():
-    engine = create_engine("sqlite:///:memory:")
-    SQLModel.metadata.create_all(engine)
-    yield engine
-    SQLModel.metadata.drop_all(engine)
-
-
-@pytest.fixture
-def test_sqlm_cli(test_engine):
-    return SQLModelClient(test_engine)

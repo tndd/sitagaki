@@ -4,7 +4,7 @@ import pytest
 
 from domain.materia.bar.model import Bar, Timeframe
 from infra.db.table.bar import TblBarDayAlpaca, TblBarMinAlpaca
-from tests.utils.fixture.materia.bar import prepare_test_bars_on_db
+from tests.utils.fixture.domain.materia.bar import prepare_test_bars_on_db
 
 
 @pytest.mark.ext
