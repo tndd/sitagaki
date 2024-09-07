@@ -4,13 +4,12 @@ from domain.materia.bar.model import Timeframe
 from infra.adapter.materia.bar import adapt_bar_list_domain_to_sqlm
 from infra.db.stmt.materia.bar import get_stmt_select_bar
 from tests.utils.factory.domain.materia.bar import generate_bar_list
+from tests.utils.fixture.materia.bar import prepare_bar_data
 
 
 def test_get_stmt_select_bar(test_sqlm_cli):
     # 検証用のbarのリストをDBに用意
-    bars = generate_bar_list()
-    tbl_bars = adapt_bar_list_domain_to_sqlm(bars, Timeframe.DAY)
-    test_sqlm_cli.insert_models(tbl_bars)
+    prepare_bar_data(test_sqlm_cli)
     """
     case1: シンボルのみによる絞り込み
 
