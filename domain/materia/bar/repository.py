@@ -22,9 +22,10 @@ class BarRepository:
             end: Optional[datetime] = None
     ) -> None:
         """
-        2000年からのbarデータをonlineから取得し、DBに保存する。
-        データ取得開始時期(start)は指定可能。
-        終了時期(end)省略時は可能な限り直近のデータを取得する。
+        指定されたシンボルのbarデータをonlineから取得し、DBに保存する。
+
+        start,endを指定しなかった場合、
+        2000-01-01から可能な限り最新のデータを取得する。
         """
         # barsデータを取得
         bars_alpc = get_bars(
@@ -41,14 +42,16 @@ class BarRepository:
         self.cli_db.insert_models(tbl_bars)
 
 
-    def fetch_bars_from_local(symbol: str, start: datetime, end: datetime):
+    def fetch_bars_from_local(
+            self,
+            symbol: str,
+            start: datetime = datetime(2000, 1, 1),
+            end: datetime = datetime.now()
+    ) -> None:
         """
-        条件:
-            シンボルと開始日、終日を指定。
-        戻り値:
-            DFもしくはエラー
-        効果:
-            対象期間のローソク足をDB上から取得し保存する。
+        ローカルのDBから指定されたシンボルのbarを取得する。
+
+        デフォルトの取得範囲は2000-01-01~now。
         """
         # IMPL
         pass
