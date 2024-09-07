@@ -6,6 +6,12 @@ from domain.materia.bar.model import Bar, Timeframe
 from infra.db.table.bar import TblBarDayAlpaca, TblBarMinAlpaca
 from tests.utils.fixture.domain.materia.bar import prepare_test_bars_on_db
 
+"""
+TODO: select_models改修に伴う修正
+    この関数の引数はもうモデルではなくstmtを渡す形式に変更されてる。
+    そのためstmt作成をそれぞれ行わねばならない。
+"""
+
 
 @pytest.mark.ext
 def test_pull_bars_from_online(test_bar_repo):
