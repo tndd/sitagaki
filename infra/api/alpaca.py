@@ -12,6 +12,22 @@ cli_hist = StockHistoricalDataClient(
     secret_key=getenv('APCA_SECRET')
 )
 
+def get_bars(
+    symbol: str,
+    timeframe: TimeFrameAlpaca,
+    start: datetime,
+    end: Optional[datetime] = None
+) -> BarSet:
+    """
+    日足のヒストリカルバー情報を取得。
+    endを指定しなかった場合、可能な限り直近のデータを取得するようになってる。
+
+    取得したBarSetはそのままリポジトリ側が扱うのは難しい。
+    そこでこの関数ではBarSetからBarのリストを取り出して返却するまで行う。
+    """
+    barset = get_barset(symbol, timeframe, start, end)
+    return extract_bar_alpaca_list_from_barset(barset)
+
 
 def get_barset(
     symbol: str,

@@ -6,6 +6,15 @@ from infra.api.alpaca import extract_bar_alpaca_list_from_barset, get_barset
 from tests.utils.factory.infra.api.alpaca import generate_barset
 
 
+def test_get_bars():
+    """
+    TODO: テスト実装
+        get_barsの動作はかなりget_barsetと被ってるから、
+        barsetのテストを省略するべきだろうか？
+    """
+    pass
+
+
 @pytest.mark.ext
 def test_get_barset():
     timeframe = TimeFrameAlpaca.Day
