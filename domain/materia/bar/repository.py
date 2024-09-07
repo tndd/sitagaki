@@ -3,10 +3,10 @@ from datetime import datetime
 from typing import Optional
 
 from domain.materia.bar.model import Timeframe
-from infra.adapter.materia.bar import (adapt_bar_list_domain_to_sqlm,
-                                       adapt_bar_list_sqlm_to_domain,
-                                       adapt_barset_alpaca_to_bar_alpaca_list,
-                                       adapt_timeframe_domain_to_alpaca)
+from infra.adapter.materia.bar import adapt_bar_list_domain_to_sqlm
+from infra.adapter.materia.bar import adapt_bar_list_sqlm_to_domain
+from infra.adapter.materia.bar import adapt_barset_alpaca_to_bar_alpaca_list
+from infra.adapter.materia.bar import adapt_timeframe_domain_to_alpaca
 from infra.api.alpaca import get_bars
 from infra.db.sqlmodel import SQLModelClient
 from infra.db.stmt.materia.bar import get_stmt_select_bar
@@ -30,16 +30,30 @@ class BarRepository:
         2000-01-01から可能な限り最新のデータを取得する。
         """
         # barsデータを取得
-        bars_alpc = get_bars(
+        barset_alpc = get_bars(
             symbol=symbol,
             timeframe=adapt_timeframe_domain_to_alpaca(timeframe),
             start=start,
             end=end
         )
-        # ドメイン層のbarモデルのリストに変換
-        bars = adapt_barset_alpaca_to_bar_alpaca_list(bars_alpc)
-        # ドメイン層のモデルリストbarsをDBのモデルリストに変換
-        tbl_bars = adapt_bar_list_domain_to_sqlm(bars, timeframe)
+        # BarSetALpacaからBarAlpacaのリストを取り出す
+        bar_alpc_list = adapt_barset_alpaca_to_bar_alpaca_list(barset_alpc)
+        """
+        WARN: 順序すっ飛ばし
+            本来であれば"alpaca -> domain -> sqlm"の順で変換が必要だが、
+            "alpaca -> sqlm"という直接変換を行う形式となってしまっている。
+
+            alpacaもdomainも要素が同じであるBaseModelであるため、
+            たまたまうまく動作しているに過ぎない。
+            要注意。
+
+        TODO: adapt_bar_list_domain_to_sqlmの改名
+            これはアルパカのモデルをアルパカのモデルに変換する関数であるため、
+            ドメイン層のアダプタとは全く無関係のものだ。
+
+            名前の改名はもちろんのこと、場所の移動も必要。
+        """
+        tbl_bars = adapt_bar_list_domain_to_sqlm(bar_alpc_list, timeframe)
         # DBのモデルリストを保存
         self.cli_db.insert_models(tbl_bars)
 
