@@ -1,13 +1,10 @@
 from datetime import datetime
 
-import pytest
-
 from domain.materia.bar.model import Timeframe
 from infra.db.stmt.materia.bar import get_stmt_select_bar
 from tests.utils.fixture.domain.materia.bar import prepare_test_bars_on_db
 
 
-@pytest.mark.ext
 def test_get_stmt_select_bar(test_sqlm_cli):
     """
     TODO: テスト内容の再検討
@@ -16,10 +13,6 @@ def test_get_stmt_select_bar(test_sqlm_cli):
         だったらここはオフラインのテストとして、
         stmtオブジェクトが作成されていることの最低限のみを確認。
         stmtの内容はリポジトリ側のテスト責任とすればいいのではないだろうか。
-
-        本来はstmt側でも内容テストを行った方がいいのだろうが、
-        同じような内容で２度も外部に通信を走らせたくない。
-
     """
     # データ準備。日足テーブルで検証する。
     TIMEFRAME = Timeframe.DAY
