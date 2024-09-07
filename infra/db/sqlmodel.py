@@ -7,7 +7,7 @@ from sqlmodel.sql.expression import SelectOfScalar
 
 
 @dataclass
-class SqlModelClient:
+class SQLModelClient:
     engine: Engine
 
     def session(self) -> Session:
