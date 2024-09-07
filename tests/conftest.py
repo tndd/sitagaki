@@ -1,13 +1,14 @@
 import sys
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 # 環境変数の読み込み
 load_dotenv()
 # プロジェクトルートへのパス通し
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 import pytest
-from dotenv import load_dotenv
 from sqlmodel import SQLModel, create_engine
 
 from infra.db.sqlmodel import SQLModelClient
