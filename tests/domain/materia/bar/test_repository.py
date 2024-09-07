@@ -2,8 +2,9 @@ from datetime import datetime, timedelta
 
 import pytest
 
-from domain.materia.bar.model import Timeframe
+from domain.materia.bar.model import Bar, Timeframe
 from infra.db.table.bar import TblBarDayAlpaca, TblBarMinAlpaca
+from tests.utils.fixture.materia.bar import prepare_bar_data
 
 
 @pytest.mark.ext
@@ -41,5 +42,29 @@ def test_pull_bars_from_online(test_bar_repo):
 
 
 def test_fetch_bars_from_local(test_bar_repo):
-    # TODO: ローカルからbarが取得できるかのテストを書く
-    pass
+    # データの準備
+    prepare_bar_data(test_bar_repo.cli_db)
+    """
+    case1: シンボルのみによる絞り込み
+
+    条件:
+        - シンボルが"AAPL"
+        - (日付については全ての範囲を網羅できる2000-01-01~nowとする)
+
+    期待される結果:
+        1. 取得件数は３件
+        2. シンボルが"AAPL"のbarのみ取得
+    """
+    bars = test_bar_repo.fetch_bars_from_local(
+        symbol="AAPL",
+        timeframe=Timeframe.DAY,
+        start=datetime(2000, 1, 1),
+        end=datetime.now()
+    )
+    # Barのリストが帰ってるか
+    assert isinstance(bars, list)
+    assert all(isinstance(bar, Bar) for bar in bars)
+    # 1-1 取得件数は３件
+    assert len(bars) == 3
+    # 1-2 シンボルが"AAPL"のbarのみ取得
+    assert all(bar.symbol == "AAPL" for bar in bars)
