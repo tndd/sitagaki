@@ -11,6 +11,10 @@ def test_get_bars():
     TODO: テスト実装
         get_barsの動作はかなりget_barsetと被ってるから、
         barsetのテストを省略するべきだろうか？
+
+        外部で使われるget_barsだけでいいだろう。
+        test_get_barsetやtest_extract_bar_alpaca_list_from_barsetは
+        その部品でしかないのだから、その品質はこの総合テストで担保されるべきもの。
     """
     pass
 
