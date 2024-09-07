@@ -8,7 +8,7 @@ from infra.adapter.materia.bar import (
     adapt_bar_list_sqlm_to_domain,
     adapt_timeframe_domain_to_alpaca,
 )
-from infra.api.alpaca import extract_bar_alpaca_list_from_barset, get_barset
+from infra.api.alpaca import get_bars
 from infra.db.sqlmodel import SQLModelClient
 from infra.db.stmt.materia.bar import get_stmt_select_bar
 
@@ -31,14 +31,12 @@ class BarRepository:
         2000-01-01から可能な限り最新のデータを取得する。
         """
         # barsデータを取得
-        barset_alpc = get_barset(
+        bars_alpc = get_bars(
             symbol=symbol,
             timeframe=adapt_timeframe_domain_to_alpaca(timeframe),
             start=start,
             end=end
         )
-        # BarSetALpacaからBarAlpacaのリストを取り出す
-        bar_alpc_list = extract_bar_alpaca_list_from_barset(barset_alpc)
         """
         WARN: 順序すっ飛ばし
             本来であれば"alpaca -> domain -> sqlm"の順で変換が必要だが、
@@ -48,7 +46,7 @@ class BarRepository:
             たまたまうまく動作しているに過ぎない。
             要注意。
         """
-        tbl_bars = adapt_bar_list_domain_to_sqlm(bar_alpc_list, timeframe)
+        tbl_bars = adapt_bar_list_domain_to_sqlm(bars_alpc, timeframe)
         # DBのモデルリストを保存
         self.cli_db.insert_models(tbl_bars)
 
