@@ -5,12 +5,11 @@ from domain.materia.bar.model import Timeframe
 from infra.adapter.materia.bar import (
     adapt_bar_domain_to_sqlm,
     adapt_bar_list_domain_to_sqlm,
-    adapt_barset_alpaca_to_bar_alpaca_list,
     adapt_timeframe_domain_to_alpaca,
 )
 from infra.db.table.bar import TblBarDayAlpaca, TblBarHourAlpaca, TblBarMinAlpaca
 from tests.utils.factory.domain.materia.bar import generate_bar_list
-from tests.utils.factory.infra.api.alpaca import generate_bar, generate_barset
+from tests.utils.factory.infra.api.alpaca import generate_bar
 
 
 def test_adapt_timeframe_domain_to_alpaca():
@@ -19,16 +18,6 @@ def test_adapt_timeframe_domain_to_alpaca():
     assert isinstance(adapt_timeframe_domain_to_alpaca(Timeframe.DAY), TimeFrameAlpaca)
     assert isinstance(adapt_timeframe_domain_to_alpaca(Timeframe.WEEK), TimeFrameAlpaca)
     assert isinstance(adapt_timeframe_domain_to_alpaca(Timeframe.MONTH), TimeFrameAlpaca)
-
-
-def test_adapt_barset_alpaca_to_bar_alpaca_list():
-    """
-    BarSetの中からBarのリストを取り出すアダプタのテスト
-    """
-    barset = generate_barset()
-    bars = adapt_barset_alpaca_to_bar_alpaca_list(barset)
-    assert isinstance(bars, list)
-    assert all(isinstance(bar, Bar) for bar in bars)
 
 
 def test_adapt_bar_domain_to_sqlm():

@@ -1,7 +1,5 @@
 from typing import List
 
-from alpaca.data.models import Bar as BarAlpaca
-from alpaca.data.models import BarSet as BarSetAlpaca
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 from alpaca.data.timeframe import TimeFrameUnit
 
@@ -55,7 +53,3 @@ def adapt_bar_list_domain_to_sqlm(
 
 def adapt_bar_list_sqlm_to_domain(bars_sqlm: List[TblBarBase]) -> List[Bar]:
     return [adapt_bar_sqlm_to_domain(bar) for bar in bars_sqlm]
-
-
-def adapt_barset_alpaca_to_bar_alpaca_list(barset: BarSetAlpaca) -> List[BarAlpaca]:
-    return next(iter(barset.data.values()))

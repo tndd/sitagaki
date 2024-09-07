@@ -6,10 +6,9 @@ from domain.materia.bar.model import Timeframe
 from infra.adapter.materia.bar import (
     adapt_bar_list_domain_to_sqlm,
     adapt_bar_list_sqlm_to_domain,
-    adapt_barset_alpaca_to_bar_alpaca_list,
     adapt_timeframe_domain_to_alpaca,
 )
-from infra.api.alpaca import get_bars
+from infra.api.alpaca import extract_bar_alpaca_list_from_barset, get_bars
 from infra.db.sqlmodel import SQLModelClient
 from infra.db.stmt.materia.bar import get_stmt_select_bar
 
@@ -39,7 +38,7 @@ class BarRepository:
             end=end
         )
         # BarSetALpacaからBarAlpacaのリストを取り出す
-        bar_alpc_list = adapt_barset_alpaca_to_bar_alpaca_list(barset_alpc)
+        bar_alpc_list = extract_bar_alpaca_list_from_barset(barset_alpc)
         """
         WARN: 順序すっ飛ばし
             本来であれば"alpaca -> domain -> sqlm"の順で変換が必要だが、
@@ -48,12 +47,6 @@ class BarRepository:
             alpacaもdomainも要素が同じであるBaseModelであるため、
             たまたまうまく動作しているに過ぎない。
             要注意。
-
-        TODO: adapt_barset_alpaca_to_bar_alpaca_listの改名
-            これはアルパカのモデルをアルパカのモデルに変換する関数であるため、
-            ドメイン層のアダプタとは全く無関係のものだ。
-
-            名前の改名はもちろんのこと、場所の移動も必要。
         """
         tbl_bars = adapt_bar_list_domain_to_sqlm(bar_alpc_list, timeframe)
         # DBのモデルリストを保存
