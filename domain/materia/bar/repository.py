@@ -3,10 +3,12 @@ from datetime import datetime
 from typing import Optional
 
 from domain.materia.bar.model import Timeframe
-from infra.adapter.materia.bar import adapt_bar_list_domain_to_sqlm
-from infra.adapter.materia.bar import adapt_bar_list_sqlm_to_domain
-from infra.adapter.materia.bar import adapt_barset_alpaca_to_bar_alpaca_list
-from infra.adapter.materia.bar import adapt_timeframe_domain_to_alpaca
+from infra.adapter.materia.bar import (
+    adapt_bar_list_domain_to_sqlm,
+    adapt_bar_list_sqlm_to_domain,
+    adapt_barset_alpaca_to_bar_alpaca_list,
+    adapt_timeframe_domain_to_alpaca,
+)
 from infra.api.alpaca import get_bars
 from infra.db.sqlmodel import SQLModelClient
 from infra.db.stmt.materia.bar import get_stmt_select_bar
@@ -47,7 +49,7 @@ class BarRepository:
             たまたまうまく動作しているに過ぎない。
             要注意。
 
-        TODO: adapt_bar_list_domain_to_sqlmの改名
+        TODO: adapt_barset_alpaca_to_bar_alpaca_listの改名
             これはアルパカのモデルをアルパカのモデルに変換する関数であるため、
             ドメイン層のアダプタとは全く無関係のものだ。
 
