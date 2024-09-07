@@ -1,7 +1,15 @@
+import pytest
+
 from domain.materia.bar.model import Timeframe
+from domain.materia.bar.repository import BarRepository
 from infra.adapter.materia.bar import adapt_bar_list_domain_to_sqlm
 from infra.db.sqlmodel import SQLModelClient
 from tests.utils.factory.domain.materia.bar import generate_bar_list
+
+
+@pytest.fixture
+def test_bar_repo(test_sqlm_cli):
+    return BarRepository(test_sqlm_cli)
 
 
 def prepare_test_bars_on_db(

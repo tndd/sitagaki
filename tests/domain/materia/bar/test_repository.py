@@ -4,7 +4,7 @@ import pytest
 
 from domain.materia.bar.model import Bar, Timeframe
 from infra.db.table.bar import TblBarDayAlpaca, TblBarMinAlpaca
-from tests.utils.fixture.materia.bar import prepare_db_bar_day
+from tests.utils.fixture.materia.bar import prepare_test_bars_on_db
 
 
 @pytest.mark.ext
@@ -52,7 +52,7 @@ def test_fetch_bars_from_local(test_bar_repo):
     # 日足テーブルで検証を行う
     TIMEFRAME = Timeframe.DAY
     # データの準備
-    prepare_db_bar_day(test_bar_repo.cli_db, TIMEFRAME)
+    prepare_test_bars_on_db(test_bar_repo.cli_db, TIMEFRAME)
     """
     case1: シンボルのみによる絞り込み
 
