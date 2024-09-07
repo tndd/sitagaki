@@ -11,6 +11,7 @@ def prepare_test_bars_on_db(
     """
     テスト用のbarデータをDBに登録する。
 
+    データはtimeframeで指定した先のテーブルに登録される。
     登録内容については、generate_bar_list()の内容を参照。
     """
     bars = generate_bar_list()
