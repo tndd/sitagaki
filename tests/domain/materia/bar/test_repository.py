@@ -4,7 +4,7 @@ import pytest
 
 from domain.materia.bar.model import Bar, Timeframe
 from infra.db.table.bar import TblBarDayAlpaca, TblBarMinAlpaca
-from tests.utils.fixture.materia.bar import prepare_bar_data
+from tests.utils.fixture.materia.bar import prepare_db_bar_day
 
 
 @pytest.mark.ext
@@ -50,7 +50,7 @@ def test_fetch_bars_from_local(test_bar_repo):
     そのためstmtのテストは省略しないほうがいい気はする。
     """
     # データの準備
-    prepare_bar_data(test_bar_repo.cli_db)
+    prepare_db_bar_day(test_bar_repo.cli_db)
     """
     case1: シンボルのみによる絞り込み
 

@@ -4,7 +4,7 @@ from infra.db.sqlmodel import SQLModelClient
 from tests.utils.factory.domain.materia.bar import generate_bar_list
 
 
-def prepare_bar_data(sqlm_cli: SQLModelClient) -> None:
+def prepare_db_bar_day(sqlm_cli: SQLModelClient) -> None:
     """
     テスト用のbarデータをDBに登録する。
 
