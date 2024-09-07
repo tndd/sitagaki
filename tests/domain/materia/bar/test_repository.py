@@ -42,6 +42,13 @@ def test_pull_bars_from_online(test_bar_repo):
 
 
 def test_fetch_bars_from_local(test_bar_repo):
+    """
+    Note: テスト内容がstmtのものとかなり重複している？
+
+    ここまでテスト内容が重複しているならば、stmtのテストは省略すべきか？
+    だがrepositoryは複数のstmtや変換などの処理も行っている総合テストという性質が強い。
+    そのためstmtのテストは省略しないほうがいい気はする。
+    """
     # データの準備
     prepare_bar_data(test_bar_repo.cli_db)
     """
