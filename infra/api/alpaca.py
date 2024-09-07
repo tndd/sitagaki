@@ -13,7 +13,7 @@ cli_hist = StockHistoricalDataClient(
 )
 
 
-def get_bars(
+def get_barset(
     symbol: str,
     timeframe: TimeFrameAlpaca,
     start: datetime,
@@ -33,4 +33,7 @@ def get_bars(
 
 
 def extract_bar_alpaca_list_from_barset(barset: BarSet) -> List[Bar]:
+    """
+    BarSetの中からBarのリストを取り出す。
+    """
     return next(iter(barset.data.values()))

@@ -2,14 +2,14 @@ import pytest
 from alpaca.data.models import Bar, BarSet
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
-from infra.api.alpaca import extract_bar_alpaca_list_from_barset, get_bars
+from infra.api.alpaca import extract_bar_alpaca_list_from_barset, get_barset
 from tests.utils.factory.infra.api.alpaca import generate_barset
 
 
 @pytest.mark.ext
-def test_get_bars():
+def test_get_barset():
     timeframe = TimeFrameAlpaca.Day
-    bars = get_bars(
+    barset = get_barset(
         symbol='AAPL',
         start='2024-01-01',
         timeframe=timeframe
@@ -25,7 +25,7 @@ def test_get_bars():
     #             indent=2
     #         )
     #     )
-    assert isinstance(bars, BarSet)
+    assert isinstance(barset, BarSet)
 
 
 def test_extract_bar_alpaca_list_from_barset():

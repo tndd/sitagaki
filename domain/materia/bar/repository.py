@@ -8,7 +8,7 @@ from infra.adapter.materia.bar import (
     adapt_bar_list_sqlm_to_domain,
     adapt_timeframe_domain_to_alpaca,
 )
-from infra.api.alpaca import extract_bar_alpaca_list_from_barset, get_bars
+from infra.api.alpaca import extract_bar_alpaca_list_from_barset, get_barset
 from infra.db.sqlmodel import SQLModelClient
 from infra.db.stmt.materia.bar import get_stmt_select_bar
 
@@ -31,7 +31,7 @@ class BarRepository:
         2000-01-01から可能な限り最新のデータを取得する。
         """
         # barsデータを取得
-        barset_alpc = get_bars(
+        barset_alpc = get_barset(
             symbol=symbol,
             timeframe=adapt_timeframe_domain_to_alpaca(timeframe),
             start=start,
