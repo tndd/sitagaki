@@ -3,7 +3,8 @@ from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
 from domain.materia.bar.model import Timeframe
 from infra.adapter.materia.bar import (adapt_bar_domain_to_sqlm,
-                                       adapt_bar_list_domain_to_sqlm_list,
+                                       adapt_bar_list_domain_to_sqlm,
+                                       adapt_bar_list_sqlm_to_domain,
                                        adapt_barset_alpaca_to_bar_alpaca_list,
                                        adapt_timeframe_domain_to_alpaca)
 from infra.db.table.bar import (TblBarDayAlpaca, TblBarHourAlpaca,
@@ -46,6 +47,11 @@ def test_adapt_bar_domain_to_sqlm():
 def test_adapt_bar_list_domain_to_sqlm_list():
     # WARN: 日足のテストのみ
     bars = generate_bar_list()
-    tbl_bars_alpaca = adapt_bar_list_domain_to_sqlm_list(bars, Timeframe.DAY)
+    tbl_bars_alpaca = adapt_bar_list_domain_to_sqlm(bars, Timeframe.DAY)
     assert isinstance(tbl_bars_alpaca, list)
     assert all(isinstance(tbl_bar, TblBarDayAlpaca) for tbl_bar in tbl_bars_alpaca)
+
+
+def test_adapt_bar_list_sqlm_to_domain():
+    # TODO: テスト実装。ただし動作はしている。
+    pass

@@ -3,7 +3,8 @@ from datetime import datetime
 from typing import Optional
 
 from domain.materia.bar.model import Timeframe
-from infra.adapter.materia.bar import (adapt_bar_list_domain_to_sqlm_list,
+from infra.adapter.materia.bar import (adapt_bar_list_domain_to_sqlm,
+                                       adapt_bar_list_sqlm_to_domain,
                                        adapt_barset_alpaca_to_bar_alpaca_list,
                                        adapt_timeframe_domain_to_alpaca)
 from infra.api.alpaca import get_bars
@@ -38,7 +39,7 @@ class BarRepository:
         # ドメイン層のbarモデルのリストに変換
         bars = adapt_barset_alpaca_to_bar_alpaca_list(bars_alpc)
         # ドメイン層のモデルリストbarsをDBのモデルリストに変換
-        tbl_bars = adapt_bar_list_domain_to_sqlm_list(bars, timeframe)
+        tbl_bars = adapt_bar_list_domain_to_sqlm(bars, timeframe)
         # DBのモデルリストを保存
         self.cli_db.insert_models(tbl_bars)
 
@@ -65,5 +66,4 @@ class BarRepository:
         # barデータをDBから取得
         bars_sqlm = self.cli_db.select_models(stmt)
         # 取得物をドメイン層のbarモデルのリストに変換して返す
-        # TODO: sqlmをbarに変換するadapterが未実装
-        return adapt_barset_alpaca_to_bar_alpaca_list(bars_sqlm)
+        return adapt_bar_list_sqlm_to_domain(bars_sqlm)
