@@ -2,13 +2,13 @@ from alpaca.data.models import Bar
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
 from domain.materia.bar.model import Timeframe
-from infra.adapter.materia.bar import (adapt_bar_domain_to_sqlm,
-                                       adapt_bar_list_domain_to_sqlm,
-                                       adapt_bar_list_sqlm_to_domain,
-                                       adapt_barset_alpaca_to_bar_alpaca_list,
-                                       adapt_timeframe_domain_to_alpaca)
-from infra.db.table.bar import (TblBarDayAlpaca, TblBarHourAlpaca,
-                                TblBarMinAlpaca)
+from infra.adapter.materia.bar import (
+    adapt_bar_domain_to_sqlm,
+    adapt_bar_list_domain_to_sqlm,
+    adapt_barset_alpaca_to_bar_alpaca_list,
+    adapt_timeframe_domain_to_alpaca,
+)
+from infra.db.table.bar import TblBarDayAlpaca, TblBarHourAlpaca, TblBarMinAlpaca
 from tests.utils.factory.domain.materia.bar import generate_bar_list
 from tests.utils.factory.infra.api.alpaca import generate_bar, generate_barset
 
