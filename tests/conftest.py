@@ -12,6 +12,7 @@ import pytest
 from sqlmodel import SQLModel, create_engine
 
 from infra.db.sqlmodel import SQLModelClient
+# テスト用fixture
 from tests.utils.fixture.materia.bar import test_bar_repo
 
 
