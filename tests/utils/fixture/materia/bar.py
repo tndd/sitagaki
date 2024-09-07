@@ -1,10 +1,10 @@
 from domain.materia.bar.model import Timeframe
 from infra.adapter.materia.bar import adapt_bar_list_domain_to_sqlm_list
-from infra.db.sqlmodel import SqlModelClient
+from infra.db.sqlmodel import SQLModelClient
 from tests.utils.factory.domain.materia.bar import generate_bar_list
 
 
-def prepare_bar_data(sqlm_cli: SqlModelClient) -> None:
+def prepare_bar_data(sqlm_cli: SQLModelClient) -> None:
     """
     テスト用のbarデータをDBに登録する。
 

@@ -7,13 +7,13 @@ from infra.adapter.materia.bar import (adapt_bar_list_domain_to_sqlm_list,
                                        adapt_barset_alpaca_to_bar_alpaca_list,
                                        adapt_timeframe_domain_to_alpaca)
 from infra.api.alpaca import get_bars
-from infra.db.sqlmodel import SqlModelClient
+from infra.db.sqlmodel import SQLModelClient
 from infra.db.stmt.materia.bar import get_stmt_select_bar
 
 
 @dataclass
 class BarRepository:
-    cli_db: SqlModelClient
+    cli_db: SQLModelClient
 
     def pull_bars_from_online(
             self,
