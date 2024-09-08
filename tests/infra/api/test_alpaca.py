@@ -2,7 +2,7 @@ import pytest
 from alpaca.data.models import Bar, BarSet
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
-from infra.api.alpaca import extract_bar_alpaca_list_from_barset, get_barset
+from infra.api.alpaca.alpaca import extract_bar_alpaca_list_from_barset, get_barset
 from tests.utils.factory.infra.api.alpaca import generate_barset
 
 
