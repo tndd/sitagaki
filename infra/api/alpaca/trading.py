@@ -13,7 +13,10 @@ cli_trading = TradingClient(
 
 def get_assets() -> List[Asset]:
     """
-    全ての株式のリストを取得する。
+    全てのtickerリストを取得する。
+
+    Stock,Cryptoが含まれる。
+    alpacaの仕様的には、Optionのものも将来的には含まれるようだ。
     """
-    search_params = GetAssetsRequest(asset_class=AssetClass.US_EQUITY)
+    search_params = GetAssetsRequest()
     return cli_trading.get_all_assets(search_params)
