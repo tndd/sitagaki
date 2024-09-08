@@ -3,7 +3,7 @@ from datetime import datetime
 from alpaca.data.models.bars import Bar, BarSet
 
 
-def generate_barset() -> BarSet:
+def generate_barset_alpaca() -> BarSet:
     """
     AAPL,GOOGLのデータを生成する。
     いずれも2023/4/1 10:00~14:00の1時間足データ。
@@ -117,7 +117,7 @@ def generate_barset() -> BarSet:
     return BarSet(raw_data_barset)
 
 
-def generate_bar() -> Bar:
+def generate_bar_alpaca() -> Bar:
     raw_data = {
         "t": datetime(2023, 4, 1, 10, 0),  # timestamp
         "o": 100.0,  # open

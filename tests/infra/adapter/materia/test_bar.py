@@ -9,7 +9,7 @@ from infra.adapter.materia.bar import (
 )
 from infra.db.table.bar import TblBarDayAlpaca, TblBarHourAlpaca, TblBarMinAlpaca
 from tests.utils.factory.domain.materia.bar import generate_bar_list
-from tests.utils.factory.infra.api.alpaca import generate_bar
+from tests.utils.factory.infra.api.alpaca import generate_bar_alpaca
 
 
 def test_adapt_timeframe_domain_to_alpaca():
@@ -21,7 +21,7 @@ def test_adapt_timeframe_domain_to_alpaca():
 
 
 def test_adapt_bar_domain_to_sqlm():
-    bar = generate_bar()
+    bar = generate_bar_alpaca()
     # min
     tbl_bar_alpaca_min = adapt_bar_domain_to_sqlm(bar, Timeframe.MIN)
     assert isinstance(tbl_bar_alpaca_min, TblBarMinAlpaca)
