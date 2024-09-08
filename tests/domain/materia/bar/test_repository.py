@@ -13,7 +13,7 @@ FIXME: select_models改修に伴う修正
 """
 
 
-@pytest.mark.ext
+@pytest.mark.online
 def test_pull_bars_from_online(test_bar_repo):
     # WARN: 日足と分足のテストしかしてないので注意。
     """

@@ -4,7 +4,7 @@ from alpaca.trading.models import Asset
 from infra.api.alpaca.trading import get_assets
 
 
-@pytest.mark.ext
+@pytest.mark.online
 def test_get_assets():
     assets = get_assets()
     assert isinstance(assets, list)

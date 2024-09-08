@@ -6,7 +6,7 @@ from infra.api.alpaca.historical import extract_bar_alpaca_list_from_barset, get
 from tests.utils.factory.infra.api.alpaca import generate_barset_alpaca
 
 
-@pytest.mark.ext
+@pytest.mark.online
 def test_get_bars():
     """
     MEMO: barsの総合テストは冗長か？
@@ -33,7 +33,7 @@ def test_get_bars():
     assert all(isinstance(bar, Bar) for bar in bars)
 
 
-@pytest.mark.ext
+@pytest.mark.online
 def test_get_barset():
     barset = get_barset(
         symbol='AAPL',
