@@ -6,14 +6,6 @@ from tests.utils.fixture.domain.materia.bar import prepare_test_bars_on_db
 
 
 def test_get_stmt_select_bar(test_sqlm_cli):
-    """
-    TODO: テスト内容の再検討
-        テスト内容がリポジトリ側と大幅に重複してる。
-
-        だったらここはオフラインのテストとして、
-        stmtオブジェクトが作成されていることの最低限のみを確認。
-        stmtの内容はリポジトリ側のテスト責任とすればいいのではないだろうか。
-    """
     # データ準備。日足テーブルで検証する。
     TIMEFRAME = Timeframe.DAY
     prepare_test_bars_on_db(test_sqlm_cli, TIMEFRAME)
