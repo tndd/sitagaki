@@ -52,4 +52,11 @@ def adapt_bar_list_domain_to_sqlm(
 
 
 def adapt_bar_list_sqlm_to_domain(bars_sqlm: List[TblBarBase]) -> List[Bar]:
+    """
+    DBから取得したバーのリストをドメイン層のバーのリストに変換する。
+
+    注意:
+        このDB->domainの変換は、Timeframeを気にしない。
+        なぜならdomain層のバーは、Timeframeを区別しないから。
+    """
     return [adapt_bar_sqlm_to_domain(bar) for bar in bars_sqlm]

@@ -5,6 +5,7 @@ from domain.materia.bar.model import Timeframe
 from infra.adapter.materia.bar import (
     adapt_bar_domain_to_sqlm,
     adapt_bar_list_domain_to_sqlm,
+    adapt_bar_list_sqlm_to_domain,
     adapt_timeframe_domain_to_alpaca,
 )
 from infra.db.table.bar import TblBarDayAlpaca, TblBarHourAlpaca, TblBarMinAlpaca
@@ -42,8 +43,10 @@ def test_adapt_bar_list_domain_to_sqlm_list():
 
 
 def test_adapt_bar_list_sqlm_to_domain():
-    # TODO: テスト実装。ただし動作はしている。
     # bars_sqlmの用意
+    bars_alpaca = generate_bar_alpaca()
     # adapt_bar_list_sqlm_to_domainによる変換
+    bars = adapt_bar_list_sqlm_to_domain(bars_alpaca)
     # 変換結果のチェック
-    pass
+    assert isinstance(bars, list)
+    assert all(isinstance(bar, Bar) for bar in bars)
