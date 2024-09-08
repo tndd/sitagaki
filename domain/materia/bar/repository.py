@@ -8,7 +8,7 @@ from infra.adapter.materia.bar import (
     adapt_bar_list_sqlm_to_domain,
     adapt_timeframe_domain_to_alpaca,
 )
-from infra.api.alpaca.alpaca import get_bars
+from infra.api.alpaca.historical import get_bars
 from infra.db.sqlmodel import SQLModelClient
 from infra.db.stmt.materia.bar import get_stmt_select_bar
 
