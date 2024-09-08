@@ -12,11 +12,6 @@ cli_hist = StockHistoricalDataClient(
     secret_key=getenv('APCA_SECRET')
 )
 
-"""
-TODO: alpaca apiの分離の検討
-    get_barsを実現するための付随関数が増えてきた。
-    こうなってしまっては機能ごとにファイルを分割すべき時かも。
-"""
 
 def get_bars(
     symbol: str,
