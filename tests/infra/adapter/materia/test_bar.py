@@ -43,4 +43,7 @@ def test_adapt_bar_list_domain_to_sqlm_list():
 
 def test_adapt_bar_list_sqlm_to_domain():
     # TODO: テスト実装。ただし動作はしている。
+    # bars_sqlmの用意
+    # adapt_bar_list_sqlm_to_domainによる変換
+    # 変換結果のチェック
     pass
