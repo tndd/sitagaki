@@ -37,11 +37,7 @@ class BarRepository:
             start=start,
             end=end
         )
-        """
-        NOTE: alpaca -> sqlmへの変換
-            本当はdomainを経由して変換すべきなんだろうけど、
-            暫定的にワープ変換させてる。
-        """
+        # HACK: パフォーマンスのため、alpaca -> sqlmの変換をdomainを介さず直接行っている。
         tbl_bars = adapt_bar_alpaca_list_to_sqlm(bars_alpc, timeframe)
         # DBのモデルリストを保存
         self.cli_db.insert_models(tbl_bars)
