@@ -4,7 +4,7 @@ from typing import Optional
 
 from domain.materia.bar.model import Timeframe
 from infra.adapter.materia.bar import (
-    adapt_bar_list_domain_to_sqlm,
+    adapt_bar_alpaca_list_to_sqlm,
     adapt_bar_list_sqlm_to_domain,
     adapt_timeframe_domain_to_alpaca,
 )
@@ -38,15 +38,11 @@ class BarRepository:
             end=end
         )
         """
-        WARN: 順序すっ飛ばし
-            本来であれば"alpaca -> domain -> sqlm"の順で変換が必要だが、
-            "alpaca -> sqlm"という直接変換を行う形式となってしまっている。
-
-            alpacaもdomainも要素が同じであるBaseModelであるため、
-            たまたまうまく動作しているに過ぎない。
-            要注意。
+        NOTE: alpaca -> sqlmへの変換
+            本当はdomainを経由して変換すべきなんだろうけど、
+            暫定的にワープ変換させてる。
         """
-        tbl_bars = adapt_bar_list_domain_to_sqlm(bars_alpc, timeframe)
+        tbl_bars = adapt_bar_alpaca_list_to_sqlm(bars_alpc, timeframe)
         # DBのモデルリストを保存
         self.cli_db.insert_models(tbl_bars)
 
