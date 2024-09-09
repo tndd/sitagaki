@@ -3,6 +3,7 @@ from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
 from domain.materia.bar.model import Timeframe
 from infra.adapter.materia.bar import (
+    adapt_bar_alpaca_list_to_sqlm,
     adapt_bar_domain_to_sqlm,
     adapt_bar_list_domain_to_sqlm,
     adapt_bar_list_sqlm_to_domain,
@@ -10,7 +11,10 @@ from infra.adapter.materia.bar import (
 )
 from infra.db.table.bar import TblBarDayAlpaca, TblBarHourAlpaca, TblBarMinAlpaca
 from tests.utils.factory.domain.materia.bar import generate_bar_list
-from tests.utils.factory.infra.api.alpaca import generate_bar_alpaca
+from tests.utils.factory.infra.api.alpaca import (
+    generate_bar_alpaca,
+    generate_bar_alpaca_list,
+)
 
 
 def test_adapt_timeframe_domain_to_alpaca():
@@ -50,3 +54,11 @@ def test_adapt_bar_list_sqlm_to_domain():
     # 変換結果のチェック
     assert isinstance(bars, list)
     assert all(isinstance(bar, Bar) for bar in bars)
+
+
+def test_adapt_bar_alpaca_list_to_sqlm():
+    # WARN: 日足のテストのみ
+    bar_alpaca_list = generate_bar_alpaca_list()
+    tbl_bars_alpaca = adapt_bar_alpaca_list_to_sqlm(bar_alpaca_list, Timeframe.DAY)
+    assert isinstance(tbl_bars_alpaca, list)
+    assert all(isinstance(tbl_bar, TblBarDayAlpaca) for tbl_bar in tbl_bars_alpaca)
