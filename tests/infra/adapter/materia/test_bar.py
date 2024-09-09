@@ -34,7 +34,7 @@ def test_adapt_bar_domain_to_sqlm():
     assert isinstance(tbl_bar_alpaca_day, TblBarDayAlpaca)
 
 
-def test_adapt_bar_list_domain_to_sqlm_list():
+def test_adapt_bar_list_domain_to_sqlm():
     # WARN: 日足のテストのみ
     bars = generate_bar_list()
     tbl_bars_alpaca = adapt_bar_list_domain_to_sqlm(bars, Timeframe.DAY)
