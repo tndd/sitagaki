@@ -3,8 +3,7 @@ from datetime import datetime
 
 from sqlmodel import between, select
 
-from tests.utils.factory.tests.sample_user import (SampleUser,
-                                                   generate_sample_users)
+from tests.utils.factory.tests.sample_user import SampleUser, generate_sample_users
 
 
 def assert_sample_users_equal(db_users, original_users):
@@ -49,10 +48,7 @@ def test_select_models(test_sqlm_cli):
     select_modelsが機能していることと、
     conditionを渡さなくても問題ないことを確認
     """
-    def select_stmt_all_sample_user():
-        return select(SampleUser)
-
-    stmt = select_stmt_all_sample_user()
+    stmt = select(SampleUser)
     db_users = test_sqlm_cli.select_models(stmt)
     assert_sample_users_equal(db_users, users_copy_for_valid)
     """
