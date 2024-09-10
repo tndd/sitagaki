@@ -2,7 +2,9 @@ from datetime import datetime
 
 from alpaca.data.models.bars import Bar, BarSet
 
-from infra.api.alpaca.historical import extract_bar_alpaca_list_from_barset
+from infra.adapter.infra.api.alpaca.historical import (
+    extract_bar_alpaca_list_from_barset,
+)
 
 
 def generate_barset_alpaca() -> BarSet:

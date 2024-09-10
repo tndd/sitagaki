@@ -1,11 +1,15 @@
 from datetime import datetime
 from os import getenv
-from typing import List, Optional
+from typing import Optional
 
 from alpaca.data.historical import StockHistoricalDataClient
-from alpaca.data.models.bars import Bar, BarSet
+from alpaca.data.models.bars import BarSet
 from alpaca.data.requests import StockBarsRequest
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
+
+from infra.adapter.infra.api.alpaca.historical import (
+    extract_bar_alpaca_list_from_barset,
+)
 
 cli_hist = StockHistoricalDataClient(
     api_key=getenv('APCA_KEY'),
@@ -47,10 +51,3 @@ def get_barset(
         end=end if end else None
     )
     return cli_hist.get_stock_bars(rq)
-
-
-def extract_bar_alpaca_list_from_barset(barset: BarSet) -> List[Bar]:
-    """
-    BarSetの中からBarのリストを取り出す。
-    """
-    return next(iter(barset.data.values()))
