@@ -2,7 +2,7 @@ import pytest
 
 from domain.materia.bar.model import Timeframe
 from domain.materia.bar.repository import BarRepository
-from infra.adapter.materia.bar import adapt_bar_list_domain_to_sqlm
+from infra.adapter.domain.materia.bar import adapt_bar_list_domain_to_sqlm
 from infra.db.sqlmodel import SQLModelClient
 from tests.utils.factory.domain.materia.bar import generate_bar_list
 

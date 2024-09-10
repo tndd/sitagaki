@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import Optional
 
 from domain.materia.bar.model import Timeframe
-from infra.adapter.materia.bar import (
+from infra.adapter.domain.materia.bar import (
     adapt_bar_alpaca_list_to_sqlm,
     adapt_bar_list_sqlm_to_domain,
     adapt_timeframe_domain_to_alpaca,
