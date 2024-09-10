@@ -60,23 +60,3 @@ def adapt_bar_list_sqlm_to_domain(bars_sqlm: List[TblBarBase]) -> List[Bar]:
         なぜならdomain層のバーは、Timeframeを区別しないから。
     """
     return [adapt_bar_sqlm_to_domain(bar) for bar in bars_sqlm]
-
-
-### NOT DOMAIN ADAPTERS ###
-
-def adapt_bar_alpaca_list_to_sqlm(
-        bars_alpaca: List[Bar],
-        timeframe: Timeframe
-) -> List[TblBarBase]:
-    """
-    alpacaのバーのリストをDBのバーのリストに変換する。
-
-    HACK: bar_alpaca -> bar_sqlmへの変換過程
-        本来であれば、
-        "alpaca -> domain -> sqlm"の順で変換が必要だが、
-        "alpaca -> sqlm"という直接変換を行う形式となってしまっている。
-
-        たまたま、alpacaのバーとdomainのバーは同じデータ構造をしているため、
-        このような変換が可能になっている。
-    """
-    return [adapt_bar_domain_to_sqlm(bar, timeframe) for bar in bars_alpaca]
