@@ -2,7 +2,6 @@ from os import getenv
 from typing import List
 
 from alpaca.trading.client import TradingClient
-from alpaca.trading.enums import AssetClass
 from alpaca.trading.models import Asset
 from alpaca.trading.requests import GetAssetsRequest
 
