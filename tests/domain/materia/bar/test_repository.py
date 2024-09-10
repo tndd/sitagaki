@@ -6,14 +6,8 @@ from domain.materia.bar.model import Bar, Timeframe
 from infra.db.table.bar import TblBarDayAlpaca, TblBarMinAlpaca
 from tests.utils.fixture.domain.materia.bar import prepare_test_bars_on_db
 
-"""
-FIXME: select_models改修に伴う修正
-    この関数の引数はもうモデルではなくstmtを渡す形式に変更されてる。
-    そのためstmt作成をそれぞれ行わねばならない。
-"""
 
-
-@pytest.mark.online
+# @pytest.mark.online
 def test_pull_bars_from_online(test_bar_repo):
     # WARN: 日足と分足のテストしかしてないので注意。
     """
@@ -26,6 +20,11 @@ def test_pull_bars_from_online(test_bar_repo):
         timeframe=Timeframe.DAY,
         start=one_week_ago
     )
+    """
+    FIXME: select_models改修に伴う修正
+        この関数の引数はもうモデルではなくstmtを渡す形式に変更されてる。
+        そのためstmt作成をそれぞれ行わねばならない。
+    """
     bars_day = test_bar_repo.cli_db.select_models(TblBarDayAlpaca)
     assert isinstance(bars_day, list)
     assert all(isinstance(bar, TblBarDayAlpaca) for bar in bars_day)
