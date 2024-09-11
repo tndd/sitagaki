@@ -6,13 +6,6 @@ from domain.materia.bar.model import Bar, Timeframe
 from infra.adapter.materia.bar import adapt_bar_domain_to_sqlm
 from infra.db.table.bar import TblBarBase
 
-"""
-TODO: adapterから外に出す？
-    adapterのimportパスがinfra.adapter.infraみたいな冗長感があるので、
-    adapterはdomainのもののみとし、
-    convertみたいなディレクトリを作ってそこにこれらを配置する方がいい気がする。
-"""
-
 
 def extract_bar_alpaca_list_from_barset(barset: BarSet) -> List[Bar]:
     """
