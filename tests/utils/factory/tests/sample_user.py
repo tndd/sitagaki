@@ -3,6 +3,13 @@ from typing import List
 
 from sqlmodel import Field, SQLModel
 
+"""
+TODO: testsというディレクトリ名はやめるべき
+    testsという名前は特別なものであるため、改名した方が良さそうだ。
+    それにこのファイルはおそらく１箇所からしか参照されない。
+    だったらtest_sqlmodelに直書きしてもいいんじゃないか？
+"""
+
 
 class SampleUser(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
