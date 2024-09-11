@@ -10,7 +10,7 @@ from infra.adapter.materia.bar import (
 from infra.api.alpaca.historical import get_bars
 from infra.db.sqlmodel import SQLModelClient
 from infra.db.stmt.materia.bar import get_stmt_select_bar
-from infra.process.api.alpaca.historical import adapt_bar_alpaca_list_to_sqlm
+from infra.process.api.alpaca.historical import convert_bar_alpaca_list_to_sqlm
 
 
 @dataclass
@@ -38,7 +38,7 @@ class BarRepository:
             end=end
         )
         # HACK: パフォーマンスのため、alpaca -> sqlmの変換をdomainを介さず直接行っている。
-        tbl_bars = adapt_bar_alpaca_list_to_sqlm(bars_alpc, timeframe)
+        tbl_bars = convert_bar_alpaca_list_to_sqlm(bars_alpc, timeframe)
         # DBのモデルリストを保存
         self.cli_db.insert_models(tbl_bars)
 

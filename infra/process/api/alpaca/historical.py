@@ -14,7 +14,7 @@ def extract_bar_alpaca_list_from_barset(barset: BarSet) -> List[Bar]:
     return next(iter(barset.data.values()))
 
 
-def adapt_bar_alpaca_list_to_sqlm(
+def convert_bar_alpaca_list_to_sqlm(
         bars_alpaca: List[Bar],
         timeframe: Timeframe
 ) -> List[TblBarBase]:
