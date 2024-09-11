@@ -3,7 +3,6 @@ from datetime import datetime
 from typing import Optional
 
 from domain.materia.bar.model import Timeframe
-from infra.adapter.infra.api.alpaca.historical import adapt_bar_alpaca_list_to_sqlm
 from infra.adapter.materia.bar import (
     adapt_bar_list_sqlm_to_domain,
     adapt_timeframe_domain_to_alpaca,
@@ -11,6 +10,7 @@ from infra.adapter.materia.bar import (
 from infra.api.alpaca.historical import get_bars
 from infra.db.sqlmodel import SQLModelClient
 from infra.db.stmt.materia.bar import get_stmt_select_bar
+from infra.process.api.alpaca.historical import adapt_bar_alpaca_list_to_sqlm
 
 
 @dataclass
