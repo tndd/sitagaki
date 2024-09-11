@@ -2,10 +2,8 @@ import pytest
 from alpaca.data.models import Bar, BarSet
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
-from infra.adapter.infra.api.alpaca.historical import (
-    extract_bar_alpaca_list_from_barset,
-)
 from infra.api.alpaca.historical import get_barset
+from infra.process.api.alpaca.historical import extract_bar_alpaca_list_from_barset
 
 
 @pytest.mark.online

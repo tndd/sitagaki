@@ -3,7 +3,7 @@ from typing import List
 from alpaca.data.models import BarSet
 
 from domain.materia.bar.model import Bar, Timeframe
-from infra.adapter.domain.materia.bar import adapt_bar_domain_to_sqlm
+from infra.adapter.materia.bar import adapt_bar_domain_to_sqlm
 from infra.db.table.bar import TblBarBase
 
 """

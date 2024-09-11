@@ -1,7 +1,7 @@
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
 from domain.materia.bar.model import Bar, Timeframe
-from infra.adapter.domain.materia.bar import (
+from infra.adapter.materia.bar import (
     adapt_bar_domain_to_sqlm,
     adapt_bar_list_domain_to_sqlm,
     adapt_bar_list_sqlm_to_domain,
