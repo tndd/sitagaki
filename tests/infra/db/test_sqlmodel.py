@@ -1,26 +1,8 @@
 from copy import deepcopy
 from datetime import datetime
+from typing import List
 
-from sqlmodel import between, select
-
-from tests.utils.factory.tests.sample_user import SampleUser, generate_sample_users
-
-
-def assert_sample_users_equal(db_users, original_users):
-    """
-    SampleUserクラスが等しいかを確認する。
-    """
-    # 件数確認
-    assert len(db_users) == len(original_users)
-    # 内容確認: nameでソートし１件ずつ突合
-    db_users_sorted = sorted(db_users, key=lambda u: u.name)
-    original_users_sorted = sorted(original_users, key=lambda u: u.name)
-    for db_user, original_user in zip(db_users_sorted, original_users_sorted):
-        assert db_user.id is not None
-        assert db_user.created_at == original_user.created_at
-        assert db_user.name == original_user.name
-        assert db_user.email == original_user.email
-        assert db_user.credit == original_user.credit
+from sqlmodel import Field, SQLModel, between, select
 
 
 def test_insert_models(test_sqlm_cli):
@@ -127,3 +109,90 @@ def test_select_models(test_sqlm_cli):
     stmt = select(SampleUser).where(SampleUser.email.like("%@blmail%"), SampleUser.created_at >= datetime(1981, 1, 1))
     db_users_blmail_after_1981 = test_sqlm_cli.select_models(stmt)
     assert all(user.name in ["kazusa", "alice"] for user in db_users_blmail_after_1981)
+
+
+### Test Tools ###
+class SampleUser(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
+    created_at: datetime
+    name: str
+    email: str
+    credit: int
+
+
+def generate_sample_users(n: int = 10) -> List[SampleUser]:
+    users = []
+    users.append(
+        SampleUser(
+            created_at=datetime(1980,12,1),
+            name='nagisa',
+            email='surenagi333@blmail.tri',
+            credit=10000
+        )
+    )
+    users.append(
+        SampleUser(
+            created_at=datetime(1981,6,12),
+            name='kazusa',
+            email='casperi666@blmail.tri',
+            credit=95
+        )
+    )
+    users.append(
+        SampleUser(
+            created_at=datetime(1992,3,15),
+            name='alice',
+            email='hero810@blmail.ml',
+            credit=30
+        )
+    )
+    users.append(
+        SampleUser(
+            created_at=datetime(2000,3,22),
+            name='astar',
+            email='pepe423@stmail.com',
+            credit=15000
+        )
+    )
+    users.append(
+        SampleUser(
+            created_at=datetime(2000,3,22),
+            name='helta',
+            email='helta81@stmail.com',
+            credit=110
+        )
+    )
+    users.append(
+        SampleUser(
+            created_at=datetime(2001,9,5),
+            name='carol',
+            email='carol@mymail.net',
+            credit=350
+        )
+    )
+    users.append(
+        SampleUser(
+            created_at=datetime(2010,12,31),
+            name='david',
+            email='david@mymail.org',
+            credit=700
+        )
+    )
+    return users
+
+
+def assert_sample_users_equal(db_users, original_users):
+    """
+    SampleUserクラスが等しいかを確認する。
+    """
+    # 件数確認
+    assert len(db_users) == len(original_users)
+    # 内容確認: nameでソートし１件ずつ突合
+    db_users_sorted = sorted(db_users, key=lambda u: u.name)
+    original_users_sorted = sorted(original_users, key=lambda u: u.name)
+    for db_user, original_user in zip(db_users_sorted, original_users_sorted):
+        assert db_user.id is not None
+        assert db_user.created_at == original_user.created_at
+        assert db_user.name == original_user.name
+        assert db_user.email == original_user.email
+        assert db_user.credit == original_user.credit
