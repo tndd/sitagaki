@@ -3,6 +3,14 @@ from typing import Optional
 
 from sqlmodel import Field, SQLModel
 
+"""
+TODO: barテーブル再検討
+    timeframeとしてmin,hour,day,week,month.
+    さらにadjustmentにraw,devided,splited,all.
+    これらの組み合わせについて、すべてテーブルを作るのは悪手？
+    余分なカラムは増えるが。
+"""
+
 
 class TblBarBase(SQLModel):
     """
