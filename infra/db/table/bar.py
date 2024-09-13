@@ -9,6 +9,11 @@ TODO: barテーブル再検討
     さらにadjustmentにraw,devided,splited,all.
     これらの組み合わせについて、すべてテーブルを作るのは悪手？
     余分なカラムは増えるが。
+
+TODO: TblBarBaseの名称
+    上の案を採用するのであれば、"TblBarAlpaca"という名称のほうが妥当。
+    これはalpaca api barの要素を網羅するモデルであるため、
+    それ以上の汎用性を持っていると誤解される命名は避けるべき。
 """
 
 
