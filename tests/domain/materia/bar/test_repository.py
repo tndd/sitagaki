@@ -10,7 +10,7 @@ from tests.utils.fixture.domain.materia.bar import prepare_test_bars_on_db
 
 @pytest.mark.online
 def test_pull_bars_from_online(test_bar_repo):
-    # WARN: 日足と分足のテストしかしてないので注意。
+    # NOTE: 日足と分足のテストしかしてないので注意。
     """
     日足:
         負荷軽減のため、直近一週間分の情報を取得する。

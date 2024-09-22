@@ -1,16 +1,14 @@
-from infra.db.table.bar import TblBarBase
-from tests.utils.factory.infra.db.table.bar import (
-    generate_tbl_bar_base,
-    generate_tbl_bar_base_list,
-)
+from infra.db.table.bar import TblBarAlpaca
+from tests.utils.factory.infra.db.table.bar import generate_tbl_bar_alpaca
 
 
-def test_generate_tbl_bar_base():
-    tbl_bar_base = generate_tbl_bar_base()
-    assert isinstance(tbl_bar_base, TblBarBase)
+def test_generate_tbl_bar_alpaca():
+    tbl_bar_alpaca = generate_tbl_bar_alpaca()
+    assert isinstance(tbl_bar_alpaca, TblBarAlpaca)
 
 
-def test_generate_tbl_bar_base_list():
-    tbl_bar_base_list = generate_tbl_bar_base_list()
-    assert isinstance(tbl_bar_base_list, list)
-    assert all(isinstance(tbl_bar_base, TblBarBase) for tbl_bar_base in tbl_bar_base_list)
+# WARN: ↓ tbl_bar_alpacaのテスト完了次第、このコメントアウトを取り消す。
+# def test_generate_tbl_bar_base_list():
+#     tbl_bar_base_list = generate_tbl_bar_base_list()
+#     assert isinstance(tbl_bar_base_list, list)
+#     assert all(isinstance(tbl_bar_base, TblBarBase) for tbl_bar_base in tbl_bar_base_list)

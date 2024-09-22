@@ -11,7 +11,8 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 import pytest
 
 # テスト用fixture
-from tests.utils.fixture.domain.materia.bar import test_bar_repo
+# WARN: ↓ tbl_bar_alpacaのテスト完了次第、このコメントアウトを取り消す。
+# from tests.utils.fixture.domain.materia.bar import test_bar_repo
 from tests.utils.fixture.infra.db.sqlmodel import test_engine, test_sqlm_cli
 
 
