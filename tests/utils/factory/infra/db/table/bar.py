@@ -3,18 +3,21 @@ from datetime import datetime
 from infra.db.table.bar import AdjustmentAlpaca, TblBarAlpaca, TimeframeAlpaca
 
 
-def generate_tbl_bar_alpaca() -> TblBarAlpaca:
+def generate_tbl_bar_alpaca(
+        timeframe: TimeframeAlpaca = TimeframeAlpaca.MIN,
+        adjustment: AdjustmentAlpaca = AdjustmentAlpaca.RAW,
+) -> TblBarAlpaca:
     """
     TblBarAlpacaを生成する。
 
     2020年1月1日のAAPLの1分足のデータ。
-    timeframeはmin, adjustmentはrawとする。
+    デフォルトではtimeframeはmin, adjustmentはrawとする。
     """
     return TblBarAlpaca(
         symbol="AAPL",
         timestamp=datetime(2020, 1, 1),
-        timeframe=TimeframeAlpaca.MIN,
-        adjustment=AdjustmentAlpaca.RAW,
+        timeframe=timeframe,
+        adjustment=adjustment,
         open=100.0,
         high=105.0,
         low=99.0,
