@@ -9,7 +9,9 @@ def test_generate_tbl_bar_alpaca():
     """
     for timeframe in TimeframeAlpaca:
         for adjustment in AdjustmentAlpaca:
+            # モデル作成部分
             tbl_bar_alpaca = generate_tbl_bar_alpaca(timeframe, adjustment)
+            # モデルの中身のチェック
             assert isinstance(tbl_bar_alpaca, TblBarAlpaca)
             assert tbl_bar_alpaca.timeframe == timeframe
             assert tbl_bar_alpaca.adjustment == adjustment
