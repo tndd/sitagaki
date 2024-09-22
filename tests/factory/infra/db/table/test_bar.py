@@ -4,14 +4,6 @@ from tests.utils.factory.infra.db.table.bar import generate_tbl_bar_alpaca
 
 def test_generate_tbl_bar_alpaca():
     """
-    デフォルト動作のテスト
-    timeframeはmin, adjustmentはrawとなる
-    """
-    tbl_bar_alpaca = generate_tbl_bar_alpaca()
-    assert isinstance(tbl_bar_alpaca, TblBarAlpaca)
-    assert tbl_bar_alpaca.timeframe == TimeframeAlpaca.MIN
-    assert tbl_bar_alpaca.adjustment == AdjustmentAlpaca.RAW
-    """
     組み合わせテスト
     timeframeとadjustmentのすべての組み合わせを検証する
     """

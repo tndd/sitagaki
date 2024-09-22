@@ -4,14 +4,13 @@ from infra.db.table.bar import AdjustmentAlpaca, TblBarAlpaca, TimeframeAlpaca
 
 
 def generate_tbl_bar_alpaca(
-        timeframe: TimeframeAlpaca = TimeframeAlpaca.MIN,
-        adjustment: AdjustmentAlpaca = AdjustmentAlpaca.RAW,
+        timeframe: TimeframeAlpaca,
+        adjustment: AdjustmentAlpaca
 ) -> TblBarAlpaca:
     """
     TblBarAlpacaを生成する。
 
-    2020年1月1日のAAPLの1分足のデータ。
-    デフォルトではtimeframeはmin, adjustmentはrawとする。
+    2020年1月1日のAAPLという情報までは決まっている。
     """
     return TblBarAlpaca(
         symbol="AAPL",
