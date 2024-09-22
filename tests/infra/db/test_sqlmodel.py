@@ -86,7 +86,6 @@ def test_select_models(test_sqlm_cli):
     # 4-2: @stmail
     stmt = select(SampleUser).where(SampleUser.email.like("%@stmail%"))
     db_users_stmail = test_sqlm_cli.select_models(stmt)
-    db_users_stmail = test_sqlm_cli.select_models(stmt)
     assert all(user.name in ["astar", "helta"] for user in db_users_stmail)
 
     # 4-3: @blmail.tri
