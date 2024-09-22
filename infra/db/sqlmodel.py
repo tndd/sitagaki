@@ -11,6 +11,7 @@ class SQLModelClient:
     engine: Engine
 
     def session(self) -> Session:
+        # WARN: exec_stmt実行後にモデルが解放されてしまうため、expire_on_commit=Falseとしている。
         return Session(self.engine, expire_on_commit=False)
 
     def insert_models(self, models: list[SQLModel]):
