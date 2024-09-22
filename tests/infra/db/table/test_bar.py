@@ -1,5 +1,4 @@
-from infra.db.table.bar import (TblBarDayAlpaca, TblBarHourAlpaca,
-                                TblBarMinAlpaca)
+from infra.db.table.bar import AdjustmentAlpaca, TblBarAlpaca, TimeframeAlpaca
 
 """
 # Note: テーブルテストの実装方針
@@ -10,13 +9,9 @@ from infra.db.table.bar import (TblBarDayAlpaca, TblBarHourAlpaca,
 それとBarのfactoryも。
 """
 
-def test_tbl_bar_min_alpaca(test_sqlm_cli):
-    pass
-
-
-def test_tbl_bar_hour_alpaca(test_sqlm_cli):
-    pass
-
-
-def test_tbl_bar_day_alpaca(test_sqlm_cli):
+def test_tbl_bar(test_sqlm_cli):
+    """
+    AdjustmentAlpacaとTimeframeAlpacaを渡した際、
+    正常にTblBarAlpacaが生成されることを確認する。
+    """
     pass
