@@ -17,6 +17,7 @@ class SQLModelClient:
         """
         渡されたモデルそのままDBに登録する。
         """
+        # TODO: 引数が１つのモデルである場合、自動的にリストに変換する
         with self.session() as session:
             session.add_all(models)
             session.commit()
