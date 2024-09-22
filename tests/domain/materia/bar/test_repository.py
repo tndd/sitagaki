@@ -22,7 +22,7 @@ def test_pull_bars_from_online(test_bar_repo):
         start=one_week_ago
     )
     stmt = select(TblBarDayAlpaca)
-    bars_day = test_bar_repo.cli_db.select_models(stmt)
+    bars_day = test_bar_repo.cli_db.exec_stmt(stmt)
     assert isinstance(bars_day, list)
     assert all(isinstance(bar, TblBarDayAlpaca) for bar in bars_day)
 
@@ -39,7 +39,7 @@ def test_pull_bars_from_online(test_bar_repo):
         end=end_min
     )
     stmt = select(TblBarMinAlpaca)
-    bars_min = test_bar_repo.cli_db.select_models(stmt)
+    bars_min = test_bar_repo.cli_db.exec_stmt(stmt)
     assert isinstance(bars_min, list)
     assert all(isinstance(bar, TblBarMinAlpaca) for bar in bars_min)
 

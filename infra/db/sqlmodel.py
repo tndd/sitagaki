@@ -22,7 +22,7 @@ class SQLModelClient:
             session.add_all(models)
             session.commit()
 
-    def select_models(self, stmt: SelectOfScalar) -> List[SQLModel]:
+    def exec_stmt(self, stmt: SelectOfScalar) -> List[SQLModel]:
         """
         selectステートメントを実行し、モデルのリストを返す。
         """

@@ -26,7 +26,7 @@ def test_get_stmt_select_bar(test_sqlm_cli):
         start=datetime(2000, 1, 1),
         end=datetime.now()
     )
-    bars_result_1 = test_sqlm_cli.select_models(stmt_1)
+    bars_result_1 = test_sqlm_cli.exec_stmt(stmt_1)
     # 1-1 取得件数は３件
     assert len(bars_result_1) == 3
     # 1-2 シンボルが"AAPL"のbarのみ取得
@@ -53,7 +53,7 @@ def test_get_stmt_select_bar(test_sqlm_cli):
         start=datetime(2024, 1, 2),
         end=datetime(2024, 1, 4)
     )
-    bars_result_2 = test_sqlm_cli.select_models(stmt_2)
+    bars_result_2 = test_sqlm_cli.exec_stmt(stmt_2)
     # 2-1 取得件数は以下の日付の2件
     assert len(bars_result_2) == 2
     # 2-2 シンボルが"AAPL"のbarのみ取得

@@ -63,6 +63,6 @@ class BarRepository:
             end=end
         )
         # barデータをDBから取得
-        bars_sqlm = self.cli_db.select_models(stmt)
+        bars_sqlm = self.cli_db.exec_stmt(stmt)
         # 取得物をドメイン層のbarモデルのリストに変換して返す
         return adapt_bar_list_sqlm_to_domain(bars_sqlm)

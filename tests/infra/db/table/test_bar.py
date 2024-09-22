@@ -22,7 +22,7 @@ def test_tbl_bar(test_sqlm_cli):
     test_sqlm_cli.insert_models([tbl_bar_alpaca])
     # テーブルからデータを取得
     stmt = select(TblBarAlpaca)
-    result_models = test_sqlm_cli.select_models(stmt)
+    result_models = test_sqlm_cli.exec_stmt(stmt)
     # 取得件数の確認
     assert len(result_models) == 1
     """
