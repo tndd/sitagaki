@@ -11,7 +11,7 @@ class SQLModelClient:
     engine: Engine
 
     def session(self) -> Session:
-        return Session(self.engine)
+        return Session(self.engine, expire_on_commit=False)
 
     def insert_models(self, models: list[SQLModel]):
         """
