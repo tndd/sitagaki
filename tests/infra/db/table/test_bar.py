@@ -28,6 +28,5 @@ def test_tbl_bar(test_sqlm_cli):
     """
     timeframeとadjustmentは一致するか？
     """
-    # r_tbl_bar_alpaca = result_models[0]
     assert result_models[0].timeframe == tbl_bar_alpaca.timeframe
     assert result_models[0].adjustment == tbl_bar_alpaca.adjustment
