@@ -9,6 +9,9 @@ class User(PeeweeTable):
 
 
 def test_insert_models(test_peewee_db):
+    """
+    ３件のデータを投入し、その内容を確認する。
+    """
     peewee_client = PeeweeClient(test_peewee_db)
     # 挿入するユーザーインスタンスのリストを作成
     users = [
@@ -33,6 +36,13 @@ def test_insert_models(test_peewee_db):
 def test_insert_models_multiple(test_peewee_db):
     """
     複数回にわたって挿入する場合のテスト
+
+    テスト内容
+        1回目:
+            * 3件のデータが挿入され、合計3件。
+        2回目:
+            * さらに3件のデータが挿入され、合計6件。
+            * usernameが"user1"のデータが2件。
     """
     peewee_client = PeeweeClient(test_peewee_db)
     # 挿入するユーザーインスタンスのリストを作成
@@ -45,8 +55,10 @@ def test_insert_models_multiple(test_peewee_db):
     peewee_client.insert_models(users)
     retrieved_users = User.select()
     assert len(retrieved_users) == 3
-
     # 2回目の投入
     peewee_client.insert_models(users)
     retrieved_users = User.select()
     assert len(retrieved_users) == 6
+    # さらにテーブル内容を確認する
+    retrieved_users = User.select().where(User.username == 'user1')
+    assert len(retrieved_users) == 2
