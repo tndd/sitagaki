@@ -2,7 +2,7 @@ from copy import deepcopy
 from datetime import datetime
 from typing import List
 
-from sqlmodel import Field, SQLModel, between, select
+from sqlmodel import Field, Session, SQLModel, between, select
 
 
 def test_insert_models(test_sqlm_cli):
@@ -12,7 +12,7 @@ def test_insert_models(test_sqlm_cli):
     ### テスト部分 ###
     test_sqlm_cli.insert_models(users)
     # インサートされたかを確認
-    with test_sqlm_cli.session() as session:
+    with Session(test_sqlm_cli.engine) as session:
         # データ取得
         db_users = session.exec(select(SampleUser)).all()
         assert_sample_users_equal(db_users, users_copy_for_valid)
