@@ -1,11 +1,11 @@
 from peewee import Database, DatabaseProxy, Model
 
-db_proxy = DatabaseProxy()
+DB_PROXY = DatabaseProxy()
 
 
 class PeeweeTable(Model):
     class Meta:
-        database = db_proxy
+        database = DB_PROXY
 
 
 class PeeweeClient:
