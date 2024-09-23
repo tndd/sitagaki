@@ -14,4 +14,4 @@ def test_engine():
 
 @pytest.fixture
 def test_sqlm_cli(test_engine):
-    return SQLModelClient(test_engine)
+    yield SQLModelClient(test_engine)
