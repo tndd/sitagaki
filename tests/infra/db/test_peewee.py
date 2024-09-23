@@ -3,6 +3,7 @@ from peewee import CharField
 from infra.db.peewee import PeeweeClient, PeeweeTable
 
 
+# テスト用モデル
 class User(PeeweeTable):
     username = CharField()
     email = CharField()
