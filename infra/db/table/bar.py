@@ -1,45 +1,38 @@
-from datetime import datetime
-from typing import Optional
+from peewee import BitField, CharField, CompositeKey, DateTimeField, FloatField
 
-from sqlmodel import Field, SQLModel
-
-"""
-TODO: barテーブル再検討
-    timeframeとしてmin,hour,day,week,month.
-    さらにadjustmentにraw,devided,splited,all.
-    これらの組み合わせについて、すべてテーブルを作るのは悪手？
-    余分なカラムは増えるが。
-
-TODO: TblBarBaseの名称
-    上の案を採用するのであれば、"TblBarAlpaca"という名称のほうが妥当。
-    これはalpaca api barの要素を網羅するモデルであるため、
-    それ以上の汎用性を持っていると誤解される命名は避けるべき。
-"""
+from infra.db.peewee import PeeweeTable
 
 
-class TblBarBase(SQLModel):
+class TableBarAlpaca(PeeweeTable):
     """
-    Barという一般的なテーブル定義。
-    ここから一分足や１時間足といった派生モデルができる。
+    AlpacaのBarデータを保存するテーブル。
+
+    保存容量を抑えるため、timeframeとadjustmentについては
+    bitfieldを使用する。
+        timeframe:
+            * min = 1
+            * hour = 2
+            * day = 4
+            * week = 8
+            * month = 16
+        adjustment:
+            * raw = 1
+            * split = 2
+            * dividend = 4
+            * all = 8
     """
-    symbol: str = Field(primary_key=True)
-    timestamp: datetime = Field(primary_key=True)
-    open: float
-    high: float
-    low: float
-    close: float
-    volume: float
-    trade_count: Optional[float] = None
-    vwap: Optional[float] = None
+    symbol = CharField()
+    timestamp = DateTimeField()
+    timeframe = BitField()
+    adjustment = BitField()
+    open = FloatField()
+    high = FloatField()
+    low = FloatField()
+    close = FloatField()
+    volume = FloatField()
+    trade_count = FloatField(null=True)
+    vwap = FloatField(null=True)
 
-
-class TblBarMinAlpaca(TblBarBase, table=True):
-    __tablename__ = "bar_min_alpaca"
-
-
-class TblBarHourAlpaca(TblBarBase, table=True):
-    __tablename__ = "bar_hour_alpaca"
-
-
-class TblBarDayAlpaca(TblBarBase, table=True):
-    __tablename__ = "bar_day_alpaca"
+    class Meta:
+        table_name = "bar_alpaca"
+        primary_key = CompositeKey('symbol', 'timestamp', 'timeframe', 'adjustment')
