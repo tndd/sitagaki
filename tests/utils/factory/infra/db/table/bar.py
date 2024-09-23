@@ -4,6 +4,10 @@ from infra.db.table.bar import TableBarAlpaca
 
 
 def generate_table_bar_alpaca() -> TableBarAlpaca:
+    """
+    timeframe: 1 -> min
+    adjustment: 1 -> raw
+    """
     return TableBarAlpaca(
         symbol="AAPL",
         timestamp=datetime(2020, 1, 1),
