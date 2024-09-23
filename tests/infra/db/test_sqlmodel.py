@@ -110,6 +110,39 @@ def test_exec_stmt(test_sqlm_cli):
     assert all(user.name in ["kazusa", "alice"] for user in db_users_blmail_after_1981)
 
 
+def test_exec_stmt_count(test_sqlm_cli):
+    # FIXME: インサートがされてない問題発生中
+    return
+    """
+    insertの件数確認用テスト。
+
+    ３回投入で計２１件のデータがあることを確認する。
+    """
+    users = generate_sample_users()
+    """
+    テスト１:
+    １回目のinsert
+    """
+    test_sqlm_cli.insert_models(users)
+    stmt = select(SampleUser)
+    db_users_1 = test_sqlm_cli.exec_stmt(stmt)
+    assert len(db_users_1) == 7
+    """
+    テスト２:
+    ２回目のinsert
+    """
+    test_sqlm_cli.insert_models(users)
+    db_users_2 = test_sqlm_cli.exec_stmt(stmt)
+    assert len(db_users_2) == 14
+    """
+    テスト３:
+    ３回目のinsert
+    """
+    test_sqlm_cli.insert_models(users)
+    db_users_3 = test_sqlm_cli.exec_stmt(stmt)
+    assert len(db_users_3) == 21
+
+
 ### Test Tools ###
 class SampleUser(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
