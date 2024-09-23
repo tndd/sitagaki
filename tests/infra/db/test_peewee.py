@@ -1,14 +1,9 @@
-from peewee import CharField, DatabaseProxy, Model, SqliteDatabase
+from peewee import CharField
 
-from infra.db.peewee import PeeweeClient
-from tests.utils.fixture.infra.db.peewee import db_proxy
+from infra.db.peewee import PeeweeClient, PeeweeTable
 
 
-class BaseModel(Model):
-    class Meta:
-        database = db_proxy
-
-class User(BaseModel):
+class User(PeeweeTable):
     username = CharField()
     email = CharField()
 
