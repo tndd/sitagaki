@@ -1,12 +1,4 @@
-from peewee import (
-    BooleanField,
-    CharField,
-    Database,
-    DateField,
-    ForeignKeyField,
-    Model,
-    SqliteDatabase,
-)
+from peewee import CharField, Model, SqliteDatabase
 
 from infra.db.peewee import PeeweeClient
 
@@ -21,20 +13,18 @@ class User(BaseModel):
     email = CharField()
 
 
-def test_peewee():
+def test_insert_models():
+    peewee_client = PeeweeClient(db)
     # 挿入するユーザーインスタンスのリストを作成
     users = [
         User(username='user1', email='user1@example.com'),
         User(username='user2', email='user2@example.com'),
         User(username='user3', email='user3@example.com')
     ]
-    # PeeweeClientを使用してデータベースにユーザーを挿入
-    peewee_client = PeeweeClient(db)
+    # ユーザーデータ挿入
     peewee_client.insert_models(users)
-
     # 挿入されたユーザーを取得
     retrieved_users = User.select()
-
     # 取得したユーザーを検証
     assert len(retrieved_users) == 3
     assert retrieved_users[0].username == 'user1'
@@ -43,3 +33,25 @@ def test_peewee():
     assert retrieved_users[1].email == 'user2@example.com'
     assert retrieved_users[2].username == 'user3'
     assert retrieved_users[2].email == 'user3@example.com'
+
+
+def test_insert_models_multiple():
+    """
+    複数回にわたって挿入する場合のテスト
+    """
+    peewee_client = PeeweeClient(db)
+    # 挿入するユーザーインスタンスのリストを作成
+    users = [
+        User(username='user1', email='user1@example.com'),
+        User(username='user2', email='user2@example.com'),
+        User(username='user3', email='user3@example.com')
+    ]
+    # 1回目の投入
+    peewee_client.insert_models(users)
+    retrieved_users = User.select()
+    assert len(retrieved_users) == 3
+
+    # 2回目の投入
+    peewee_client.insert_models(users)
+    retrieved_users = User.select()
+    assert len(retrieved_users) == 6
