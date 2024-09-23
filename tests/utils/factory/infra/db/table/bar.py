@@ -102,5 +102,8 @@ def generate_table_bar_alpaca_list() -> list[TableBarAlpaca]:
             open=100.0,
             high=105.0,
             low=99.0,
+            close=102.0,
+            volume=1000,
+            vwap=101.0,
         ),
     ]
