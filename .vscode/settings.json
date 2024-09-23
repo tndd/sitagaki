@@ -35,8 +35,32 @@
             "color": "red"
         },
         {
+            "path": "infra/adapter",
+            "symbol": "🔌💽",
+            "tooltip": "INFRA",
+            "color": "yellow"
+        },
+        {
+            "path": "infra/api",
+            "symbol": "📡💽",
+            "tooltip": "INFRA",
+            "color": "yellow"
+        },
+        {
+            "path": "infra/db",
+            "symbol": "🗄️💽",
+            "tooltip": "INFRA",
+            "color": "yellow"
+        },
+        {
+            "path": "infra/process",
+            "symbol": "📠💽",
+            "tooltip": "INFRA",
+            "color": "yellow"
+        },
+        {
             "path": "infra",
-            "symbol": "In",
+            "symbol": "💽",
             "tooltip": "INFRA",
             "color": "yellow"
         },
@@ -63,6 +87,12 @@
             "symbol": "🔧🧪",
             "tooltip": "TEST",
             "color": "green"
-        }
+        },
+        {
+            "path": "tests",
+            "symbol": "🧪",
+            "tooltip": "TEST",
+            "color": "green"
+        },
     ],
 }
