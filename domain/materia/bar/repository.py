@@ -10,7 +10,7 @@ from infra.adapter.materia.bar import (
 from infra.api.alpaca.historical import get_bars
 from infra.db.peewee import PeeweeClient
 from infra.db.stmt.materia.bar import get_stmt_select_bar
-from infra.process.api.alpaca.historical import convert_bar_alpaca_list_api_to_table
+from infra.process.api.alpaca.historical import convert_bar_list_alpaca_api_to_table
 
 
 @dataclass
@@ -39,7 +39,7 @@ class BarRepository:
         )
         # HACK: パフォーマンスのため、alpaca -> sqlmの変換をdomainを介さず直接行っている。
         # TODO: adapterの書き換え
-        tbl_bars = convert_bar_alpaca_list_api_to_table(bars_alpc, timeframe)
+        tbl_bars = convert_bar_list_alpaca_api_to_table(bars_alpc, timeframe)
         # DBのモデルリストを保存
         self.cli_db.insert_models(tbl_bars)
 

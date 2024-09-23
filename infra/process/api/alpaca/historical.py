@@ -7,17 +7,15 @@ from domain.materia.bar.model import Bar, Timeframe
 from infra.adapter.materia.bar import adapt_bar_domain_to_sqlm
 from infra.db.table.bar import TblBarBase
 
-# TODO: adapterをtable_bar_alpacaに対応させる
 
-
-def extract_bar_alpaca_list_api_from_barset(barset: BarSetAlpacaApi) -> List[BarAlpacaApi]:
+def extract_bar_list_alpaca_api_from_barset(barset: BarSetAlpacaApi) -> List[BarAlpacaApi]:
     """
     BarSetの中からBarのリストを取り出す。
     """
     return next(iter(barset.data.values()))
 
 
-def convert_bar_alpaca_list_api_to_table(
+def convert_bar_list_alpaca_api_to_table(
         bars_alpaca_api: List[BarAlpacaApi],
         timeframe: Timeframe
 ) -> List[TblBarBase]:

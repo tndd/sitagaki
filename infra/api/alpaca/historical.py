@@ -7,7 +7,7 @@ from alpaca.data.models.bars import Bar, BarSet
 from alpaca.data.requests import StockBarsRequest
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
-from infra.process.api.alpaca.historical import extract_bar_alpaca_list_api_from_barset
+from infra.process.api.alpaca.historical import extract_bar_list_alpaca_api_from_barset
 
 cli_hist = StockHistoricalDataClient(
     api_key=getenv('APCA_KEY'),
@@ -29,7 +29,7 @@ def get_bars(
     そこでこの関数ではBarSetからBarのリストを取り出して返却するまで行う。
     """
     barset = get_barset(symbol, timeframe, start, end)
-    return extract_bar_alpaca_list_api_from_barset(barset)
+    return extract_bar_list_alpaca_api_from_barset(barset)
 
 
 def get_barset(

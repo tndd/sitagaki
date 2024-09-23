@@ -3,7 +3,7 @@ from alpaca.data.models import Bar, BarSet
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
 from infra.api.alpaca.historical import get_barset
-from infra.process.api.alpaca.historical import extract_bar_alpaca_list_api_from_barset
+from infra.process.api.alpaca.historical import extract_bar_list_alpaca_api_from_barset
 
 
 @pytest.mark.online
@@ -28,7 +28,7 @@ def test_get_bars():
         start='2024-01-01',
         timeframe=TimeFrameAlpaca.Day
     )
-    bars = extract_bar_alpaca_list_api_from_barset(barset)
+    bars = extract_bar_list_alpaca_api_from_barset(barset)
     assert isinstance(bars, list)
     assert all(isinstance(bar, Bar) for bar in bars)
 
