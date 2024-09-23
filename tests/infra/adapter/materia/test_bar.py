@@ -5,7 +5,7 @@ from infra.adapter.materia.bar import (
     adapt_bar_domain_to_sqlm,
     adapt_bar_list_domain_to_sqlm,
     adapt_bar_list_sqlm_to_domain,
-    adapt_timeframe_domain_to_alpaca,
+    adapt_timeframe_domain_to_alpaca_api,
 )
 from infra.db.table.bar import TblBarDayAlpaca, TblBarHourAlpaca, TblBarMinAlpaca
 from tests.utils.factory.domain.materia.bar import generate_bar_list
@@ -13,12 +13,12 @@ from tests.utils.factory.infra.api.alpaca import generate_bar_alpaca
 from tests.utils.factory.infra.db.table.bar import generate_tbl_bar_base_list
 
 
-def test_adapt_timeframe_domain_to_alpaca():
-    assert isinstance(adapt_timeframe_domain_to_alpaca(Timeframe.MIN), TimeFrameAlpaca)
-    assert isinstance(adapt_timeframe_domain_to_alpaca(Timeframe.HOUR), TimeFrameAlpaca)
-    assert isinstance(adapt_timeframe_domain_to_alpaca(Timeframe.DAY), TimeFrameAlpaca)
-    assert isinstance(adapt_timeframe_domain_to_alpaca(Timeframe.WEEK), TimeFrameAlpaca)
-    assert isinstance(adapt_timeframe_domain_to_alpaca(Timeframe.MONTH), TimeFrameAlpaca)
+def test_adapt_timeframe_domain_to_alpaca_api():
+    assert isinstance(adapt_timeframe_domain_to_alpaca_api(Timeframe.MIN), TimeFrameAlpaca)
+    assert isinstance(adapt_timeframe_domain_to_alpaca_api(Timeframe.HOUR), TimeFrameAlpaca)
+    assert isinstance(adapt_timeframe_domain_to_alpaca_api(Timeframe.DAY), TimeFrameAlpaca)
+    assert isinstance(adapt_timeframe_domain_to_alpaca_api(Timeframe.WEEK), TimeFrameAlpaca)
+    assert isinstance(adapt_timeframe_domain_to_alpaca_api(Timeframe.MONTH), TimeFrameAlpaca)
 
 
 def test_adapt_bar_domain_to_sqlm():

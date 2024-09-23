@@ -5,7 +5,7 @@ from typing import Optional
 from domain.materia.bar.model import Timeframe
 from infra.adapter.materia.bar import (
     adapt_bar_list_sqlm_to_domain,
-    adapt_timeframe_domain_to_alpaca,
+    adapt_timeframe_domain_to_alpaca_api,
 )
 from infra.api.alpaca.historical import get_bars
 from infra.db.peewee import PeeweeClient
@@ -33,7 +33,7 @@ class BarRepository:
         # barsデータを取得
         bars_alpc = get_bars(
             symbol=symbol,
-            timeframe=adapt_timeframe_domain_to_alpaca(timeframe),
+            timeframe=adapt_timeframe_domain_to_alpaca_api(timeframe),
             start=start,
             end=end
         )
