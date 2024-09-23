@@ -1,5 +1,5 @@
 import pytest
-from peewee import CharField, DatabaseProxy, Model, SqliteDatabase
+from peewee import SqliteDatabase
 
 from infra.db.peewee import DB_PROXY
 
