@@ -20,6 +20,13 @@ def convert_bar_list_alpaca_api_to_table(
         timeframe: Timeframe
 ) -> List[TableBarAlpaca]:
     """
+    TODO: この関数は分割されadapterへ移管されるべき。
+        alpaca_api -> domain: この流れは問題ない。だが、
+        domain -> table: この流れはもはや単純にはいかない。
+        bar_alpaca_tableの作り直しに伴い、今のようなHACKはもはや通用しなくなっている。
+        だったらもうこれはprocessではなくadapterの役割となるだろう。
+    """
+    """
     alpacaのバーのリストをDBのバーのリストに変換する。
 
     HACK: bar_alpaca_api -> bar_alpaca_tableへの変換過程
