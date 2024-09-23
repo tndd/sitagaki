@@ -1,9 +1,9 @@
 from datetime import datetime
 from os import getenv
-from typing import Optional
+from typing import List, Optional
 
 from alpaca.data.historical import StockHistoricalDataClient
-from alpaca.data.models.bars import BarSet
+from alpaca.data.models.bars import Bar, BarSet
 from alpaca.data.requests import StockBarsRequest
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
@@ -16,11 +16,11 @@ cli_hist = StockHistoricalDataClient(
 
 
 def get_bars(
-    symbol: str,
-    timeframe: TimeFrameAlpaca,
-    start: datetime,
-    end: Optional[datetime] = None
-) -> BarSet:
+        symbol: str,
+        timeframe: TimeFrameAlpaca,
+        start: datetime,
+        end: Optional[datetime] = None
+) -> List[Bar]:
     """
     日足のヒストリカルバー情報を取得。
     endを指定しなかった場合、可能な限り直近のデータを取得するようになってる。
