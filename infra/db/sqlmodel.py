@@ -10,7 +10,7 @@ from sqlmodel.sql.expression import SelectOfScalar
 class SQLModelClient:
     engine: Engine
 
-    def session(self) -> Session:
+    def get_session(self) -> Session:
         # WARN: exec_stmt実行後にモデルが解放されてしまうため、expire_on_commit=Falseとしている。
         return Session(self.engine, expire_on_commit=False)
 
@@ -19,7 +19,7 @@ class SQLModelClient:
         渡されたモデルそのままDBに登録する。
         """
         # TODO: 引数が１つのモデルである場合、自動的にリストに変換する
-        with self.session() as session:
+        with self.get_session() as session:
             session.add_all(models)
             session.commit()
 
@@ -27,6 +27,6 @@ class SQLModelClient:
         """
         selectステートメントを実行し、モデルのリストを返す。
         """
-        with self.session() as session:
+        with self.get_session() as session:
             result = session.exec(stmt).all()
         return result
