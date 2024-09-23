@@ -1,6 +1,7 @@
 from typing import List
 
-from alpaca.data.models import BarSet
+from alpaca.data.models import Bar as BarAlpacaApi
+from alpaca.data.models import BarSet as BarSetAlpacaApi
 
 from domain.materia.bar.model import Bar, Timeframe
 from infra.adapter.materia.bar import adapt_bar_domain_to_sqlm
@@ -9,15 +10,15 @@ from infra.db.table.bar import TblBarBase
 # TODO: adapterをtable_bar_alpacaに対応させる
 
 
-def extract_bar_alpaca_list_from_barset(barset: BarSet) -> List[Bar]:
+def extract_bar_alpaca_list_api_from_barset(barset: BarSetAlpacaApi) -> List[BarAlpacaApi]:
     """
     BarSetの中からBarのリストを取り出す。
     """
     return next(iter(barset.data.values()))
 
 
-def convert_bar_alpaca_list_to_sqlm(
-        bars_alpaca: List[Bar],
+def convert_bar_alpaca_list_api_to_table(
+        bars_alpaca_api: List[BarAlpacaApi],
         timeframe: Timeframe
 ) -> List[TblBarBase]:
     """
@@ -31,4 +32,4 @@ def convert_bar_alpaca_list_to_sqlm(
         たまたま、alpacaのバーとdomainのバーは同じデータ構造をしているため、
         このような変換が可能になっている。
     """
-    return [adapt_bar_domain_to_sqlm(bar, timeframe) for bar in bars_alpaca]
+    return [adapt_bar_domain_to_sqlm(bar, timeframe) for bar in bars_alpaca_api]
