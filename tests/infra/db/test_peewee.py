@@ -80,3 +80,80 @@ def test_insert_models_performance(test_peewee_cli):
     # データ取得
     retrieved_users = User.select()
     assert len(retrieved_users) == N
+
+
+def test_practice_select_models(test_peewee_cli):
+    """
+    データ取得のテスト
+
+    1. 単純な取得
+        10件のデータが取得できていること
+    2. aaa.comで絞り込み
+        astar, barbaraの2件のデータのみ取得できていること
+    3. aaa.comかつastarの絞り込み
+        astarのデータのみ取得できていること
+    4. aaa.com または bbb.comで絞り込み
+        astar, barbara, casper, dominant, edward, froite
+          6件のデータが取得できていること
+    5. ddd.comで絞り込み
+        何もデータが取得できないこと
+    6. 正規表現: 名前がaから始まる
+        astarのみ取得できていること
+    7. 正規表現: 名前がjから始まる or 名前がrで終わる
+        joseph, astar, casperの3件のデータが取得できていること
+    """
+    users = [
+        User(username='astar', email='user1@aaa.com'),
+        User(username='barbara', email='user2@aaa.com'),
+        User(username='casper', email='user3@bbb.com'),
+        User(username='dominant', email='user4@bbb.com'),
+        User(username='edward', email='user5@bbb.com'),
+        User(username='froite', email='user6@bbb.com'),
+        User(username='gabriel', email='user7@ccc.com'),
+        User(username='hannah', email='user8@ccc.com'),
+        User(username='isaac', email='user9@ccc.com'),
+        User(username='joseph', email='user10@ccc.com'),
+    ]
+    test_peewee_cli.insert_models(users)
+    # 1. 単純な取得
+    retrieved_users = User.select()
+    assert len(retrieved_users) == 10
+    # 2. aaa.comで絞り込み
+    retrieved_users = User.select().where(User.email.contains('aaa.com'))
+    assert len(retrieved_users) == 2
+    assert set(['astar', 'barbara']) == set(u.username for u in retrieved_users)
+    # 3. aaa.comかつastarの絞り込み
+    retrieved_users = User.select().where(
+        User.email.contains('aaa.com')
+        & (User.username == 'astar')
+    )
+    assert len(retrieved_users) == 1
+    # 4. aaa.com または bbb.comで絞り込み
+    retrieved_users = User.select().where(
+        (
+            User.email.contains('aaa.com')
+            | User.email.contains('bbb.com')
+        )
+    )
+    assert len(retrieved_users) == 6
+    assert set(
+        [
+            'astar',
+            'barbara',
+            'casper',
+            'dominant',
+            'edward',
+            'froite'
+        ]
+    ) == set(u.username for u in retrieved_users)
+    # 5. ddd.comで絞り込み
+    retrieved_users = User.select().where(User.email.contains('ddd.com'))
+    assert len(retrieved_users) == 0
+    # 6. 正規表現: 名前がaから始まる
+    retrieved_users = User.select().where(User.username.startswith('a'))
+    assert len(retrieved_users) == 1
+    assert set(['astar']) == set(u.username for u in retrieved_users)
+    # 7. 正規表現: 名前がjから始まる or 名前がrで終わる
+    retrieved_users = User.select().where((User.username.startswith('j') | User.username.endswith('r')))
+    assert len(retrieved_users) == 3
+    assert set(['joseph', 'astar', 'casper']) == set(u.username for u in retrieved_users)

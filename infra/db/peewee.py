@@ -22,6 +22,3 @@ class PeeweeClient:
         # モデルをデータベースに挿入
         with self.db.atomic():
             TModel.bulk_create(models)
-
-    def select_models(self, model: Model):
-        pass
