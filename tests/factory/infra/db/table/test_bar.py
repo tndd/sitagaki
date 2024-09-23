@@ -1,12 +1,12 @@
 from infra.db.table.bar import TblBarBase
 from tests.utils.factory.infra.db.table.bar import (
-    generate_tbl_bar_base,
+    generate_table_bar_alpaca,
     generate_tbl_bar_base_list,
 )
 
 
 def test_generate_tbl_bar_base():
-    tbl_bar_base = generate_tbl_bar_base()
+    tbl_bar_base = generate_table_bar_alpaca()
     assert isinstance(tbl_bar_base, TblBarBase)
 
 

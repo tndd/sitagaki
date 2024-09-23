@@ -13,7 +13,6 @@ import pytest
 # テスト用fixture
 # from tests.utils.fixture.domain.materia.bar import test_bar_repo # WARN: table_alpaca_barテスト用にコメントアウト
 from tests.utils.fixture.infra.db.peewee import test_peewee_cli
-from tests.utils.fixture.infra.db.sqlmodel import test_engine, test_sqlm_cli
 
 
 @pytest.fixture(scope="session", autouse=True)
