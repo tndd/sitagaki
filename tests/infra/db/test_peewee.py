@@ -61,3 +61,22 @@ def test_insert_models_multiple(test_peewee_cli):
     # さらにテーブル内容を確認する
     retrieved_users = User.select().where(User.username == 'user1')
     assert len(retrieved_users) == 2
+
+
+def test_insert_models_performance(test_peewee_cli):
+    """
+    挿入性能のテスト
+
+    bulk_createのスピード検証用。
+    調査の結果、個別にmodel.save()を呼び出す場合の２倍のスピードが出た。
+    """
+    # データを作成
+    N = 10000
+    users = [
+        User(username=f'user{i}', email=f'user{i}@example.com') for i in range(N)
+    ]
+    # データ挿入
+    test_peewee_cli.insert_models(users)
+    # データ取得
+    retrieved_users = User.select()
+    assert len(retrieved_users) == N
