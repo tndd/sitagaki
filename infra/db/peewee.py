@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 
-from peewee import Database, Model
+from peewee import Database, DatabaseProxy, Model
 
+db_proxy = DatabaseProxy()
 
 @dataclass
 class PeeweeClient:

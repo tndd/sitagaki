@@ -1,8 +1,8 @@
 from peewee import CharField, DatabaseProxy, Model, SqliteDatabase
 
 from infra.db.peewee import PeeweeClient
+from tests.utils.fixture.infra.db.peewee import db_proxy
 
-db_proxy = DatabaseProxy()
 
 class BaseModel(Model):
     class Meta:
@@ -13,10 +13,8 @@ class User(BaseModel):
     email = CharField()
 
 
-def test_insert_models():
-    db_in_memory = SqliteDatabase(':memory:')
-    db_proxy.initialize(db_in_memory)
-    peewee_client = PeeweeClient(db_in_memory)
+def test_insert_models(test_peewee_db):
+    peewee_client = PeeweeClient(test_peewee_db)
     # 挿入するユーザーインスタンスのリストを作成
     users = [
         User(username='user1', email='user1@example.com'),
@@ -37,13 +35,11 @@ def test_insert_models():
     assert retrieved_users[2].email == 'user3@example.com'
 
 
-def test_insert_models_multiple():
+def test_insert_models_multiple(test_peewee_db):
     """
     複数回にわたって挿入する場合のテスト
     """
-    db_in_memory = SqliteDatabase(':memory:')
-    db_proxy.initialize(db_in_memory)
-    peewee_client = PeeweeClient(db_in_memory)
+    peewee_client = PeeweeClient(test_peewee_db)
     # 挿入するユーザーインスタンスのリストを作成
     users = [
         User(username='user1', email='user1@example.com'),
