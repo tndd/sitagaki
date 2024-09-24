@@ -7,6 +7,8 @@ from domain.materia.bar.model import Timeframe
 from infra.adapter.materia.bar import adapt_bar_domain_to_sqlm
 from infra.db.table.bar import TableBarAlpaca
 
+# TODO: 移動完了後削除
+
 
 def extract_bar_list_alpaca_api_from_barset(barset: BarSetAlpacaApi) -> List[BarAlpacaApi]:
     """
