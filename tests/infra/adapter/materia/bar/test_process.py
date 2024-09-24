@@ -5,7 +5,7 @@ from infra.adapter.materia.bar.process import (
     convert_bar_list_alpaca_api_to_table,
     extract_bar_list_alpaca_api_from_barset,
 )
-from infra.db.table.bar import TblBarDayAlpaca
+from infra.db.table.bar import TableBarAlpaca
 from tests.utils.factory.infra.api.alpaca import (
     generate_bar_alpaca_list,
     generate_barset_alpaca,
@@ -26,4 +26,4 @@ def test_convert_bar_list_alpaca_api_to_table():
     bar_alpaca_list = generate_bar_alpaca_list()
     tbl_bars_alpaca = convert_bar_list_alpaca_api_to_table(bar_alpaca_list, Timeframe.DAY)
     assert isinstance(tbl_bars_alpaca, list)
-    assert all(isinstance(tbl_bar, TblBarDayAlpaca) for tbl_bar in tbl_bars_alpaca)
+    assert all(isinstance(tbl_bar, TableBarAlpaca) for tbl_bar in tbl_bars_alpaca)

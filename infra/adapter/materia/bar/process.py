@@ -4,7 +4,6 @@ from alpaca.data.models import Bar as BarAlpacaApi
 from alpaca.data.models import BarSet as BarSetAlpacaApi
 
 from domain.materia.bar.model import Timeframe
-from infra.adapter.materia.bar import adapt_bar_domain_to_sqlm
 from infra.db.table.bar import TableBarAlpaca
 
 
@@ -20,13 +19,6 @@ def convert_bar_list_alpaca_api_to_table(
         timeframe: Timeframe
 ) -> List[TableBarAlpaca]:
     """
-    TODO: この関数は分割されadapterへ移管されるべき。
-        alpaca_api -> domain: この流れは問題ない。だが、
-        domain -> table: この流れはもはや単純にはいかない。
-        bar_alpaca_tableの作り直しに伴い、今のようなHACKはもはや通用しなくなっている。
-        だったらもうこれはprocessではなくadapterの役割となるだろう。
-    """
-    """
     alpacaのバーのリストをDBのバーのリストに変換する。
 
     HACK: bar_alpaca_api -> bar_alpaca_tableへの変換過程
@@ -37,4 +29,4 @@ def convert_bar_list_alpaca_api_to_table(
         たまたま、alpaca_apiのバーとdomainのバーは同じデータ構造をしているため、
         このような変換が可能になっている。
     """
-    return [adapt_bar_domain_to_sqlm(bar, timeframe) for bar in bars_alpaca_api]
+    pass

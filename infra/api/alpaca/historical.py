@@ -7,7 +7,7 @@ from alpaca.data.models.bars import Bar, BarSet
 from alpaca.data.requests import StockBarsRequest
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
-from infra.process.api.alpaca.historical import extract_bar_list_alpaca_api_from_barset
+from infra.adapter.materia.bar.process import extract_bar_list_alpaca_api_from_barset
 
 cli_hist = StockHistoricalDataClient(
     api_key=getenv('APCA_KEY'),

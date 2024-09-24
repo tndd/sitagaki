@@ -7,10 +7,10 @@ from infra.adapter.materia.bar import (
     adapt_bar_list_sqlm_to_domain,
     adapt_timeframe_domain_to_alpaca_api,
 )
+from infra.adapter.materia.bar.process import convert_bar_list_alpaca_api_to_table
 from infra.api.alpaca.historical import get_bars
 from infra.db.peewee import PeeweeClient
 from infra.db.stmt.materia.bar import get_stmt_select_bar
-from infra.process.api.alpaca.historical import convert_bar_list_alpaca_api_to_table
 
 
 @dataclass
