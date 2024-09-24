@@ -29,10 +29,10 @@ class Adjustment(Enum):
     例えば、株式分割後に株価が半分になった場合、SPLIT調整済みデータでは
     分割前の株価も半分に調整されるため、連続的な価格推移を見ることができる。
     """
-    RAW = 'raw'
-    SPLIT = 'split'
-    DEVIDED = 'devided'
-    ALL = 'all'
+    RAW = 'R'
+    SPLIT = 'S'
+    DIVIDED = 'D'
+    ALL = 'A'
 
 
 class Bar(BaseModel):

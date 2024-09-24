@@ -7,7 +7,7 @@ from infra.adapter.materia.bar.depart import (
     depart_timeframe_to_alpaca_api,
 )
 from infra.db.table.bar import TableBarAlpaca
-from tests.utils.factory.domain.materia.bar import generate_bar, generate_bar_list
+from tests.utils.factory.domain.materia.bar import generate_bar, generate_chart
 
 
 def test_depart_timeframe_to_alpaca_api():
