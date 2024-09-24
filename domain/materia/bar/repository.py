@@ -41,9 +41,9 @@ class BarRepository:
             start=start,
             end=end
         )
-        # 変換: alpaca_api -> domain
+        # adapt: <= alpaca_api
         bar_list = arrive_chart_from_alpaca_api_list(bar_list_alpaca_api)
-        # 変換: domain -> peewee_table
+        # adapt: => peewee_table
         bar_list_peewee_table = depart_bar_list_to_peewee_table(bar_list)
         # DBのモデルリストを保存
         self.cli_db.insert_models(bar_list_peewee_table)
