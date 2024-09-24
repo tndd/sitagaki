@@ -27,6 +27,7 @@ def depart_timeframe_to_alpaca_api(timeframe: Timeframe) -> TimeFrameAlpaca:
         )
     return timeframe_map[timeframe]
 
+
 def depart_timeframe_to_peewee_table(timeframe: Timeframe) -> int:
     """
     Timeframe:
