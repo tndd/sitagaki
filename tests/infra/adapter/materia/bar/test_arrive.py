@@ -1,9 +1,11 @@
 from domain.materia.bar.model import Adjustment, Bar, Chart, Timeframe
 from infra.adapter.materia.bar.arrive import (
+    arrive_adjustment_from_peewee_table,
     arrive_bar_from_alpaca_api,
     arrive_bar_from_peewee_table,
-    arrive_bar_list_from_peewee_table,
     arrive_chart_from_alpaca_api_list,
+    arrive_chart_from_peewee_table,
+    arrive_timeframe_from_peewee_table,
 )
 from tests.utils.factory.infra.api.alpaca import (
     generate_bar_alpaca,
@@ -46,8 +48,35 @@ def test_arrive_bar_from_peewee_table():
     assert isinstance(bar, Bar)
 
 
-def test_arrive_bar_list_from_peewee_table():
+def test_arrive_timeframe_from_peewee_table():
+    """
+    bar_peewee_table => Timeframe
+
+    timeframeがminであることが期待できる。
+    """
+    bar_peewee_table = generate_table_bar_alpaca()
+    timeframe = arrive_timeframe_from_peewee_table(bar_peewee_table)
+    assert isinstance(timeframe, Timeframe)
+    assert timeframe == Timeframe.MIN
+
+
+def test_arrive_adjustment_from_peewee_table():
+    """
+    bar_peewee_table => Adjustment
+
+    adjustmentがrawであることが期待できる。
+    """
+    bar_peewee_table = generate_table_bar_alpaca()
+    adjustment = arrive_adjustment_from_peewee_table(bar_peewee_table)
+    assert isinstance(adjustment, Adjustment)
+    assert adjustment == Adjustment.RAW
+
+
+def test_arrive_chart_from_peewee_table():
     """
     bar_peewee_table<List> => Bar<List>
     """
-    pass
+    bar_peewee_table_list = generate_table_bar_alpaca_list()
+    chart = arrive_chart_from_peewee_table(bar_peewee_table_list)
+    assert isinstance(chart, Chart)
+    assert all(isinstance(bar, Bar) for bar in chart.bars)

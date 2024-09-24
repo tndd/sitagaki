@@ -44,7 +44,7 @@ def arrive_chart_from_alpaca_api_list(
 def arrive_bar_from_peewee_table(bar_peewee_table: TableBarAlpaca) -> Bar:
     """
     Bar:
-        Peewee Table -> Domain
+        PeeweeTable -> Domain
     """
     return Bar(
         timestamp=bar_peewee_table.timestamp,
@@ -57,10 +57,46 @@ def arrive_bar_from_peewee_table(bar_peewee_table: TableBarAlpaca) -> Bar:
         vwap=bar_peewee_table.vwap,
     )
 
+def arrive_timeframe_from_peewee_table(bar_peewee_table: TableBarAlpaca) -> Timeframe:
+    """
+    PeeweeTable -> Timeframe
+    """
+    mapping = {
+        1: Timeframe.MIN,
+        2: Timeframe.HOUR,
+        4: Timeframe.DAY,
+        8: Timeframe.WEEK,
+        16: Timeframe.MONTH,
+    }
+    return mapping[bar_peewee_table.timeframe]
 
-def arrive_bar_list_from_peewee_table(bars_peewee_table: List[TableBarAlpaca]) -> List[Bar]:
+
+def arrive_adjustment_from_peewee_table(bar_peewee_table: TableBarAlpaca) -> Adjustment:
     """
-    Bar<List>:
-        Peewee Table -> Domain
+    PeeweeTable -> Domain
     """
-    return [arrive_bar_from_peewee_table(bar) for bar in bars_peewee_table]
+    mapping = {
+        1: Adjustment.RAW,
+        2: Adjustment.SPLIT,
+        4: Adjustment.DIVIDEND,
+        8: Adjustment.ALL,
+    }
+    return mapping[bar_peewee_table.adjustment]
+
+
+
+def arrive_chart_from_peewee_table(bars_peewee_table: List[TableBarAlpaca]) -> Chart:
+    """
+    Chart:
+        PeeweeTable<List> -> Domain
+    """
+    symbol = bars_peewee_table[0].symbol
+    timeframe = arrive_timeframe_from_peewee_table(bars_peewee_table[0])
+    adjustment = arrive_adjustment_from_peewee_table(bars_peewee_table[0])
+    bars = [arrive_bar_from_peewee_table(bar) for bar in bars_peewee_table]
+    return Chart(
+        symbol=symbol,
+        timeframe=timeframe,
+        adjustment=adjustment,
+        bars=bars
+    )
