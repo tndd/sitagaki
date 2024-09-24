@@ -8,7 +8,7 @@ from infra.adapter.materia.bar.arrive import (
     arrive_chart_from_alpaca_api_list,
 )
 from infra.adapter.materia.bar.depart import (
-    depart_bar_list_to_peewee_table,
+    depart_chart_to_peewee_table_list,
     depart_timeframe_to_alpaca_api,
 )
 from infra.api.alpaca.historical import get_bars
@@ -42,9 +42,9 @@ class BarRepository:
             end=end
         )
         # adapt: <= alpaca_api
-        bar_list = arrive_chart_from_alpaca_api_list(bar_list_alpaca_api)
+        chart = arrive_chart_from_alpaca_api_list(bar_list_alpaca_api)
         # adapt: => peewee_table
-        bar_list_peewee_table = depart_bar_list_to_peewee_table(bar_list)
+        bar_list_peewee_table = depart_chart_to_peewee_table_list(chart)
         # DBのモデルリストを保存
         self.cli_db.insert_models(bar_list_peewee_table)
 
@@ -53,6 +53,7 @@ class BarRepository:
             self,
             symbol: str,
             timeframe: Timeframe,
+            adjustment: Adjustment,
             start: datetime = datetime(2000, 1, 1),
             end: datetime = datetime.now()
     ) -> None:
@@ -61,10 +62,12 @@ class BarRepository:
 
         デフォルトの取得範囲は2000-01-01~now。
         """
+        # TODO: sqlmの時代から何も修正を加えていない
         # 取得に必要なstmtを作成
         stmt = get_stmt_select_bar(
             symbol=symbol,
             timeframe=timeframe,
+            adjustment=adjustment,
             start=start,
             end=end
         )
