@@ -7,7 +7,7 @@ from domain.materia.bar.model import Bar, Timeframe
 from infra.db.table.bar import TableBarAlpaca
 
 
-def depart_timeframe_alpaca_api(timeframe: Timeframe) -> TimeFrameAlpaca:
+def depart_timeframe_to_alpaca_api(timeframe: Timeframe) -> TimeFrameAlpaca:
     """
     Timeframe:
         Domain -> Alpaca API
@@ -28,7 +28,7 @@ def depart_timeframe_alpaca_api(timeframe: Timeframe) -> TimeFrameAlpaca:
     return timeframe_map[timeframe]
 
 
-def depart_bar_peewee_table(bar: Bar, timeframe: Timeframe) -> TableBarAlpaca:
+def depart_bar_to_peewee_table(bar: Bar, timeframe: Timeframe) -> TableBarAlpaca:
     """
     Bar:
         Domain -> Peewee Table
@@ -37,7 +37,7 @@ def depart_bar_peewee_table(bar: Bar, timeframe: Timeframe) -> TableBarAlpaca:
     pass
 
 
-def depart_bar_list_peewee_table(
+def depart_bar_list_to_peewee_table(
         bars: List[Bar],
         timeframe: Timeframe
 ) -> List[TableBarAlpaca]:
@@ -45,4 +45,4 @@ def depart_bar_list_peewee_table(
     Bar<List>:
         Domain -> Peewee Table
     """
-    return [depart_bar_peewee_table(bar, timeframe) for bar in bars]
+    return [depart_bar_to_peewee_table(bar, timeframe) for bar in bars]

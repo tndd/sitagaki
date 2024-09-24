@@ -7,7 +7,7 @@ from domain.materia.bar.model import Bar, Timeframe
 from infra.db.table.bar import TableBarAlpaca
 
 
-def arrive_bar_peewee_table(bar_peewee_table: TableBarAlpaca) -> Bar:
+def arrive_bar_from_peewee_table(bar_peewee_table: TableBarAlpaca) -> Bar:
     """
     Bar:
         Peewee Table -> Domain
@@ -15,9 +15,9 @@ def arrive_bar_peewee_table(bar_peewee_table: TableBarAlpaca) -> Bar:
     pass
 
 
-def arrive_bar_list_peewee_table(bars_peewee_table: List[TableBarAlpaca]) -> List[Bar]:
+def arrive_bar_list_from_peewee_table(bars_peewee_table: List[TableBarAlpaca]) -> List[Bar]:
     """
     Bar<List>:
         Peewee Table -> Domain
     """
-    return [arrive_bar_peewee_table(bar) for bar in bars_peewee_table]
+    return [arrive_bar_from_peewee_table(bar) for bar in bars_peewee_table]
