@@ -37,10 +37,9 @@ class BarRepository:
             start=start,
             end=end
         )
-        # HACK: パフォーマンスのため、alpaca -> sqlmの変換をdomainを介さず直接行っている。
-        # TODO: adapterの書き換え
-        tbl_bars = convert_bar_list_alpaca_api_to_table(bars_alpc, timeframe)
-        # DBのモデルリストを保存
+        # TODO 変換: bar alpaca -> domain
+        # TODO 変換: domain -> peewee table
+        # TODO DBのモデルリストを保存
         self.cli_db.insert_models(tbl_bars)
 
 
