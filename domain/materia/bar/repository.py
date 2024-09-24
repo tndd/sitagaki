@@ -37,7 +37,7 @@ class BarRepository:
             start=start,
             end=end
         )
-        # TODO 変換: bar alpaca -> domain
+        # TODO 変換: alpaca api -> domain
         # TODO 変換: domain -> peewee table
         # TODO DBのモデルリストを保存
         self.cli_db.insert_models(tbl_bars)
