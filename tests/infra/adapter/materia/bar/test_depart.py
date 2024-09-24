@@ -20,6 +20,14 @@ def test_depart_timeframe_to_alpaca_api():
     assert isinstance(depart_timeframe_to_alpaca_api(Timeframe.MONTH), TimeFrameAlpaca)
 
 
+def test_depart_timeframe_to_peewee_table():
+    assert depart_timeframe_to_peewee_table(Timeframe.MIN) == 1
+    assert depart_timeframe_to_peewee_table(Timeframe.HOUR) == 2
+    assert depart_timeframe_to_peewee_table(Timeframe.DAY) == 4
+    assert depart_timeframe_to_peewee_table(Timeframe.WEEK) == 8
+    assert depart_timeframe_to_peewee_table(Timeframe.MONTH) == 16
+
+
 def test_depart_adjustment_to_peewee_table():
     assert depart_adjustment_to_peewee_table(Adjustment.RAW) == 1
     assert depart_adjustment_to_peewee_table(Adjustment.SPLIT) == 2
