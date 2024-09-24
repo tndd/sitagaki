@@ -7,16 +7,17 @@ from domain.materia.bar.model import Bar, Timeframe
 from infra.db.table.bar import TableBarAlpaca
 
 
-def adapt_bar_sqlm(bar_sqlm: TblBarBase) -> Bar:
-    return Bar.model_validate(bar_sqlm.model_dump())
-
-
-def adapt_bar_list_sqlm(bars_sqlm: List[TblBarBase]) -> List[Bar]:
+def arrive_bar_peewee_table(bar_peewee_table: TableBarAlpaca) -> Bar:
     """
-    DBから取得したバーのリストをドメイン層のバーのリストに変換する。
-
-    注意:
-        このDB->domainの変換は、Timeframeを気にしない。
-        なぜならdomain層のバーは、Timeframeを区別しないから。
+    Bar:
+        Peewee Table -> Domain
     """
-    return [adapt_bar_sqlm_to_domain(bar) for bar in bars_sqlm]
+    pass
+
+
+def arrive_bar_list_peewee_table(bars_peewee_table: List[TableBarAlpaca]) -> List[Bar]:
+    """
+    Bar<List>:
+        Peewee Table -> Domain
+    """
+    return [arrive_bar_peewee_table(bar) for bar in bars_peewee_table]
