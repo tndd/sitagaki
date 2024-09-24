@@ -37,7 +37,7 @@ class Adjustment(Enum):
 
 class Bar(BaseModel):
     """
-    ローソク足１本に当１本に当たるデータ。
+    ローソク足の一本を表す。
     """
     timestamp: datetime
     open: float
