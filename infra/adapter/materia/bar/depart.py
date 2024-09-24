@@ -82,8 +82,6 @@ def depart_bar_to_peewee_table(
     """
     Bar:
         Domain -> PeeweeTable
-
-    これは基本的に外部からは使われることはない。
     """
     return TableBarAlpaca(
         symbol=symbol,
