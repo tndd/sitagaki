@@ -3,7 +3,10 @@ from datetime import datetime
 from typing import Optional
 
 from domain.materia.bar.model import Timeframe
-from infra.adapter.materia.bar.arrive import arrive_bar_list_from_peewee_table
+from infra.adapter.materia.bar.arrive import (
+    arrive_bar_list_from_alpaca_api,
+    arrive_bar_list_from_peewee_table,
+)
 from infra.adapter.materia.bar.depart import (
     depart_bar_list_to_peewee_table,
     depart_timeframe_to_alpaca_api,
@@ -31,16 +34,18 @@ class BarRepository:
         2000-01-01から可能な限り最新のデータを取得する。
         """
         # barsデータを取得
-        bars_alpc = get_bars(
+        bar_list_alpaca_api = get_bars(
             symbol=symbol,
             timeframe=depart_timeframe_to_alpaca_api(timeframe),
             start=start,
             end=end
         )
-        # TODO 変換: alpaca api -> domain
-        # TODO 変換: domain -> peewee table
-        # TODO DBのモデルリストを保存
-        self.cli_db.insert_models(tbl_bars)
+        # 変換: alpaca_api -> domain
+        bar_list = arrive_bar_list_from_alpaca_api(bar_list_alpaca_api)
+        # 変換: domain -> peewee_table
+        bar_list_peewee_table = depart_bar_list_to_peewee_table(bar_list)
+        # DBのモデルリストを保存
+        self.cli_db.insert_models(bar_list_peewee_table)
 
 
     def fetch_bars_from_local(
