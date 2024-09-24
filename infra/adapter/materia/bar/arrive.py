@@ -10,8 +10,16 @@ def arrive_bar_from_alpaca_api(bar_alpaca_api: BarAlpacaApi) -> Bar:
     Bar:
         Alpaca API -> Domain
     """
-    # TODO: 実装
-    pass
+    return Bar(
+        timestamp=bar_alpaca_api.timestamp,
+        open=bar_alpaca_api.open,
+        high=bar_alpaca_api.high,
+        low=bar_alpaca_api.low,
+        close=bar_alpaca_api.close,
+        volume=bar_alpaca_api.volume,
+        trade_count=bar_alpaca_api.trade_count,
+        vwap=bar_alpaca_api.vwap,
+    )
 
 
 def arrive_bar_list_from_alpaca_api(bars_alpaca_api: List[BarAlpacaApi]) -> List[Bar]:
