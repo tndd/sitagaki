@@ -10,6 +10,7 @@ def arrive_bar_from_alpaca_api(bar_alpaca_api: BarAlpacaApi) -> Bar:
     Bar:
         Alpaca API -> Domain
     """
+    # TODO: 実装
     pass
 
 
@@ -26,6 +27,7 @@ def arrive_bar_from_peewee_table(bar_peewee_table: TableBarAlpaca) -> Bar:
     Bar:
         Peewee Table -> Domain
     """
+    # TODO: 実装
     pass
 
 
