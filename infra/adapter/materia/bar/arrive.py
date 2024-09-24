@@ -46,8 +46,16 @@ def arrive_bar_from_peewee_table(bar_peewee_table: TableBarAlpaca) -> Bar:
     Bar:
         Peewee Table -> Domain
     """
-    # TODO: 実装
-    pass
+    return Bar(
+        timestamp=bar_peewee_table.timestamp,
+        open=bar_peewee_table.open,
+        high=bar_peewee_table.high,
+        low=bar_peewee_table.low,
+        close=bar_peewee_table.close,
+        volume=bar_peewee_table.volume,
+        trade_count=bar_peewee_table.trade_count,
+        vwap=bar_peewee_table.vwap,
+    )
 
 
 def arrive_bar_list_from_peewee_table(bars_peewee_table: List[TableBarAlpaca]) -> List[Bar]:

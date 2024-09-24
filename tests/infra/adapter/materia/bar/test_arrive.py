@@ -9,6 +9,10 @@ from tests.utils.factory.infra.api.alpaca import (
     generate_bar_alpaca,
     generate_bar_alpaca_list,
 )
+from tests.utils.factory.infra.db.table.bar import (
+    generate_table_bar_alpaca,
+    generate_table_bar_alpaca_list,
+)
 
 
 def test_arrive_bar_from_alpaca_api():
@@ -34,10 +38,16 @@ def test_arrive_chart_from_alpaca_api_list():
 
 
 def test_arrive_bar_from_peewee_table():
-    # TODO: 実装
-    pass
+    """
+    bar_peewee_table => Bar
+    """
+    bar_peewee_table = generate_table_bar_alpaca()
+    bar = arrive_bar_from_peewee_table(bar_peewee_table)
+    assert isinstance(bar, Bar)
 
 
 def test_arrive_bar_list_from_peewee_table():
-    # TODO: 実装
+    """
+    bar_peewee_table<List> => Bar<List>
+    """
     pass
