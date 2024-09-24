@@ -1,7 +1,6 @@
 from datetime import datetime
-from typing import List
 
-from domain.materia.bar.model import Bar
+from domain.materia.bar.model import Adjustment, Bar, Chart, Timeframe
 
 
 def generate_bar() -> Bar:
@@ -18,13 +17,13 @@ def generate_bar() -> Bar:
     )
 
 
-def generate_bar_list() -> List[Bar]:
+def generate_chart() -> Chart:
     """
     AAPL,MSFTの日足のデータ
     * AAPLについては、2024/1/2~2024/1/4の3日間。
     * MSFTについては、2024/1/2~2024/1/3の2日間。
     """
-    return [
+    bars = [
         Bar(
             symbol="AAPL",
             timestamp=datetime(2024, 1, 2, 5, 0, 0),
@@ -81,3 +80,9 @@ def generate_bar_list() -> List[Bar]:
             vwap=184.370323
         )
     ]
+    return Chart(
+        symbol="AAPL",
+        timeframe=Timeframe.DAY,
+        adjustment=Adjustment.RAW,
+        bars=bars
+    )
