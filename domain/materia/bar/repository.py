@@ -2,10 +2,10 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional
 
-from domain.materia.bar.model import Timeframe
+from domain.materia.bar.model import Adjustment, Timeframe
 from infra.adapter.materia.bar.arrive import (
-    arrive_bar_list_from_alpaca_api,
     arrive_bar_list_from_peewee_table,
+    arrive_chart_from_alpaca_api_list,
 )
 from infra.adapter.materia.bar.depart import (
     depart_bar_list_to_peewee_table,
@@ -24,6 +24,7 @@ class BarRepository:
             self,
             symbol: str,
             timeframe: Timeframe,
+            adjustment: Adjustment,
             start: datetime = datetime(2000,1,1),
             end: Optional[datetime] = None
     ) -> None:
@@ -41,7 +42,7 @@ class BarRepository:
             end=end
         )
         # 変換: alpaca_api -> domain
-        bar_list = arrive_bar_list_from_alpaca_api(bar_list_alpaca_api)
+        bar_list = arrive_chart_from_alpaca_api_list(bar_list_alpaca_api)
         # 変換: domain -> peewee_table
         bar_list_peewee_table = depart_bar_list_to_peewee_table(bar_list)
         # DBのモデルリストを保存
