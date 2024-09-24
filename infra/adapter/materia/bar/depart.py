@@ -34,20 +34,20 @@ def depart_timeframe_to_peewee_table(timeframe: Timeframe) -> int:
 
     注意: TableBarAlpacaの定義を参照する事。
     """
-    timeframe_map = {
+    mapping = {
         Timeframe.MIN: 1,
         Timeframe.HOUR: 2,
         Timeframe.DAY: 4,
         Timeframe.WEEK: 8,
         Timeframe.MONTH: 16,
     }
-    if timeframe not in timeframe_map:
+    if timeframe not in mapping:
         raise ValueError(
             f"無効なTimeframe: {timeframe}。"
             f"サポートされているTimeframeは "
-            f"{', '.join(map(str, timeframe_map.keys()))} です。"
+            f"{', '.join(map(str, mapping.keys()))} です。"
         )
-    return timeframe_map[timeframe]
+    return mapping[timeframe]
 
 
 def depart_adjustment_to_peewee_table(adjustment: Adjustment) -> int:
@@ -57,19 +57,19 @@ def depart_adjustment_to_peewee_table(adjustment: Adjustment) -> int:
 
     注意: TableBarAlpacaの定義を参照する事。
     """
-    adjustment_map = {
+    mapping = {
         Adjustment.RAW: 1,
         Adjustment.SPLIT: 2,
         Adjustment.DEVIDED: 4,
         Adjustment.ALL: 8,
     }
-    if adjustment not in adjustment_map:
+    if adjustment not in mapping:
         raise ValueError(
             f"無効なAdjustment: {adjustment}。"
             f"サポートされているAdjustmentは "
-            f"{', '.join(map(str, adjustment_map.keys()))} です。"
+            f"{', '.join(map(str, mapping.keys()))} です。"
         )
-    return adjustment_map[adjustment]
+    return mapping[adjustment]
 
 
 def depart_bar_to_peewee_table(
