@@ -4,12 +4,7 @@ from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 from alpaca.data.timeframe import TimeFrameUnit
 
 from domain.materia.bar.model import Bar, Timeframe
-from infra.db.table.bar import (
-    TblBarBase,
-    TblBarDayAlpaca,
-    TblBarHourAlpaca,
-    TblBarMinAlpaca,
-)
+from infra.db.table.bar import TableBarAlpaca
 
 
 def adapt_timeframe_alpaca_api(timeframe: Timeframe) -> TimeFrameAlpaca:
@@ -33,19 +28,21 @@ def adapt_timeframe_alpaca_api(timeframe: Timeframe) -> TimeFrameAlpaca:
     return timeframe_map[timeframe]
 
 
-def adapt_bar_sqlm(bar: Bar, timeframe: Timeframe) -> TblBarBase:
-    data = bar.model_dump()
-    if timeframe is Timeframe.MIN:
-        return TblBarMinAlpaca.model_validate(data)
-    elif timeframe is Timeframe.HOUR:
-        return TblBarHourAlpaca.model_validate(data)
-    elif timeframe is Timeframe.DAY:
-        return TblBarDayAlpaca.model_validate(data)
+def adapt_bar_peewee_table(bar: Bar, timeframe: Timeframe) -> TableBarAlpaca:
+    """
+    Bar:
+        Domain -> Peewee Table
+    """
+    # TODO: 実装
     pass
 
 
-def adapt_bar_list_sqlm(
+def adapt_bar_list_table(
         bars: List[Bar],
         timeframe: Timeframe
-) -> List[TblBarBase]:
-    return [adapt_bar_domain_to_sqlm(bar, timeframe) for bar in bars]
+) -> List[TableBarAlpaca]:
+    """
+    Bar<List>:
+        Domain -> Peewee Table
+    """
+    return [adapt_bar_peewee_table(bar, timeframe) for bar in bars]

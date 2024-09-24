@@ -3,7 +3,10 @@ from datetime import datetime
 from typing import Optional
 
 from domain.materia.bar.model import Timeframe
-from infra.adapter.materia.bar.depart import adapt_timeframe_alpaca_api
+from infra.adapter.materia.bar.depart import (
+    adapt_bar_list_table,
+    adapt_timeframe_alpaca_api,
+)
 from infra.adapter.materia.bar.process import convert_bar_list_alpaca_api_to_table
 from infra.api.alpaca.historical import get_bars
 from infra.db.peewee import PeeweeClient
@@ -63,4 +66,4 @@ class BarRepository:
         # barデータをDBから取得
         bars_sqlm = self.cli_db.select_models(stmt)
         # 取得物をドメイン層のbarモデルのリストに変換して返す
-        return adapt_bar_list_sqlm_to_domain(bars_sqlm)
+        return adapt_bar_list_table(bars_sqlm)
