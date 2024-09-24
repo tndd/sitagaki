@@ -61,7 +61,7 @@ def depart_adjustment_to_peewee_table(adjustment: Adjustment) -> int:
     mapping = {
         Adjustment.RAW: 1,
         Adjustment.SPLIT: 2,
-        Adjustment.DEVIDED: 4,
+        Adjustment.DIVIDEND: 4,
         Adjustment.ALL: 8,
     }
     if adjustment not in mapping:

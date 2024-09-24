@@ -31,7 +31,7 @@ class Adjustment(Enum):
     """
     RAW = 'R'
     SPLIT = 'S'
-    DIVIDED = 'D'
+    DIVIDEND = 'D'
     ALL = 'A'
 
 
