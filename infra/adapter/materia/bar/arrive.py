@@ -1,6 +1,6 @@
 from typing import List
 
-from domain.materia.bar.model import Bar
+from domain.materia.bar.model import Adjustment, Bar, Chart, Timeframe
 from infra.api.alpaca.historical import Bar as BarAlpacaApi
 from infra.db.table.bar import TableBarAlpaca
 
@@ -22,12 +22,23 @@ def arrive_bar_from_alpaca_api(bar_alpaca_api: BarAlpacaApi) -> Bar:
     )
 
 
-def arrive_bar_list_from_alpaca_api(bars_alpaca_api: List[BarAlpacaApi]) -> List[Bar]:
+def arrive_chart_from_alpaca_api_list(
+        bars_alpaca_api: List[BarAlpacaApi],
+        adjustment: Adjustment,
+        timeframe: Timeframe
+) -> Chart:
     """
-    Bar<List>:
-        Alpaca API -> Domain
+    Chart:
+        AlpacaAPI<List> -> Domain
     """
-    return [arrive_bar_from_alpaca_api(bar) for bar in bars_alpaca_api]
+    bars = [arrive_bar_from_alpaca_api(bar) for bar in bars_alpaca_api]
+    symbol = bars_alpaca_api[0].symbol
+    return Chart(
+        symbol=symbol,
+        timeframe=timeframe,
+        adjustment=adjustment,
+        bars=bars
+    )
 
 
 def arrive_bar_from_peewee_table(bar_peewee_table: TableBarAlpaca) -> Bar:
