@@ -60,4 +60,3 @@ class Chart(BaseModel):
     timeframe: Timeframe
     adjustment: Adjustment
     bars: List[Bar]
-    exchange: Optional[str]
