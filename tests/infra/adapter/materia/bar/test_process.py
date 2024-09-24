@@ -1,11 +1,11 @@
 from alpaca.data.models import Bar
 
 from domain.materia.bar.model import Timeframe
-from infra.db.table.bar import TblBarDayAlpaca
-from infra.process.api.alpaca.historical import (
+from infra.adapter.materia.bar.process import (
     convert_bar_list_alpaca_api_to_table,
     extract_bar_list_alpaca_api_from_barset,
 )
+from infra.db.table.bar import TblBarDayAlpaca
 from tests.utils.factory.infra.api.alpaca import (
     generate_bar_alpaca_list,
     generate_barset_alpaca,
