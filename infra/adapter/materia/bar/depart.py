@@ -13,6 +13,10 @@ from infra.db.table.bar import (
 
 
 def adapt_timeframe_alpaca_api(timeframe: Timeframe) -> TimeFrameAlpaca:
+    """
+    Timeframe:
+        Domain -> Alpaca API
+    """
     timeframe_map = {
         Timeframe.MIN: TimeFrameAlpaca(amount=1, unit=TimeFrameUnit.Minute),
         Timeframe.HOUR: TimeFrameAlpaca(amount=1, unit=TimeFrameUnit.Hour),
