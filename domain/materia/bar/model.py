@@ -5,18 +5,18 @@ from typing import List, Optional
 from pydantic import BaseModel
 
 
-class Timeframe(Enum, str):
+class Timeframe(Enum):
     """
     どの時間におけるBarを表わしているのかを表す。
     """
-    MIN = "M"
-    HOUR = "H"
-    DAY = "D"
-    WEEK = "W"
-    MONTH = "M"
+    MIN = "Minute"
+    HOUR = "Hour"
+    DAY = "Day"
+    WEEK = "Week"
+    MONTH = "Month"
 
 
-class Adjustment(Enum, str):
+class Adjustment(Enum):
     """
     株価データの調整方法を表す。
 
