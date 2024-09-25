@@ -2,8 +2,11 @@ import pytest
 from alpaca.data.models import Bar, BarSet
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
-from infra.adapter.materia.bar.process import extract_bar_list_alpaca_api_from_barset
-from infra.api.alpaca.historical import get_barset
+from infra.api.alpaca.historical import (
+    extract_bar_list_alpaca_api_from_barset,
+    get_barset,
+)
+from tests.utils.factory.infra.api.alpaca import generate_barset_alpaca
 
 
 @pytest.mark.online
@@ -52,3 +55,13 @@ def test_get_barset():
     #         )
     #     )
     assert isinstance(barset, BarSet)
+
+
+def test_extract_bar_alpaca_list_api_from_barset():
+    """
+    BarSetの中からBarのリストを取り出す機能のテスト
+    """
+    barset = generate_barset_alpaca()
+    bars = extract_bar_list_alpaca_api_from_barset(barset)
+    assert isinstance(bars, list)
+    assert all(isinstance(bar, Bar) for bar in bars)
