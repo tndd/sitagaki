@@ -4,6 +4,15 @@ from domain.materia.bar.model import Adjustment, Bar, Chart, Timeframe
 from infra.api.alpaca.historical import Bar as BarAlpacaApi
 from infra.db.table.bar import TableBarAlpaca
 
+"""
+TODO: adapterをドメイン層へ移動
+    ドメイン層でインフラ側が関与する処理を行うのは不本意だが、
+    それでもディレクトリが肥大化するよりはいい。
+
+    それにadapterはあくまでドメインの処理であるならば、
+    ドメイン側に入っているのはおかしなことじゃない。
+"""
+
 
 def arrive_bar_from_alpaca_api(bar_alpaca_api: BarAlpacaApi) -> Bar:
     """
