@@ -1,5 +1,5 @@
-from infra.db.table.bar import TableBarAlpaca
-from tests.utils.factory.infra.db.table.bar import (
+from infra.db.peewee.table.bar import TableBarAlpaca
+from tests.utils.factory.infra.db.peewee.table.bar import (
     generate_table_bar_alpaca,
     generate_table_bar_alpaca_list,
 )

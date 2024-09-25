@@ -5,7 +5,7 @@ from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 from alpaca.data.timeframe import TimeFrameUnit
 
 from domain.materia.bar.model import Adjustment, Bar, Chart, Timeframe
-from infra.db.table.bar import TableBarAlpaca
+from infra.db.peewee.table.bar import TableBarAlpaca
 
 
 def depart_timeframe_to_alpaca_api(timeframe: Timeframe) -> TimeFrameAlpaca:

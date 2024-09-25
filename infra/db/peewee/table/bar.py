@@ -1,6 +1,6 @@
 from peewee import BitField, CharField, CompositeKey, DateTimeField, FloatField
 
-from infra.db.peewee import PeeweeTable
+from infra.db.peewee.client import PeeweeTable
 
 
 class TableBarAlpaca(PeeweeTable):

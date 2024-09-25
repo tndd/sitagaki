@@ -1,6 +1,6 @@
 from peewee import CharField
 
-from infra.db.peewee import PeeweeClient, PeeweeTable
+from infra.db.peewee.client import PeeweeClient, PeeweeTable
 
 
 # テスト用モデル

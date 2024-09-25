@@ -1,7 +1,7 @@
 import pytest
 from peewee import SqliteDatabase
 
-from infra.db.peewee import DB_PROXY, PeeweeClient
+from infra.db.peewee.client import DB_PROXY, PeeweeClient
 
 
 @pytest.fixture

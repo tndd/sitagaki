@@ -13,7 +13,7 @@ from domain.materia.bar.adapter.depart import (
 )
 from domain.materia.bar.model import Adjustment, Timeframe
 from infra.api.alpaca.historical import get_bars
-from infra.db.peewee import PeeweeClient
+from infra.db.peewee.client import PeeweeClient
 from infra.db.stmt.materia.bar import get_stmt_select_bar
 
 

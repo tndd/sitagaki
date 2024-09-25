@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from infra.db.table.bar import TableBarAlpaca
+from infra.db.peewee.table.bar import TableBarAlpaca
 
 
 def generate_table_bar_alpaca() -> TableBarAlpaca:

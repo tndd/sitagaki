@@ -4,8 +4,7 @@ from sqlmodel import between, select
 from sqlmodel.sql.expression import SelectOfScalar
 
 from domain.materia.bar.model import Timeframe
-from infra.db.table.bar import (TblBarDayAlpaca, TblBarHourAlpaca,
-                                TblBarMinAlpaca)
+from infra.db.peewee.table.bar import TblBarDayAlpaca, TblBarHourAlpaca, TblBarMinAlpaca
 
 
 def get_stmt_select_bar(
