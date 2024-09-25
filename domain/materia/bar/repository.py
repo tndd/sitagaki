@@ -10,7 +10,7 @@ from domain.materia.bar.adapter import (
     depart_timeframe_to_alpaca_api,
 )
 from domain.materia.bar.model import Adjustment, Timeframe
-from infra.api.alpaca.historical import get_bars
+from infra.api.alpaca.historical import get_bar_alpaca_api_list
 from infra.db.peewee.client import PeeweeClient
 
 
@@ -33,7 +33,7 @@ class BarRepository:
         2000-01-01から可能な限り最新のデータを取得する。
         """
         # barsデータを取得
-        bar_list_alpaca_api = get_bars(
+        bar_list_alpaca_api = get_bar_alpaca_api_list(
             symbol=symbol,
             timeframe=depart_timeframe_to_alpaca_api(timeframe),
             adjustment=depart_adjustment_to_alpaca_api(adjustment),

@@ -5,45 +5,25 @@ from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
 from infra.api.alpaca.historical import (
     extract_bar_list_alpaca_api_from_barset,
-    get_barset,
+    get_bar_alpaca_api_list,
+    get_barset_alpaca_api,
 )
 from tests.utils.factory.infra.api.alpaca import generate_barset_alpaca
 
 
-@pytest.mark.online
-def test_get_bars():
+def test_extract_bar_alpaca_list_api_from_barset():
     """
-    MEMO: barsの総合テストは冗長か？
-        get_barsの動作はかなりget_barsetと被ってるから、
-        barsetのテストを省略するべきだろうか？
-
-        外部で使われるget_barsだけでいいだろう。
-        test_get_barsetやtest_extract_bar_alpaca_list_from_barsetは
-        その部品でしかないのだから、その品質はこの総合テストで担保されるべきもの。
-
-        仮に外部との通信というコストを度外視できるなら、
-        全関数についてテストを行いカバレッジ１００％を目指すべきだろう。
-        そして外部との通信があるとはいえ負荷は最小限。
-        それならこのテストを追加するくらい問題ないんじゃないか？
-        こういう議論は通信容量が大容量で問題が実際に起こり始めた段階で行うべきではないか。
-
-    TODO: Mockを使った通信をシミュレートする
-        test_get_barですでに通信は行われているので、ここでは通信部はモックにする。
+    BarSetの中からBarのリストを取り出す機能のテスト
     """
-    barset = get_barset(
-        symbol='AAPL',
-        start='2024-01-01',
-        timeframe=TimeFrameAlpaca.Day,
-        adjustment=Adjustment.RAW
-    )
+    barset = generate_barset_alpaca()
     bars = extract_bar_list_alpaca_api_from_barset(barset)
     assert isinstance(bars, list)
     assert all(isinstance(bar, Bar) for bar in bars)
 
 
 @pytest.mark.online
-def test_get_barset():
-    barset = get_barset(
+def test_get_barset_alpaca_api():
+    barset = get_barset_alpaca_api(
         symbol='AAPL',
         start='2024-01-01',
         timeframe=TimeFrameAlpaca.Day,
@@ -63,11 +43,31 @@ def test_get_barset():
     assert isinstance(barset, BarSet)
 
 
-def test_extract_bar_alpaca_list_api_from_barset():
+@pytest.mark.online
+def test_get_bar_alpaca_api_list():
     """
-    BarSetの中からBarのリストを取り出す機能のテスト
+    MEMO: barsの総合テストは冗長か？
+        get_barsの動作はかなりget_barsetと被ってるから、
+        barsetのテストを省略するべきだろうか？
+
+        外部で使われるget_barsだけでいいだろう。
+        test_get_barsetやtest_extract_bar_alpaca_list_from_barsetは
+        その部品でしかないのだから、その品質はこの総合テストで担保されるべきもの。
+
+        仮に外部との通信というコストを度外視できるなら、
+        全関数についてテストを行いカバレッジ１００％を目指すべきだろう。
+        そして外部との通信があるとはいえ負荷は最小限。
+        それならこのテストを追加するくらい問題ないんじゃないか？
+        こういう議論は通信容量が大容量で問題が実際に起こり始めた段階で行うべきではないか。
+
+    TODO: Mockを使った通信をシミュレートする
+        test_get_barですでに通信は行われているので、ここでは通信部はモックにする。
     """
-    barset = generate_barset_alpaca()
-    bars = extract_bar_list_alpaca_api_from_barset(barset)
-    assert isinstance(bars, list)
-    assert all(isinstance(bar, Bar) for bar in bars)
+    bar_alpaca_api_list = get_bar_alpaca_api_list(
+        symbol='AAPL',
+        start='2024-01-01',
+        timeframe=TimeFrameAlpaca.Day,
+        adjustment=Adjustment.RAW
+    )
+    assert isinstance(bar_alpaca_api_list, list)
+    assert all(isinstance(bar, Bar) for bar in bar_alpaca_api_list)
