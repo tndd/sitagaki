@@ -1,9 +1,9 @@
 import pytest
+from infra.adapter.materia.bar import adapt_bar_list_domain_to_sqlm
+from infra.db.sqlmodel import SQLModelClient
 
 from domain.materia.bar.model import Timeframe
 from domain.materia.bar.repository import BarRepository
-from infra.adapter.materia.bar import adapt_bar_list_domain_to_sqlm
-from infra.db.sqlmodel import SQLModelClient
 from tests.utils.factory.domain.materia.bar import generate_bar_list
 
 
@@ -21,6 +21,10 @@ def prepare_test_bars_on_db(
 
     データはtimeframeで指定した先のテーブルに登録される。
     登録内容については、generate_bar_list()の内容を参照。
+
+    TODO: この関数の移動
+        fixutreにこれがいるのはおかしい。
+        だが移動先のディレクトリ名が悩ましい。
     """
     bars = generate_bar_list()
     tbl_bars = adapt_bar_list_domain_to_sqlm(bars, timeframe)
