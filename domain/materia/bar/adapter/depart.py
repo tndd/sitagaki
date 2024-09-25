@@ -1,5 +1,6 @@
 from typing import List
 
+from alpaca.data.requests import Adjustment as AdjustmentAlpaca
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 from alpaca.data.timeframe import TimeFrameUnit
 
@@ -26,6 +27,26 @@ def depart_timeframe_to_alpaca_api(timeframe: Timeframe) -> TimeFrameAlpaca:
             f"{', '.join(map(str, timeframe_map.keys()))} です。"
         )
     return timeframe_map[timeframe]
+
+
+def depart_adjustment_to_alpaca_api(adjustment: Adjustment) -> AdjustmentAlpaca:
+    """
+    Adjustment:
+        Domain -> Alpaca API
+    """
+    adjustment_map = {
+        Adjustment.RAW: AdjustmentAlpaca.RAW,
+        Adjustment.SPLIT: AdjustmentAlpaca.SPLIT,
+        Adjustment.DIVIDEND: AdjustmentAlpaca.DIVIDEND,
+        Adjustment.ALL: AdjustmentAlpaca.ALL,
+    }
+    if adjustment not in adjustment_map:
+        raise ValueError(
+            f"無効なAdjustment: {adjustment}。"
+            f"サポートされているAdjustmentは "
+            f"{', '.join(map(str, adjustment_map.keys()))} です。"
+        )
+    return adjustment_map[adjustment]
 
 
 def depart_timeframe_to_peewee_table(timeframe: Timeframe) -> int:

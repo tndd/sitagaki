@@ -1,6 +1,8 @@
+from alpaca.data.requests import Adjustment as AdjustmentAlpaca
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
 from domain.materia.bar.adapter.depart import (
+    depart_adjustment_to_alpaca_api,
     depart_adjustment_to_peewee_table,
     depart_bar_to_peewee_table,
     depart_chart_to_peewee_table_list,
@@ -18,6 +20,13 @@ def test_depart_timeframe_to_alpaca_api():
     assert isinstance(depart_timeframe_to_alpaca_api(Timeframe.DAY), TimeFrameAlpaca)
     assert isinstance(depart_timeframe_to_alpaca_api(Timeframe.WEEK), TimeFrameAlpaca)
     assert isinstance(depart_timeframe_to_alpaca_api(Timeframe.MONTH), TimeFrameAlpaca)
+
+
+def test_depart_adjustment_to_alpaca_api():
+    assert depart_adjustment_to_alpaca_api(Adjustment.RAW) == AdjustmentAlpaca.RAW
+    assert depart_adjustment_to_alpaca_api(Adjustment.SPLIT) == AdjustmentAlpaca.SPLIT
+    assert depart_adjustment_to_alpaca_api(Adjustment.DIVIDEND) == AdjustmentAlpaca.DIVIDEND
+    assert depart_adjustment_to_alpaca_api(Adjustment.ALL) == AdjustmentAlpaca.ALL
 
 
 def test_depart_timeframe_to_peewee_table():

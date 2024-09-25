@@ -7,6 +7,7 @@ from domain.materia.bar.adapter.arrive import (
     arrive_chart_from_alpaca_api_list,
 )
 from domain.materia.bar.adapter.depart import (
+    depart_adjustment_to_alpaca_api,
     depart_chart_to_peewee_table_list,
     depart_timeframe_to_alpaca_api,
 )
@@ -38,6 +39,7 @@ class BarRepository:
         bar_list_alpaca_api = get_bars(
             symbol=symbol,
             timeframe=depart_timeframe_to_alpaca_api(timeframe),
+            adjustment=depart_adjustment_to_alpaca_api(adjustment),
             start=start,
             end=end
         )
