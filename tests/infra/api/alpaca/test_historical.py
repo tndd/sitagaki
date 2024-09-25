@@ -1,4 +1,5 @@
 import pytest
+from alpaca.data.enums import Adjustment
 from alpaca.data.models import Bar, BarSet
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
@@ -29,7 +30,8 @@ def test_get_bars():
     barset = get_barset(
         symbol='AAPL',
         start='2024-01-01',
-        timeframe=TimeFrameAlpaca.Day
+        timeframe=TimeFrameAlpaca.Day,
+        adjustment=Adjustment.RAW
     )
     bars = extract_bar_list_alpaca_api_from_barset(barset)
     assert isinstance(bars, list)
@@ -41,7 +43,8 @@ def test_get_barset():
     barset = get_barset(
         symbol='AAPL',
         start='2024-01-01',
-        timeframe=TimeFrameAlpaca.Day
+        timeframe=TimeFrameAlpaca.Day,
+        adjustment=Adjustment.RAW
     )
     # NOTE: 将来的にはログなどの方法で中身を確認する方針に変更
     # 出力検証用

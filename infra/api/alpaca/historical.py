@@ -4,8 +4,8 @@ from typing import List, Optional
 
 from alpaca.data.historical import StockHistoricalDataClient
 from alpaca.data.models.bars import Bar, BarSet
-from alpaca.data.requests import StockBarsRequest
-from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
+from alpaca.data.requests import Adjustment, StockBarsRequest
+from alpaca.data.timeframe import TimeFrame
 
 cli_hist = StockHistoricalDataClient(
     api_key=getenv('APCA_KEY'),
@@ -22,7 +22,8 @@ def extract_bar_list_alpaca_api_from_barset(barset: BarSet) -> List[Bar]:
 
 def get_bars(
         symbol: str,
-        timeframe: TimeFrameAlpaca,
+        timeframe: TimeFrame,
+        adjustment: Adjustment,
         start: datetime,
         end: Optional[datetime] = None
 ) -> List[Bar]:
@@ -33,13 +34,14 @@ def get_bars(
     取得したBarSetはそのままリポジトリ側が扱うのは難しい。
     そこでこの関数ではBarSetからBarのリストを取り出して返却するまで行う。
     """
-    barset = get_barset(symbol, timeframe, start, end)
+    barset = get_barset(symbol, timeframe, adjustment, start, end)
     return extract_bar_list_alpaca_api_from_barset(barset)
 
 
 def get_barset(
     symbol: str,
-    timeframe: TimeFrameAlpaca,
+    timeframe: TimeFrame,
+    adjustment: Adjustment,
     start: datetime,
     end: Optional[datetime] = None
 ) -> BarSet:
@@ -50,6 +52,7 @@ def get_barset(
     rq = StockBarsRequest(
         symbol_or_symbols=symbol,
         timeframe=timeframe,
+        adjustment=adjustment,
         start=start,
         end=end if end else None
     )
