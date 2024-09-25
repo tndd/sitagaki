@@ -22,3 +22,14 @@ class PeeweeClient:
         # モデルをデータベースに挿入
         with self.db.atomic():
             TModel.bulk_create(models)
+
+    def exec_query(self):
+        """
+        TODO: queryを実行するメソッド
+            peeweeのqueryは明示的にexecute()を呼び出す必要はない。
+            だがクエリ実行はクライアントを介して行うという一貫性を持たせるため、
+             このメソッドを用意する。
+            それにクエリ実行の前後に何らかの処理を行うことも考えられるため、
+             このメソッドは完全に合理的でないわけではない。
+        """
+        pass
