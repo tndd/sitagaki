@@ -1,5 +1,4 @@
-from domain.materia.bar.model import Adjustment, Bar, Chart, Timeframe
-from infra.adapter.materia.bar.arrive import (
+from domain.materia.bar.adapter.arrive import (
     arrive_adjustment_from_peewee_table,
     arrive_bar_from_alpaca_api,
     arrive_bar_from_peewee_table,
@@ -7,6 +6,7 @@ from infra.adapter.materia.bar.arrive import (
     arrive_chart_from_peewee_table,
     arrive_timeframe_from_peewee_table,
 )
+from domain.materia.bar.model import Adjustment, Bar, Chart, Timeframe
 from tests.utils.factory.infra.api.alpaca import (
     generate_bar_alpaca,
     generate_bar_alpaca_list,

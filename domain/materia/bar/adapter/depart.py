@@ -6,15 +6,6 @@ from alpaca.data.timeframe import TimeFrameUnit
 from domain.materia.bar.model import Adjustment, Bar, Chart, Timeframe
 from infra.db.table.bar import TableBarAlpaca
 
-"""
-TODO: adapterをドメイン層へ移動
-    ドメイン層でインフラ側が関与する処理を行うのは不本意だが、
-    それでもディレクトリが肥大化するよりはいい。
-
-    それにadapterはあくまでドメインの処理であるならば、
-    ドメイン側に入っているのはおかしなことじゃない。
-"""
-
 
 def depart_timeframe_to_alpaca_api(timeframe: Timeframe) -> TimeFrameAlpaca:
     """

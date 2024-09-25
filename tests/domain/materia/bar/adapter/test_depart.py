@@ -1,13 +1,13 @@
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
-from domain.materia.bar.model import Adjustment, Timeframe
-from infra.adapter.materia.bar.depart import (
+from domain.materia.bar.adapter.depart import (
     depart_adjustment_to_peewee_table,
     depart_bar_to_peewee_table,
     depart_chart_to_peewee_table_list,
     depart_timeframe_to_alpaca_api,
     depart_timeframe_to_peewee_table,
 )
+from domain.materia.bar.model import Adjustment, Timeframe
 from infra.db.table.bar import TableBarAlpaca
 from tests.utils.factory.domain.materia.bar import generate_bar, generate_chart
 
