@@ -1,5 +1,5 @@
 from infra.db.peewee.client import PeeweeClient
-from tests.utils.factory.infra.db.peewee.table.bar import generate_table_bar_alpaca_list
+from tests.utils.factory.infra.db.peewee.bar import generate_table_bar_alpaca_list
 
 
 def prepare_test_bar_alpaca_on_db(db_cli: PeeweeClient) -> None:
