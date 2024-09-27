@@ -17,11 +17,17 @@ def generate_bar() -> Bar:
     )
 
 
-def generate_chart() -> Chart:
+def generate_chart(
+        symbol: str = "AAPL",
+        timeframe: Timeframe = Timeframe.DAY,
+        adjustment: Adjustment = Adjustment.RAW,
+) -> Chart:
     """
     AAPL,MSFTの日足のデータ
-    * AAPLについては、2024/1/2~2024/1/4の3日間。
-    * MSFTについては、2024/1/2~2024/1/3の2日間。
+        * adjustment="RAW"
+        * timeframe="DAY"
+        * AAPLについては、2024/1/2~2024/1/4の3日間。
+        * MSFTについては、2024/1/2~2024/1/3の2日間。
     """
     bars = [
         Bar(
@@ -81,8 +87,8 @@ def generate_chart() -> Chart:
         )
     ]
     return Chart(
-        symbol="AAPL",
-        timeframe=Timeframe.DAY,
-        adjustment=Adjustment.RAW,
+        symbol=symbol,
+        timeframe=timeframe,
+        adjustment=adjustment,
         bars=bars
     )
