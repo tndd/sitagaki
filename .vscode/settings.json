@@ -9,16 +9,53 @@
         "**/.pytest_cache": true
     },
     "todo-tree.general.tags": [
-        "BUG",
-        "HACK",
         "FIXME",
+        "BUG",
         "TODO",
+        "LATER",
         "[ ]",
         "[x]",
         "WARN",
-        "NOTE",
-        "LATER"
+        "HACK",
+        "NOTE"
     ],
+    "todo-tree.highlights.customHighlight": {
+        "FIXME": {
+            "icon": "flame",
+            "iconColour": "red",
+        },
+        "BUG": {
+            "icon": "bug",
+            "iconColour": "red",
+        },
+        "TODO": {
+            "iconColour": "orange",
+        },
+        "HACK": {
+            "icon": "tools",
+            "iconColour": "gray",
+        },
+        "XXX": {
+            "icon": "x"
+        },
+        "[ ]": {
+            "icon": "issue-draft"
+        },
+        "[x]": {
+            "icon": "issue-closed"
+        },
+        "WARN": {
+            "icon": "alert",
+            "iconColour": "gray",
+        },
+        "NOTE": {
+            "icon": "note",
+            "iconColour": "gray",
+        },
+        "LATER": {
+            "icon": "clock",
+        }
+    },
     "isort.args": [
         "--profile",
         "black"
