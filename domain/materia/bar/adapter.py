@@ -88,7 +88,7 @@ def arrive_adjustment_from_peewee_table(bar_peewee_table: TableBarAlpaca) -> Adj
     return mapping[bar_peewee_table.adjustment]
 
 
-def arrive_chart_from_peewee_table(bars_peewee_table: List[TableBarAlpaca]) -> Chart:
+def arrive_chart_from_peewee_table_list(bars_peewee_table: List[TableBarAlpaca]) -> Chart:
     """
     Chart:
         PeeweeTable<List> -> Domain

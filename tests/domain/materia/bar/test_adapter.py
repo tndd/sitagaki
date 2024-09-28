@@ -6,7 +6,7 @@ from domain.materia.bar.adapter import (
     arrive_bar_from_alpaca_api,
     arrive_bar_from_peewee_table,
     arrive_chart_from_bar_alpaca_api_list,
-    arrive_chart_from_peewee_table,
+    arrive_chart_from_peewee_table_list,
     arrive_timeframe_from_peewee_table,
     depart_adjustment_to_alpaca_api,
     depart_adjustment_to_peewee_table,
@@ -83,12 +83,12 @@ def test_arrive_adjustment_from_peewee_table():
     assert adjustment == Adjustment.RAW
 
 
-def test_arrive_chart_from_peewee_table():
+def test_arrive_chart_from_peewee_table_list():
     """
     bar_peewee_table<List> => Bar<List>
     """
     bar_peewee_table_list = generate_table_bar_alpaca_list()
-    chart = arrive_chart_from_peewee_table(bar_peewee_table_list)
+    chart = arrive_chart_from_peewee_table_list(bar_peewee_table_list)
     assert isinstance(chart, Chart)
     assert all(isinstance(bar, Bar) for bar in chart.bars)
 

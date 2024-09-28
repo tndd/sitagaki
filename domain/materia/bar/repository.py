@@ -4,7 +4,7 @@ from typing import Optional
 
 from domain.materia.bar.adapter import (
     arrive_chart_from_bar_alpaca_api_list,
-    arrive_chart_from_peewee_table,
+    arrive_chart_from_peewee_table_list,
     depart_adjustment_to_alpaca_api,
     depart_chart_to_peewee_table_list,
     depart_timeframe_to_alpaca_api,
@@ -73,4 +73,4 @@ class BarRepository:
         # barデータをDBから取得
         bar_list_peewee_table = self.cli_db.exec_query(query)
         # 取得物をドメイン層のbarモデルのリストに変換して返す
-        return arrive_chart_from_peewee_table(bar_list_peewee_table)
+        return arrive_chart_from_peewee_table_list(bar_list_peewee_table)
