@@ -114,6 +114,14 @@ def test_fetch_chart_from_local(test_bar_repo):
 
         raiseを受け取るのか、空のリストを返すのか。
         さらにはどこの段階で例外を返すか。考えることが色々ある。
+
+    方針:
+        リポジトリでは謎の該当なしリクエストが来たら、
+        取得件数０を返す方針でいいだろう。
+        リポジトリ内で例外処理をするというのは何かが違う。
+
+        やっぱり失敗時になんらかの対策を取りたいこともある。
+        ならリポジトリでtryするのは妥当。
     """
     chart = test_bar_repo.fetch_chart_from_local(
         symbol="NOSYMBOL",
