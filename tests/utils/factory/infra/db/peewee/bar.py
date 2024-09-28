@@ -40,6 +40,7 @@ def generate_table_bar_alpaca_list() -> list[TableBarAlpaca]:
     timeframe: 4 -> day
     adjustment: 1 -> raw
     """
+    # FIXME: テストデータの強化
     return [
         TableBarAlpaca(
             symbol="AAPL",
