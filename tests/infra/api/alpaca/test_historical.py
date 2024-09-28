@@ -21,11 +21,12 @@ def test_extract_bar_alpaca_list_api_from_barset():
     assert isinstance(bars, list)
     assert all(isinstance(bar, Bar) for bar in bars)
     """
-    case2: 異常系
-        BarSetが空の場合
+    case2: BarSetが空の場合
+        結果が十分に取得されている場合、
+        空のBarSetが返されることは考えられる。
 
     期待結果:
-        空のリストが返される
+        空のBarリストが返される。
     """
     # 空のBarSetを生成
     barset_empty = BarSet(raw_data={'NOSYMBOL': []})
