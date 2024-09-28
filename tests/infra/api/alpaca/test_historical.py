@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import pytest
 from alpaca.data.enums import Adjustment
 from alpaca.data.models import Bar, BarSet
@@ -42,7 +44,7 @@ def test_get_barset_alpaca_api():
     """
     barset_empty = get_barset_alpaca_api(
         symbol='AAPL',
-        start='2024-01-01',
+        start=datetime(2024,1,1),
         timeframe=TimeFrameAlpaca.Day,
         adjustment=Adjustment.RAW
     )
@@ -59,7 +61,7 @@ def test_get_barset_alpaca_api():
     SYMBOL_DUMMY = 'NOSYMBOL'
     barset_empty = get_barset_alpaca_api(
         symbol=SYMBOL_DUMMY,
-        start='2024-01-01',
+        start=datetime(2024,1,1),
         timeframe=TimeFrameAlpaca.Day,
         adjustment=Adjustment.RAW
     )
