@@ -74,7 +74,7 @@ def test_get_barset_alpaca_api():
     assert isinstance(barset, BarSet)
 
 
-# @pytest.mark.online
+@pytest.mark.online
 def test_get_bar_alpaca_api_list():
     """
     TODO: Mockを使った通信をシミュレートする
