@@ -108,6 +108,13 @@ def test_fetch_chart_from_local(test_bar_repo):
     期待される結果:
         1. 取得件数は0件
     """
+    """
+    FIXME: 取得件数０の場合のテスト修正
+        取得件数０の場合の振る舞いを考える必要がある。
+
+        raiseを受け取るのか、空のリストを返すのか。
+        さらにはどこの段階で例外を返すか。考えることが色々ある。
+    """
     chart = test_bar_repo.fetch_chart_from_local(
         symbol="NOSYMBOL",
         timeframe=Timeframe.DAY,
