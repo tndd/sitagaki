@@ -8,6 +8,9 @@ def prepare_test_bar_alpaca_on_db(db_cli: PeeweeClient) -> None:
 
     データはtimeframeで指定した先のテーブルに登録される。
     登録内容については、generate_table_bar_alpaca_list()の内容を参照。
+
+    用意されるデータはテスト用に完全固定された値なので、変更の余地はない。
+    よって引数もなし。
     """
     bar_tables_alpaca = generate_table_bar_alpaca_list()
     db_cli.insert_models(bar_tables_alpaca)

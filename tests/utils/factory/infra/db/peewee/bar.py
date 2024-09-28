@@ -34,7 +34,8 @@ def generate_table_bar_alpaca_list() -> list[TableBarAlpaca]:
     2020-01-01 ~ 2020-01-03の範囲。
 
     AAPLは3件、GOOGは2件。
-    そしてノイズとして月足のAAPLが1件。
+    そしてノイズとして月足のAAPLがさらに1件。
+    合計６件のデータ。
 
     timeframe: 4 -> day
     adjustment: 1 -> raw

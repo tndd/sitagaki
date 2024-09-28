@@ -1,37 +1,33 @@
 from datetime import datetime
 
-from sqlmodel import between, select
-from sqlmodel.sql.expression import SelectOfScalar
+from peewee import ModelSelect
 
-from domain.materia.bar.model import Timeframe
-from infra.db.peewee.table.bar import TblBarDayAlpaca, TblBarHourAlpaca, TblBarMinAlpaca
+from domain.materia.bar.adapter import (
+    depart_adjustment_to_peewee_table,
+    depart_timeframe_to_peewee_table,
+)
+from domain.materia.bar.model import Adjustment, Timeframe
+from infra.db.peewee.table.bar import TableBarAlpaca
 
 
-def get_stmt_select_bar(
+def get_query_select_bar_alpaca(
         symbol: str,
         timeframe: Timeframe,
+        adjustment: Adjustment,
         start: datetime,
         end: datetime
-) -> SelectOfScalar:
+) -> ModelSelect:
     """
-    指定されたtimeframeの
-    特定のシンボルのstart~endの間のbarデータを取得する。
+    指定されたsymbol,timeframe,adjustmentの条件に一致するbarデータを取得する。
+    start~endの範囲内のbarデータを取得する。
     """
     if start > end:
         # 開始日が終了日より前であることを確認
         raise ValueError("start must be before end")
-    # 時間軸によるモデルの選択
-    bar_model = None
-    if timeframe == Timeframe.MIN:
-        bar_model = TblBarMinAlpaca
-    elif timeframe == Timeframe.HOUR:
-        bar_model = TblBarHourAlpaca
-    elif timeframe == Timeframe.DAY:
-        bar_model = TblBarDayAlpaca
-    else:
-        raise ValueError(f"Invalid timeframe: {timeframe}")
-    # 条件指定のステートメント作成
-    stmt = select(bar_model) \
-        .where(bar_model.symbol == symbol) \
-        .where(between(bar_model.timestamp, start, end))
-    return stmt
+    query = TableBarAlpaca.select().where(
+        TableBarAlpaca.symbol == symbol,
+        TableBarAlpaca.timeframe == depart_timeframe_to_peewee_table(timeframe),
+        TableBarAlpaca.adjustment == depart_adjustment_to_peewee_table(adjustment),
+        TableBarAlpaca.timestamp.between(start, end)
+    )
+    return query
