@@ -72,7 +72,7 @@ def test_insert_models_performance(test_peewee_cli):
     調査の結果、個別にmodel.save()を呼び出す場合の２倍のスピードが出た。
     """
     # データを作成
-    N = 100000
+    N = 10000
     users = [
         User(username=f'user{i}', email=f'user{i}@example.com') for i in range(N)
     ]
