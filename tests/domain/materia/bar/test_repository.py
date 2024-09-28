@@ -64,7 +64,7 @@ def test_fetch_chart_from_local(test_bar_repo):
     # 1-1 取得件数は３件
     assert len(chart.bars) == 3
     """
-    TODO: barの中身をテストするため、prepareの内容を調整
+    FIXME: barの中身をテストするため、prepareの内容を調整
         Chartモデルへの変更に伴い、もうBarはsymbol,timeframe,adjustmentを持たない。
         そのため返される内容のテストは、その中身の値を吟味するしかない。
         それを実現するため、OHLCの値を特徴的にしてbarに一意性を持たせる形にする。

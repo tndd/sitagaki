@@ -26,7 +26,7 @@ class PeeweeClient:
 
     def exec_query(self, query):
         """
-        TODO: queryを実行するメソッドの修正
+        WARN: queryを実行するメソッドの修正
             peeweeのqueryは明示的にexecute()を呼び出す必要はない。
             だがクエリ実行はクライアントを介して行うという一貫性を持たせるため、
              このメソッドを用意する。
