@@ -1,10 +1,11 @@
-from peewee import CharField
+from peewee import CharField, IntegerField
 
-from infra.db.peewee.client import PeeweeClient, PeeweeTable
+from infra.db.peewee.client import PeeweeTable
 
 
 # テスト用モデル
 class User(PeeweeTable):
+    id = IntegerField(primary_key=True)
     username = CharField()
     email = CharField()
 
@@ -71,7 +72,7 @@ def test_insert_models_performance(test_peewee_cli):
     調査の結果、個別にmodel.save()を呼び出す場合の２倍のスピードが出た。
     """
     # データを作成
-    N = 10000
+    N = 100000
     users = [
         User(username=f'user{i}', email=f'user{i}@example.com') for i in range(N)
     ]
@@ -157,3 +158,32 @@ def test_practice_select_models(test_peewee_cli):
     retrieved_users = User.select().where((User.username.startswith('j') | User.username.endswith('r')))
     assert len(retrieved_users) == 3
     assert set(['joseph', 'astar', 'casper']) == set(u.username for u in retrieved_users)
+
+
+def test_duplicate_key(test_peewee_cli):
+    """
+    重複したキーを挿入した場合のテスト
+
+    重複したキーを挿入した場合、上書きされること
+    """
+    # TODO: 重複キーの対応
+    # 1回目の挿入
+    users = [
+        User(id=1, username='user1', email='user1@example.com'),
+        User(id=2, username='user2', email='user2@example.com'),
+    ]
+    test_peewee_cli.insert_models(users)
+    assert len(User.select()) == 2
+    assert User.select().where(User.id == 1).get().username == 'user1'
+    assert User.select().where(User.id == 2).get().username == 'user2'
+    # 2回目の挿入
+    users = [
+        User(id=1, username='user11', email='user11@example.com'),
+        User(id=2, username='user22', email='user22@example.com'),
+    ]
+    test_peewee_cli.insert_models(users)
+    # 上書きされるが故に４件ではなく２件のみ
+    assert len(User.select()) == 2
+    # 内容は上書きされていること
+    assert User.select().where(User.id == 1).get().username == 'user11'
+    assert User.select().where(User.id == 2).get().username == 'user22'

@@ -20,9 +20,9 @@ class PeeweeClient:
         if not TModel.table_exists():
             self.db.create_tables([TModel])
         # モデルをデータベースに挿入
-        # TODO: 重複時、データを上書きするように修正
+        data = [model.__data__ for model in models]
         with self.db.atomic():
-            TModel.bulk_create(models)
+            TModel.insert_many(data).on_conflict_replace().execute()
 
     def exec_query(self, query):
         """
