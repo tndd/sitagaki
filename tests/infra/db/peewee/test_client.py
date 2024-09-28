@@ -160,13 +160,12 @@ def test_practice_select_models(test_peewee_cli):
     assert set(['joseph', 'astar', 'casper']) == set(u.username for u in retrieved_users)
 
 
-def test_duplicate_key(test_peewee_cli):
+def test_insert_duplicate_key(test_peewee_cli):
     """
     重複したキーを挿入した場合のテスト
 
     重複したキーを挿入した場合、上書きされること
     """
-    # TODO: 重複キーの対応
     # 1回目の挿入
     users = [
         User(id=1, username='user1', email='user1@example.com'),

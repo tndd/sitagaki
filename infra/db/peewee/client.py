@@ -22,7 +22,7 @@ class PeeweeClient:
         # モデルをデータベースに挿入
         data = [model.__data__ for model in models]
         with self.db.atomic():
-            TModel.insert_many(data).on_conflict_replace().execute()
+            TModel.replace_many(data).execute()
 
     def exec_query(self, query):
         """
