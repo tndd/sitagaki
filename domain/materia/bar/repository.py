@@ -3,8 +3,8 @@ from datetime import datetime
 from typing import Optional
 
 from domain.materia.bar.adapter import (
-    arrive_bar_list_from_peewee_table,
     arrive_chart_from_alpaca_api_list,
+    arrive_chart_from_peewee_table,
     depart_adjustment_to_alpaca_api,
     depart_chart_to_peewee_table_list,
     depart_timeframe_to_alpaca_api,
@@ -61,16 +61,9 @@ class BarRepository:
 
         デフォルトの取得範囲は2000-01-01~now。
         """
-        # TODO: sqlmの時代から何も修正を加えていない
         # 取得に必要なstmtを作成
-        stmt = get_stmt_select_bar(
-            symbol=symbol,
-            timeframe=timeframe,
-            adjustment=adjustment,
-            start=start,
-            end=end
-        )
+        query = F() # TODO: 置き換え
         # barデータをDBから取得
-        bars_sqlm = self.cli_db.select_models(stmt)
+        bar_table_list = self.cli_db.exec_query(query)
         # 取得物をドメイン層のbarモデルのリストに変換して返す
-        return arrive_bar_list_from_peewee_table(bars_sqlm)
+        return arrive_chart_from_peewee_table(bar_table_list)
