@@ -9,4 +9,4 @@ def test_prepare_test_bar_alpaca_on_db(test_peewee_cli):
     prepare_test_bar_alpaca_on_db(test_peewee_cli)
     result = TableBarAlpaca.select()
     # ファクトリのBar本数は6本
-    assert len(result) == 6
+    assert len(result) == 10
