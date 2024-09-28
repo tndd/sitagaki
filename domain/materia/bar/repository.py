@@ -12,6 +12,7 @@ from domain.materia.bar.adapter import (
 from domain.materia.bar.model import Adjustment, Timeframe
 from infra.api.alpaca.historical import get_bar_alpaca_api_list
 from infra.db.peewee.client import PeeweeClient
+from infra.db.peewee.query.materia.bar import get_query_select_bar_alpaca
 
 
 @dataclass
@@ -48,7 +49,7 @@ class BarRepository:
         self.cli_db.insert_models(bar_list_peewee_table)
 
 
-    def fetch_bars_from_local(
+    def fetch_chart_from_local(
             self,
             symbol: str,
             timeframe: Timeframe,
@@ -61,8 +62,14 @@ class BarRepository:
 
         デフォルトの取得範囲は2000-01-01~now。
         """
-        # 取得に必要なstmtを作成
-        query = F() # TODO: 置き換え
+        # 取得に必要なqueryを作成
+        query = get_query_select_bar_alpaca(
+            symbol=symbol,
+            timeframe=timeframe,
+            adjustment=adjustment,
+            start=start,
+            end=end
+        )
         # barデータをDBから取得
         bar_list_peewee_table = self.cli_db.exec_query(query)
         # 取得物をドメイン層のbarモデルのリストに変換して返す
