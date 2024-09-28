@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 class Ticker(BaseModel):
     """
-    TODO: フィールド内容検討
+    LATER: フィールド内容検討
         これはドメイン層のモデルであるため、
         alpacaモデルをそのまま踏襲するのは良くない気もする。
         要素は必要最低限で抑えたい。

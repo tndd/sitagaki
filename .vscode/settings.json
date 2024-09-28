@@ -16,7 +16,8 @@
         "[ ]",
         "[x]",
         "WARN",
-        "NOTE"
+        "NOTE",
+        "LATER"
     ],
     "isort.args": [
         "--profile",
