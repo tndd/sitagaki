@@ -24,7 +24,6 @@ def test_table_bar_alpaca_is_created(test_peewee_cli):
 
 
 def test_table_bar_alpaca_list(test_peewee_cli):
-    # FIXME: generate_table_bar_alpaca_listの強化に伴いテスト変更
     """
     TableBarAlpacaのリストを投入および取得の基本テスト。
 
@@ -46,7 +45,7 @@ def test_table_bar_alpaca_list(test_peewee_cli):
         TableBarAlpaca.timeframe == 4,
         TableBarAlpaca.adjustment == 1,
     )) == 3
-    # 3. adjustment=2のデータ取得
+    # 3. adjustment=2のデータが取得できないことを確認
     assert len(TableBarAlpaca.select().where(
         TableBarAlpaca.adjustment == 2,
     )) == 0
