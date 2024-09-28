@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import Optional
 
 from domain.materia.bar.adapter import (
-    arrive_chart_from_alpaca_api_list,
+    arrive_chart_from_bar_alpaca_api_list,
     arrive_chart_from_peewee_table,
     depart_adjustment_to_alpaca_api,
     depart_chart_to_peewee_table_list,
@@ -42,7 +42,7 @@ class BarRepository:
             end=end
         )
         # adapt: <= alpaca_api
-        chart = arrive_chart_from_alpaca_api_list(bar_alpaca_api_list)
+        chart = arrive_chart_from_bar_alpaca_api_list(bar_alpaca_api_list)
         # adapt: => table
         bar_table_list = depart_chart_to_peewee_table_list(chart)
         # DBのモデルリストを保存

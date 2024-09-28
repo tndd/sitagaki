@@ -26,7 +26,7 @@ def arrive_bar_from_alpaca_api(bar_alpaca_api: BarAlpacaApi) -> Bar:
     )
 
 
-def arrive_chart_from_alpaca_api_list(
+def arrive_chart_from_bar_alpaca_api_list(
         bars_alpaca_api: List[BarAlpacaApi],
         adjustment: Adjustment,
         timeframe: Timeframe

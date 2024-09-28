@@ -5,7 +5,7 @@ from domain.materia.bar.adapter import (
     arrive_adjustment_from_peewee_table,
     arrive_bar_from_alpaca_api,
     arrive_bar_from_peewee_table,
-    arrive_chart_from_alpaca_api_list,
+    arrive_chart_from_bar_alpaca_api_list,
     arrive_chart_from_peewee_table,
     arrive_timeframe_from_peewee_table,
     depart_adjustment_to_alpaca_api,
@@ -37,12 +37,12 @@ def test_arrive_bar_from_alpaca_api():
     assert isinstance(bar, Bar)
 
 
-def test_arrive_chart_from_alpaca_api_list():
+def test_arrive_chart_from_bar_alpaca_api_list():
     """
     bar_alpaca_api<List> => Chart
     """
     bar_alpaca_api_list = generate_bar_alpaca_list()
-    chart = arrive_chart_from_alpaca_api_list(
+    chart = arrive_chart_from_bar_alpaca_api_list(
         bars_alpaca_api=bar_alpaca_api_list,
         adjustment=Adjustment.RAW,
         timeframe=Timeframe.MIN,
