@@ -27,10 +27,11 @@ class PeeweeClient:
     def exec_query(self, query):
         """
         WARN: queryを実行するメソッドの修正
-            peeweeのqueryは明示的にexecute()を呼び出す必要はない。
+            本来、peeweeのqueryは明示的にexecute()を呼び出す必要はない。
             だがクエリ実行はクライアントを介して行うという一貫性を持たせるため、
-             このメソッドを用意する。
+            このメソッドを用意する。
+
             それにクエリ実行の前後に何らかの処理を行うことも考えられるため、
-             このメソッドは完全に合理的でないわけではない。
+            このメソッドは完全に合理的でないわけではないか？
         """
-        return query # WARN: そのまま値を返してるだけの臨時実装
+        return query
