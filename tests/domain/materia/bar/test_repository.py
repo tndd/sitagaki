@@ -8,7 +8,7 @@ from tests.utils.dataload.materia.bar import prepare_test_bar_alpaca_on_db
 
 
 @pytest.mark.online
-def test_pull_bars_from_online(test_bar_repo):
+def test_pull_chart_from_online(test_bar_repo):
     return # FIXME: テスト修正
     # WARN: 日足と分足のテストしかしてないので注意。
     """

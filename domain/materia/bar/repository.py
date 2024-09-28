@@ -19,7 +19,7 @@ from infra.db.peewee.query.materia.bar import get_query_select_bar_alpaca
 class BarRepository:
     cli_db: PeeweeClient
 
-    def pull_bars_from_online(
+    def pull_chart_from_online(
             self,
             symbol: str,
             timeframe: Timeframe,
@@ -34,7 +34,7 @@ class BarRepository:
         2000-01-01から可能な限り最新のデータを取得する。
         """
         # barsデータを取得
-        bar_list_alpaca_api = get_bar_alpaca_api_list(
+        bar_alpaca_api_list = get_bar_alpaca_api_list(
             symbol=symbol,
             timeframe=depart_timeframe_to_alpaca_api(timeframe),
             adjustment=depart_adjustment_to_alpaca_api(adjustment),
@@ -42,11 +42,11 @@ class BarRepository:
             end=end
         )
         # adapt: <= alpaca_api
-        chart = arrive_chart_from_alpaca_api_list(bar_list_alpaca_api)
-        # adapt: => peewee_table
-        bar_list_peewee_table = depart_chart_to_peewee_table_list(chart)
+        chart = arrive_chart_from_alpaca_api_list(bar_alpaca_api_list)
+        # adapt: => table
+        bar_table_list = depart_chart_to_peewee_table_list(chart)
         # DBのモデルリストを保存
-        self.cli_db.insert_models(bar_list_peewee_table)
+        self.cli_db.insert_models(bar_table_list)
 
 
     def fetch_chart_from_local(
