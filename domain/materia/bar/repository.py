@@ -43,10 +43,10 @@ class BarRepository:
         )
         # adapt: <= alpaca_api
         chart = arrive_chart_from_bar_alpaca_api_list(bar_alpaca_api_list)
-        # adapt: => table
-        bar_table_list = depart_chart_to_peewee_table_list(chart)
+        # adapt: => peewee_table
+        bar_peewee_table_list = depart_chart_to_peewee_table_list(chart)
         # DBのモデルリストを保存
-        self.cli_db.insert_models(bar_table_list)
+        self.cli_db.insert_models(bar_peewee_table_list)
 
 
     def fetch_chart_from_local(
