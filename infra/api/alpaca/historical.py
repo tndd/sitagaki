@@ -12,6 +12,17 @@ cli_hist = StockHistoricalDataClient(
     secret_key=getenv('APCA_SECRET')
 )
 
+"""
+TODO: 機能分離 extract系統
+    この場所はget系のみにしたい。
+    extractのような処理というのはprocessディレクトリみたいなのを作って、
+    そちらに配置するべきな気がする。
+
+TODO: 機能分離 bar,quote,trade
+    このままではbar,quote,tradeが同じディレクトリに配置されることとなり、
+    混乱を招く可能性があるので注意。これは杞憂かもしれないが。
+"""
+
 
 def extract_bar_list_alpaca_api_from_barset(barset: BarSet) -> List[Bar]:
     """
