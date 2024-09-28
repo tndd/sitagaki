@@ -7,7 +7,7 @@ from tests.utils.dataload.materia.bar import prepare_test_bar_alpaca_on_db
 
 
 def test_get_query_select_bar_alpaca(test_peewee_cli):
-    # TODO: prepareの準備データの強化。　今のところ全部DAYとRAWのみ。
+    # FIXME: prepareの準備データの強化。　今のところ全部DAYとRAWのみ。
     prepare_test_bar_alpaca_on_db(test_peewee_cli)
     # case0: データが入ってるかの確認
     query_0 = TableBarAlpaca.select()
