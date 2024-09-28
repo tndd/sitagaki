@@ -93,6 +93,8 @@ def arrive_chart_from_peewee_table(bars_peewee_table: List[TableBarAlpaca]) -> C
     Chart:
         PeeweeTable<List> -> Domain
     """
+    if not bars_peewee_table:
+        raise ValueError("bars_peewee_tableが空です。")
     symbol = bars_peewee_table[0].symbol
     timeframe = arrive_timeframe_from_peewee_table(bars_peewee_table[0])
     adjustment = arrive_adjustment_from_peewee_table(bars_peewee_table[0])

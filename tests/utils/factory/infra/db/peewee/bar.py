@@ -38,21 +38,25 @@ def generate_table_bar_alpaca_list() -> list[TableBarAlpaca]:
             日付: 2020-01-01 ~ 2020-01-03
             timeframe: 日足 = 4
             adjustment: raw = 1
+            volume = 100 ~ 199
         AAPL_L3_MIN_RAW = 3件:
             symbol: AAPL
             日付: 2020-01-01 ~ 2020-01-03
             timeframe: 分足 = 1
             adjustment: raw = 1
+            volume = 200 ~ 299
         AAPL_L2_MONTH_ALL = 2件:
             symbol: AAPL
             日付: 2020-01-01 ~ 2020-01-02
             timeframe: 月足 = 16
             adjustment: all = 8
+            volume = 300 ~ 399
         GOOG_L2_DAY_RAW = 2件:
             symbol: GOOG
             日付: 2020-01-01 ~ 2020-01-02
             timeframe: 日足 = 4
             adjustment: raw = 1
+            volume = 400 ~ 499
     """
     AAPL_L3_DAY_RAW = [
         TableBarAlpaca(
@@ -64,7 +68,7 @@ def generate_table_bar_alpaca_list() -> list[TableBarAlpaca]:
             high=105.0,
             low=99.0,
             close=102.0,
-            volume=1000,
+            volume=100,
             vwap=101.0,
         ),
         TableBarAlpaca(
@@ -76,7 +80,7 @@ def generate_table_bar_alpaca_list() -> list[TableBarAlpaca]:
             high=106.0,
             low=100.0,
             close=103.0,
-            volume=1001,
+            volume=101,
             vwap=102.0,
         ),
         TableBarAlpaca(
@@ -88,7 +92,7 @@ def generate_table_bar_alpaca_list() -> list[TableBarAlpaca]:
             high=107.0,
             low=101.0,
             close=104.0,
-            volume=1002,
+            volume=102,
             vwap=103.0,
         )
     ]
@@ -102,7 +106,7 @@ def generate_table_bar_alpaca_list() -> list[TableBarAlpaca]:
             high=105.0,
             low=99.0,
             close=102.0,
-            volume=1000,
+            volume=200,
             vwap=101.0,
         ),
         TableBarAlpaca(
@@ -114,7 +118,7 @@ def generate_table_bar_alpaca_list() -> list[TableBarAlpaca]:
             high=106.0,
             low=100.0,
             close=103.0,
-            volume=1001,
+            volume=201,
             vwap=102.0,
         ),
         TableBarAlpaca(
@@ -126,7 +130,7 @@ def generate_table_bar_alpaca_list() -> list[TableBarAlpaca]:
             high=107.0,
             low=101.0,
             close=104.0,
-            volume=1002,
+            volume=202,
             vwap=103.0,
         )
     ]
@@ -140,7 +144,7 @@ def generate_table_bar_alpaca_list() -> list[TableBarAlpaca]:
             high=105.0,
             low=99.0,
             close=102.0,
-            volume=1000,
+            volume=300,
             vwap=101.0,
         ),
         TableBarAlpaca(
@@ -152,7 +156,7 @@ def generate_table_bar_alpaca_list() -> list[TableBarAlpaca]:
             high=105.0,
             low=99.0,
             close=102.0,
-            volume=1000,
+            volume=301,
             vwap=101.0,
         )
     ]
@@ -166,7 +170,7 @@ def generate_table_bar_alpaca_list() -> list[TableBarAlpaca]:
             high=205.0,
             low=199.0,
             close=202.0,
-            volume=2000,
+            volume=400,
             vwap=201.0,
         ),
         TableBarAlpaca(
@@ -178,7 +182,7 @@ def generate_table_bar_alpaca_list() -> list[TableBarAlpaca]:
             high=206.0,
             low=200.0,
             close=203.0,
-            volume=2001,
+            volume=401,
             vwap=202.0,
         )
     ]

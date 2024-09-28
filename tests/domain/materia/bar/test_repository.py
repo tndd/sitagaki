@@ -53,6 +53,7 @@ def test_fetch_chart_from_local(test_bar_repo):
 
     期待される結果:
         1. 取得件数は３件
+        2. AAPL_L3_DAY_RAWのデータが取得されているか（volume=100,101,102）
     """
     chart = test_bar_repo.fetch_chart_from_local(
         symbol="AAPL",
@@ -63,14 +64,8 @@ def test_fetch_chart_from_local(test_bar_repo):
     assert isinstance(chart, Chart)
     # 1-1 取得件数は３件
     assert len(chart.bars) == 3
-    """
-    FIXME: barの中身をテストするため、prepareの内容を調整
-        Chartモデルへの変更に伴い、もうBarはsymbol,timeframe,adjustmentを持たない。
-        そのため返される内容のテストは、その中身の値を吟味するしかない。
-        それを実現するため、OHLCの値を特徴的にしてbarに一意性を持たせる形にする。
-
-        それに伴い下のcaseも書き直し。
-    """
+    # 1-2 AAPL_L3_DAY_RAWのデータが取得されているか（volume=100,101,102）
+    assert all(100 <= bar.volume <= 102 for bar in chart.bars)
 
     """
     case2: シンボルと時間軸による絞り込み
@@ -82,10 +77,10 @@ def test_fetch_chart_from_local(test_bar_repo):
 
     期待される結果:
         1. 取得件数は以下の日付の2件
-        2. シンボルが"AAPL"のbarのみ取得
-        3. 日付が2020-01-02から2020-01-03の間のbarのみ取得
+        2. 日付が2020-01-02から2020-01-03の間のbarのみ取得
+        3. volume=100のAAPL_L3_DAY_RAWのデータがスキップされているか
     """
-    bars = test_bar_repo.fetch_bars_from_local(
+    chart = test_bar_repo.fetch_chart_from_local(
         symbol="AAPL",
         timeframe=Timeframe.DAY,
         adjustment=Adjustment.RAW,
@@ -93,10 +88,31 @@ def test_fetch_chart_from_local(test_bar_repo):
         end=datetime(2020, 1, 3)
     )
     # 2-1 取得件数は以下の日付の2件
-    assert len(bars) == 2
-    # 2-2 シンボルが"AAPL"のbarのみ取得
-    assert all(bar.symbol == "AAPL" for bar in bars)
-    # 2-3 日付が2020-01-02から2020-01-03の間のbarのみ取得
+    assert len(chart.bars) == 2
+    # 2-2 日付が2020-01-02から2020-01-03の間のbarのみ取得
     assert all(
-        datetime(2020, 1, 2) <= bar.timestamp <= datetime(2020, 1, 3) for bar in bars
+        datetime(2020, 1, 2) <= bar.timestamp <= datetime(2020, 1, 3) for bar in chart.bars
     )
+    # 2-3 volume=100のAAPL_L3_DAY_RAWのデータがスキップされているか
+    assert not any(bar.volume == 100 for bar in chart.bars)
+
+    """
+    case3: 取得できない場合
+
+    条件:
+        symbol = 'NOSYMBOL'
+        timeframe = Timeframe.DAY
+        adjustment = Adjustment.RAW
+        2020-01-02 <= timestamp <= 2020-01-03の間
+
+    期待される結果:
+        1. 取得件数は0件
+    """
+    chart = test_bar_repo.fetch_chart_from_local(
+        symbol="NOSYMBOL",
+        timeframe=Timeframe.DAY,
+        adjustment=Adjustment.RAW,
+        start=datetime(2020, 1, 2),
+        end=datetime(2020, 1, 3)
+    )
+    # assert len(chart.bars) == 0
