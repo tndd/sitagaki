@@ -40,39 +40,33 @@ def test_get_barset_alpaca_api():
     """
     case1: 正常系
     """
-    barset = get_barset_alpaca_api(
+    barset_empty = get_barset_alpaca_api(
         symbol='AAPL',
         start='2024-01-01',
         timeframe=TimeFrameAlpaca.Day,
         adjustment=Adjustment.RAW
     )
-    # NOTE: 将来的にはログなどの方法で中身を確認する方針に変更
-    # 出力検証用
-    # import json
-    # with open('tests/out/test_get_bars.json', 'w') as f:
-    #     f.write(
-    #         json.dumps(
-    #             bars.model_dump(),
-    #             default=str,
-    #             indent=2
-    #         )
-    #     )
-    assert isinstance(barset, BarSet)
+    # LATER: 将来的にはログなどの方法で中身を確認する方針に変更
+    assert isinstance(barset_empty, BarSet)
+    print(barset_empty)
 
     """
-    case2: 異常系
-        存在しないシンボル
+    case2: 存在しないシンボル
 
     期待結果:
         結果が取得できずともBarSetが返される
     """
-    barset = get_barset_alpaca_api(
-        symbol='NOSYMBOL',
+    SYMBOL_DUMMY = 'NOSYMBOL'
+    barset_empty = get_barset_alpaca_api(
+        symbol=SYMBOL_DUMMY,
         start='2024-01-01',
         timeframe=TimeFrameAlpaca.Day,
         adjustment=Adjustment.RAW
     )
-    assert isinstance(barset, BarSet)
+    # barsetの中身 => {'data': {'NOSYMBOL': []}}
+    assert isinstance(barset_empty, BarSet)
+    assert len(barset_empty.data[SYMBOL_DUMMY]) == 0
+
 
 
 @pytest.mark.online
