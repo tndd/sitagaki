@@ -2,14 +2,14 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional
 
-from domain.materia.bar.adapter import (
+from domain.materia.bar.model import Adjustment, Timeframe
+from infra.adapter.materia.bar import (
     arrive_chart_from_bar_alpaca_api_list,
     arrive_chart_from_peewee_table_list,
     depart_adjustment_to_alpaca_api,
     depart_chart_to_peewee_table_list,
     depart_timeframe_to_alpaca_api,
 )
-from domain.materia.bar.model import Adjustment, Timeframe
 from infra.api.alpaca.historical import get_bar_alpaca_api_list
 from infra.db.peewee.client import PeeweeClient
 from infra.db.peewee.query.materia.bar import get_query_select_bar_alpaca

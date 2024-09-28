@@ -2,11 +2,11 @@ from datetime import datetime
 
 from peewee import ModelSelect
 
-from domain.materia.bar.adapter import (
+from domain.materia.bar.model import Adjustment, Timeframe
+from infra.adapter.materia.bar import (
     depart_adjustment_to_peewee_table,
     depart_timeframe_to_peewee_table,
 )
-from domain.materia.bar.model import Adjustment, Timeframe
 from infra.db.peewee.table.bar import TableBarAlpaca
 
 
