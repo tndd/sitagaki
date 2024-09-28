@@ -15,14 +15,30 @@ def test_extract_bar_alpaca_list_api_from_barset():
     """
     BarSetの中からBarのリストを取り出す機能のテスト
     """
-    barset = generate_barset_alpaca()
-    bars = extract_bar_list_alpaca_api_from_barset(barset)
+    # case1: 正常系
+    barset_empty = generate_barset_alpaca()
+    bars = extract_bar_list_alpaca_api_from_barset(barset_empty)
     assert isinstance(bars, list)
     assert all(isinstance(bar, Bar) for bar in bars)
+    """
+    case2: 異常系
+        BarSetが空の場合
+
+    期待結果:
+        空のリストが返される
+    """
+    # 空のBarSetを生成
+    barset_empty = BarSet(raw_data={'NOSYMBOL': []})
+    bars = extract_bar_list_alpaca_api_from_barset(barset_empty)
+    assert isinstance(bars, list)
+    assert len(bars) == 0
 
 
 @pytest.mark.online
 def test_get_barset_alpaca_api():
+    """
+    case1: 正常系
+    """
     barset = get_barset_alpaca_api(
         symbol='AAPL',
         start='2024-01-01',
@@ -42,26 +58,31 @@ def test_get_barset_alpaca_api():
     #     )
     assert isinstance(barset, BarSet)
 
+    """
+    case2: 異常系
+        存在しないシンボル
 
-@pytest.mark.online
+    期待結果:
+        結果が取得できずともBarSetが返される
+    """
+    barset = get_barset_alpaca_api(
+        symbol='NOSYMBOL',
+        start='2024-01-01',
+        timeframe=TimeFrameAlpaca.Day,
+        adjustment=Adjustment.RAW
+    )
+    assert isinstance(barset, BarSet)
+
+
+# @pytest.mark.online
 def test_get_bar_alpaca_api_list():
     """
-    MEMO: barsの総合テストは冗長か？
-        get_barsの動作はかなりget_barsetと被ってるから、
-        barsetのテストを省略するべきだろうか？
-
-        外部で使われるget_barsだけでいいだろう。
-        test_get_barsetやtest_extract_bar_alpaca_list_from_barsetは
-        その部品でしかないのだから、その品質はこの総合テストで担保されるべきもの。
-
-        仮に外部との通信というコストを度外視できるなら、
-        全関数についてテストを行いカバレッジ１００％を目指すべきだろう。
-        そして外部との通信があるとはいえ負荷は最小限。
-        それならこのテストを追加するくらい問題ないんじゃないか？
-        こういう議論は通信容量が大容量で問題が実際に起こり始めた段階で行うべきではないか。
-
     TODO: Mockを使った通信をシミュレートする
         test_get_barですでに通信は行われているので、ここでは通信部はモックにする。
+        monkeypatchを使ってモックを作る。
+    """
+    """
+    case1: 正常系
     """
     bar_alpaca_api_list = get_bar_alpaca_api_list(
         symbol='AAPL',
@@ -71,3 +92,19 @@ def test_get_bar_alpaca_api_list():
     )
     assert isinstance(bar_alpaca_api_list, list)
     assert all(isinstance(bar, Bar) for bar in bar_alpaca_api_list)
+
+    """
+    case2: 異常系
+        存在しないシンボル
+
+    期待結果:
+        空のリストが返される
+    """
+    bar_alpaca_api_list = get_bar_alpaca_api_list(
+        symbol='NOSYMBOL',
+        start='2024-01-01',
+        timeframe=TimeFrameAlpaca.Day,
+        adjustment=Adjustment.RAW
+    )
+    assert isinstance(bar_alpaca_api_list, list)
+    assert len(bar_alpaca_api_list) == 0
