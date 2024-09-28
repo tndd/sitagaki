@@ -64,6 +64,6 @@ class BarRepository:
         # 取得に必要なstmtを作成
         query = F() # TODO: 置き換え
         # barデータをDBから取得
-        bar_table_list = self.cli_db.exec_query(query)
+        bar_list_peewee_table = self.cli_db.exec_query(query)
         # 取得物をドメイン層のbarモデルのリストに変換して返す
-        return arrive_chart_from_peewee_table(bar_table_list)
+        return arrive_chart_from_peewee_table(bar_list_peewee_table)
