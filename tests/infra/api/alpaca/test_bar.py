@@ -12,6 +12,45 @@ from infra.api.alpaca.bar import (
 )
 from tests.utils.factory.infra.api.alpaca.bar import generate_barset_alpaca
 
+"""
+TODO: 範囲超過エラーのテスト
+    alpaca apiの制約として、１日前のデータまでしか取れない。
+    それを超えた場合に、どのような振る舞いをするかのテスト
+
+TODO: 全パターン取得テストを実装するか検討
+    この振る舞いはリポジトリ側でも行ってるから実装すると役被りする。
+    だがapiの信頼性担保という意味ではやるべきかもしれない。
+"""
+
+
+def test_mock_get_bar_alpaca_api_list(mock_get_barset_alpaca_api):
+    """
+    通信部分をモックにした簡易テスト
+    """
+    bar_alpaca_api_list = get_bar_alpaca_api_list(
+        symbol='AAPL',
+        start=datetime(2024,1,1),
+        timeframe=TimeFrameAlpaca.Day,
+        adjustment=Adjustment.RAW
+    )
+    assert isinstance(bar_alpaca_api_list, list)
+    assert all(isinstance(bar, Bar) for bar in bar_alpaca_api_list)
+
+
+def test_mock_get_bar_alpaca_api_list_empty_barset(mock_get_barset_alpaca_api_empty):
+    """
+    存在しない条件を入力し、apiから空のBarSetが帰ってきた際の振る舞いのテスト
+    """
+    # Mock通信
+    bar_alpaca_api_list = get_bar_alpaca_api_list(
+        symbol='NOSYMBOL',
+        start=datetime(2024,1,1),
+        timeframe=TimeFrameAlpaca.Day,
+        adjustment=Adjustment.RAW
+    )
+    assert isinstance(bar_alpaca_api_list, list)
+    assert len(bar_alpaca_api_list) == 0
+
 
 def test_extract_bar_alpaca_list_api_from_barset():
     """
@@ -42,6 +81,10 @@ def test_extract_bar_alpaca_list_api_from_barset():
 
 @pytest.mark.online
 def test_get_barset_alpaca_api():
+    """
+    [ONLINE]
+        BarSetを取得する機能の通信テスト
+    """
     barset = get_barset_alpaca_api(
         symbol='AAPL',
         start=datetime(2024,1,1),
@@ -58,7 +101,8 @@ def test_get_barset_alpaca_api():
 @pytest.mark.online
 def test_get_barset_alpaca_api_not_exist_symbol():
     """
-    存在しないシンボルを指定した場合の振る舞いテスト
+    [ONLINE]
+        存在しないシンボルを指定した場合の振る舞いテスト
     """
     SYMBOL_DUMMY = 'NOSYMBOL'
     barset_empty = get_barset_alpaca_api(
@@ -70,29 +114,3 @@ def test_get_barset_alpaca_api_not_exist_symbol():
     # barsetの中身 => {'data': {'NOSYMBOL': []}}
     assert isinstance(barset_empty, BarSet)
     assert len(barset_empty.data[SYMBOL_DUMMY]) == 0
-
-
-def test_mock_get_bar_alpaca_api_list(mock_get_barset_alpaca_api):
-    bar_alpaca_api_list = get_bar_alpaca_api_list(
-        symbol='AAPL',
-        start=datetime(2024,1,1),
-        timeframe=TimeFrameAlpaca.Day,
-        adjustment=Adjustment.RAW
-    )
-    assert isinstance(bar_alpaca_api_list, list)
-    assert all(isinstance(bar, Bar) for bar in bar_alpaca_api_list)
-
-
-def test_mock_get_bar_alpaca_api_list_empty_barset(mock_get_barset_alpaca_api_empty):
-    """
-    存在しない条件を入力し、apiから空のBarSetが帰ってきた際の振る舞いのテスト
-    """
-    # Mock通信
-    bar_alpaca_api_list = get_bar_alpaca_api_list(
-        symbol='NOSYMBOL',
-        start=datetime(2024,1,1),
-        timeframe=TimeFrameAlpaca.Day,
-        adjustment=Adjustment.RAW
-    )
-    assert isinstance(bar_alpaca_api_list, list)
-    assert len(bar_alpaca_api_list) == 0
