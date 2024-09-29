@@ -109,7 +109,7 @@ def test_fetch_chart_from_local(test_bar_repo):
         NOSYMBOLというシンボルは存在しないためchartを取得することはできない。
         そのため、ValueErrorが発生すること。
     """
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(Exception) as excinfo:
         chart = test_bar_repo.fetch_chart_from_local(
             symbol="NOSYMBOL",
             timeframe=Timeframe.DAY,
@@ -117,3 +117,4 @@ def test_fetch_chart_from_local(test_bar_repo):
             start=datetime(2020, 1, 2),
             end=datetime(2020, 1, 3)
         )
+        assert excinfo.exception == LookupError

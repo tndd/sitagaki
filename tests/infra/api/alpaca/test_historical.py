@@ -37,7 +37,7 @@ def test_extract_bar_alpaca_list_api_from_barset():
     assert len(bars) == 0
 
 
-@pytest.mark.online
+# @pytest.mark.online
 def test_get_barset_alpaca_api():
     """
     case1: 正常系

@@ -70,17 +70,22 @@ class BarRepository:
             start=start,
             end=end
         )
-        # barデータをDBから取得
-        bar_list_peewee_table = self.cli_db.exec_query(query)
-        if not bar_list_peewee_table:
-            """
-            Barの取得件数が0件の場合、エラーを発生させる。
-            おそらく条件の指定が間違っている。
-            もし通信での失敗であれば0件という情報すら返らないだろう。
-            """
+        try:
+            # barデータをDBから取得
+            bar_list_peewee_table = self.cli_db.exec_query(query)
+            if not bar_list_peewee_table:
+                """
+                Barの取得件数が0件の場合、エラーを発生させる。
+                おそらく条件の指定が間違っている。
+                もし通信での失敗であれば0件という情報すら返らないだろう。
+                """
+                raise LookupError('Barの取得件数が0件')
+            # 取得物をドメイン層のbarモデルのリストに変換して返す
+            return arrive_chart_from_peewee_table_list(bar_list_peewee_table)
+        except Exception as e:
             error_log = {
-                'message': 'Barの取得件数が0件。',
-                'data': {
+                'exception': e,
+                'args': {
                     'symbol': symbol,
                     'timeframe': timeframe,
                     'adjustment': adjustment,
@@ -88,6 +93,4 @@ class BarRepository:
                     'end': end
                 }
             }
-            raise ValueError(error_log)
-        # 取得物をドメイン層のbarモデルのリストに変換して返す
-        return arrive_chart_from_peewee_table_list(bar_list_peewee_table)
+            raise Exception(error_log)
