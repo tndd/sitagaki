@@ -1,47 +1,28 @@
 from datetime import datetime, timedelta
 
 import pytest
-from sqlmodel import select
 
 from domain.materia.bar.model import Adjustment, Chart, Timeframe
+from infra.db.peewee.table.bar import TableBarAlpaca
 from tests.utils.dataload.materia.bar import prepare_test_bar_alpaca_on_db
 
 
-@pytest.mark.online
-def test_pull_chart_from_online(test_bar_repo):
-    return # FIXME: テスト修正
-    # WARN: 日足と分足のテストしかしてないので注意。
+def test_mock_pull_chart_from_online(test_bar_repo, mock_get_barset_alpaca_api):
     """
     日足:
         負荷軽減のため、直近一週間分の情報を取得する。
     """
-    one_week_ago = datetime.now() - timedelta(days=7)
-    test_bar_repo.pull_bars_from_online(
+    # Mock通信
+    test_bar_repo.pull_chart_from_online(
         symbol="AAPL",
         timeframe=Timeframe.DAY,
-        start=one_week_ago
+        adjustment=Adjustment.RAW,
     )
-    stmt = select(TblBarDayAlpaca)
-    bars_day = test_bar_repo.cli_db.select_models(stmt)
-    assert isinstance(bars_day, list)
-    assert all(isinstance(bar, TblBarDayAlpaca) for bar in bars_day)
-
-    """
-    分足:
-        負荷軽減のため、特定の一日分の情報を取得する。
-    """
-    start_min = datetime(2024, 1, 16)
-    end_min = start_min + timedelta(days=1)
-    test_bar_repo.pull_bars_from_online(
-        symbol="AAPL",
-        timeframe=Timeframe.MIN,
-        start=start_min,
-        end=end_min
-    )
-    stmt = select(TblBarMinAlpaca)
-    bars_min = test_bar_repo.cli_db.select_models(stmt)
-    assert isinstance(bars_min, list)
-    assert all(isinstance(bar, TblBarMinAlpaca) for bar in bars_min)
+    bar_table_list = TableBarAlpaca.select()
+    # データが存在すること
+    assert bar_table_list.exists()
+    # データがTableBarAlpacaであること
+    assert all(isinstance(bar, TableBarAlpaca) for bar in bar_table_list)
 
 
 def test_fetch_chart_from_local(test_bar_repo):

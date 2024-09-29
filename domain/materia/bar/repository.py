@@ -42,7 +42,11 @@ class BarRepository:
             end=end
         )
         # adapt: <= alpaca_api
-        chart = arrive_chart_from_bar_alpaca_api_list(bar_alpaca_api_list)
+        chart = arrive_chart_from_bar_alpaca_api_list(
+            bars_alpaca_api=bar_alpaca_api_list,
+            adjustment=adjustment,
+            timeframe=timeframe
+        )
         # adapt: => peewee_table
         bar_peewee_table_list = depart_chart_to_peewee_table_list(chart)
         # DBのモデルリストを保存
