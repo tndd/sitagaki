@@ -1,0 +1,129 @@
+{
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "files.exclude": {
+        "**/__pycache__": true,
+        "**/.pytest_cache": true
+    },
+    "todo-tree.general.tags": [
+        "FIXME",
+        "BUG",
+        "TODO",
+        "LATER",
+        "[ ]",
+        "[x]",
+        "WARN",
+        "HACK",
+        "NOTE"
+    ],
+    "todo-tree.highlights.customHighlight": {
+        "FIXME": {
+            "icon": "flame",
+            "iconColour": "red",
+        },
+        "BUG": {
+            "icon": "bug",
+            "iconColour": "red",
+        },
+        "TODO": {
+            "iconColour": "orange",
+        },
+        "HACK": {
+            "icon": "tools",
+            "iconColour": "gray",
+        },
+        "XXX": {
+            "icon": "x"
+        },
+        "[ ]": {
+            "icon": "issue-draft"
+        },
+        "[x]": {
+            "icon": "issue-closed"
+        },
+        "WARN": {
+            "icon": "alert",
+            "iconColour": "gray",
+        },
+        "NOTE": {
+            "icon": "note",
+            "iconColour": "gray",
+        },
+        "LATER": {
+            "icon": "clock",
+        }
+    },
+    "isort.args": [
+        "--profile",
+        "black"
+    ],
+    "todo-tree.filtering.excludeGlobs": [
+        "**/node_modules/*/**",
+        ".venv/**"
+    ],
+    "folder-path-color.folders": [
+        {
+            "path": "domain",
+            "symbol": "D",
+            "tooltip": "DOMAIN",
+            "color": "red"
+        },
+        {
+            "path": "infra/adapter",
+            "symbol": "🔌💽",
+            "tooltip": "INFRA",
+            "color": "yellow"
+        },
+        {
+            "path": "infra/api",
+            "symbol": "📡💽",
+            "tooltip": "INFRA",
+            "color": "yellow"
+        },
+        {
+            "path": "infra/db",
+            "symbol": "🗄️💽",
+            "tooltip": "INFRA",
+            "color": "yellow"
+        },
+        {
+            "path": "infra",
+            "symbol": "💽",
+            "tooltip": "INFRA",
+            "color": "yellow"
+        },
+        {
+            "path": "tests/factory",
+            "symbol": "🏭🧪",
+            "tooltip": "TEST",
+            "color": "green"
+        },
+        {
+            "path": "tests/domain",
+            "symbol": "💎🧪",
+            "tooltip": "TEST",
+            "color": "green"
+        },
+        {
+            "path": "tests/infra",
+            "symbol": "💽🧪",
+            "tooltip": "TEST",
+            "color": "green"
+        },
+        {
+            "path": "tests/utils",
+            "symbol": "🔧🧪",
+            "tooltip": "TEST",
+            "color": "green"
+        },
+        {
+            "path": "tests",
+            "symbol": "🧪",
+            "tooltip": "TEST",
+            "color": "green"
+        },
+    ],
+}

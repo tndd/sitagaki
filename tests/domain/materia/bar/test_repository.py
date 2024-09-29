@@ -1,85 +1,84 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 
 import pytest
-from sqlmodel import select
 
-from domain.materia.bar.model import Bar, Timeframe
-from infra.db.table.bar import TblBarDayAlpaca, TblBarMinAlpaca
-from tests.utils.fixture.domain.materia.bar import prepare_test_bars_on_db
+from domain.materia.bar.model import Adjustment, Chart, Timeframe
+from infra.adapter.materia.bar import (
+    arrive_adjustment_from_peewee_table,
+    arrive_timeframe_from_peewee_table,
+)
+from infra.db.peewee.table.bar import TableBarAlpaca
+from tests.utils.dataload.materia.bar import prepare_test_bar_alpaca_on_db
+
+
+def test_mock_store_chart_from_online(test_bar_repo, mock_get_barset_alpaca_api):
+    """
+    通信部分をモックにした簡易テスト
+    """
+    # Mock通信
+    test_bar_repo.store_chart_from_online(
+        symbol="AAPL",
+        timeframe=Timeframe.DAY,
+        adjustment=Adjustment.RAW,
+    )
+    bar_table_list = TableBarAlpaca.select()
+    # データが存在すること
+    assert bar_table_list.exists()
+    # データがTableBarAlpacaであること
+    assert all(isinstance(bar, TableBarAlpaca) for bar in bar_table_list)
 
 
 @pytest.mark.online
-def test_pull_bars_from_online(test_bar_repo):
-    # WARN: 日足と分足のテストしかしてないので注意。
+def test_store_chart_from_online(test_bar_repo):
     """
-    日足:
-        負荷軽減のため、直近一週間分の情報を取得する。
+    モックを使わず、すべての組み合わせによる情報取得テストを行う
     """
-    one_week_ago = datetime.now() - timedelta(days=7)
-    test_bar_repo.pull_bars_from_online(
-        symbol="AAPL",
-        timeframe=Timeframe.DAY,
-        start=one_week_ago
-    )
-    stmt = select(TblBarDayAlpaca)
-    bars_day = test_bar_repo.cli_db.select_models(stmt)
-    assert isinstance(bars_day, list)
-    assert all(isinstance(bar, TblBarDayAlpaca) for bar in bars_day)
-
-    """
-    分足:
-        負荷軽減のため、特定の一日分の情報を取得する。
-    """
-    start_min = datetime(2024, 1, 16)
-    end_min = start_min + timedelta(days=1)
-    test_bar_repo.pull_bars_from_online(
-        symbol="AAPL",
-        timeframe=Timeframe.MIN,
-        start=start_min,
-        end=end_min
-    )
-    stmt = select(TblBarMinAlpaca)
-    bars_min = test_bar_repo.cli_db.select_models(stmt)
-    assert isinstance(bars_min, list)
-    assert all(isinstance(bar, TblBarMinAlpaca) for bar in bars_min)
+    # timeframe X adjustmentの組み合わせを全通り試す
+    for timeframe in Timeframe:
+        for adjustment in Adjustment:
+            test_bar_repo.store_chart_from_online(
+                symbol="AAPL",
+                timeframe=timeframe,
+                adjustment=adjustment,
+                limit=5
+            )
+            bar_table_list = TableBarAlpaca.select()
+            # 取得件数の確認
+            assert len(bar_table_list) == 5
+            # データ内容の検証
+            assert all(
+                isinstance(bar, TableBarAlpaca) and
+                arrive_timeframe_from_peewee_table(bar) == timeframe and
+                arrive_adjustment_from_peewee_table(bar) == adjustment
+                for bar in bar_table_list
+            )
+            # LATER: 取得したbar_table_listの中身をログなどで確認できるようにする
+            # データをクリア
+            TableBarAlpaca.delete().execute()
 
 
-def test_fetch_bars_from_local(test_bar_repo):
-    """
-    Note: テスト内容がstmtのものとかなり重複している？
-
-    ここまでテスト内容が重複しているならば、stmtのテストは省略すべきか？
-    だがrepositoryは複数のstmtや変換などの処理も行っている総合テストという性質が強い。
-    そのためstmtのテストは省略しないほうがいい気はする。
-    """
-    # 日足テーブルで検証を行う
-    TIMEFRAME = Timeframe.DAY
+def test_fetch_chart_from_local(test_bar_repo):
     # データの準備
-    prepare_test_bars_on_db(test_bar_repo.cli_db, TIMEFRAME)
+    prepare_test_bar_alpaca_on_db(test_bar_repo.cli_db)
     """
-    case1: シンボルのみによる絞り込み
-
-    条件:
-        - シンボルが"AAPL"
-        - (日付については全ての範囲を網羅できる2000-01-01~nowとする)
+    case1: 時間軸省略時の取得動作確認
+        デフォルト日付範囲については、全範囲を網羅できる2000-01-01~nowとしている。
 
     期待される結果:
         1. 取得件数は３件
-        2. シンボルが"AAPL"のbarのみ取得
+        2. AAPL_L3_DAY_RAWのデータが取得されているか（volume=100,101,102）
     """
-    bars = test_bar_repo.fetch_bars_from_local(
+    chart = test_bar_repo.fetch_chart_from_local(
         symbol="AAPL",
-        timeframe=TIMEFRAME,
-        start=datetime(2000, 1, 1),
-        end=datetime.now()
+        timeframe=Timeframe.DAY,
+        adjustment=Adjustment.RAW
     )
     # 基本テスト: Barのリストが帰ってるか
-    assert isinstance(bars, list)
-    assert all(isinstance(bar, Bar) for bar in bars)
+    assert isinstance(chart, Chart)
     # 1-1 取得件数は３件
-    assert len(bars) == 3
-    # 1-2 シンボルが"AAPL"のbarのみ取得
-    assert all(bar.symbol == "AAPL" for bar in bars)
+    assert len(chart.bars) == 3
+    # 1-2 AAPL_L3_DAY_RAWのデータが取得されているか（volume=100,101,102）
+    assert all(100 <= bar.volume <= 102 for bar in chart.bars)
 
     """
     case2: シンボルと時間軸による絞り込み
@@ -87,26 +86,50 @@ def test_fetch_bars_from_local(test_bar_repo):
     条件:
         - シンボルが"AAPL"
         - 時間軸が"DAY"
-        - 日付が2024-01-02から2024-01-04の間
+        - 日付が2020-01-02から2020-01-03の間
 
     期待される結果:
         1. 取得件数は以下の日付の2件
-            - timestamp=datetime(2024, 1, 2, 5, 0, 0)
-            - timestamp=datetime(2024, 1, 3, 5, 0, 0)
-        2. シンボルが"AAPL"のbarのみ取得
-        3. 日付が2024-01-02から2024-01-04の間のbarのみ取得
+        2. 日付が2020-01-02から2020-01-03の間のbarのみ取得
+        3. volume=100のAAPL_L3_DAY_RAWのデータがスキップされているか
     """
-    bars = test_bar_repo.fetch_bars_from_local(
+    chart = test_bar_repo.fetch_chart_from_local(
         symbol="AAPL",
-        timeframe=TIMEFRAME,
-        start=datetime(2024, 1, 2),
-        end=datetime(2024, 1, 4)
+        timeframe=Timeframe.DAY,
+        adjustment=Adjustment.RAW,
+        start=datetime(2020, 1, 2),
+        end=datetime(2020, 1, 3)
     )
     # 2-1 取得件数は以下の日付の2件
-    assert len(bars) == 2
-    # 2-2 シンボルが"AAPL"のbarのみ取得
-    assert all(bar.symbol == "AAPL" for bar in bars)
-    # 2-3 日付が2024-01-02から2024-01-04の間のbarのみ取得
+    assert len(chart.bars) == 2
+    # 2-2 日付が2020-01-02から2020-01-03の間のbarのみ取得
     assert all(
-        datetime(2024, 1, 2) <= bar.timestamp <= datetime(2024, 1, 4) for bar in bars
+        datetime(2020, 1, 2) <= bar.timestamp <= datetime(2020, 1, 3) for bar in chart.bars
     )
+    # 2-3 volume=100のAAPL_L3_DAY_RAWのデータがスキップされているか
+    assert not any(bar.volume == 100 for bar in chart.bars)
+
+    """
+    case3: 取得できない場合
+
+    条件:
+        symbol = 'NOSYMBOL'
+        timeframe = Timeframe.DAY
+        adjustment = Adjustment.RAW
+        2020-01-02 <= timestamp <= 2020-01-03の間
+
+    期待される結果:
+        LookupErrorが発生すること。
+
+        NOSYMBOLというシンボルは存在しないためchartを取得することはできない。
+        そのため検索結果が見つからないことを表すLookupErrorを返す。
+    """
+    with pytest.raises(Exception) as excinfo:
+        chart = test_bar_repo.fetch_chart_from_local(
+            symbol="NOSYMBOL",
+            timeframe=Timeframe.DAY,
+            adjustment=Adjustment.RAW,
+            start=datetime(2020, 1, 2),
+            end=datetime(2020, 1, 3)
+        )
+        assert excinfo.exception == LookupError

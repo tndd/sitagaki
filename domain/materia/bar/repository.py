@@ -2,27 +2,31 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional
 
-from domain.materia.bar.model import Timeframe
+from domain.materia.bar.model import Adjustment, Chart, Timeframe
 from infra.adapter.materia.bar import (
-    adapt_bar_list_sqlm_to_domain,
-    adapt_timeframe_domain_to_alpaca,
+    arrive_chart_from_bar_alpaca_api_list,
+    arrive_chart_from_peewee_table_list,
+    depart_adjustment_to_alpaca_api,
+    depart_chart_to_peewee_table_list,
+    depart_timeframe_to_alpaca_api,
 )
-from infra.api.alpaca.historical import get_bars
-from infra.db.sqlmodel import SQLModelClient
-from infra.db.stmt.materia.bar import get_stmt_select_bar
-from infra.process.api.alpaca.historical import adapt_bar_alpaca_list_to_sqlm
+from infra.api.alpaca.historical import get_bar_alpaca_api_list
+from infra.db.peewee.client import PeeweeClient
+from infra.db.peewee.query.materia.bar import get_query_select_bar_alpaca
 
 
 @dataclass
 class BarRepository:
-    cli_db: SQLModelClient
+    cli_db: PeeweeClient
 
-    def pull_bars_from_online(
+    def store_chart_from_online(
             self,
             symbol: str,
             timeframe: Timeframe,
+            adjustment: Adjustment,
             start: datetime = datetime(2000,1,1),
-            end: Optional[datetime] = None
+            end: Optional[datetime] = None,
+            limit: Optional[int] = None
     ) -> None:
         """
         指定されたシンボルのbarデータをonlineから取得し、DBに保存する。
@@ -31,38 +35,76 @@ class BarRepository:
         2000-01-01から可能な限り最新のデータを取得する。
         """
         # barsデータを取得
-        bars_alpc = get_bars(
+        bar_alpaca_api_list = get_bar_alpaca_api_list(
             symbol=symbol,
-            timeframe=adapt_timeframe_domain_to_alpaca(timeframe),
+            timeframe=depart_timeframe_to_alpaca_api(timeframe),
+            adjustment=depart_adjustment_to_alpaca_api(adjustment),
             start=start,
-            end=end
+            end=end,
+            limit=limit
         )
-        # HACK: パフォーマンスのため、alpaca -> sqlmの変換をdomainを介さず直接行っている。
-        tbl_bars = adapt_bar_alpaca_list_to_sqlm(bars_alpc, timeframe)
+        # adapt: <= alpaca_api
+        chart = arrive_chart_from_bar_alpaca_api_list(
+            bars_alpaca_api=bar_alpaca_api_list,
+            adjustment=adjustment,
+            timeframe=timeframe
+        )
+        # adapt: => peewee_table
+        bar_peewee_table_list = depart_chart_to_peewee_table_list(chart)
         # DBのモデルリストを保存
-        self.cli_db.insert_models(tbl_bars)
+        self.cli_db.insert_models(bar_peewee_table_list)
 
 
-    def fetch_bars_from_local(
+    def fetch_chart_from_local(
             self,
             symbol: str,
             timeframe: Timeframe,
+            adjustment: Adjustment,
             start: datetime = datetime(2000, 1, 1),
             end: datetime = datetime.now()
-    ) -> None:
+    ) -> Chart:
         """
         ローカルのDBから指定されたシンボルのbarを取得する。
 
         デフォルトの取得範囲は2000-01-01~now。
         """
-        # 取得に必要なstmtを作成
-        stmt = get_stmt_select_bar(
+        # 取得に必要なqueryを作成
+        query = get_query_select_bar_alpaca(
             symbol=symbol,
             timeframe=timeframe,
+            adjustment=adjustment,
             start=start,
             end=end
         )
-        # barデータをDBから取得
-        bars_sqlm = self.cli_db.select_models(stmt)
-        # 取得物をドメイン層のbarモデルのリストに変換して返す
-        return adapt_bar_list_sqlm_to_domain(bars_sqlm)
+        try:
+            """
+            例外処理はリポジトリで行う。
+
+            例えば下のような検索結果０というのも本来は異常事態だ。
+
+            だがデータ取得関数get_bar_alpaca_api_list()からすれば、
+            条件に忠実に従い0件という結果を持ってきたという正常な振る舞いでしかない。
+
+            しかし、この結果はリポジトリにとってはエラーとなる。
+            リポジトリはプログラム側ではなくユーザー側の都合で例外を発生させる。
+            だからdomain-infra間で例外に対する相違が生まれる。
+            """
+            # barデータをDBから取得
+            bar_list_peewee_table = self.cli_db.exec_query(query)
+            if not bar_list_peewee_table:
+                """
+                Barの取得件数が0件の場合、エラーを発生させる。
+                おそらく条件の指定が間違っている。
+                もし通信での失敗であれば0件という情報すら返らないだろう。
+                """
+                raise LookupError('Barの取得件数が0件')
+            # 取得物をドメイン層のbarモデルのリストに変換して返す
+            return arrive_chart_from_peewee_table_list(bar_list_peewee_table)
+        except Exception as e:
+            # LATER: エラーログをログファイルに出力する
+            error_log = {
+                'exception': e,
+                'timestamp': datetime.now(),
+                'args': locals()
+            }
+            raise Exception(error_log)

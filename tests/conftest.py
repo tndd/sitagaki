@@ -12,7 +12,11 @@ import pytest
 
 # テスト用fixture
 from tests.utils.fixture.domain.materia.bar import test_bar_repo
-from tests.utils.fixture.infra.db.sqlmodel import test_engine, test_sqlm_cli
+from tests.utils.fixture.infra.api.historical import (
+    mock_get_barset_alpaca_api,
+    mock_get_barset_alpaca_api_empty,
+)
+from tests.utils.fixture.infra.db.peewee import test_peewee_cli
 
 
 @pytest.fixture(scope="session", autouse=True)

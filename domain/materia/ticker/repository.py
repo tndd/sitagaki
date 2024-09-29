@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 
-from infra.api.alpaca.trading import get_assets
 from infra.db.sqlmodel import SQLModelClient
+
+from infra.api.alpaca.trading import get_assets
 
 
 @dataclass
@@ -13,6 +14,6 @@ class TickerRepository:
         全ての株式のリストをonlineから取得し、DBに保存する。
         """
         tickers_alpaca = get_assets()
-        # TODO: 続きの実装
+        # LATER: 続きの実装
         # tickers_alpacaをドメインモデルに変換
         # tickersの保存
