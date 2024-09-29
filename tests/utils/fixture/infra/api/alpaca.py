@@ -1,8 +1,9 @@
 import pytest
 from alpaca.data.models import BarSet
 
-from tests.utils.factory.infra.api.alpaca import generate_barset_alpaca
+from tests.utils.factory.infra.api.alpaca.bar import generate_barset_alpaca
 
+MODULE_PATH_GET_BARSET_ALPACA_API = 'infra.api.alpaca.bar.get_barset_alpaca_api'
 
 @pytest.fixture
 def mock_get_barset_alpaca_api(monkeypatch):
@@ -13,7 +14,7 @@ def mock_get_barset_alpaca_api(monkeypatch):
         return generate_barset_alpaca()
 
     monkeypatch.setattr(
-        'infra.api.alpaca.stock.bar.get_barset_alpaca_api',
+        MODULE_PATH_GET_BARSET_ALPACA_API,
         _mock_get_barset_alpaca_api
     )
 
@@ -27,6 +28,6 @@ def mock_get_barset_alpaca_api_empty(monkeypatch):
         return BarSet(raw_data={'NOSYMBOL': []})
 
     monkeypatch.setattr(
-        'infra.api.alpaca.stock.bar.get_barset_alpaca_api',
+        MODULE_PATH_GET_BARSET_ALPACA_API,
         _mock_get_barset_alpaca_api
     )

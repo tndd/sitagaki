@@ -5,12 +5,12 @@ from alpaca.data.enums import Adjustment
 from alpaca.data.models import Bar, BarSet
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
-from infra.api.alpaca.stock.bar import (
+from infra.api.alpaca.bar import (
     extract_bar_list_alpaca_api_from_barset,
     get_bar_alpaca_api_list,
     get_barset_alpaca_api,
 )
-from tests.utils.factory.infra.api.alpaca import generate_barset_alpaca
+from tests.utils.factory.infra.api.alpaca.bar import generate_barset_alpaca
 
 
 def test_extract_bar_alpaca_list_api_from_barset():
