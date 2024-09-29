@@ -42,16 +42,17 @@ def test_get_barset_alpaca_api():
     """
     case1: 正常系
     """
-    barset_empty = get_barset_alpaca_api(
+    barset = get_barset_alpaca_api(
         symbol='AAPL',
         start=datetime(2024,1,1),
         timeframe=TimeFrameAlpaca.Day,
-        adjustment=Adjustment.RAW
+        adjustment=Adjustment.RAW,
+        limit=10
     )
     # LATER: 将来的にはログなどの方法で中身を確認する方針に変更
-    assert isinstance(barset_empty, BarSet)
-    print(barset_empty)
-
+    assert isinstance(barset, BarSet)
+    # limitによる取得数制限の確認
+    assert len(barset.data['AAPL']) == 10
     """
     case2: 存在しないシンボル
 
@@ -63,7 +64,8 @@ def test_get_barset_alpaca_api():
         symbol=SYMBOL_DUMMY,
         start=datetime(2024,1,1),
         timeframe=TimeFrameAlpaca.Day,
-        adjustment=Adjustment.RAW
+        adjustment=Adjustment.RAW,
+        limit=10
     )
     # barsetの中身 => {'data': {'NOSYMBOL': []}}
     assert isinstance(barset_empty, BarSet)

@@ -32,11 +32,12 @@ def extract_bar_list_alpaca_api_from_barset(barset: BarSet) -> List[Bar]:
 
 
 def get_barset_alpaca_api(
-    symbol: str,
-    timeframe: TimeFrame,
-    adjustment: Adjustment,
-    start: datetime,
-    end: Optional[datetime] = None
+        symbol: str,
+        timeframe: TimeFrame,
+        adjustment: Adjustment,
+        start: datetime,
+        end: Optional[datetime] = None,
+        limit: Optional[int] = None
 ) -> BarSet:
     """
     日足のヒストリカルバー情報を取得。
@@ -47,7 +48,8 @@ def get_barset_alpaca_api(
         timeframe=timeframe,
         adjustment=adjustment,
         start=start,
-        end=end if end else None
+        end=end if end else None,
+        limit=limit
     )
     return cli_hist.get_stock_bars(rq)
 
@@ -57,7 +59,8 @@ def get_bar_alpaca_api_list(
         timeframe: TimeFrame,
         adjustment: Adjustment,
         start: datetime,
-        end: Optional[datetime] = None
+        end: Optional[datetime] = None,
+        limit: Optional[int] = None
 ) -> List[Bar]:
     """
     日足のヒストリカルバー情報を取得。
@@ -66,5 +69,5 @@ def get_bar_alpaca_api_list(
     取得したBarSetはそのままリポジトリ側が扱うのは難しい。
     そこでこの関数ではBarSetからBarのリストを取り出して返却するまで行う。
     """
-    barset = get_barset_alpaca_api(symbol, timeframe, adjustment, start, end)
+    barset = get_barset_alpaca_api(symbol, timeframe, adjustment, start, end, limit)
     return extract_bar_list_alpaca_api_from_barset(barset)
