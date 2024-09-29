@@ -71,6 +71,18 @@ class BarRepository:
             end=end
         )
         try:
+            """
+            例外処理はリポジトリで行う。
+
+            例えば下のような検索結果０というのも本来は異常事態だ。
+
+            だがデータ取得関数get_bar_alpaca_api_list()からすれば、
+            条件に忠実に従い0件という結果を持ってきたという正常な振る舞いでしかない。
+
+            しかし、この結果はリポジトリにとってはエラーとなる。
+            リポジトリはプログラム側ではなくユーザー側の都合で例外を発生させる。
+            だからdomain-infra間で例外に対する相違が生まれる。
+            """
             # barデータをDBから取得
             bar_list_peewee_table = self.cli_db.exec_query(query)
             if not bar_list_peewee_table:
@@ -83,14 +95,9 @@ class BarRepository:
             # 取得物をドメイン層のbarモデルのリストに変換して返す
             return arrive_chart_from_peewee_table_list(bar_list_peewee_table)
         except Exception as e:
+            # LATER: エラーログをログファイルに出力する
             error_log = {
                 'exception': e,
-                'args': {
-                    'symbol': symbol,
-                    'timeframe': timeframe,
-                    'adjustment': adjustment,
-                    'start': start,
-                    'end': end
-                }
+                'args': locals()
             }
             raise Exception(error_log)

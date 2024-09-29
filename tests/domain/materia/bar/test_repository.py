@@ -106,8 +106,10 @@ def test_fetch_chart_from_local(test_bar_repo):
         2020-01-02 <= timestamp <= 2020-01-03の間
 
     期待される結果:
+        LookupErrorが発生すること。
+
         NOSYMBOLというシンボルは存在しないためchartを取得することはできない。
-        そのため、ValueErrorが発生すること。
+        そのため検索結果が見つからないことを表すLookupErrorを返す。
     """
     with pytest.raises(Exception) as excinfo:
         chart = test_bar_repo.fetch_chart_from_local(
