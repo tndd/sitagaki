@@ -18,6 +18,15 @@ from infra.api.alpaca.bar import get_bar_alpaca_api_list
 from infra.db.peewee.client import PeeweeClient
 from infra.db.peewee.query.materia.bar import get_query_select_bar_alpaca
 
+"""
+TODO: クラスを使うのをやめる？
+    少なくとも今のリポジトリの実装では、クラスである必要がない。
+    だからここで関数型のリポジトリという実装に挑戦すべきではないか。評価も兼ねて。
+    そうすれば状態を保つこともなくなり、バグは減りテストもしやすくなる(はず)。
+
+    juliaのような新しい言語に移住することがあれば、この関数型の実装は生きてくるだろう。
+"""
+
 
 @dataclass
 class BarRepository:
