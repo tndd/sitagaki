@@ -13,7 +13,7 @@ def mock_get_barset_alpaca_api(monkeypatch):
         return generate_barset_alpaca()
 
     monkeypatch.setattr(
-        'infra.api.alpaca.historical.get_barset_alpaca_api',
+        'infra.api.alpaca.stock.bar.get_barset_alpaca_api',
         _mock_get_barset_alpaca_api
     )
 
@@ -27,6 +27,6 @@ def mock_get_barset_alpaca_api_empty(monkeypatch):
         return BarSet(raw_data={'NOSYMBOL': []})
 
     monkeypatch.setattr(
-        'infra.api.alpaca.historical.get_barset_alpaca_api',
+        'infra.api.alpaca.stock.bar.get_barset_alpaca_api',
         _mock_get_barset_alpaca_api
     )

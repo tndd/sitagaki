@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from infra.db.sqlmodel import SQLModelClient
 
-from infra.api.alpaca.trading import get_assets
+from infra.api.alpaca.stock.trade import get_assets
 
 
 @dataclass

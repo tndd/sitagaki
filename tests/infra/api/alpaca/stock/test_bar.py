@@ -5,7 +5,7 @@ from alpaca.data.enums import Adjustment
 from alpaca.data.models import Bar, BarSet
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
-from infra.api.alpaca.historical import (
+from infra.api.alpaca.stock.bar import (
     extract_bar_list_alpaca_api_from_barset,
     get_bar_alpaca_api_list,
     get_barset_alpaca_api,
