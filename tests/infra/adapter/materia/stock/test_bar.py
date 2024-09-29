@@ -2,7 +2,7 @@ from alpaca.data.requests import Adjustment as AdjustmentAlpaca
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
 from domain.materia.stock.bar.model import Adjustment, Bar, Chart, Timeframe
-from infra.adapter.materia.bar import (
+from infra.adapter.materia.stock.bar import (
     arrive_adjustment_from_peewee_table,
     arrive_bar_from_alpaca_api,
     arrive_bar_from_peewee_table,
