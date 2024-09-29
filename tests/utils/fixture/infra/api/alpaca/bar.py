@@ -5,6 +5,7 @@ from tests.utils.factory.infra.api.alpaca.bar import generate_barset_alpaca
 
 MODULE_PATH_GET_BARSET_ALPACA_API = 'infra.api.alpaca.bar.get_barset_alpaca_api'
 
+
 @pytest.fixture
 def mock_get_barset_alpaca_api(monkeypatch):
     """
