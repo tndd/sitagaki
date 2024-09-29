@@ -25,7 +25,8 @@ class BarRepository:
             timeframe: Timeframe,
             adjustment: Adjustment,
             start: datetime = datetime(2000,1,1),
-            end: Optional[datetime] = None
+            end: Optional[datetime] = None,
+            limit: Optional[int] = None
     ) -> None:
         """
         指定されたシンボルのbarデータをonlineから取得し、DBに保存する。
@@ -39,7 +40,8 @@ class BarRepository:
             timeframe=depart_timeframe_to_alpaca_api(timeframe),
             adjustment=depart_adjustment_to_alpaca_api(adjustment),
             start=start,
-            end=end
+            end=end,
+            limit=limit
         )
         # adapt: <= alpaca_api
         chart = arrive_chart_from_bar_alpaca_api_list(

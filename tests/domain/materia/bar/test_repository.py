@@ -1,8 +1,12 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 
 import pytest
 
 from domain.materia.bar.model import Adjustment, Chart, Timeframe
+from infra.adapter.materia.bar import (
+    arrive_adjustment_from_peewee_table,
+    arrive_timeframe_from_peewee_table,
+)
 from infra.db.peewee.table.bar import TableBarAlpaca
 from tests.utils.dataload.materia.bar import prepare_test_bar_alpaca_on_db
 
@@ -22,6 +26,35 @@ def test_mock_store_chart_from_online(test_bar_repo, mock_get_barset_alpaca_api)
     assert bar_table_list.exists()
     # データがTableBarAlpacaであること
     assert all(isinstance(bar, TableBarAlpaca) for bar in bar_table_list)
+
+
+@pytest.mark.online
+def test_store_chart_from_online(test_bar_repo):
+    """
+    モックを使わず、すべての組み合わせによる情報取得テストを行う
+    """
+    # timeframe X adjustmentの組み合わせを全通り試す
+    for timeframe in Timeframe:
+        for adjustment in Adjustment:
+            test_bar_repo.store_chart_from_online(
+                symbol="AAPL",
+                timeframe=timeframe,
+                adjustment=adjustment,
+                limit=5
+            )
+            bar_table_list = TableBarAlpaca.select()
+            # 取得件数の確認
+            assert len(bar_table_list) == 5
+            # データ内容の検証
+            assert all(
+                isinstance(bar, TableBarAlpaca) and
+                arrive_timeframe_from_peewee_table(bar) == timeframe and
+                arrive_adjustment_from_peewee_table(bar) == adjustment
+                for bar in bar_table_list
+            )
+            # LATER: 取得したbar_table_listの中身をログなどで確認できるようにする
+            # データをクリア
+            TableBarAlpaca.delete().execute()
 
 
 def test_fetch_chart_from_local(test_bar_repo):
