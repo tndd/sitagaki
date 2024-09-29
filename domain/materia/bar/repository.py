@@ -19,7 +19,7 @@ from infra.db.peewee.query.materia.bar import get_query_select_bar_alpaca
 class BarRepository:
     cli_db: PeeweeClient
 
-    def pull_chart_from_online(
+    def store_chart_from_online(
             self,
             symbol: str,
             timeframe: Timeframe,

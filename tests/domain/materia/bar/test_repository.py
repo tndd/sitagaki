@@ -7,13 +7,13 @@ from infra.db.peewee.table.bar import TableBarAlpaca
 from tests.utils.dataload.materia.bar import prepare_test_bar_alpaca_on_db
 
 
-def test_mock_pull_chart_from_online(test_bar_repo, mock_get_barset_alpaca_api):
+def test_mock_store_chart_from_online(test_bar_repo, mock_get_barset_alpaca_api):
     """
     日足:
         負荷軽減のため、直近一週間分の情報を取得する。
     """
     # Mock通信
-    test_bar_repo.pull_chart_from_online(
+    test_bar_repo.store_chart_from_online(
         symbol="AAPL",
         timeframe=Timeframe.DAY,
         adjustment=Adjustment.RAW,
