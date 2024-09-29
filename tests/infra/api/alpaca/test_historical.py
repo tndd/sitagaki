@@ -37,7 +37,7 @@ def test_extract_bar_alpaca_list_api_from_barset():
     assert len(bars) == 0
 
 
-# @pytest.mark.online
+@pytest.mark.online
 def test_get_barset_alpaca_api():
     """
     case1: 正常系
@@ -70,17 +70,11 @@ def test_get_barset_alpaca_api():
     assert len(barset_empty.data[SYMBOL_DUMMY]) == 0
 
 
-def test_get_bar_alpaca_api_list(monkeypatch):
-    # get_barset_alpaca_apiをモック化
-    def mock_get_barset_alpaca_api(*args, **kwargs):
-        return generate_barset_alpaca()
-    monkeypatch.setattr(
-        'infra.api.alpaca.historical.get_barset_alpaca_api',
-        mock_get_barset_alpaca_api
-    )
+def test_get_bar_alpaca_api_list(mock_get_barset_alpaca_api):
     """
-    case1: 正常系
+    正常系テスト
     """
+    # Mock
     bar_alpaca_api_list = get_bar_alpaca_api_list(
         symbol='AAPL',
         start=datetime(2024,1,1),
@@ -90,20 +84,12 @@ def test_get_bar_alpaca_api_list(monkeypatch):
     assert isinstance(bar_alpaca_api_list, list)
     assert all(isinstance(bar, Bar) for bar in bar_alpaca_api_list)
 
-    """
-    case2: 異常系
-        存在しないシンボル
 
-    期待結果:
-        空のリストが返される
+def test_get_bar_alpaca_api_list_empty_barset(mock_get_barset_alpaca_api_empty):
     """
-    # 空のBarSetを返すモック
-    def mock_get_barset_alpaca_api(*args, **kwargs):
-        return BarSet(raw_data={'NOSYMBOL': []})
-    monkeypatch.setattr(
-        'infra.api.alpaca.historical.get_barset_alpaca_api',
-        mock_get_barset_alpaca_api
-    )
+    存在しない条件を入力し、apiから空のBarSetが帰ってきた際の振る舞いのテスト
+    """
+    # Mock
     bar_alpaca_api_list = get_bar_alpaca_api_list(
         symbol='NOSYMBOL',
         start=datetime(2024,1,1),
