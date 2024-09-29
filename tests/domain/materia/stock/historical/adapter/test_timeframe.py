@@ -1,11 +1,11 @@
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
-from domain.materia.stock.historical.adapter.timeframe import (
+from domain.materia.finance.historical.adapter.timeframe import (
     arrive_timeframe_from_peewee_table,
     depart_timeframe_to_alpaca_api,
     depart_timeframe_to_peewee_table,
 )
-from domain.materia.stock.historical.model import Timeframe
+from domain.materia.finance.historical.model import Timeframe
 from tests.utils.factory.infra.db.peewee.bar import generate_table_bar_alpaca
 
 

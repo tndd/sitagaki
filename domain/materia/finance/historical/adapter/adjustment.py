@@ -1,6 +1,6 @@
 from alpaca.data.requests import Adjustment as AdjustmentAlpaca
 
-from domain.materia.stock.historical.model import Adjustment
+from domain.materia.finance.historical.model import Adjustment
 from infra.db.peewee.table.bar import TableBarAlpaca
 
 

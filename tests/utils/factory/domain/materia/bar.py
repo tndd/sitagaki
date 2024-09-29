@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from domain.materia.stock.historical.model import Adjustment, Bar, Chart, Timeframe
+from domain.materia.finance.historical.model import Adjustment, Bar, Chart, Timeframe
 
 
 def generate_bar() -> Bar:

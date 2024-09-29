@@ -2,13 +2,13 @@ from datetime import datetime
 
 import pytest
 
-from domain.materia.stock.historical.adapter.adjustment import (
+from domain.materia.finance.historical.adapter.adjustment import (
     arrive_adjustment_from_peewee_table,
 )
-from domain.materia.stock.historical.adapter.timeframe import (
+from domain.materia.finance.historical.adapter.timeframe import (
     arrive_timeframe_from_peewee_table,
 )
-from domain.materia.stock.historical.model import Adjustment, Chart, Timeframe
+from domain.materia.finance.historical.model import Adjustment, Chart, Timeframe
 from infra.db.peewee.table.bar import TableBarAlpaca
 from tests.utils.dataload.materia.bar import prepare_test_bar_alpaca_on_db
 

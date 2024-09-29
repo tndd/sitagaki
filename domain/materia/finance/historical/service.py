@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from domain.materia.stock.historical.repository import BarRepository
+from domain.materia.finance.historical.repository import BarRepository
 
 
 def fetch_bars(
