@@ -90,12 +90,6 @@
             "color": "yellow"
         },
         {
-            "path": "infra/process",
-            "symbol": "📠💽",
-            "tooltip": "INFRA",
-            "color": "yellow"
-        },
-        {
             "path": "infra",
             "symbol": "💽",
             "tooltip": "INFRA",
