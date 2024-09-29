@@ -98,6 +98,7 @@ class BarRepository:
             # LATER: エラーログをログファイルに出力する
             error_log = {
                 'exception': e,
+                'timestamp': datetime.now(),
                 'args': locals()
             }
             raise Exception(error_log)
