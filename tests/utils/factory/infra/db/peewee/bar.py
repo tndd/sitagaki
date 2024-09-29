@@ -2,12 +2,6 @@ from datetime import datetime
 
 from infra.db.peewee.table.bar import TableBarAlpaca
 
-"""
-TODO: generate関数の命名検討
-    table_bar_alpaca -> bar_peewee_table(?)
-    ここはクラス名に準拠したtable_bar_alpacaでいいのか。
-    だが他のところではpeeweeを使ってるところもあり、混乱の元となるので統一したい。
-"""
 
 def generate_table_bar_alpaca() -> TableBarAlpaca:
     """
