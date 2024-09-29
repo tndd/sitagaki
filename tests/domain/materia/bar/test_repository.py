@@ -106,28 +106,14 @@ def test_fetch_chart_from_local(test_bar_repo):
         2020-01-02 <= timestamp <= 2020-01-03の間
 
     期待される結果:
-        1. 取得件数は0件
+        NOSYMBOLというシンボルは存在しないためchartを取得することはできない。
+        そのため、ValueErrorが発生すること。
     """
-    """
-    FIXME: 取得件数０の場合のテスト修正
-        取得件数０の場合の振る舞いを考える必要がある。
-
-        raiseを受け取るのか、空のリストを返すのか。
-        さらにはどこの段階で例外を返すか。考えることが色々ある。
-
-    方針:
-        リポジトリでは謎の該当なしリクエストが来たら、
-        取得件数０を返す方針でいいだろう。
-        リポジトリ内で例外処理をするというのは何かが違う。
-
-        やっぱり失敗時になんらかの対策を取りたいこともある。
-        ならリポジトリでtryするのは妥当。
-    """
-    chart = test_bar_repo.fetch_chart_from_local(
-        symbol="NOSYMBOL",
-        timeframe=Timeframe.DAY,
-        adjustment=Adjustment.RAW,
-        start=datetime(2020, 1, 2),
-        end=datetime(2020, 1, 3)
-    )
-    # assert len(chart.bars) == 0
+    with pytest.raises(ValueError) as excinfo:
+        chart = test_bar_repo.fetch_chart_from_local(
+            symbol="NOSYMBOL",
+            timeframe=Timeframe.DAY,
+            adjustment=Adjustment.RAW,
+            start=datetime(2020, 1, 2),
+            end=datetime(2020, 1, 3)
+        )

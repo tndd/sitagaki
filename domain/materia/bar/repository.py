@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional
 
-from domain.materia.bar.model import Adjustment, Timeframe
+from domain.materia.bar.model import Adjustment, Chart, Timeframe
 from infra.adapter.materia.bar import (
     arrive_chart_from_bar_alpaca_api_list,
     arrive_chart_from_peewee_table_list,
@@ -56,7 +56,7 @@ class BarRepository:
             adjustment: Adjustment,
             start: datetime = datetime(2000, 1, 1),
             end: datetime = datetime.now()
-    ) -> None:
+    ) -> Chart:
         """
         ローカルのDBから指定されたシンボルのbarを取得する。
 
@@ -72,5 +72,22 @@ class BarRepository:
         )
         # barデータをDBから取得
         bar_list_peewee_table = self.cli_db.exec_query(query)
+        if not bar_list_peewee_table:
+            """
+            Barの取得件数が0件の場合、エラーを発生させる。
+            おそらく条件の指定が間違っている。
+            もし通信での失敗であれば0件という情報すら返らないだろう。
+            """
+            error_log = {
+                'message': 'Barの取得件数が0件。',
+                'data': {
+                    'symbol': symbol,
+                    'timeframe': timeframe,
+                    'adjustment': adjustment,
+                    'start': start,
+                    'end': end
+                }
+            }
+            raise ValueError(error_log)
         # 取得物をドメイン層のbarモデルのリストに変換して返す
         return arrive_chart_from_peewee_table_list(bar_list_peewee_table)
