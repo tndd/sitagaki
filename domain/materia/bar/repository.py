@@ -10,7 +10,7 @@ from infra.adapter.materia.bar import (
     depart_chart_to_peewee_table_list,
     depart_timeframe_to_alpaca_api,
 )
-from infra.api.alpaca.historical import get_bar_alpaca_api_list
+from infra.api.alpaca.stock.bar import get_bar_alpaca_api_list
 from infra.db.peewee.client import PeeweeClient
 from infra.db.peewee.query.materia.bar import get_query_select_bar_alpaca
 
