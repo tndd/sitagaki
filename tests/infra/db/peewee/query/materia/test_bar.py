@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from domain.materia.finance.historical.model import Adjustment, Timeframe
+from domain.materia.finance.chart.model import Adjustment, Timeframe
 from infra.db.peewee.query.materia.bar import get_query_select_bar_alpaca
 from infra.db.peewee.table.bar import TableBarAlpaca
 from tests.utils.dataload.materia.bar import prepare_test_bar_alpaca_on_db
