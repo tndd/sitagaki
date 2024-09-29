@@ -3,7 +3,7 @@ from datetime import datetime
 from peewee import ModelSelect
 
 from domain.materia.stock.bar.model import Adjustment, Timeframe
-from infra.adapter.materia.stock.bar import (
+from domain.materia.stock.bar.adapter import (
     depart_adjustment_to_peewee_table,
     depart_timeframe_to_peewee_table,
 )
