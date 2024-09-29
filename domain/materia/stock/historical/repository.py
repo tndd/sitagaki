@@ -2,8 +2,8 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional
 
-from domain.materia.stock.bar.model import Adjustment, Chart, Timeframe
-from domain.materia.stock.bar.adapter import (
+from domain.materia.stock.historical.model import Adjustment, Chart, Timeframe
+from domain.materia.stock.historical.adapter import (
     arrive_chart_from_bar_alpaca_api_list,
     arrive_chart_from_peewee_table_list,
     depart_adjustment_to_alpaca_api,

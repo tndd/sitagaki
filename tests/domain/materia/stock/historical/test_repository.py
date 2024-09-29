@@ -2,8 +2,8 @@ from datetime import datetime
 
 import pytest
 
-from domain.materia.stock.bar.model import Adjustment, Chart, Timeframe
-from domain.materia.stock.bar.adapter import (
+from domain.materia.stock.historical.model import Adjustment, Chart, Timeframe
+from domain.materia.stock.historical.adapter import (
     arrive_adjustment_from_peewee_table,
     arrive_timeframe_from_peewee_table,
 )
