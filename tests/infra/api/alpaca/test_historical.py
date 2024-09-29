@@ -70,11 +70,11 @@ def test_get_barset_alpaca_api():
     assert len(barset_empty.data[SYMBOL_DUMMY]) == 0
 
 
-def test_get_bar_alpaca_api_list(mock_get_barset_alpaca_api):
+def test_mock_get_bar_alpaca_api_list(mock_get_barset_alpaca_api):
     """
     正常系テスト
     """
-    # Mock
+    # Mock通信
     bar_alpaca_api_list = get_bar_alpaca_api_list(
         symbol='AAPL',
         start=datetime(2024,1,1),
@@ -85,11 +85,11 @@ def test_get_bar_alpaca_api_list(mock_get_barset_alpaca_api):
     assert all(isinstance(bar, Bar) for bar in bar_alpaca_api_list)
 
 
-def test_get_bar_alpaca_api_list_empty_barset(mock_get_barset_alpaca_api_empty):
+def test_mock_get_bar_alpaca_api_list_empty_barset(mock_get_barset_alpaca_api_empty):
     """
     存在しない条件を入力し、apiから空のBarSetが帰ってきた際の振る舞いのテスト
     """
-    # Mock
+    # Mock通信
     bar_alpaca_api_list = get_bar_alpaca_api_list(
         symbol='NOSYMBOL',
         start=datetime(2024,1,1),
