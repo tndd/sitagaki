@@ -70,37 +70,45 @@ def test_get_barset_alpaca_api():
     assert len(barset_empty.data[SYMBOL_DUMMY]) == 0
 
 
-# def test_get_bar_alpaca_api_list(monkeypatch):
-#     """
-#     case1: 正常系
-#     """
-#     # TODO nonkeypatchが動いてないので修正
-#     monkeypatch.setattr(
-#         "infra.api.alpaca.historical",
-#         get_barset_alpaca_api,
-#         generate_barset_alpaca
-#     )
-#     bar_alpaca_api_list = get_bar_alpaca_api_list(
-#         symbol='AAPL',
-#         start='2024-01-01',
-#         timeframe=TimeFrameAlpaca.Day,
-#         adjustment=Adjustment.RAW
-#     )
-#     assert isinstance(bar_alpaca_api_list, list)
-#     assert all(isinstance(bar, Bar) for bar in bar_alpaca_api_list)
+def test_get_bar_alpaca_api_list(monkeypatch):
+    # get_barset_alpaca_apiをモック化
+    def mock_get_barset_alpaca_api(*args, **kwargs):
+        return generate_barset_alpaca()
+    monkeypatch.setattr(
+        'infra.api.alpaca.historical.get_barset_alpaca_api',
+        mock_get_barset_alpaca_api
+    )
+    """
+    case1: 正常系
+    """
+    bar_alpaca_api_list = get_bar_alpaca_api_list(
+        symbol='AAPL',
+        start=datetime(2024,1,1),
+        timeframe=TimeFrameAlpaca.Day,
+        adjustment=Adjustment.RAW
+    )
+    assert isinstance(bar_alpaca_api_list, list)
+    assert all(isinstance(bar, Bar) for bar in bar_alpaca_api_list)
 
-#     """
-#     case2: 異常系
-#         存在しないシンボル
+    """
+    case2: 異常系
+        存在しないシンボル
 
-#     期待結果:
-#         空のリストが返される
-#     """
-#     bar_alpaca_api_list = get_bar_alpaca_api_list(
-#         symbol='NOSYMBOL',
-#         start='2024-01-01',
-#         timeframe=TimeFrameAlpaca.Day,
-#         adjustment=Adjustment.RAW
-#     )
-#     assert isinstance(bar_alpaca_api_list, list)
-#     assert len(bar_alpaca_api_list) == 0
+    期待結果:
+        空のリストが返される
+    """
+    # 空のBarSetを返すモック
+    def mock_get_barset_alpaca_api(*args, **kwargs):
+        return BarSet(raw_data={'NOSYMBOL': []})
+    monkeypatch.setattr(
+        'infra.api.alpaca.historical.get_barset_alpaca_api',
+        mock_get_barset_alpaca_api
+    )
+    bar_alpaca_api_list = get_bar_alpaca_api_list(
+        symbol='NOSYMBOL',
+        start=datetime(2024,1,1),
+        timeframe=TimeFrameAlpaca.Day,
+        adjustment=Adjustment.RAW
+    )
+    assert isinstance(bar_alpaca_api_list, list)
+    assert len(bar_alpaca_api_list) == 0
