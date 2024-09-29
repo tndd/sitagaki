@@ -9,8 +9,7 @@ from tests.utils.dataload.materia.bar import prepare_test_bar_alpaca_on_db
 
 def test_mock_store_chart_from_online(test_bar_repo, mock_get_barset_alpaca_api):
     """
-    日足:
-        負荷軽減のため、直近一週間分の情報を取得する。
+    通信部分をモックにした簡易テスト
     """
     # Mock通信
     test_bar_repo.store_chart_from_online(
