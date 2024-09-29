@@ -1,8 +1,8 @@
 from datetime import datetime
 
 import pytest
-from alpaca.data.enums import Adjustment
 from alpaca.data.models import Bar, BarSet
+from alpaca.data.requests import Adjustment
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
 from infra.api.alpaca.bar import (
