@@ -20,7 +20,10 @@ def mock_test_chart_repo(test_peewee_cli, mock_get_barset_alpaca_api):
 
 
 @pytest.fixture
-def mock_test_chart_repo_failed_api(test_peewee_cli, mock_get_barset_alpaca_api_empty_barset):
+def mock_test_chart_repo_failed_api(
+        test_peewee_cli,
+        mock_get_barset_alpaca_api_empty_barset
+):
     """
     alpaca_apiの通信部分が必ず空を返すようにしたchartリポジトリ
     """
