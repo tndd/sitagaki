@@ -62,6 +62,8 @@ def test_store_chart_from_online(mock_test_chart_repo):
 
 def test_fetch_chart_from_local(mock_test_chart_repo, prepare_table_bar_alpaca_on_db):
     """
+    注意: fixtureによるDBデータ投入済み
+
     case1: 時間軸省略時の取得動作確認
         デフォルト日付範囲については、全範囲を網羅できる2000-01-01~nowとしている。
 

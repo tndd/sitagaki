@@ -9,7 +9,11 @@ def test_get_query_select_bar_alpaca(
     test_peewee_cli,
     prepare_table_bar_alpaca_on_db,
 ):
-    # case0: データが入ってるかの確認
+    """
+    peeweeのクエリが期待通りの情報を取得できるかを確認するテスト。
+
+    case0: データが入ってるかの確認
+    """
     query_0 = TableBarAlpaca.select()
     assert len(query_0) == 10
     """
