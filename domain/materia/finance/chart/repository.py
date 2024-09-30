@@ -20,7 +20,7 @@ from infra.db.peewee.query.materia.bar import get_query_select_bar_alpaca
 
 
 @dataclass
-class BarRepository:
+class ChartRepository:
     cli_db: PeeweeClient
 
     def store_chart_from_online(
