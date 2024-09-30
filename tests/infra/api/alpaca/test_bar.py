@@ -52,6 +52,33 @@ def test_mock_get_bar_alpaca_api_list_empty_barset(mock_get_barset_alpaca_api_em
     assert len(bar_alpaca_api_list) == 0
 
 
+def test_extract_bar_alpaca_list_api_from_barset():
+    """
+    BarSetの中からBarのリストを取り出す機能のテスト
+    """
+    # case1: 正常系
+    barset_empty = generate_barset_alpaca()
+    # BarSetの中からBarのリストを取り出す
+    bars = extract_bar_list_alpaca_api_from_barset(barset_empty)
+    assert isinstance(bars, list)
+    assert all(isinstance(bar, Bar) for bar in bars)
+
+    """
+    case2: BarSetが空の場合
+        結果が十分に取得されている場合、
+        空のBarSetが返されることは考えられる。
+
+    期待結果:
+        空のBarリストが返される。
+    """
+    # 空のBarSetを生成
+    barset_empty = BarSet(raw_data={'NOSYMBOL': []})
+    # BarSetの中からBarのリストを取り出す
+    bars = extract_bar_list_alpaca_api_from_barset(barset_empty)
+    assert isinstance(bars, list)
+    assert len(bars) == 0
+
+
 @pytest.mark.online
 def test_get_barset_alpaca_api():
     """
@@ -87,30 +114,3 @@ def test_get_barset_alpaca_api_not_exist_symbol():
     # barsetの中身 => {'data': {'NOSYMBOL': []}}
     assert isinstance(barset_empty, BarSet)
     assert len(barset_empty.data[SYMBOL_DUMMY]) == 0
-
-
-def test_extract_bar_alpaca_list_api_from_barset():
-    """
-    BarSetの中からBarのリストを取り出す機能のテスト
-    """
-    # case1: 正常系
-    barset_empty = generate_barset_alpaca()
-    # BarSetの中からBarのリストを取り出す
-    bars = extract_bar_list_alpaca_api_from_barset(barset_empty)
-    assert isinstance(bars, list)
-    assert all(isinstance(bar, Bar) for bar in bars)
-
-    """
-    case2: BarSetが空の場合
-        結果が十分に取得されている場合、
-        空のBarSetが返されることは考えられる。
-
-    期待結果:
-        空のBarリストが返される。
-    """
-    # 空のBarSetを生成
-    barset_empty = BarSet(raw_data={'NOSYMBOL': []})
-    # BarSetの中からBarのリストを取り出す
-    bars = extract_bar_list_alpaca_api_from_barset(barset_empty)
-    assert isinstance(bars, list)
-    assert len(bars) == 0
