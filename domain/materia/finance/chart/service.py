@@ -1,10 +1,7 @@
 from datetime import datetime
 
-from domain.materia.finance.chart.repository import BarRepository
-
 
 def fetch_bars(
-        rp: BarRepository,
         symbol: str,
         start: datetime = datetime(2000,1,1),
         end: datetime = datetime.now()
