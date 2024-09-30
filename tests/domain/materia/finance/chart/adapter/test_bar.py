@@ -5,7 +5,7 @@ from domain.materia.finance.chart.adapter.bar import (
 )
 from domain.materia.finance.chart.model import Adjustment, Bar, Timeframe
 from infra.db.peewee.table.bar import TableBarAlpaca
-from tests.utils.factory.domain.materia.finance.bar import generate_bar
+from tests.utils.factory.domain.materia.finance.chart import generate_bar
 from tests.utils.factory.infra.api.alpaca.bar import generate_bar_alpaca
 from tests.utils.factory.infra.db.peewee.bar import generate_table_bar_alpaca
 
