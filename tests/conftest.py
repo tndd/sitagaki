@@ -12,8 +12,8 @@ import pytest
 
 # テスト用fixture
 from tests.utils.fixture.domain.materia.bar import (
-    test_chart_repo_mock,
-    test_chart_repo_mock_failed_api,
+    mock_test_chart_repo,
+    mock_test_chart_repo_failed_api,
 )
 from tests.utils.fixture.infra.api.alpaca.bar import (
     mock_get_barset_alpaca_api,
