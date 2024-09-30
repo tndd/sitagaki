@@ -1,6 +1,6 @@
 import pytest
 
-from domain.materia.stock.historical.repository import BarRepository
+from domain.materia.finance.chart.repository import BarRepository
 
 
 @pytest.fixture
