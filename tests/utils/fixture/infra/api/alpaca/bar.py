@@ -21,7 +21,7 @@ def mock_get_barset_alpaca_api(monkeypatch):
 
 
 @pytest.fixture
-def mock_get_barset_alpaca_api_empty(monkeypatch):
+def mock_get_barset_alpaca_api_empty_barset(monkeypatch):
     """
     通信をモックし、空のBarSetを返す。
     """
