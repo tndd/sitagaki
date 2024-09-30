@@ -12,12 +12,12 @@ from domain.materia.finance.chart.model import Adjustment, Chart, Timeframe
 from infra.db.peewee.table.bar import TableBarAlpaca
 
 
-def test_mock_store_chart_from_online(mock_test_chart_repo):
+def test_mock_store_chart_from_online(test_chart_repo_mocked_with_alpaca_api):
     """
     通信部分をモックにした簡易テスト
     """
     # Mock通信
-    mock_test_chart_repo.store_chart_from_online(
+    test_chart_repo_mocked_with_alpaca_api.store_chart_from_online(
         symbol="AAPL",
         timeframe=Timeframe.DAY,
         adjustment=Adjustment.RAW,
@@ -29,7 +29,7 @@ def test_mock_store_chart_from_online(mock_test_chart_repo):
     assert all(isinstance(bar, TableBarAlpaca) for bar in bar_table_list)
 
 
-def test_store_chart_from_online(mock_test_chart_repo):
+def test_store_chart_from_online(test_chart_repo_mocked_with_alpaca_api):
     """
     すべての組み合わせによる情報取得テストを行う
 
@@ -39,7 +39,7 @@ def test_store_chart_from_online(mock_test_chart_repo):
     # timeframe X adjustmentの組み合わせを全通り試す
     for timeframe in Timeframe:
         for adjustment in Adjustment:
-            mock_test_chart_repo.store_chart_from_online(
+            test_chart_repo_mocked_with_alpaca_api.store_chart_from_online(
                 symbol="AAPL",
                 timeframe=timeframe,
                 adjustment=adjustment,
@@ -60,7 +60,7 @@ def test_store_chart_from_online(mock_test_chart_repo):
             TableBarAlpaca.delete().execute()
 
 
-def test_fetch_chart_from_local(mock_test_chart_repo, prepare_table_bar_alpaca_on_db):
+def test_fetch_chart_from_local(test_chart_repo_mocked_with_alpaca_api, prepare_table_bar_alpaca_on_db):
     """
     注意: fixtureによるDBデータ投入済み
 
@@ -71,7 +71,7 @@ def test_fetch_chart_from_local(mock_test_chart_repo, prepare_table_bar_alpaca_o
         1. 取得件数は３件
         2. AAPL_L3_DAY_RAWのデータが取得されているか（volume=100,101,102）
     """
-    chart = mock_test_chart_repo.fetch_chart_from_local(
+    chart = test_chart_repo_mocked_with_alpaca_api.fetch_chart_from_local(
         symbol="AAPL",
         timeframe=Timeframe.DAY,
         adjustment=Adjustment.RAW
@@ -96,7 +96,7 @@ def test_fetch_chart_from_local(mock_test_chart_repo, prepare_table_bar_alpaca_o
         2. 日付が2020-01-02から2020-01-03の間のbarのみ取得
         3. volume=100のAAPL_L3_DAY_RAWのデータがスキップされているか
     """
-    chart = mock_test_chart_repo.fetch_chart_from_local(
+    chart = test_chart_repo_mocked_with_alpaca_api.fetch_chart_from_local(
         symbol="AAPL",
         timeframe=Timeframe.DAY,
         adjustment=Adjustment.RAW,
@@ -128,7 +128,7 @@ def test_fetch_chart_from_local(mock_test_chart_repo, prepare_table_bar_alpaca_o
         そのため検索結果が見つからないことを表すLookupErrorを返す。
     """
     with pytest.raises(Exception) as excinfo:
-        chart = mock_test_chart_repo.fetch_chart_from_local(
+        chart = test_chart_repo_mocked_with_alpaca_api.fetch_chart_from_local(
             symbol="NOSYMBOL",
             timeframe=Timeframe.DAY,
             adjustment=Adjustment.RAW,

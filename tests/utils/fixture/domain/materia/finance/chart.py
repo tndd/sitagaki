@@ -12,7 +12,7 @@ def test_chart_repo(test_peewee_cli, replace_with_mock_get_barset_alpaca_api):
 
 
 @pytest.fixture
-def mock_test_chart_repo(test_peewee_cli, replace_with_mock_get_barset_alpaca_api):
+def test_chart_repo_mocked_with_alpaca_api(test_peewee_cli, replace_with_mock_get_barset_alpaca_api):
     """
     alpaca_apiの通信部分をモック化したchartリポジトリ
     """
@@ -20,7 +20,7 @@ def mock_test_chart_repo(test_peewee_cli, replace_with_mock_get_barset_alpaca_ap
 
 
 @pytest.fixture
-def mock_test_chart_repo_failed_api(
+def test_chart_repo_with_alpaca_api_fail_empty_barset(
         test_peewee_cli,
         replace_with_mock_get_barset_alpaca_api_fail_empty_barset
 ):
