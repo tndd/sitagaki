@@ -1,5 +1,5 @@
 from domain.materia.finance.chart.model import Bar, Chart
-from tests.utils.factory.domain.materia.bar import generate_bar, generate_chart
+from tests.utils.factory.domain.materia.finance.bar import generate_bar, generate_chart
 
 
 def test_generate_bar():
