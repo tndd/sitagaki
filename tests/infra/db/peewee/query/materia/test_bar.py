@@ -5,7 +5,10 @@ from infra.db.peewee.query.materia.bar import get_query_select_bar_alpaca
 from infra.db.peewee.table.bar import TableBarAlpaca
 
 
-def test_get_query_select_bar_alpaca(test_peewee_cli, prepare_table_bar_alpaca_on_db):
+def test_get_query_select_bar_alpaca(
+    test_peewee_cli,
+    prepare_table_bar_alpaca_on_db,
+):
     # case0: データが入ってるかの確認
     query_0 = TableBarAlpaca.select()
     assert len(query_0) == 10
