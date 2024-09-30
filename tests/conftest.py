@@ -11,7 +11,7 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 import pytest
 
 # テスト用fixture
-from tests.utils.fixture.domain.materia.finance.bar import (
+from tests.utils.fixture.domain.materia.finance.chart import (
     mock_test_chart_repo,
     mock_test_chart_repo_failed_api,
 )
