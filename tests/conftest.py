@@ -16,8 +16,8 @@ from tests.utils.fixture.domain.materia.finance.chart import (
     mock_test_chart_repo_failed_api,
 )
 from tests.utils.fixture.infra.api.alpaca.bar import (
-    mock_get_barset_alpaca_api,
-    mock_get_barset_alpaca_api_empty_barset,
+    replace_with_mock_get_barset_alpaca_api,
+    replace_with_mock_get_barset_alpaca_api_fail_empty_barset,
 )
 from tests.utils.fixture.infra.db.peewee import test_peewee_cli
 from tests.utils.fixture.infra.db.table.bar import prepare_table_bar_alpaca_on_db

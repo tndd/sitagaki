@@ -7,7 +7,7 @@ MODULE_PATH_GET_BARSET_ALPACA_API = 'infra.api.alpaca.bar.get_barset_alpaca_api'
 
 
 @pytest.fixture
-def mock_get_barset_alpaca_api(monkeypatch):
+def replace_with_mock_get_barset_alpaca_api(monkeypatch):
     """
     通信をモックし、ダミーのBarSetを返す。
     """
@@ -21,9 +21,11 @@ def mock_get_barset_alpaca_api(monkeypatch):
 
 
 @pytest.fixture
-def mock_get_barset_alpaca_api_empty_barset(monkeypatch):
+def replace_with_mock_get_barset_alpaca_api_fail_empty_barset(monkeypatch):
     """
-    通信をモックし、空のBarSetを返す。
+    空のBarSetを返す。
+    ただし空のBarSetという戻り値はあり得ることなのでエラーではない。
+    そのためerrではなくfailとしている。
     """
     def _mock_get_barset_alpaca_api(*args, **kwargs):
         return BarSet(raw_data={'NOSYMBOL': []})

@@ -14,7 +14,7 @@ from infra.api.alpaca.bar import (
 from tests.utils.factory.infra.api.alpaca.bar import generate_barset_alpaca
 
 
-def test_mock_get_bar_alpaca_api_list(mock_get_barset_alpaca_api):
+def test_mock_get_bar_alpaca_api_list(replace_with_mock_get_barset_alpaca_api):
     """
     通信部分をモックにした簡易テスト
     """
@@ -28,7 +28,7 @@ def test_mock_get_bar_alpaca_api_list(mock_get_barset_alpaca_api):
     assert all(isinstance(bar, Bar) for bar in bar_alpaca_api_list)
 
 
-def test_mock_get_bar_alpaca_api_list_empty_barset(mock_get_barset_alpaca_api_empty_barset):
+def test_mock_get_bar_alpaca_api_list_empty_barset(replace_with_mock_get_barset_alpaca_api_fail_empty_barset):
     """
     存在しない条件を入力し、apiから空のBarSetが帰ってきた際の振る舞いのテスト
     """
