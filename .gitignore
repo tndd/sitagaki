@@ -2,3 +2,4 @@ tests/utils/out/
 tests/logs/
 .idea/
 !.vscode/
+mock/
