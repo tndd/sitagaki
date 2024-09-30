@@ -1,6 +1,7 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import pytest
+from alpaca.common.exceptions import APIError
 from alpaca.data.models import Bar, BarSet
 from alpaca.data.requests import Adjustment
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
@@ -13,10 +14,6 @@ from infra.api.alpaca.bar import (
 from tests.utils.factory.infra.api.alpaca.bar import generate_barset_alpaca
 
 """
-TODO: 範囲超過エラーのテスト
-    alpaca apiの制約として、１日前のデータまでしか取れない。
-    それを超えた場合に、どのような振る舞いをするかのテスト
-
 TODO: 全パターン取得テストを実装するか検討
     この振る舞いはリポジトリ側でも行ってるから実装すると役被りする。
     だがapiの信頼性担保という意味ではやるべきかもしれない。
@@ -114,3 +111,23 @@ def test_get_barset_alpaca_api_not_exist_symbol():
     # barsetの中身 => {'data': {'NOSYMBOL': []}}
     assert isinstance(barset_empty, BarSet)
     assert len(barset_empty.data[SYMBOL_DUMMY]) == 0
+
+
+@pytest.mark.online
+def test_get_barset_alpaca_api_over_timestamp():
+    """
+    [ONLINE]
+        alpaca apiの制限を超えた日付を指定した場合
+
+    期待値:
+        エラー発生(APIError)
+    """
+    with pytest.raises(Exception) as excinfo:
+        barset = get_barset_alpaca_api(
+            symbol='AAPL',
+            start=datetime(2024,1,1),
+            end=datetime.now().date() + timedelta(days=1),
+            timeframe=TimeFrameAlpaca.Day,
+            adjustment=Adjustment.RAW
+        )
+        assert excinfo.exception == APIError
