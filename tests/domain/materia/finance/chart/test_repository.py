@@ -33,6 +33,9 @@ def test_mock_store_chart_from_online(mock_test_chart_repo):
 def test_store_chart_from_online(mock_test_chart_repo):
     """
     すべての組み合わせによる情報取得テストを行う
+
+    LATER: alpaca_apiの通信部分のモックの戻り値
+        もう少し引数に応じて結果変わるように、実際の動作っぽい動きにしたい。
     """
     # timeframe X adjustmentの組み合わせを全通り試す
     for timeframe in Timeframe:
