@@ -106,6 +106,7 @@ class ChartRepository:
             return arrive_chart_from_peewee_table_list(bar_list_peewee_table)
         except Exception as e:
             # LATER: エラーログをログファイルに出力する
+            # LATER: 失敗時の処理を行う。ログ格納そして再実行のキューへの追加など。
             error_log = {
                 'exception': e,
                 'timestamp': datetime.now(),
