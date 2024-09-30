@@ -14,6 +14,6 @@ class TickerRepository:
         全ての株式のリストをonlineから取得し、DBに保存する。
         """
         tickers_alpaca = get_assets()
-        # LATER: 続きの実装
+        # LATER: ticker repository 続きの実装
         # tickers_alpacaをドメインモデルに変換
         # tickersの保存
