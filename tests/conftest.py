@@ -20,6 +20,7 @@ from tests.utils.fixture.infra.api.alpaca.bar import (
     mock_get_barset_alpaca_api_empty_barset,
 )
 from tests.utils.fixture.infra.db.peewee import test_peewee_cli
+from tests.utils.fixture.infra.db.table.bar import prepare_table_bar_alpaca_on_db
 
 
 @pytest.fixture(scope="session", autouse=True)

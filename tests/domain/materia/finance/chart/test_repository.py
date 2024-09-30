@@ -10,7 +10,6 @@ from domain.materia.finance.chart.adapter.timeframe import (
 )
 from domain.materia.finance.chart.model import Adjustment, Chart, Timeframe
 from infra.db.peewee.table.bar import TableBarAlpaca
-from tests.utils.dataload.materia.bar import prepare_test_bar_alpaca_on_db
 
 
 def test_mock_store_chart_from_online(mock_test_chart_repo):
@@ -61,9 +60,7 @@ def test_store_chart_from_online(mock_test_chart_repo):
             TableBarAlpaca.delete().execute()
 
 
-def test_fetch_chart_from_local(mock_test_chart_repo):
-    # データの準備
-    prepare_test_bar_alpaca_on_db(mock_test_chart_repo.cli_db)
+def test_fetch_chart_from_local(mock_test_chart_repo, prepare_table_bar_alpaca_on_db):
     """
     case1: 時間軸省略時の取得動作確認
         デフォルト日付範囲については、全範囲を網羅できる2000-01-01~nowとしている。
