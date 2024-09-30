@@ -13,12 +13,12 @@ from infra.db.peewee.table.bar import TableBarAlpaca
 from tests.utils.dataload.materia.bar import prepare_test_bar_alpaca_on_db
 
 
-def test_mock_store_chart_from_online(test_bar_repo, mock_get_barset_alpaca_api):
+def test_mock_store_chart_from_online(test_chart_repo, mock_get_barset_alpaca_api):
     """
     通信部分をモックにした簡易テスト
     """
     # Mock通信
-    test_bar_repo.store_chart_from_online(
+    test_chart_repo.store_chart_from_online(
         symbol="AAPL",
         timeframe=Timeframe.DAY,
         adjustment=Adjustment.RAW,
@@ -31,14 +31,14 @@ def test_mock_store_chart_from_online(test_bar_repo, mock_get_barset_alpaca_api)
 
 
 @pytest.mark.online
-def test_store_chart_from_online(test_bar_repo):
+def test_store_chart_from_online(test_chart_repo):
     """
     モックを使わず、すべての組み合わせによる情報取得テストを行う
     """
     # timeframe X adjustmentの組み合わせを全通り試す
     for timeframe in Timeframe:
         for adjustment in Adjustment:
-            test_bar_repo.store_chart_from_online(
+            test_chart_repo.store_chart_from_online(
                 symbol="AAPL",
                 timeframe=timeframe,
                 adjustment=adjustment,
@@ -59,9 +59,9 @@ def test_store_chart_from_online(test_bar_repo):
             TableBarAlpaca.delete().execute()
 
 
-def test_fetch_chart_from_local(test_bar_repo):
+def test_fetch_chart_from_local(test_chart_repo):
     # データの準備
-    prepare_test_bar_alpaca_on_db(test_bar_repo.cli_db)
+    prepare_test_bar_alpaca_on_db(test_chart_repo.cli_db)
     """
     case1: 時間軸省略時の取得動作確認
         デフォルト日付範囲については、全範囲を網羅できる2000-01-01~nowとしている。
@@ -70,7 +70,7 @@ def test_fetch_chart_from_local(test_bar_repo):
         1. 取得件数は３件
         2. AAPL_L3_DAY_RAWのデータが取得されているか（volume=100,101,102）
     """
-    chart = test_bar_repo.fetch_chart_from_local(
+    chart = test_chart_repo.fetch_chart_from_local(
         symbol="AAPL",
         timeframe=Timeframe.DAY,
         adjustment=Adjustment.RAW
@@ -95,7 +95,7 @@ def test_fetch_chart_from_local(test_bar_repo):
         2. 日付が2020-01-02から2020-01-03の間のbarのみ取得
         3. volume=100のAAPL_L3_DAY_RAWのデータがスキップされているか
     """
-    chart = test_bar_repo.fetch_chart_from_local(
+    chart = test_chart_repo.fetch_chart_from_local(
         symbol="AAPL",
         timeframe=Timeframe.DAY,
         adjustment=Adjustment.RAW,
@@ -127,7 +127,7 @@ def test_fetch_chart_from_local(test_bar_repo):
         そのため検索結果が見つからないことを表すLookupErrorを返す。
     """
     with pytest.raises(Exception) as excinfo:
-        chart = test_bar_repo.fetch_chart_from_local(
+        chart = test_chart_repo.fetch_chart_from_local(
             symbol="NOSYMBOL",
             timeframe=Timeframe.DAY,
             adjustment=Adjustment.RAW,

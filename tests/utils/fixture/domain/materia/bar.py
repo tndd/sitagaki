@@ -1,8 +1,8 @@
 import pytest
 
-from domain.materia.finance.chart.repository import BarRepository
+from domain.materia.finance.chart.repository import ChartRepository
 
 
 @pytest.fixture
-def test_bar_repo(test_peewee_cli):
-    return BarRepository(test_peewee_cli)
+def test_chart_repo(test_peewee_cli):
+    return ChartRepository(test_peewee_cli)

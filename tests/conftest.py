@@ -11,7 +11,7 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 import pytest
 
 # テスト用fixture
-from tests.utils.fixture.domain.materia.bar import test_bar_repo
+from tests.utils.fixture.domain.materia.bar import test_chart_repo
 from tests.utils.fixture.infra.api.alpaca.bar import (
     mock_get_barset_alpaca_api,
     mock_get_barset_alpaca_api_empty,
