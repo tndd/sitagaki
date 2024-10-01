@@ -1,28 +1,36 @@
 version: '3'
 services:
-
-  postgres:
+  fuli_rds:
     image: timescale/timescaledb:latest-pg12
     ports:
       - "50000:5432"
     volumes:
-      - lusankya_postgres:/var/lib/postgresql/data
+      - fuli_volume:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=lusankya
-
-  postgres_test:
+      - POSTGRES_DB=fuli_volume
+  fuli_rds_dev:
     image: timescale/timescaledb:latest-pg12
     ports:
       - "60000:5432"
     volumes:
-      - lusankya_postgres_test:/var/lib/postgresql/data
+      - fuli_volume_dev:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=lusankya_test
-
+      - POSTGRES_DB=fuli_volume_dev
+  fuli_rds_test:
+    image: timescale/timescaledb:latest-pg12
+    ports:
+      - "70000:5432"
+    volumes:
+      - fuli_volume_test:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=fuli_volume_test
 volumes:
-  lusankya_postgres:
-  lusankya_postgres_test:
+  fuli_volume:
+  fuli_volume_dev:
+  fuli_volume_test:
