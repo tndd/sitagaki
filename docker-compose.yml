@@ -1,34 +1,39 @@
+x-rds-image: &rds-image
+  image: timescale/timescaledb:latest-pg16
+
+x-rds-env: &rds-env
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+
+
 services:
   fuli_rds:
-    image: timescale/timescaledb:latest-pg16
+    <<: *rds-image
     ports:
       - "6000:5432"
     volumes:
       - fuli_volume:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=fuli_volume
+      <<: *rds-env
+      POSTGRES_DB: fuli_volume
   fuli_rds_dev:
-    image: timescale/timescaledb:latest-pg16
+    <<: *rds-image
     ports:
       - "6001:5432"
     volumes:
       - fuli_volume_dev:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=fuli_volume_dev
+      <<: *rds-env
+      POSTGRES_DB: fuli_volume_dev
   fuli_rds_test:
-    image: timescale/timescaledb:latest-pg16
+    <<: *rds-image
     ports:
       - "6002:5432"
     volumes:
       - fuli_volume_test:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=fuli_volume_test
+      <<: *rds-env
+      POSTGRES_DB: fuli_volume_test
 volumes:
   fuli_volume:
   fuli_volume_dev:
