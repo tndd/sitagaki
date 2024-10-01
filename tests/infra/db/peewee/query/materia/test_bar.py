@@ -1,5 +1,7 @@
 from datetime import datetime
 
+import pytest
+
 from domain.materia.finance.chart.model import Adjustment, Timeframe
 from infra.db.peewee.query.materia.bar import get_query_select_bar_alpaca
 
@@ -41,7 +43,7 @@ def test_get_query_select_bar_alpaca_by_symbol_and_timeframe(
         prepare_table_bar_alpaca_on_db
 ):
     """
-    case2: シンボルと時間軸による絞り込み
+    シンボルと時間軸による絞り込み
 
     条件:
         - シンボルが"AAPL"
@@ -69,3 +71,21 @@ def test_get_query_select_bar_alpaca_by_symbol_and_timeframe(
     assert all(bar.symbol == "AAPL" for bar in bars_result_2)
     # 2-3 日付が2020-01-02から2020-01-03の間のbarのみ取得
     assert all(datetime(2020, 1, 2) <= bar.timestamp <= datetime(2020, 1, 3) for bar in bars_result_2)
+
+
+def test_get_query_select_bar_alpaca_invalid_start_end(
+        test_peewee_cli,
+        prepare_table_bar_alpaca_on_db
+):
+    """
+    終了日 < 開始日という逆転した日付指定を行うテスト。
+    ValueErrorが発生することを確認する。
+    """
+    with pytest.raises(ValueError):
+        get_query_select_bar_alpaca(
+            symbol="AAPL",
+            timeframe=Timeframe.DAY,
+            adjustment=Adjustment.RAW,
+            start=datetime(2020, 1, 3),  # endより新しい
+            end=datetime(2020, 1, 2)     # startより古い
+        )
