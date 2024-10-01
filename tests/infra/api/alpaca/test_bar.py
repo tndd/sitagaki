@@ -144,4 +144,4 @@ def test_get_barset_alpaca_api_over_timestamp():
             timeframe=TimeFrameAlpaca.Day,
             adjustment=AdjustmentAlpaca.RAW
         )
-        assert excinfo.exception == APIError
+    assert excinfo.type == APIError
