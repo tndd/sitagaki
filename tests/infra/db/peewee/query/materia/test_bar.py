@@ -2,22 +2,14 @@ from datetime import datetime
 
 from domain.materia.finance.chart.model import Adjustment, Timeframe
 from infra.db.peewee.query.materia.bar import get_query_select_bar_alpaca
-from infra.db.peewee.table.bar import TableBarAlpaca
 
 
 def test_get_query_select_bar_alpaca(
-    test_peewee_cli,
-    prepare_table_bar_alpaca_on_db,
+        test_peewee_cli,
+        prepare_table_bar_alpaca_on_db
 ):
     """
-    peeweeのクエリが期待通りの情報を取得できるかを確認するテスト。
-
-    case0: データが入ってるかの確認
-    """
-    query_0 = TableBarAlpaca.select()
-    assert len(query_0) == 10
-    """
-    case1: シンボルのみによる絞り込み
+    シンボルのみによる絞り込み
 
     条件:
         - シンボルが"AAPL"
@@ -30,19 +22,24 @@ def test_get_query_select_bar_alpaca(
             "AAPL_L3_DAY_RAW"の内容が取得される。
         2. シンボルが"AAPL"のbarのみ取得
     """
-    query_1 = get_query_select_bar_alpaca(
+    query = get_query_select_bar_alpaca(
         symbol="AAPL",
         timeframe=Timeframe.DAY,
         adjustment=Adjustment.RAW,
         start=datetime(2000, 1, 1),
         end=datetime.now()
     )
-    bars_result_1 = test_peewee_cli.exec_query(query_1)
+    bars_result_1 = test_peewee_cli.exec_query(query)
     # 1-1 取得件数は３件
-    assert len(query_1) == 3
+    assert len(query) == 3
     # 1-2 シンボルが"AAPL"のbarのみ取得
     assert all(bar.symbol == "AAPL" for bar in bars_result_1)
 
+
+def test_get_query_select_bar_alpaca_by_symbol_and_timeframe(
+        test_peewee_cli,
+        prepare_table_bar_alpaca_on_db
+):
     """
     case2: シンボルと時間軸による絞り込み
 
@@ -58,14 +55,14 @@ def test_get_query_select_bar_alpaca(
         2. シンボルが"AAPL"のbarのみ取得
         3. 日付が2020-01-02から2020-01-03の間のbarのみ取得
     """
-    query_2 = get_query_select_bar_alpaca(
+    query = get_query_select_bar_alpaca(
         symbol="AAPL",
         timeframe=Timeframe.DAY,
         adjustment=Adjustment.RAW,
         start=datetime(2020, 1, 2),
         end=datetime(2020, 1, 3)
     )
-    bars_result_2 = test_peewee_cli.exec_query(query_2)
+    bars_result_2 = test_peewee_cli.exec_query(query)
     # 2-1 取得件数は以下の日付の2件
     assert len(bars_result_2) == 2
     # 2-2 シンボルが"AAPL"のbarのみ取得
