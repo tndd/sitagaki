@@ -21,10 +21,14 @@ class PeeweeClient:
         # テーブルが存在しない場合にテーブルを作成
         if not TModel.table_exists():
             self.db.create_tables([TModel])
-        # モデルをデータベースに挿入
-        data = [model.__data__ for model in models]
+        # 10万件以上の同時挿入はクラッシュの危険あり
+        BATCH_SIZE = 100000
         with self.db.atomic():
-            TModel.replace_many(data).execute()
+            for i in range(0, len(models), BATCH_SIZE):
+                batch = models[i:i+BATCH_SIZE]
+                data = [model.__data__ for model in batch]
+                # モデルをデータベースに挿入
+                TModel.replace_many(data).execute()
 
     def exec_query(self, query):
         """
