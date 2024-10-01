@@ -65,9 +65,7 @@ def test_fetch_chart_from_local(
         prepare_table_bar_alpaca_on_db
 ):
     """
-    注意: fixtureによるDBデータ投入済み
-
-    case1: 時間軸省略時の取得動作確認
+    時間軸省略時の取得動作確認
         デフォルト日付範囲については、全範囲を網羅できる2000-01-01~nowとしている。
 
     期待される結果:
@@ -86,8 +84,13 @@ def test_fetch_chart_from_local(
     # 1-2 AAPL_L3_DAY_RAWのデータが取得されているか（volume=100,101,102）
     assert all(100 <= bar.volume <= 102 for bar in chart.bars)
 
+
+def test_fetch_chart_from_local_with_date_range(
+        test_chart_repo_mocked_with_alpaca_api,
+        prepare_table_bar_alpaca_on_db
+):
     """
-    case2: シンボルと時間軸による絞り込み
+    シンボルと時間軸による絞り込み
 
     条件:
         - シンボルが"AAPL"
@@ -115,8 +118,16 @@ def test_fetch_chart_from_local(
     # 2-3 volume=100のAAPL_L3_DAY_RAWのデータがスキップされているか
     assert not any(bar.volume == 100 for bar in chart.bars)
 
+
+def test_fetch_chart_from_local_not_exist_symbol(
+        test_chart_repo_mocked_with_alpaca_api,
+        prepare_table_bar_alpaca_on_db
+):
     """
-    case3: 取得できない場合
+    対象データが存在せず取得できない場合
+
+    期待される結果:
+        LookupErrorが発生
 
     条件:
         symbol = 'NOSYMBOL'
@@ -124,12 +135,10 @@ def test_fetch_chart_from_local(
         adjustment = Adjustment.RAW
         2020-01-02 <= timestamp <= 2020-01-03の間
 
-    期待される結果:
-        LookupErrorが発生すること。
-
         NOSYMBOLというシンボルは存在しないためchartを取得することはできない。
         そのため検索結果が見つからないことを表すLookupErrorを返す。
     """
+    # まずエラーが発生することを確認
     with pytest.raises(Exception) as excinfo:
         chart = test_chart_repo_mocked_with_alpaca_api.fetch_chart_from_local(
             symbol="NOSYMBOL",
@@ -138,4 +147,5 @@ def test_fetch_chart_from_local(
             start=datetime(2020, 1, 2),
             end=datetime(2020, 1, 3)
         )
+    # エラーがLookupErrorであることを確認
     assert excinfo.type == LookupError
