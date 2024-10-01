@@ -102,11 +102,35 @@ def test_get_barset_alpaca_api_not_exist_symbol():
     assert len(barset_empty.data[SYMBOL_DUMMY]) == 0
 
 
+# @pytest.mark.online
+def test_get_barset_alpaca_api_invalid_start_end():
+    """
+    startとendの指定が不適切な場合
+
+    case1: start > end
+        終了日より開始日の方が新しい場合
+
+        期待値:
+            * エラー発生(APIError)
+            * エラーメッセージに'end should not be before start'が含まれる
+    """
+    with pytest.raises(Exception) as excinfo:
+        barset = get_barset_alpaca_api(
+            symbol='AAPL',
+            start=datetime(2024,1,1),
+            end=datetime(2023,1,1),
+            timeframe=TimeFrameAlpaca.Day,
+            adjustment=AdjustmentAlpaca.RAW
+        )
+    # エラータイプの確認
+    assert excinfo.type == APIError
+    assert 'end should not be before start' in str(excinfo.value)
+
+
 @pytest.mark.online
 def test_get_barset_alpaca_api_over_timestamp():
     """
-    [ONLINE]
-        alpaca apiの制限を超えた日付を指定した場合
+    alpaca apiの制限を超えた日付を指定した場合
 
     期待値:
         エラー発生(APIError)
