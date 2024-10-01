@@ -45,43 +45,44 @@ def test_mock_get_bar_alpaca_api_list_empty_barset(replace_with_mock_get_barset_
 
 
 ### BarSetAlpaca ###
+# 組み合わせのリスト作成
+TIMEFRAMES = [
+    TimeFrameAlpaca.Minute,
+    TimeFrameAlpaca.Hour,
+    TimeFrameAlpaca.Day,
+    TimeFrameAlpaca.Week,
+    TimeFrameAlpaca.Month
+]
+ADJUSTMENTS = [
+    AdjustmentAlpaca.RAW,
+    AdjustmentAlpaca.SPLIT,
+    AdjustmentAlpaca.DIVIDEND,
+    AdjustmentAlpaca.ALL
+]
 @pytest.mark.online_slow
-def test_get_barset_alpaca_api():
+@pytest.mark.parametrize("timeframe,adjustment", [
+    (tf, adj) for tf in TIMEFRAMES for adj in ADJUSTMENTS
+])
+def test_get_barset_alpaca_api(timeframe, adjustment):
     """
-    [ONLINE]
-        BarSetを取得する機能の通信テスト
+    BarSetを取得する機能の通信テスト
+    TimeframeとAdjustmentの全ての組み合わせを試す。
 
-        BarSetの中身からtimeframeとadjustmentを判定する術がないので、
-        通信が正常に行えているかという観点でのテスト。
+    BarSetの中身からtimeframeとadjustmentを判定する術がないので、
+    通信が正常に行えているかという観点でのテスト。
     """
-    # 組み合わせのリスト作成
-    timeframes = [
-        TimeFrameAlpaca.Minute,
-        TimeFrameAlpaca.Hour,
-        TimeFrameAlpaca.Day,
-        TimeFrameAlpaca.Week,
-        TimeFrameAlpaca.Month
-    ]
-    adjustments = [
-        AdjustmentAlpaca.RAW,
-        AdjustmentAlpaca.SPLIT,
-        AdjustmentAlpaca.DIVIDEND,
-        AdjustmentAlpaca.ALL
-    ]
     # timeframe X adjustmentの組み合わせを全通り試す
-    for timeframe in timeframes:
-        for adjustment in adjustments:
-            barset = get_barset_alpaca_api(
-                symbol="AAPL",
-                start=datetime(2024,1,1),
-                timeframe=timeframe,
-                adjustment=adjustment,
-                limit=5
-            )
-            # LATER: 将来的にはログなどの方法で中身を確認する方針に変更
-            assert isinstance(barset, BarSet)
-            # limitによる取得数制限の確認
-            assert len(barset.data['AAPL']) == 5
+    barset = get_barset_alpaca_api(
+        symbol="AAPL",
+        start=datetime(2024,1,1),
+        timeframe=timeframe,
+        adjustment=adjustment,
+        limit=5
+    )
+    # LATER: 将来的にはログなどの方法で中身を確認する方針に変更
+    assert isinstance(barset, BarSet)
+    # limitによる取得数制限の確認
+    assert len(barset.data['AAPL']) == 5
 
 
 @pytest.mark.online
