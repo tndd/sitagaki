@@ -16,6 +16,17 @@ class PeeweeClient:
         self.db.connect()
 
     def insert_models(self, models: List[Model]):
+        """
+        FIXME: インサートパフォーマンスが悪すぎるので改善
+            100万行のインサートで40sもかかっている。
+            遅い要因はpeeweeかsqliteのどちらか。
+
+            https://stackoverflow.com/questions/37500369/peewee-with-bulk-insert-is-very-slow-into-sqlite-db
+            これによるとsqliteの制約によって速度低下が起こっている可能性がある。
+            mysqlでは高速に動作しているとの報告もある。
+
+            接続先をrdsに変更して詳細を確かめる。
+        """
         # モデルの型を取得
         TModel = type(models[0])
         # テーブルが存在しない場合にテーブルを作成
