@@ -21,8 +21,8 @@ class TableBarAlpaca(PeeweeTable):
             * dividend = 4
             * all = 8
     """
-    symbol = CharField()
     timestamp = DateTimeField()
+    symbol = CharField()
     timeframe = BitField()
     adjustment = BitField()
     open = FloatField()
@@ -35,4 +35,4 @@ class TableBarAlpaca(PeeweeTable):
 
     class Meta:
         table_name = "bar_alpaca"
-        primary_key = CompositeKey('symbol', 'timestamp', 'timeframe', 'adjustment')
+        primary_key = CompositeKey('timestamp', 'symbol', 'timeframe', 'adjustment')
