@@ -102,7 +102,7 @@ def test_get_barset_alpaca_api_not_exist_symbol():
     assert len(barset_empty.data[SYMBOL_DUMMY]) == 0
 
 
-# @pytest.mark.online
+@pytest.mark.online
 def test_get_barset_alpaca_api_invalid_start_end():
     """
     startとendの指定が不適切な場合

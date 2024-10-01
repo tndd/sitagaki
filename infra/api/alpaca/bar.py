@@ -7,12 +7,14 @@ from alpaca.data.timeframe import TimeFrame
 
 from .client import historical_cli
 
+ROOT_START_DATETIME = datetime(2000,1,1)
+
 
 def get_bar_alpaca_api_list(
         symbol: str,
         timeframe: TimeFrame,
         adjustment: Adjustment,
-        start: datetime,
+        start: Optional[datetime] = None,
         end: Optional[datetime] = None,
         limit: Optional[int] = None
 ) -> List[Bar]:
@@ -31,10 +33,13 @@ def get_barset_alpaca_api(
         symbol: str,
         timeframe: TimeFrame,
         adjustment: Adjustment,
-        start: datetime,
+        start: Optional[datetime] = None,
         end: Optional[datetime] = None,
         limit: Optional[int] = None
 ) -> BarSet:
+    # startに指定がない場合、ROOT_START_DATETIMEを指定
+    if start is None:
+        start = ROOT_START_DATETIME
     # endが今の時刻の15分前を超えていたらNoneにする
     if end and end > datetime.now() - timedelta(minutes=15):
         end = None
@@ -44,7 +49,7 @@ def get_barset_alpaca_api(
         timeframe=timeframe,
         adjustment=adjustment,
         start=start,
-        end=end if end else None,
+        end=end,
         limit=limit
     )
     return historical_cli.get_stock_bars(rq)
