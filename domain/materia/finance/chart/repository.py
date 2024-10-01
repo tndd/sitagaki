@@ -113,3 +113,21 @@ class ChartRepository:
                 'args': locals()
             }
             raise Exception(error_log)
+
+
+    def fetch_latest_timestamp_of_symbol(
+            self,
+            symbol: str,
+            timeframe: Timeframe,
+            adjustment: Adjustment
+    ) -> datetime:
+        """
+        指定された条件のシンボルの、
+        DBに保存されている最新の日付を取得する。
+
+        未取得の場合、datetime(2000,1,1)を返す。
+
+        MEMO: この始まりのdatetime(2000,1,1)は定数化しよう。
+        """
+        # TODO: 続きの実装
+        pass

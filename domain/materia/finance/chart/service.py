@@ -1,55 +1,39 @@
 from datetime import datetime
+from typing import Optional
 
+from domain.materia.finance.chart.model import Adjustment, Chart, Timeframe
 from domain.materia.finance.chart.repository import ChartRepository
 
 
-def fetch_bars(
+def fetch_chart(
         rp: ChartRepository,
         symbol: str,
-        start: datetime = datetime(2000,1,1),
-        end: datetime = datetime.now()
-    ):
+        timeframe: Timeframe,
+        adjustment: Adjustment
+    ) -> Chart:
     """
-    条件:
-        シンボルと開始日、終日を指定。
-    戻り値:
-        DF
-    効果:
-        対象期間のローソク足をDBから取得し保存する。
-        もしもDBにデータが存在しなければ、オンライン上からの取得を試みる。
+    指定された条件のチャートデータを取得する。
+    取得元はまずDBを探し、なければonlineから取得する。
     """
-    # IMPL
-    pass
+    # まずデータを最新にする
+    update_chart(rp, symbol, timeframe, adjustment)
+    # データの取得
+    return rp.fetch_chart_from_local(symbol, timeframe, adjustment)
 
 
-def update_bars(
-        date_to: datetime = datetime.now()
-    ):
+def update_chart(
+        rp: ChartRepository,
+        symbol: str,
+        timeframe: Timeframe,
+        adjustment: Adjustment
+    ) -> None:
     """
-    条件:
-        何日地点までアップデートするかの日時。
-    効果:
-        データベースのbar情報を最新の状態に更新する。
-    """
-    # IMPL
-    pass
+    指定された条件でonline上から取得したチャートデータで、
+    DB上のデータを更新する。
 
-
-def fetch_latest_date_of_symbol(symbol: str) -> str:
+    DB上にある最新のtimestamp~可能な限り直近のデータ。
     """
-    指定シンボルの最新のデータの日付を取得する。
-    """
-    # IMPL
-    pass
-
-
-def update_bars_of_symbol(symbol: str, date_to: str):
-    """
-    条件:
-        - 更新対象のシンボル
-        - 何日まで更新するかの日付
-    効果:
-        指定シンボルのデータベース上のbar情報を更新する
-    """
-    # IMPL
-    pass
+    # 最新のtimestampを取得
+    latest_timestamp = rp.fetch_latest_timestamp_of_symbol(symbol, timeframe, adjustment)
+    # それ以降のデータで更新
+    rp.store_chart_from_online(symbol, timeframe, adjustment, latest_timestamp)

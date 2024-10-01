@@ -1,3 +1,5 @@
+from typing import List
+
 from peewee import Database, DatabaseProxy, Model
 
 DB_PROXY = DatabaseProxy()
@@ -13,7 +15,7 @@ class PeeweeClient:
         self.db = db
         self.db.connect()
 
-    def insert_models(self, models: list[Model]):
+    def insert_models(self, models: List[Model]):
         # モデルの型を取得
         TModel = type(models[0])
         # テーブルが存在しない場合にテーブルを作成
