@@ -104,6 +104,14 @@ class ChartRepository:
                 raise LookupError('Barの取得件数が0件')
             # 取得物をドメイン層のbarモデルのリストに変換して返す
             return arrive_chart_from_peewee_table_list(bar_list_peewee_table)
+        except LookupError as le:
+            # LATER: error_logという同じ実装を排除したい
+            error_log = {
+                'exception': le,
+                'timestamp': datetime.now(),
+                'args': locals()
+            }
+            raise LookupError(error_log)
         except Exception as e:
             # LATER: エラーログをログファイルに出力する
             # LATER: 失敗時の処理を行う。ログ格納そして再実行のキューへの追加など。

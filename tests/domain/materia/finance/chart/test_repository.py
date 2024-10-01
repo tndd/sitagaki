@@ -135,4 +135,4 @@ def test_fetch_chart_from_local(test_chart_repo_mocked_with_alpaca_api, prepare_
             start=datetime(2020, 1, 2),
             end=datetime(2020, 1, 3)
         )
-        assert excinfo.exception == LookupError
+    assert excinfo.type == LookupError
