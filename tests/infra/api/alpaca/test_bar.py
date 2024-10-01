@@ -88,8 +88,7 @@ def test_get_barset_alpaca_api(timeframe, adjustment):
 @pytest.mark.online
 def test_get_barset_alpaca_api_not_exist_symbol():
     """
-    [ONLINE]
-        存在しないシンボルを指定した場合の振る舞いテスト
+    存在しないシンボルを指定した場合の振る舞いテスト
     """
     SYMBOL_DUMMY = 'NOSYMBOL'
     barset_empty = get_barset_alpaca_api(
@@ -158,10 +157,13 @@ def test_extract_bar_alpaca_list_api_from_barset():
     assert isinstance(bars, list)
     assert all(isinstance(bar, Bar) for bar in bars)
 
+
+def test_extract_bar_alpaca_list_api_from_barset_empty():
     """
-    case2: BarSetが空の場合
-        結果が十分に取得されている場合、
-        空のBarSetが返されることは考えられる。
+    空のBarSetからBarのリストを取り出す際のテスト
+
+    例えばすでにDBのデータが最新で、
+    updateを行った際の戻り値が空という事態を想定したテスト。
 
     期待結果:
         空のBarリストが返される。
