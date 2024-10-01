@@ -26,7 +26,7 @@ ADJUSTMENTS = [
 @pytest.mark.parametrize("timeframe,adjustment", [
     (tf, adj) for tf in TIMEFRAMES for adj in ADJUSTMENTS
 ])
-def test_get_barset_alpaca_api(timeframe, adjustment):
+def test_default(timeframe, adjustment):
     """
     BarSetを取得する機能の通信テスト
     TimeframeとAdjustmentの全ての組み合わせを試す。
@@ -49,7 +49,7 @@ def test_get_barset_alpaca_api(timeframe, adjustment):
 
 
 @pytest.mark.online
-def test_get_barset_alpaca_api_not_exist_symbol():
+def test_response_is_empty_barset():
     """
     存在しないシンボルを指定した場合の振る舞いテスト
     """
@@ -66,7 +66,7 @@ def test_get_barset_alpaca_api_not_exist_symbol():
 
 
 @pytest.mark.online
-def test_get_barset_alpaca_api_invalid_start_end():
+def test_invalid_start_end():
     """
     startとendの指定が不適切な場合
 
@@ -91,7 +91,7 @@ def test_get_barset_alpaca_api_invalid_start_end():
 
 
 @pytest.mark.online
-def test_get_barset_alpaca_api_over_timestamp():
+def test_over_timestamp():
     """
     alpaca apiの制限を超えた日付を指定した場合のテスト
     get_barset_alpaca_api()の安全装置が機能しているかを確認。

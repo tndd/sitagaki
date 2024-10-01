@@ -4,7 +4,7 @@ from infra.api.alpaca.bar import extract_bar_list_alpaca_api_from_barset
 from tests.utils.factory.infra.api.alpaca.bar import generate_barset_alpaca
 
 
-def test_extract_bar_alpaca_list_api_from_barset():
+def test_extract_default():
     """
     BarSetの中からBarのリストを取り出す機能のテスト
     """
@@ -16,7 +16,7 @@ def test_extract_bar_alpaca_list_api_from_barset():
     assert all(isinstance(bar, Bar) for bar in bars)
 
 
-def test_extract_bar_alpaca_list_api_from_barset_empty():
+def test_extract_empty_barset():
     """
     空のBarSetからBarのリストを取り出す際のテスト
 
