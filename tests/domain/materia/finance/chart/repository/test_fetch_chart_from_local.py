@@ -2,65 +2,10 @@ from datetime import datetime
 
 import pytest
 
-from domain.materia.finance.chart.adapter.adjustment import (
-    arrive_adjustment_from_peewee_table,
-)
-from domain.materia.finance.chart.adapter.timeframe import (
-    arrive_timeframe_from_peewee_table,
-)
 from domain.materia.finance.chart.model import Adjustment, Chart, Timeframe
-from infra.db.peewee.table.bar import TableBarAlpaca
 
 
-def test_mock_store_chart_from_online(test_chart_repo_mocked_with_alpaca_api):
-    """
-    通信部分をモックにした簡易テスト
-    """
-    # Mock通信
-    test_chart_repo_mocked_with_alpaca_api.store_chart_from_online(
-        symbol="AAPL",
-        timeframe=Timeframe.DAY,
-        adjustment=Adjustment.RAW,
-    )
-    bar_table_list = TableBarAlpaca.select()
-    # データが存在すること
-    assert bar_table_list.exists()
-    # データがTableBarAlpacaであること
-    assert all(isinstance(bar, TableBarAlpaca) for bar in bar_table_list)
-
-
-@pytest.mark.parametrize("timeframe,adjustment", [
-    (tf, adj) for tf in Timeframe for adj in Adjustment
-])
-def test_store_chart_from_online(
-        test_chart_repo_mocked_with_alpaca_api,
-        timeframe,
-        adjustment
-):
-    """
-    TimeframeとAdjustmentすべての組み合わせによる情報取得テスト
-
-    LATER: alpaca_apiの通信部分のモックの戻り値
-        もう少し引数に応じて結果変わるように、実際の動作っぽい動きにしたい。
-    """
-    test_chart_repo_mocked_with_alpaca_api.store_chart_from_online(
-        symbol="AAPL",
-        timeframe=timeframe,
-        adjustment=adjustment,
-        limit=5
-    )
-    bar_table_list = TableBarAlpaca.select()
-    assert len(bar_table_list) == 5
-    assert all(
-        isinstance(bar, TableBarAlpaca) and
-        arrive_timeframe_from_peewee_table(bar) == timeframe and
-        arrive_adjustment_from_peewee_table(bar) == adjustment
-        for bar in bar_table_list
-    )
-    TableBarAlpaca.delete().execute()
-
-
-def test_fetch_chart_from_local(
+def test_default(
         test_chart_repo_mocked_with_alpaca_api,
         prepare_table_bar_alpaca_on_db
 ):
@@ -85,7 +30,7 @@ def test_fetch_chart_from_local(
     assert all(100 <= bar.volume <= 102 for bar in chart.bars)
 
 
-def test_fetch_chart_from_local_with_date_range(
+def test_date_range(
         test_chart_repo_mocked_with_alpaca_api,
         prepare_table_bar_alpaca_on_db
 ):
@@ -119,7 +64,7 @@ def test_fetch_chart_from_local_with_date_range(
     assert not any(bar.volume == 100 for bar in chart.bars)
 
 
-def test_fetch_chart_from_local_not_exist_symbol(
+def test_not_exist_symbol(
         test_chart_repo_mocked_with_alpaca_api,
         prepare_table_bar_alpaca_on_db
 ):
