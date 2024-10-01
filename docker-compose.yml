@@ -1,6 +1,6 @@
 version: '3'
 
-x-common-service: &common-service
+x-config-rds: &config-rds
   image: timescale/timescaledb:latest-pg12
   environment:
     - POSTGRES_USER=postgres
@@ -8,7 +8,7 @@ x-common-service: &common-service
 
 services:
   fuli_rds:
-    <<: *common-service
+    <<: *config-rds
     ports:
       - "6000:5432"
     volumes:
@@ -17,7 +17,7 @@ services:
       - POSTGRES_DB=fuli_volume
 
   fuli_rds_dev:
-    <<: *common-service
+    <<: *config-rds
     ports:
       - "6001:5432"
     volumes:
@@ -26,7 +26,7 @@ services:
       - POSTGRES_DB=fuli_volume_dev
 
   fuli_rds_test:
-    <<: *common-service
+    <<: *config-rds
     ports:
       - "6002:5432"
     volumes:
