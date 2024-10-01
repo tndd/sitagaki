@@ -111,6 +111,11 @@ class ChartRepository:
                 'timestamp': datetime.now(),
                 'args': locals()
             }
+            """
+            NOTE: raiseしたらまずいんじゃないのか？
+                もしエラーが発生したならば、そこでプログラムをクラッシュさせるのではなく、
+                エラーが起こったという情報をどこかに記録し、そのまま続行させるようにしなければ。
+            """
             raise LookupError(error_log)
         except Exception as e:
             # LATER: エラーログをログファイルに出力する
