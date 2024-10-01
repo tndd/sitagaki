@@ -8,7 +8,6 @@ from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
 from infra.api.alpaca.bar import get_barset_alpaca_api
 
-### BarSetAlpaca ###
 # 組み合わせのリスト作成
 TIMEFRAMES = [
     TimeFrameAlpaca.Minute,
