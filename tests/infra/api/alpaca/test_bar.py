@@ -130,20 +130,19 @@ def test_get_barset_alpaca_api_invalid_start_end():
 @pytest.mark.online
 def test_get_barset_alpaca_api_over_timestamp():
     """
-    alpaca apiの制限を超えた日付を指定した場合
-
-    期待値:
-        エラー発生(APIError)
+    alpaca apiの制限を超えた日付を指定した場合のテスト
+    get_barset_alpaca_api()の安全装置が機能しているかを確認。
     """
-    with pytest.raises(Exception) as excinfo:
-        barset = get_barset_alpaca_api(
-            symbol='AAPL',
-            start=datetime(2024,1,1),
-            end=datetime.now().date() + timedelta(days=1),
-            timeframe=TimeFrameAlpaca.Day,
-            adjustment=AdjustmentAlpaca.RAW
-        )
-    assert excinfo.type == APIError
+    barset = get_barset_alpaca_api(
+        symbol='AAPL',
+        start=datetime(2024,1,1),
+        end=datetime.now() + timedelta(days=1), # endに未来の日付を指定
+        timeframe=TimeFrameAlpaca.Day,
+        adjustment=AdjustmentAlpaca.RAW,
+        limit=5
+    )
+    assert isinstance(barset, BarSet)
+    assert len(barset.data['AAPL']) == 5
 
 
 ### Helper ###

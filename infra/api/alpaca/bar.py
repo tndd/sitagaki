@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List, Optional
 
 from alpaca.data.models.bars import Bar, BarSet
@@ -35,6 +35,10 @@ def get_barset_alpaca_api(
         end: Optional[datetime] = None,
         limit: Optional[int] = None
 ) -> BarSet:
+    # endが今の時刻の15分前を超えていたらNoneにする
+    if end and end > datetime.now() - timedelta(minutes=15):
+        end = None
+    # リクエスト作成
     rq = StockBarsRequest(
         symbol_or_symbols=symbol,
         timeframe=timeframe,
