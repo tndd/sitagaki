@@ -60,7 +60,10 @@ def test_store_chart_from_online(test_chart_repo_mocked_with_alpaca_api):
             TableBarAlpaca.delete().execute()
 
 
-def test_fetch_chart_from_local(test_chart_repo_mocked_with_alpaca_api, prepare_table_bar_alpaca_on_db):
+def test_fetch_chart_from_local(
+        test_chart_repo_mocked_with_alpaca_api,
+        prepare_table_bar_alpaca_on_db
+):
     """
     注意: fixtureによるDBデータ投入済み
 
