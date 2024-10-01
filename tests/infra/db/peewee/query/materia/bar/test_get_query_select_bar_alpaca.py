@@ -6,7 +6,7 @@ from domain.materia.finance.chart.model import Adjustment, Timeframe
 from infra.db.peewee.query.materia.bar import get_query_select_bar_alpaca
 
 
-def test_get_query_select_bar_alpaca(
+def test_default(
         test_peewee_cli,
         prepare_table_bar_alpaca_on_db
 ):
@@ -38,7 +38,7 @@ def test_get_query_select_bar_alpaca(
     assert all(bar.symbol == "AAPL" for bar in bars_result_1)
 
 
-def test_get_query_select_bar_alpaca_by_symbol_and_timeframe(
+def test_symbol_and_timeframe(
         test_peewee_cli,
         prepare_table_bar_alpaca_on_db
 ):
@@ -73,7 +73,7 @@ def test_get_query_select_bar_alpaca_by_symbol_and_timeframe(
     assert all(datetime(2020, 1, 2) <= bar.timestamp <= datetime(2020, 1, 3) for bar in bars_result_2)
 
 
-def test_get_query_select_bar_alpaca_invalid_start_end(
+def test_invalid_start_end(
         test_peewee_cli,
         prepare_table_bar_alpaca_on_db
 ):
