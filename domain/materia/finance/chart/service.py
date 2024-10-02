@@ -9,11 +9,11 @@ class ChartService:
     chart_repo: ChartRepository
 
     def fetch_chart(
-            self,
-            symbol: str,
-            timeframe: Timeframe,
-            adjustment: Adjustment
-        ) -> Chart:
+        self,
+        symbol: str,
+        timeframe: Timeframe,
+        adjustment: Adjustment
+    ) -> Chart:
         """
         指定された条件のチャートデータを取得する。
         取得元はまずDBを探し、なければonlineから取得する。
@@ -23,13 +23,12 @@ class ChartService:
         # データの取得
         return self.chart_repo.fetch_chart_from_local(symbol, timeframe, adjustment)
 
-
     def update_chart(
-            self,
-            symbol: str,
-            timeframe: Timeframe,
-            adjustment: Adjustment
-        ) -> None:
+        self,
+        symbol: str,
+        timeframe: Timeframe,
+        adjustment: Adjustment
+    ) -> None:
         """
         指定された条件でonline上から取得したチャートデータで、
         DB上のデータを更新する。

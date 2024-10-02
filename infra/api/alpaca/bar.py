@@ -7,16 +7,16 @@ from alpaca.data.timeframe import TimeFrame
 
 from .client import historical_cli
 
-ROOT_START_DATETIME = datetime(2000,1,1)
+ROOT_START_DATETIME = datetime(2000, 1, 1)
 
 
 def get_bar_alpaca_api_list(
-        symbol: str,
-        timeframe: TimeFrame,
-        adjustment: Adjustment,
-        start: Optional[datetime] = None,
-        end: Optional[datetime] = None,
-        limit: Optional[int] = None
+    symbol: str,
+    timeframe: TimeFrame,
+    adjustment: Adjustment,
+    start: Optional[datetime] = None,
+    end: Optional[datetime] = None,
+    limit: Optional[int] = None
 ) -> List[Bar]:
     """
     日足のヒストリカルバー情報を取得。
@@ -30,12 +30,12 @@ def get_bar_alpaca_api_list(
 
 
 def get_barset_alpaca_api(
-        symbol: str,
-        timeframe: TimeFrame,
-        adjustment: Adjustment,
-        start: Optional[datetime] = None,
-        end: Optional[datetime] = None,
-        limit: Optional[int] = None
+    symbol: str,
+    timeframe: TimeFrame,
+    adjustment: Adjustment,
+    start: Optional[datetime] = None,
+    end: Optional[datetime] = None,
+    limit: Optional[int] = None
 ) -> BarSet:
     # startに指定がない場合、ROOT_START_DATETIMEを指定
     if start is None:

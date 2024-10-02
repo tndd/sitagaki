@@ -24,13 +24,13 @@ class ChartRepository:
     cli_db: PeeweeClient
 
     def store_chart_from_online(
-            self,
-            symbol: str,
-            timeframe: Timeframe,
-            adjustment: Adjustment,
-            start: datetime = datetime(2000,1,1),
-            end: Optional[datetime] = None,
-            limit: Optional[int] = None
+        self,
+        symbol: str,
+        timeframe: Timeframe,
+        adjustment: Adjustment,
+        start: datetime = datetime(2000, 1, 1),
+        end: Optional[datetime] = None,
+        limit: Optional[int] = None
     ) -> None:
         """
         指定されたシンボルのbarデータをonlineから取得し、DBに保存する。
@@ -58,14 +58,13 @@ class ChartRepository:
         # DBのモデルリストを保存
         self.cli_db.insert_models(bar_peewee_table_list)
 
-
     def fetch_chart_from_local(
-            self,
-            symbol: str,
-            timeframe: Timeframe,
-            adjustment: Adjustment,
-            start: datetime = datetime(2000, 1, 1),
-            end: datetime = datetime.now()
+        self,
+        symbol: str,
+        timeframe: Timeframe,
+        adjustment: Adjustment,
+        start: datetime = datetime(2000, 1, 1),
+        end: datetime = datetime.now()
     ) -> Chart:
         """
         ローカルのDBから指定されたシンボルのbarを取得する。
@@ -127,12 +126,11 @@ class ChartRepository:
             }
             raise Exception(error_log)
 
-
     def fetch_latest_timestamp_of_symbol(
-            self,
-            symbol: str,
-            timeframe: Timeframe,
-            adjustment: Adjustment
+        self,
+        symbol: str,
+        timeframe: Timeframe,
+        adjustment: Adjustment
     ) -> datetime:
         """
         指定された条件のシンボルの、

@@ -13,11 +13,11 @@ from infra.db.peewee.table.bar import TableBarAlpaca
 
 
 def get_query_select_bar_alpaca(
-        symbol: str,
-        timeframe: Timeframe,
-        adjustment: Adjustment,
-        start: datetime,
-        end: datetime
+    symbol: str,
+    timeframe: Timeframe,
+    adjustment: Adjustment,
+    start: datetime,
+    end: datetime
 ) -> ModelSelect:
     """
     指定されたsymbol,timeframe,adjustmentの条件に一致するbarデータを取得する。
