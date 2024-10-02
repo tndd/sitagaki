@@ -22,7 +22,7 @@ ADJUSTMENTS = [
     AdjustmentAlpaca.DIVIDEND,
     AdjustmentAlpaca.ALL
 ]
-@pytest.mark.online_slow
+@pytest.mark.online
 @pytest.mark.parametrize("timeframe,adjustment", [
     (tf, adj) for tf in TIMEFRAMES for adj in ADJUSTMENTS
 ])
