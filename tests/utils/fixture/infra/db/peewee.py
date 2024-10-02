@@ -22,7 +22,7 @@ def test_peewee_cli_mysql():
         port=6002,
     )
     DB_PROXY.initialize(test_db_mysql)
-    reset_database(test_db_mysql)
+    truncate_tables(test_db_mysql)
     yield PeeweeClient(test_db_mysql)
     test_db_mysql.close()
 
@@ -35,7 +35,7 @@ def test_peewee_cli_sqlite():
     test_db_sqlite.close()
 
 
-def reset_database(db):
+def truncate_tables(db):
     db.connect()
     # 各テーブルをクリア
     tables = db.get_tables()
