@@ -12,14 +12,19 @@ class ChartService:
         self,
         symbol: str,
         timeframe: Timeframe,
-        adjustment: Adjustment
+        adjustment: Adjustment,
+        update_mode: bool = False
     ) -> Chart:
         """
         指定された条件のチャートデータを取得する。
         取得元はまずDBを探し、なければonlineから取得する。
+
+        毎回更新が走るというのも面倒なので、
+        デフォルトでは更新モードをfalseにし、通信が走らないようにする。
         """
-        # まずデータを最新にする
-        self.update_chart(symbol, timeframe, adjustment)
+        # update_modeがtrueなら、データを最新にする
+        if update_mode:
+            self.update_chart(symbol, timeframe, adjustment)
         # データの取得
         return self.chart_repo.fetch_chart_from_local(symbol, timeframe, adjustment)
 
