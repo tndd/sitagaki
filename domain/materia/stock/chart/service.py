@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from domain.materia.finance.chart.model import Adjustment, Chart, Timeframe
-from domain.materia.finance.chart.repository import ChartRepository
+from domain.materia.stock.chart.model import Adjustment, Chart, Timeframe
+from domain.materia.stock.chart.repository import ChartRepository
 
 
 @dataclass

@@ -11,7 +11,7 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 import pytest
 
 # テスト用fixture
-from tests.utils.fixture.domain.materia.finance.chart import (
+from tests.utils.fixture.domain.materia.stock.chart import (
     test_chart_repo_mocked_with_alpaca_api,
     test_chart_repo_with_alpaca_api_fail_empty_barset,
 )

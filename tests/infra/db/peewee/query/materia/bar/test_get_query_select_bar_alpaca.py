@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pytest
 
-from domain.materia.finance.chart.model import Adjustment, Timeframe
+from domain.materia.stock.chart.model import Adjustment, Timeframe
 from infra.db.peewee.query.materia.bar import get_query_select_bar_alpaca
 
 

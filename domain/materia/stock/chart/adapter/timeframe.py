@@ -1,7 +1,7 @@
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 from alpaca.data.timeframe import TimeFrameUnit
 
-from domain.materia.finance.chart.model import Timeframe
+from domain.materia.stock.chart.model import Timeframe
 from infra.db.peewee.table.bar import TableBarAlpaca
 
 

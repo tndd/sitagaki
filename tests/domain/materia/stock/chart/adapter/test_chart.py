@@ -1,11 +1,11 @@
-from domain.materia.finance.chart.adapter.chart import (
+from domain.materia.stock.chart.adapter.chart import (
     arrive_chart_from_bar_alpaca_api_list,
     arrive_chart_from_peewee_table_list,
     depart_chart_to_peewee_table_list,
 )
-from domain.materia.finance.chart.model import Adjustment, Bar, Chart, Timeframe
+from domain.materia.stock.chart.model import Adjustment, Bar, Chart, Timeframe
 from infra.db.peewee.table.bar import TableBarAlpaca
-from tests.utils.factory.domain.materia.finance.chart import generate_chart
+from tests.utils.factory.domain.materia.stock.chart import generate_chart
 from tests.utils.factory.infra.api.alpaca.bar import generate_bar_alpaca_list
 from tests.utils.factory.infra.db.peewee.bar import generate_table_bar_alpaca_list
 

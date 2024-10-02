@@ -1,17 +1,17 @@
 from typing import List
 
-from domain.materia.finance.chart.adapter.adjustment import (
+from domain.materia.stock.chart.adapter.adjustment import (
     arrive_adjustment_from_peewee_table,
 )
-from domain.materia.finance.chart.adapter.bar import (
+from domain.materia.stock.chart.adapter.bar import (
     arrive_bar_from_alpaca_api,
     arrive_bar_from_peewee_table,
     depart_bar_to_peewee_table,
 )
-from domain.materia.finance.chart.adapter.timeframe import (
+from domain.materia.stock.chart.adapter.timeframe import (
     arrive_timeframe_from_peewee_table,
 )
-from domain.materia.finance.chart.model import Adjustment, Chart, Timeframe
+from domain.materia.stock.chart.model import Adjustment, Chart, Timeframe
 from infra.api.alpaca.bar import Bar as BarAlpacaApi
 from infra.db.peewee.table.bar import TableBarAlpaca
 

@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pytest
 
-from domain.materia.finance.chart.model import Adjustment, Chart, Timeframe
+from domain.materia.stock.chart.model import Adjustment, Chart, Timeframe
 
 
 def test_default(
