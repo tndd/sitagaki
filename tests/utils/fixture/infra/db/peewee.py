@@ -5,7 +5,15 @@ from infra.db.peewee.client import DB_PROXY, PeeweeClient
 
 
 @pytest.fixture
-def test_peewee_cli():
+def test_peewee_cli(test_peewee_cli_sqlite):
+    """
+    test_peewee_cliの入口
+    """
+    yield test_peewee_cli_sqlite
+
+
+@pytest.fixture
+def test_peewee_cli_psql():
     test_db_psql = PostgresqlDatabase(
         'fuli_test',
         user='postgres',
