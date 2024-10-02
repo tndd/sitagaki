@@ -15,7 +15,7 @@ services:
       - fuli_volume:/var/lib/postgresql/data
     environment:
       <<: *rds-env
-      POSTGRES_DB: fuli_volume
+      POSTGRES_DB: fuli
 
   fuli_rds_dev:
     <<: *rds-image
@@ -25,7 +25,7 @@ services:
       - fuli_volume_dev:/var/lib/postgresql/data
     environment:
       <<: *rds-env
-      POSTGRES_DB: fuli_volume_dev
+      POSTGRES_DB: fuli_dev
 
   fuli_rds_test:
     <<: *rds-image
@@ -35,7 +35,7 @@ services:
       - fuli_volume_test:/var/lib/postgresql/data
     environment:
       <<: *rds-env
-      POSTGRES_DB: fuli_volume_test
+      POSTGRES_DB: fuli_test
 
 
 volumes:
