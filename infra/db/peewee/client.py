@@ -22,14 +22,10 @@ class PeeweeClient:
     ):
         """
         FIXME: インサートパフォーマンスが悪すぎるので改善
-            100万行のインサートで40sもかかっている。
-            遅い要因はpeeweeかsqliteのどちらか。
-
-            https://stackoverflow.com/questions/37500369/peewee-with-bulk-insert-is-very-slow-into-sqlite-db
-            これによるとsqliteの制約によって速度低下が起こっている可能性がある。
-            mysqlでは高速に動作しているとの報告もある。
-
-            接続先をrdsに変更して詳細を確かめる。
+            むしろsqliteの方が高速に動作している。
+            だが本番では大量のデータを取り扱う以上、mysqlに変更する必要がある。
+            なら高速化するなら並列化あたりだろうか？
+            あるいは保存すべきデータをキャッシュで保存し、逐次インサートするという方法か。
         """
         # モデルの型を取得
         TModel = type(models[0])
