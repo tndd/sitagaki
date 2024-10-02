@@ -1,6 +1,6 @@
 from typing import List
 
-from peewee import Database, DatabaseProxy, Model
+from peewee import Database, DatabaseProxy, Model, chunked
 
 DB_PROXY = DatabaseProxy()
 
@@ -35,7 +35,8 @@ class PeeweeClient:
         # モデルをデータベースに挿入
         data = [model.__data__ for model in models]
         with self.db.atomic():
-            TModel.replace_many(data).execute()
+            for batch in chunked(data, 10000):
+                TModel.replace_many(batch).execute()
 
     def exec_query(self, query):
         """
