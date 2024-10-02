@@ -33,3 +33,23 @@ def get_query_select_bar_alpaca(
         TableBarAlpaca.timestamp.between(start, end)
     )
     return query
+
+
+def get_query_select_latest_timestamp_of_bar_alpaca(
+    symbol: str,
+    timeframe: Timeframe,
+    adjustment: Adjustment
+) -> ModelSelect:
+    """
+    指定されたtimeframe,adjustmentのシンボルの最新の日付を取得
+    """
+    query = TableBarAlpaca.select(
+        TableBarAlpaca.timestamp
+    ).where(
+        TableBarAlpaca.symbol == symbol,
+        TableBarAlpaca.timeframe == depart_timeframe_to_peewee_table(timeframe),
+        TableBarAlpaca.adjustment == depart_adjustment_to_peewee_table(adjustment)
+    ).order_by(
+        TableBarAlpaca.timestamp.desc()
+    ).limit(1)
+    return query
