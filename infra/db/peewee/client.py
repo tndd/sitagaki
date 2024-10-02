@@ -1,6 +1,6 @@
 from typing import List
 
-from peewee import Database, DatabaseProxy, Model
+from peewee import Database, DatabaseProxy, Model, chunked
 
 DB_PROXY = DatabaseProxy()
 
@@ -15,7 +15,11 @@ class PeeweeClient:
         self.db = db
         self.db.connect()
 
-    def insert_models(self, models: List[Model]):
+    def insert_models(
+            self,
+            models: List[Model],
+            batch_size: int = 10000,
+    ):
         """
         FIXME: インサートパフォーマンスが悪すぎるので改善
             100万行のインサートで40sもかかっている。
@@ -35,7 +39,8 @@ class PeeweeClient:
         # モデルをデータベースに挿入
         data = [model.__data__ for model in models]
         with self.db.atomic():
-            TModel.replace_many(data).execute()
+            for batch in chunked(data, batch_size):
+                TModel.replace_many(batch).execute()
 
     def exec_query(self, query):
         """

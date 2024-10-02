@@ -126,4 +126,19 @@
             "color": "green"
         },
     ],
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 6002,
+            "driver": "MySQL",
+            "name": "fuli_test",
+            "database": "fuli_test",
+            "username": "mysqluser"
+        }
+    ],
 }

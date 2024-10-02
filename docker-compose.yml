@@ -1,41 +1,42 @@
 x-rds-image: &rds-image
-  image: timescale/timescaledb:latest-pg16
+  image: mysql:8.0
 
 x-rds-env: &rds-env
-  POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: postgres
+  MYSQL_ROOT_PASSWORD: rootpassword
+  MYSQL_USER: mysqluser
+  MYSQL_PASSWORD: mysqlpassword
 
 
 services:
-  fuli_rds:
+  fuli:
     <<: *rds-image
     ports:
-      - "6000:5432"
+      - "6000:3306"
     volumes:
-      - fuli_volume:/var/lib/postgresql/data
+      - fuli_volume:/var/lib/mysql
     environment:
       <<: *rds-env
-      POSTGRES_DB: fuli
+      MYSQL_DATABASE: fuli
 
-  fuli_rds_dev:
+  fuli_dev:
     <<: *rds-image
     ports:
-      - "6001:5432"
+      - "6001:3306"
     volumes:
-      - fuli_volume_dev:/var/lib/postgresql/data
+      - fuli_volume_dev:/var/lib/mysql
     environment:
       <<: *rds-env
-      POSTGRES_DB: fuli_dev
+      MYSQL_DATABASE: fuli_dev
 
-  fuli_rds_test:
+  fuli_test:
     <<: *rds-image
     ports:
-      - "6002:5432"
+      - "6002:3306"
     volumes:
-      - fuli_volume_test:/var/lib/postgresql/data
+      - fuli_volume_test:/var/lib/mysql
     environment:
       <<: *rds-env
-      POSTGRES_DB: fuli_test
+      MYSQL_DATABASE: fuli_test
 
 
 volumes:

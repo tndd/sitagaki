@@ -21,7 +21,7 @@ from tests.utils.fixture.infra.api.alpaca.bar import (
 )
 from tests.utils.fixture.infra.db.peewee import (
     test_peewee_cli,
-    test_peewee_cli_psql,
+    test_peewee_cli_mysql,
     test_peewee_cli_sqlite,
 )
 from tests.utils.fixture.infra.db.table.bar import prepare_table_bar_alpaca_on_db
