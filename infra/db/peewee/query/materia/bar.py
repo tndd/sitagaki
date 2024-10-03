@@ -21,8 +21,8 @@ def get_query_select_bar_alpaca(
         raise ValueError("start must be before end")
     query = TableBarAlpaca.select().where(
         TableBarAlpaca.symbol == symbol,
-        TableBarAlpaca.timeframe == timeframe.value,
-        TableBarAlpaca.adjustment == adjustment.value,
+        TableBarAlpaca.timeframe == timeframe,
+        TableBarAlpaca.adjustment == adjustment,
         TableBarAlpaca.timestamp.between(start, end)
     )
     return query
@@ -40,8 +40,8 @@ def get_query_select_latest_timestamp_of_bar_alpaca(
         TableBarAlpaca.timestamp
     ).where(
         TableBarAlpaca.symbol == symbol,
-        TableBarAlpaca.timeframe == timeframe.value,
-        TableBarAlpaca.adjustment == adjustment.value
+        TableBarAlpaca.timeframe == timeframe,
+        TableBarAlpaca.adjustment == adjustment
     ).order_by(
         TableBarAlpaca.timestamp.desc()
     ).limit(1)
