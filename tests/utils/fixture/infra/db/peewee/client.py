@@ -30,14 +30,3 @@ def test_peewee_cli_sqlite():
     cli = factory_peewee_client_sqlite()
     yield cli
     cli.close()
-
-
-
-def truncate_tables(db):
-    db.connect()
-    # 各テーブルをクリア
-    tables = db.get_tables()
-    with db.atomic():
-        for table in tables:
-            db.execute_sql(f"TRUNCATE TABLE {table}")
-    db.close()
