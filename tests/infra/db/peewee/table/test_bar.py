@@ -1,4 +1,4 @@
-from infra.db.peewee.table.bar import TableBarAlpaca
+from infra.db.peewee.table.bar import AdjustmentTable, TableBarAlpaca, TimeframeTable
 from tests.utils.mock.infra.db.peewee.bar import (
     generate_table_bar_alpaca,
     generate_table_bar_alpaca_list,
@@ -28,9 +28,9 @@ def test_table_bar_alpaca_list(test_peewee_cli):
     TableBarAlpacaのリストを投入および取得の基本テスト。
 
     1. データが投入されたことを確認
-    2. synbol=AAPL and timeframe=1 and adjustment = 1 のデータ取得
+    2. synbol=AAPL and timeframe=DAY and adjustment=RAW のデータ取得
         ３件のデータが取得されることを確認
-    3. adjustment=2のデータ取得
+    3. adjustment=SPLITのデータ取得
         ０件のデータが取得されることを確認
     """
     # 投入用のTableBarAlpacaを作成
@@ -39,13 +39,13 @@ def test_table_bar_alpaca_list(test_peewee_cli):
     test_peewee_cli.insert_models(table_bar_alpaca_list)
     # 1. データが投入されたことを確認
     assert len(TableBarAlpaca.select()) == len(table_bar_alpaca_list)
-    # 2. symbol=AAPL and timeframe=1 and adjustment = 1 のデータ取得
+    # 2. symbol=AAPL and timeframe=DAY and adjustment = RAW のデータ取得
     assert len(TableBarAlpaca.select().where(
         TableBarAlpaca.symbol == "AAPL",
-        TableBarAlpaca.timeframe == 4,
-        TableBarAlpaca.adjustment == 1,
+        TableBarAlpaca.timeframe == TimeframeTable.DAY,
+        TableBarAlpaca.adjustment == AdjustmentTable.RAW,
     )) == 3
-    # 3. adjustment=2のデータが取得できないことを確認
+    # 3. adjustment=SPLITのデータが取得できないことを確認
     assert len(TableBarAlpaca.select().where(
-        TableBarAlpaca.adjustment == 2,
+        TableBarAlpaca.adjustment == AdjustmentTable.SPLIT,
     )) == 0
