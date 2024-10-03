@@ -19,6 +19,7 @@ from tests.utils.fixture.infra.api.alpaca.bar import (
     replace_with_mock_get_barset_alpaca_api,
     replace_with_mock_get_barset_alpaca_api_fail_empty_barset,
 )
+from tests.utils.fixture.infra.db.alchemy.client import test_alchemy_cli
 from tests.utils.fixture.infra.db.peewee import (
     test_peewee_cli,
     test_peewee_cli_mysql,
