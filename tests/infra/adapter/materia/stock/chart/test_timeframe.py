@@ -1,12 +1,12 @@
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
-from domain.materia.stock.chart.adapter.timeframe import (
+from domain.materia.stock.chart.model import Timeframe
+from infra.adapter.materia.stock.chart.timeframe import (
     arrive_timeframe_from_peewee_table,
     depart_timeframe_to_alpaca_api,
     depart_timeframe_to_peewee_table,
 )
-from domain.materia.stock.chart.model import Timeframe
-from tests.utils.factory.infra.db.peewee.bar import generate_table_bar_alpaca
+from tests.utils.mock.infra.db.peewee.bar import generate_table_bar_alpaca
 
 
 def test_arrive_timeframe_from_peewee_table():
