@@ -6,7 +6,7 @@ from infra.adapter.materia.stock.chart.adjustment import (
     depart_adjustment_to_alpaca_api,
     depart_adjustment_to_peewee_table,
 )
-from tests.utils.factory.infra.db.peewee.bar import generate_table_bar_alpaca
+from tests.utils.mock.infra.db.peewee.bar import generate_table_bar_alpaca
 
 
 def test_arrive_adjustment_from_peewee_table():

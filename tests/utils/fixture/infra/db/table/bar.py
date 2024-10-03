@@ -1,6 +1,6 @@
 import pytest
 
-from tests.utils.factory.infra.db.peewee.bar import generate_table_bar_alpaca_list
+from tests.utils.mock.infra.db.peewee.bar import generate_table_bar_alpaca_list
 
 
 @pytest.fixture

@@ -1,7 +1,7 @@
 from alpaca.data.models import Bar, BarSet
 
 from infra.api.alpaca.bar import extract_bar_list_alpaca_api_from_barset
-from tests.utils.factory.infra.api.alpaca.bar import generate_barset_alpaca
+from tests.utils.mock.infra.api.alpaca.bar import generate_barset_alpaca
 
 
 def test_extract_default():
