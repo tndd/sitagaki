@@ -20,7 +20,6 @@ class AdjustmentTable(Enum):
     ALL = 8
 
 
-
 class TableBarAlpaca(DeclarativeBase):
     __tablename__ = "alpaca_bar"
 
