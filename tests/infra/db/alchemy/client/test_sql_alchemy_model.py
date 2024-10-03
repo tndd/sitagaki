@@ -15,4 +15,5 @@ def test_to_params():
 
     test_model = TestModel(id=1, name="test")
     test_model_params = test_model.to_params()
+    # Noneの要素が除外されていることを確認
     assert test_model_params == {"id": 1, "name": "test"}
