@@ -48,3 +48,9 @@ def factory_peewee_client_mysql(mode: DBMode) -> PeeweeClient:
     )
     DB_PROXY.initialize(db)
     return PeeweeClient(db)
+
+
+def factory_peewee_client_sqlite() -> PeeweeClient:
+    test_db_sqlite = SqliteDatabase(':memory:')
+    DB_PROXY.initialize(test_db_sqlite)
+    return PeeweeClient(test_db_sqlite)

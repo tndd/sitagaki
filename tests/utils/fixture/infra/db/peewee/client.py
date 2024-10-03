@@ -1,7 +1,7 @@
 import pytest
 from peewee import MySQLDatabase, SqliteDatabase
 
-from infra.db.peewee.client import DB_PROXY, PeeweeClient
+from infra.db.peewee.client import PeeweeClient
 from infra.factory.infra.db.peewee.client import (
     DBMode,
     factory_peewee_client_mysql,
@@ -19,25 +19,17 @@ def test_peewee_cli(test_peewee_cli_sqlite):
 
 @pytest.fixture
 def test_peewee_cli_mysql():
-    test_db_mysql = MySQLDatabase(
-        'fuli_test',
-        user='mysqluser',
-        password='mysqlpassword',
-        host='localhost',
-        port=6002,
-    )
-    DB_PROXY.initialize(test_db_mysql)
-    truncate_tables(test_db_mysql)
-    yield PeeweeClient(test_db_mysql)
-    test_db_mysql.close()
+    cli = factory_peewee_client_mysql(DBMode.TEST)
+    cli.truncate_tables(db_mode=DBMode.TEST)
+    yield cli
+    cli.close()
 
 
 @pytest.fixture
 def test_peewee_cli_sqlite():
-    test_db_sqlite = SqliteDatabase(':memory:')
-    DB_PROXY.initialize(test_db_sqlite)
-    yield PeeweeClient(test_db_sqlite)
-    test_db_sqlite.close()
+    cli = factory_peewee_client_sqlite()
+    yield cli
+    cli.close()
 
 
 
