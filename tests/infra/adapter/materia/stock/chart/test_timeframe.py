@@ -23,11 +23,21 @@ def test_arrive_timeframe_from_peewee_table():
 
 
 def test_depart_timeframe_to_alpaca_api():
-    assert isinstance(depart_timeframe_to_alpaca_api(Timeframe.MIN), TimeFrameAlpaca)
-    assert isinstance(depart_timeframe_to_alpaca_api(Timeframe.HOUR), TimeFrameAlpaca)
-    assert isinstance(depart_timeframe_to_alpaca_api(Timeframe.DAY), TimeFrameAlpaca)
-    assert isinstance(depart_timeframe_to_alpaca_api(Timeframe.WEEK), TimeFrameAlpaca)
-    assert isinstance(depart_timeframe_to_alpaca_api(Timeframe.MONTH), TimeFrameAlpaca)
+    # minute
+    assert depart_timeframe_to_alpaca_api(Timeframe.MIN).amount == TimeFrameAlpaca.Minute.amount
+    assert depart_timeframe_to_alpaca_api(Timeframe.MIN).unit == TimeFrameAlpaca.Minute.unit
+    # hour
+    assert depart_timeframe_to_alpaca_api(Timeframe.HOUR).amount == TimeFrameAlpaca.Hour.amount
+    assert depart_timeframe_to_alpaca_api(Timeframe.HOUR).unit == TimeFrameAlpaca.Hour.unit
+    # day
+    assert depart_timeframe_to_alpaca_api(Timeframe.DAY).amount == TimeFrameAlpaca.Day.amount
+    assert depart_timeframe_to_alpaca_api(Timeframe.DAY).unit == TimeFrameAlpaca.Day.unit
+    # week
+    assert depart_timeframe_to_alpaca_api(Timeframe.WEEK).amount == TimeFrameAlpaca.Week.amount
+    assert depart_timeframe_to_alpaca_api(Timeframe.WEEK).unit == TimeFrameAlpaca.Week.unit
+    # month
+    assert depart_timeframe_to_alpaca_api(Timeframe.MONTH).amount == TimeFrameAlpaca.Month.amount
+    assert depart_timeframe_to_alpaca_api(Timeframe.MONTH).unit == TimeFrameAlpaca.Month.unit
 
 
 def test_depart_timeframe_to_peewee_table():
