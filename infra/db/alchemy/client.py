@@ -1,12 +1,10 @@
 from contextlib import contextmanager
 from typing import Any, Dict, List, Optional, Union
 
-from sqlalchemy import Engine, Table, text
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import Session, sessionmaker
-from sqlalchemy.sql.expression import Insert, Select
+from sqlalchemy import Engine, Table, select, text
+from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
+from sqlalchemy.sql import Select
 
-Base = declarative_base()
 
 class SQLAlchemyClient:
     def __init__(self, engine: Engine):
@@ -26,39 +24,33 @@ class SQLAlchemyClient:
             session.close()
 
     # ORM用メソッド
-    def insert_models(self, models: list) -> None:
+    def insert_models(self, models: List[DeclarativeBase]) -> None:
         with self.session_scope() as session:
             session.add_all(models)
 
-    def query(self, model_class: type, *criterion: Any) -> List[Any]:
+    def select_models(self, model_class: type, *criterion: Any) -> List[Any]:
         with self.session_scope() as session:
-            return session.query(model_class).filter(*criterion).all()
+            stmt = select(model_class).filter(*criterion)
+            result = session.execute(stmt)
+            return result.scalars().all()
 
     # Core用メソッド
     def execute_core_query(self, query: Union[Select, str], params: Optional[Dict[str, Any]] = None) -> List[Any]:
         with self.engine.connect() as connection:
-            if params:
-                result = connection.execute(query, params)
-            else:
-                result = connection.execute(query)
+            if isinstance(query, str):
+                query = text(query)
+            result = connection.execute(query, params)
             return result.fetchall()
 
     def insert_core(self, table: Table, values: List[Dict[str, Any]]) -> None:
         with self.engine.connect() as connection:
             connection.execute(table.insert(), values)
+            connection.commit()
 
-    # 汎用的なクエリ実行メソッド（文字列SQLにも対応）
-    def execute_query(self, query: Union[str, Select, Insert], params: Optional[Dict[str, Any]] = None) -> List[Any]:
+    # 汎用的なクエリ実行メソッド
+    def execute_query(self, query: Union[str, Select], params: Optional[Dict[str, Any]] = None) -> List[Any]:
         with self.session_scope() as session:
             if isinstance(query, str):
-                result = session.execute(text(query), params)
-            else:
-                result = session.execute(query, params)
+                query = text(query)
+            result = session.execute(query, params)
             return result.fetchall()
-
-    # テーブル作成メソッド
-    def create_tables(self) -> None:
-        Base.metadata.create_all(self.engine)
-
-    def drop_tables(self) -> None:
-        Base.metadata.drop_all(self.engine)
