@@ -7,9 +7,7 @@ from infra.adapter.materia.stock.chart.bar import (
     arrive_bar_from_table,
     depart_bar_to_table,
 )
-from infra.adapter.materia.stock.chart.timeframe import (
-    arrive_timeframe_from_peewee_table,
-)
+from infra.adapter.materia.stock.chart.timeframe import arrive_timeframe_from_table
 from infra.api.alpaca.bar import Bar as BarAlpacaApi
 from infra.db.peewee.table.bar import TableBarAlpaca
 
@@ -41,7 +39,7 @@ def arrive_chart_from_table_list(bars_peewee_table: List[TableBarAlpaca]) -> Cha
     if not bars_peewee_table:
         raise ValueError("bars_peewee_tableが空です。")
     symbol = bars_peewee_table[0].symbol
-    timeframe = arrive_timeframe_from_peewee_table(bars_peewee_table[0])
+    timeframe = arrive_timeframe_from_table(bars_peewee_table[0])
     adjustment = arrive_adjustment_from_table(bars_peewee_table[0])
     bars = [arrive_bar_from_table(bar) for bar in bars_peewee_table]
     return Chart(

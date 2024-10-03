@@ -14,7 +14,7 @@ from infra.adapter.materia.stock.chart.chart import (
 )
 from infra.adapter.materia.stock.chart.timeframe import (
     depart_timeframe_to_alpaca_api,
-    depart_timeframe_to_peewee_table,
+    depart_timeframe_to_table,
 )
 from infra.api.alpaca.bar import get_bar_alpaca_api_list
 from infra.db.peewee.client import PeeweeClient
@@ -77,7 +77,7 @@ class ChartRepository:
         # FIXME: クエリ生成関数にドメインモデルを渡すな
         query = get_query_select_bar_alpaca(
             symbol=symbol,
-            timeframe=depart_timeframe_to_peewee_table(timeframe),
+            timeframe=depart_timeframe_to_table(timeframe),
             adjustment=depart_adjustment_to_table(adjustment),
             start=start,
             end=end

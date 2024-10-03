@@ -2,9 +2,7 @@ import pytest
 
 from domain.materia.stock.chart.model import Adjustment, Timeframe
 from infra.adapter.materia.stock.chart.adjustment import arrive_adjustment_from_table
-from infra.adapter.materia.stock.chart.timeframe import (
-    arrive_timeframe_from_peewee_table,
-)
+from infra.adapter.materia.stock.chart.timeframe import arrive_timeframe_from_table
 from infra.db.peewee.table.bar import TableBarAlpaca
 
 
@@ -32,7 +30,7 @@ def test_all_combinations(
     assert len(bar_table_list) == 5
     assert all(
         isinstance(bar, TableBarAlpaca) and
-        arrive_timeframe_from_peewee_table(bar) == timeframe and
+        arrive_timeframe_from_table(bar) == timeframe and
         arrive_adjustment_from_table(bar) == adjustment
         for bar in bar_table_list
     )
