@@ -8,7 +8,7 @@ from infra.db.alchemy.client import SQLAlchemyModel
 
 def test_to_params():
     class TestModel(SQLAlchemyModel):
-        __tablename__ = "test"
+        __tablename__ = "__test_table"
         id: Mapped[int] = mapped_column(primary_key=True)
         name: Mapped[str] = mapped_column(String)
         email: Mapped[Optional[str]] = mapped_column(String, nullable=True)
