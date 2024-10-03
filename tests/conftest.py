@@ -19,12 +19,12 @@ from tests.utils.fixture.infra.api.alpaca.bar import (
     replace_with_mock_get_barset_alpaca_api,
     replace_with_mock_get_barset_alpaca_api_fail_empty_barset,
 )
-from tests.utils.fixture.infra.db.peewee import (
+from tests.utils.fixture.infra.db.peewee.client import (
     test_peewee_cli,
     test_peewee_cli_mysql,
     test_peewee_cli_sqlite,
 )
-from tests.utils.fixture.infra.db.table.bar import prepare_table_bar_alpaca_on_db
+from tests.utils.fixture.infra.db.peewee.table.bar import prepare_table_bar_alpaca_on_db
 
 
 @pytest.fixture(scope="session", autouse=True)
