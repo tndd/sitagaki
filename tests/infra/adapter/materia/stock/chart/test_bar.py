@@ -1,8 +1,8 @@
 from domain.materia.stock.chart.model import Adjustment, Bar, Timeframe
 from infra.adapter.materia.stock.chart.bar import (
     arrive_bar_from_alpaca_api,
-    arrive_bar_from_peewee_table,
-    depart_bar_to_peewee_table,
+    arrive_bar_from_table,
+    depart_bar_to_table,
 )
 from infra.db.peewee.table.bar import TableBarAlpaca
 from tests.utils.mock.domain.materia.stock.chart import generate_bar
@@ -19,18 +19,18 @@ def test_arrive_bar_from_alpaca_api():
     assert isinstance(bar, Bar)
 
 
-def test_arrive_bar_from_peewee_table():
+def test_arrive_bar_from_table():
     """
-    bar_peewee_table => Bar
+    bar_table => Bar
     """
-    bar_peewee_table = generate_table_bar_alpaca()
-    bar = arrive_bar_from_peewee_table(bar_peewee_table)
+    bar_table = generate_table_bar_alpaca()
+    bar = arrive_bar_from_table(bar_table)
     assert isinstance(bar, Bar)
 
 
-def test_depart_bar_to_peewee_table():
+def test_depart_bar_to_table():
     bar = generate_bar()
-    bar_table = depart_bar_to_peewee_table(
+    bar_table = depart_bar_to_table(
         bar,
         symbol="AAPL",
         timeframe=Timeframe.MIN,
