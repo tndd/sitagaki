@@ -1,7 +1,5 @@
 import pytest
-from peewee import MySQLDatabase, SqliteDatabase
 
-from infra.db.peewee.client import PeeweeClient
 from infra.factory.infra.db.peewee.client import (
     DBMode,
     factory_peewee_client_mysql,
