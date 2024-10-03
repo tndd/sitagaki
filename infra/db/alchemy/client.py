@@ -18,7 +18,10 @@ class SQLAlchemyModel(DeclarativeBase):
 class SQLAlchemyClient:
     def __init__(self, engine: Engine):
         self.engine: Engine = engine
-        self.Session: sessionmaker = sessionmaker(bind=engine)
+        self.Session: sessionmaker = sessionmaker(
+            bind=engine,
+            expire_on_commit=False
+        )
 
     @contextmanager
     def session_scope(self):

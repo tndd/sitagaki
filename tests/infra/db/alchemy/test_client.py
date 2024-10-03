@@ -25,3 +25,6 @@ def test_insert_models(test_alchemy_cli):
     test_alchemy_cli.insert_models(models)
     result = test_alchemy_cli.select_models(TestModel)
     assert len(result) == 3
+    assert result[0].name == 'user1'
+    assert result[1].name == 'user2'
+    assert result[2].name == 'user3'
