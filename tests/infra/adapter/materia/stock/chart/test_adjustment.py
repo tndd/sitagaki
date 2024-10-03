@@ -12,12 +12,12 @@ from tests.utils.mock.infra.db.peewee.bar import generate_table_bar_alpaca
 
 def test_arrive_adjustment_from_table():
     """
-    bar_peewee_table => Adjustment
+    bar_table => Adjustment
 
     adjustmentがrawであることが期待できる。
     """
-    bar_peewee_table = generate_table_bar_alpaca()
-    adjustment = arrive_adjustment_from_table(bar_peewee_table)
+    bar_table = generate_table_bar_alpaca()
+    adjustment = arrive_adjustment_from_table(bar_table)
     assert isinstance(adjustment, Adjustment)
     assert adjustment == Adjustment.RAW
 

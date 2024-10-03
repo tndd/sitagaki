@@ -21,10 +21,10 @@ def test_arrive_bar_from_alpaca_api():
 
 def test_arrive_bar_from_table():
     """
-    bar_peewee_table => Bar
+    bar_table => Bar
     """
-    bar_peewee_table = generate_table_bar_alpaca()
-    bar = arrive_bar_from_table(bar_peewee_table)
+    bar_table = generate_table_bar_alpaca()
+    bar = arrive_bar_from_table(bar_table)
     assert isinstance(bar, Bar)
 
 

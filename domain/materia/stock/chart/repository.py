@@ -56,9 +56,9 @@ class ChartRepository:
             timeframe=timeframe
         )
         # adapt: => peewee_table
-        bar_peewee_table_list = depart_chart_to_table_list(chart)
+        bar_table_list = depart_chart_to_table_list(chart)
         # DBのモデルリストを保存
-        self.cli_db.insert_models(bar_peewee_table_list)
+        self.cli_db.insert_models(bar_table_list)
 
     def fetch_chart_from_local(
         self,
@@ -96,8 +96,8 @@ class ChartRepository:
             だからdomain-infra間で例外に対する相違が生まれる。
             """
             # barデータをDBから取得
-            bar_list_peewee_table = self.cli_db.exec_query(query)
-            if not bar_list_peewee_table:
+            bar_list_table = self.cli_db.exec_query(query)
+            if not bar_list_table:
                 """
                 Barの取得件数が0件の場合、エラーを発生させる。
                 おそらく条件の指定が間違っている。
@@ -105,7 +105,7 @@ class ChartRepository:
                 """
                 raise LookupError('Barの取得件数が0件')
             # 取得物をドメイン層のbarモデルのリストに変換して返す
-            return arrive_chart_from_table_list(bar_list_peewee_table)
+            return arrive_chart_from_table_list(bar_list_table)
         except LookupError as le:
             # LATER: error_logという同じ実装を排除したい
             error_log = {

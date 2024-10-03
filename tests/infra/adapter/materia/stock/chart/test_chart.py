@@ -25,10 +25,10 @@ def test_arrive_chart_from_bar_alpaca_api_list():
 
 def test_arrive_chart_from_table_list():
     """
-    bar_peewee_table<List> => Bar<List>
+    bar_table<List> => Bar<List>
     """
-    bar_peewee_table_list = generate_table_bar_alpaca_list()
-    chart = arrive_chart_from_table_list(bar_peewee_table_list)
+    bar_table_list = generate_table_bar_alpaca_list()
+    chart = arrive_chart_from_table_list(bar_table_list)
     assert isinstance(chart, Chart)
     assert all(isinstance(bar, Bar) for bar in chart.bars)
 

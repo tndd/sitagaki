@@ -12,12 +12,12 @@ from tests.utils.mock.infra.db.peewee.bar import generate_table_bar_alpaca
 
 def test_arrive_timeframe_from_table():
     """
-    bar_peewee_table => Timeframe
+    bar_table => Timeframe
 
     timeframeがminであることが期待できる。
     """
-    bar_peewee_table = generate_table_bar_alpaca()
-    timeframe = arrive_timeframe_from_table(bar_peewee_table)
+    bar_table = generate_table_bar_alpaca()
+    timeframe = arrive_timeframe_from_table(bar_table)
     assert isinstance(timeframe, Timeframe)
     assert timeframe == Timeframe.MIN
 
