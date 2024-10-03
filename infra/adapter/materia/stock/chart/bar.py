@@ -1,10 +1,8 @@
-from domain.materia.stock.chart.adapter.adjustment import (
+from domain.materia.stock.chart.model import Adjustment, Bar, Timeframe
+from infra.adapter.materia.stock.chart.adjustment import (
     depart_adjustment_to_peewee_table,
 )
-from domain.materia.stock.chart.adapter.timeframe import (
-    depart_timeframe_to_peewee_table,
-)
-from domain.materia.stock.chart.model import Adjustment, Bar, Timeframe
+from infra.adapter.materia.stock.chart.timeframe import depart_timeframe_to_peewee_table
 from infra.api.alpaca.bar import Bar as BarAlpacaApi
 from infra.db.peewee.table.bar import TableBarAlpaca
 

@@ -1,11 +1,11 @@
 from alpaca.data.requests import Adjustment as AdjustmentAlpaca
 
-from domain.materia.stock.chart.adapter.adjustment import (
+from domain.materia.stock.chart.model import Adjustment
+from infra.adapter.materia.stock.chart.adjustment import (
     arrive_adjustment_from_peewee_table,
     depart_adjustment_to_alpaca_api,
     depart_adjustment_to_peewee_table,
 )
-from domain.materia.stock.chart.model import Adjustment
 from tests.utils.factory.infra.db.peewee.bar import generate_table_bar_alpaca
 
 

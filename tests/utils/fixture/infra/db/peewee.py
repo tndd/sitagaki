@@ -5,11 +5,11 @@ from infra.db.peewee.client import DB_PROXY, PeeweeClient
 
 
 @pytest.fixture
-def test_peewee_cli(test_peewee_cli_mysql):
+def test_peewee_cli(test_peewee_cli_sqlite):
     """
     test_peewee_cliの入口
     """
-    yield test_peewee_cli_mysql
+    yield test_peewee_cli_sqlite
 
 
 @pytest.fixture

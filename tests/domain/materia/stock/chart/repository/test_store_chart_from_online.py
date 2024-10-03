@@ -1,12 +1,12 @@
 import pytest
 
-from domain.materia.stock.chart.adapter.adjustment import (
+from domain.materia.stock.chart.model import Adjustment, Timeframe
+from infra.adapter.materia.stock.chart.adjustment import (
     arrive_adjustment_from_peewee_table,
 )
-from domain.materia.stock.chart.adapter.timeframe import (
+from infra.adapter.materia.stock.chart.timeframe import (
     arrive_timeframe_from_peewee_table,
 )
-from domain.materia.stock.chart.model import Adjustment, Timeframe
 from infra.db.peewee.table.bar import TableBarAlpaca
 
 
