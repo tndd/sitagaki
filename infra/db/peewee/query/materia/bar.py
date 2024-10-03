@@ -2,18 +2,13 @@ from datetime import datetime
 
 from peewee import ModelSelect
 
-from domain.materia.stock.chart.model import Adjustment, Timeframe
-from infra.adapter.materia.stock.chart.adjustment import (
-    depart_adjustment_to_peewee_table,
-)
-from infra.adapter.materia.stock.chart.timeframe import depart_timeframe_to_peewee_table
-from infra.db.peewee.table.bar import TableBarAlpaca
+from infra.db.peewee.table.bar import AdjustmentTable, TableBarAlpaca, TimeframeTable
 
 
 def get_query_select_bar_alpaca(
     symbol: str,
-    timeframe: Timeframe,
-    adjustment: Adjustment,
+    timeframe: TimeframeTable,
+    adjustment: AdjustmentTable,
     start: datetime,
     end: datetime
 ) -> ModelSelect:
@@ -26,8 +21,8 @@ def get_query_select_bar_alpaca(
         raise ValueError("start must be before end")
     query = TableBarAlpaca.select().where(
         TableBarAlpaca.symbol == symbol,
-        TableBarAlpaca.timeframe == depart_timeframe_to_peewee_table(timeframe),
-        TableBarAlpaca.adjustment == depart_adjustment_to_peewee_table(adjustment),
+        TableBarAlpaca.timeframe == timeframe.value,
+        TableBarAlpaca.adjustment == adjustment.value,
         TableBarAlpaca.timestamp.between(start, end)
     )
     return query
@@ -35,8 +30,8 @@ def get_query_select_bar_alpaca(
 
 def get_query_select_latest_timestamp_of_bar_alpaca(
     symbol: str,
-    timeframe: Timeframe,
-    adjustment: Adjustment
+    timeframe: TimeframeTable,
+    adjustment: AdjustmentTable
 ) -> ModelSelect:
     """
     指定されたtimeframe,adjustmentのシンボルの最新の日付を取得
@@ -45,8 +40,8 @@ def get_query_select_latest_timestamp_of_bar_alpaca(
         TableBarAlpaca.timestamp
     ).where(
         TableBarAlpaca.symbol == symbol,
-        TableBarAlpaca.timeframe == depart_timeframe_to_peewee_table(timeframe),
-        TableBarAlpaca.adjustment == depart_adjustment_to_peewee_table(adjustment)
+        TableBarAlpaca.timeframe == timeframe.value,
+        TableBarAlpaca.adjustment == adjustment.value
     ).order_by(
         TableBarAlpaca.timestamp.desc()
     ).limit(1)

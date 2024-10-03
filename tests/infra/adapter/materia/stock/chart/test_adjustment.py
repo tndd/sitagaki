@@ -6,6 +6,7 @@ from infra.adapter.materia.stock.chart.adjustment import (
     depart_adjustment_to_alpaca_api,
     depart_adjustment_to_peewee_table,
 )
+from infra.db.peewee.table.bar import AdjustmentTable
 from tests.utils.mock.infra.db.peewee.bar import generate_table_bar_alpaca
 
 
@@ -29,7 +30,7 @@ def test_depart_adjustment_to_alpaca_api():
 
 
 def test_depart_adjustment_to_peewee_table():
-    assert depart_adjustment_to_peewee_table(Adjustment.RAW) == 1
-    assert depart_adjustment_to_peewee_table(Adjustment.SPLIT) == 2
-    assert depart_adjustment_to_peewee_table(Adjustment.DIVIDEND) == 4
-    assert depart_adjustment_to_peewee_table(Adjustment.ALL) == 8
+    assert depart_adjustment_to_peewee_table(Adjustment.RAW) == AdjustmentTable.RAW
+    assert depart_adjustment_to_peewee_table(Adjustment.SPLIT) == AdjustmentTable.SPLIT
+    assert depart_adjustment_to_peewee_table(Adjustment.DIVIDEND) == AdjustmentTable.DIVIDEND
+    assert depart_adjustment_to_peewee_table(Adjustment.ALL) == AdjustmentTable.ALL

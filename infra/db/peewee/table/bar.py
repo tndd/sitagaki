@@ -1,6 +1,24 @@
-from peewee import BitField, CharField, CompositeKey, DateTimeField, FloatField
+from enum import Enum
+
+from peewee import CharField, CompositeKey, DateTimeField, FloatField
+from peewee_enum_field import EnumField
 
 from infra.db.peewee.client import PeeweeTable
+
+
+class TimeframeTable(Enum):
+    MIN = 1
+    HOUR = 2
+    DAY = 4
+    WEEK = 8
+    MONTH = 16
+
+
+class AdjustmentTable(Enum):
+    RAW = 1
+    SPLIT = 2
+    DIVIDEND = 4
+    ALL = 8
 
 
 class TableBarAlpaca(PeeweeTable):
@@ -23,8 +41,8 @@ class TableBarAlpaca(PeeweeTable):
     """
     timestamp = DateTimeField()
     symbol = CharField()
-    timeframe = BitField()
-    adjustment = BitField()
+    timeframe = EnumField(TimeframeTable)
+    adjustment = EnumField(AdjustmentTable)
     open = FloatField()
     high = FloatField()
     low = FloatField()

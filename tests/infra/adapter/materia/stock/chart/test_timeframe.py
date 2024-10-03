@@ -6,6 +6,7 @@ from infra.adapter.materia.stock.chart.timeframe import (
     depart_timeframe_to_alpaca_api,
     depart_timeframe_to_peewee_table,
 )
+from infra.db.peewee.table.bar import TimeframeTable
 from tests.utils.mock.infra.db.peewee.bar import generate_table_bar_alpaca
 
 
@@ -30,8 +31,8 @@ def test_depart_timeframe_to_alpaca_api():
 
 
 def test_depart_timeframe_to_peewee_table():
-    assert depart_timeframe_to_peewee_table(Timeframe.MIN) == 1
-    assert depart_timeframe_to_peewee_table(Timeframe.HOUR) == 2
-    assert depart_timeframe_to_peewee_table(Timeframe.DAY) == 4
-    assert depart_timeframe_to_peewee_table(Timeframe.WEEK) == 8
-    assert depart_timeframe_to_peewee_table(Timeframe.MONTH) == 16
+    assert depart_timeframe_to_peewee_table(Timeframe.MIN) == TimeframeTable.MIN
+    assert depart_timeframe_to_peewee_table(Timeframe.HOUR) == TimeframeTable.HOUR
+    assert depart_timeframe_to_peewee_table(Timeframe.DAY) == TimeframeTable.DAY
+    assert depart_timeframe_to_peewee_table(Timeframe.WEEK) == TimeframeTable.WEEK
+    assert depart_timeframe_to_peewee_table(Timeframe.MONTH) == TimeframeTable.MONTH
