@@ -6,6 +6,15 @@ from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 from sqlalchemy.sql import Select
 
 
+class SQLAlchemyModel(DeclarativeBase):
+    def to_params(self):
+        return {
+            c.name: getattr(self, c.name)
+            for c in self.__table__.columns
+            if getattr(self, c.name) is not None
+        }
+
+
 class SQLAlchemyClient:
     def __init__(self, engine: Engine):
         self.engine: Engine = engine
@@ -26,7 +35,7 @@ class SQLAlchemyClient:
     # ORM用メソッド
     def insert_models(self, models: List[DeclarativeBase]) -> None:
         with self.session_scope() as session:
-            session.add_all(models)
+            session.bulk_save_objects(models)
 
     def select_models(self, model_class: type, *criterion: Any) -> List[Any]:
         with self.session_scope() as session:
@@ -35,6 +44,11 @@ class SQLAlchemyClient:
             return result.scalars().all()
 
     # Core用メソッド
+    def core_insert_models(self, models: List[DeclarativeBase]) -> None:
+        with self.session_scope() as session:
+            session.execute
+
+
     def execute_core_query(self, query: Union[Select, str], params: Optional[Dict[str, Any]] = None) -> List[Any]:
         with self.engine.connect() as connection:
             if isinstance(query, str):
