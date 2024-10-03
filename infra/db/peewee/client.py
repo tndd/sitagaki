@@ -2,6 +2,8 @@ from typing import List
 
 from peewee import Database, DatabaseProxy, Model, chunked
 
+from infra.factory.infra.db.peewee.client import DBMode
+
 DB_PROXY = DatabaseProxy()
 
 
@@ -48,3 +50,15 @@ class PeeweeClient:
             このメソッドは完全に合理的でないわけではないか？
         """
         return query
+
+    def truncate_tables(self, db_mode: DBMode):
+        """
+        テーブルを空にする
+        """
+        if db_mode != DBMode.TEST:
+            raise ValueError("DBModeがTESTではないため、truncate_tablesを実行できません。")
+
+        tables = self.db.get_tables()
+        with self.db.atomic():
+            for table in tables:
+                self.db.execute_sql(f"TRUNCATE TABLE {table}")
