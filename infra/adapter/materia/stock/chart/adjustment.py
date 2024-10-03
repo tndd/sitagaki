@@ -4,7 +4,7 @@ from domain.materia.stock.chart.model import Adjustment
 from infra.db.peewee.table.bar import AdjustmentTable, TableBarAlpaca
 
 
-def arrive_adjustment_from_table(bar_peewee_table: TableBarAlpaca) -> Adjustment:
+def arrive_adjustment_from_table(bar_table: TableBarAlpaca) -> Adjustment:
     """
     PeeweeTable -> Domain
     """
@@ -14,7 +14,7 @@ def arrive_adjustment_from_table(bar_peewee_table: TableBarAlpaca) -> Adjustment
         AdjustmentTable.DIVIDEND: Adjustment.DIVIDEND,
         AdjustmentTable.ALL: Adjustment.ALL,
     }
-    return mapping[bar_peewee_table.adjustment]
+    return mapping[bar_table.adjustment]
 
 
 def depart_adjustment_to_alpaca_api(adjustment: Adjustment) -> AdjustmentAlpaca:

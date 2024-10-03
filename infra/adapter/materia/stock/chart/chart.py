@@ -31,17 +31,17 @@ def arrive_chart_from_bar_alpaca_api_list(
     )
 
 
-def arrive_chart_from_table_list(bars_peewee_table: List[TableBarAlpaca]) -> Chart:
+def arrive_chart_from_table_list(bar_table_list: List[TableBarAlpaca]) -> Chart:
     """
     Chart:
         PeeweeTable<List> -> Domain
     """
-    if not bars_peewee_table:
+    if not bar_table_list:
         raise ValueError("bars_peewee_tableが空です。")
-    symbol = bars_peewee_table[0].symbol
-    timeframe = arrive_timeframe_from_table(bars_peewee_table[0])
-    adjustment = arrive_adjustment_from_table(bars_peewee_table[0])
-    bars = [arrive_bar_from_table(bar) for bar in bars_peewee_table]
+    symbol = bar_table_list[0].symbol
+    timeframe = arrive_timeframe_from_table(bar_table_list[0])
+    adjustment = arrive_adjustment_from_table(bar_table_list[0])
+    bars = [arrive_bar_from_table(bar_table) for bar_table in bar_table_list]
     return Chart(
         symbol=symbol,
         timeframe=timeframe,

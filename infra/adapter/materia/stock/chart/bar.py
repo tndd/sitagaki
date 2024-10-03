@@ -22,20 +22,20 @@ def arrive_bar_from_alpaca_api(bar_alpaca_api: BarAlpacaApi) -> Bar:
     )
 
 
-def arrive_bar_from_table(bar_peewee_table: TableBarAlpaca) -> Bar:
+def arrive_bar_from_table(bar_table: TableBarAlpaca) -> Bar:
     """
     Bar:
         PeeweeTable -> Domain
     """
     return Bar(
-        timestamp=bar_peewee_table.timestamp,
-        open=bar_peewee_table.open,
-        high=bar_peewee_table.high,
-        low=bar_peewee_table.low,
-        close=bar_peewee_table.close,
-        volume=bar_peewee_table.volume,
-        trade_count=bar_peewee_table.trade_count,
-        vwap=bar_peewee_table.vwap,
+        timestamp=bar_table.timestamp,
+        open=bar_table.open,
+        high=bar_table.high,
+        low=bar_table.low,
+        close=bar_table.close,
+        volume=bar_table.volume,
+        trade_count=bar_table.trade_count,
+        vwap=bar_table.vwap,
     )
 
 

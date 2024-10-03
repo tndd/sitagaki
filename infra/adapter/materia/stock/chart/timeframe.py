@@ -5,7 +5,7 @@ from domain.materia.stock.chart.model import Timeframe
 from infra.db.peewee.table.bar import TableBarAlpaca, TimeframeTable
 
 
-def arrive_timeframe_from_table(bar_peewee_table: TableBarAlpaca) -> Timeframe:
+def arrive_timeframe_from_table(bar_table: TableBarAlpaca) -> Timeframe:
     """
     PeeweeTable -> Timeframe
     """
@@ -16,7 +16,7 @@ def arrive_timeframe_from_table(bar_peewee_table: TableBarAlpaca) -> Timeframe:
         TimeframeTable.WEEK: Timeframe.WEEK,
         TimeframeTable.MONTH: Timeframe.MONTH,
     }
-    return mapping[bar_peewee_table.timeframe]
+    return mapping[bar_table.timeframe]
 
 
 def depart_timeframe_to_alpaca_api(timeframe: Timeframe) -> TimeFrameAlpaca:
