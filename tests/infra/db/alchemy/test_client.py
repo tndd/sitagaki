@@ -28,3 +28,23 @@ def test_insert_models(test_alchemy_cli):
     assert result[0].name == 'user1'
     assert result[1].name == 'user2'
     assert result[2].name == 'user3'
+
+
+def test_insert_models_performance(test_alchemy_cli):
+    """
+    挿入性能のテスト
+
+    bulk_createのスピード検証用。
+    調査の結果、個別にmodel.save()を呼び出す場合の２倍のスピードが出た。
+    """
+    # データを作成
+    N = 10000
+    models = [
+        TestModel(id=i, name=f'user{i}', email=f'user{i}@example.com') for i in range(N)
+    ]
+    # データ挿入
+    test_alchemy_cli.core_insert_models(models)
+    # assert True
+    # # データ取得
+    # retrieved_models = test_alchemy_cli.select_models(TestModel)
+    # assert len(retrieved_models) == N

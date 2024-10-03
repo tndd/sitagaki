@@ -19,8 +19,10 @@ class SQLAlchemyClient:
     def __init__(self, engine: Engine):
         self.engine: Engine = engine
         self.Session: sessionmaker = sessionmaker(
-            bind=engine,
-            expire_on_commit=False
+            autocommit=False,
+            autoflush=True,
+            expire_on_commit=False,
+            bind=engine
         )
 
     @contextmanager
@@ -48,8 +50,9 @@ class SQLAlchemyClient:
 
     # Core用メソッド
     def core_insert_models(self, models: List[DeclarativeBase]) -> None:
+        values = [m.to_params() for m in models]
         with self.session_scope() as session:
-            session.execute
+            session.execute(models[0].__table__.insert(), values)
 
 
     def execute_core_query(self, query: Union[Select, str], params: Optional[Dict[str, Any]] = None) -> List[Any]:
