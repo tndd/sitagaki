@@ -6,8 +6,8 @@ from infra.adapter.materia.stock.chart.adjustment import (
 )
 from infra.adapter.materia.stock.chart.bar import (
     arrive_bar_from_alpaca_api,
-    arrive_bar_from_peewee_table,
-    depart_bar_to_peewee_table,
+    arrive_bar_from_table,
+    depart_bar_to_table,
 )
 from infra.adapter.materia.stock.chart.timeframe import (
     arrive_timeframe_from_peewee_table,
@@ -45,7 +45,7 @@ def arrive_chart_from_peewee_table_list(bars_peewee_table: List[TableBarAlpaca])
     symbol = bars_peewee_table[0].symbol
     timeframe = arrive_timeframe_from_peewee_table(bars_peewee_table[0])
     adjustment = arrive_adjustment_from_peewee_table(bars_peewee_table[0])
-    bars = [arrive_bar_from_peewee_table(bar) for bar in bars_peewee_table]
+    bars = [arrive_bar_from_table(bar) for bar in bars_peewee_table]
     return Chart(
         symbol=symbol,
         timeframe=timeframe,
@@ -59,6 +59,6 @@ def depart_chart_to_peewee_table_list(chart: Chart) -> List[TableBarAlpaca]:
     Chart -> PeeweeTable<List>
     """
     return [
-        depart_bar_to_peewee_table(bar, chart.symbol, chart.timeframe, chart.adjustment)
+        depart_bar_to_table(bar, chart.symbol, chart.timeframe, chart.adjustment)
         for bar in chart.bars
     ]

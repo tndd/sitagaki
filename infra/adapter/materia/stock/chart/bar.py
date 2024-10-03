@@ -24,7 +24,7 @@ def arrive_bar_from_alpaca_api(bar_alpaca_api: BarAlpacaApi) -> Bar:
     )
 
 
-def arrive_bar_from_peewee_table(bar_peewee_table: TableBarAlpaca) -> Bar:
+def arrive_bar_from_table(bar_peewee_table: TableBarAlpaca) -> Bar:
     """
     Bar:
         PeeweeTable -> Domain
@@ -41,7 +41,7 @@ def arrive_bar_from_peewee_table(bar_peewee_table: TableBarAlpaca) -> Bar:
     )
 
 
-def depart_bar_to_peewee_table(
+def depart_bar_to_table(
         bar: Bar,
         symbol: str,
         timeframe: Timeframe,
