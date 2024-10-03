@@ -3,13 +3,19 @@ from datetime import datetime
 from typing import Optional
 
 from domain.materia.stock.chart.model import Adjustment, Chart, Timeframe
-from infra.adapter.materia.stock.chart.adjustment import depart_adjustment_to_alpaca_api
+from infra.adapter.materia.stock.chart.adjustment import (
+    depart_adjustment_to_alpaca_api,
+    depart_adjustment_to_peewee_table,
+)
 from infra.adapter.materia.stock.chart.chart import (
     arrive_chart_from_bar_alpaca_api_list,
     arrive_chart_from_peewee_table_list,
     depart_chart_to_peewee_table_list,
 )
-from infra.adapter.materia.stock.chart.timeframe import depart_timeframe_to_alpaca_api
+from infra.adapter.materia.stock.chart.timeframe import (
+    depart_timeframe_to_alpaca_api,
+    depart_timeframe_to_peewee_table,
+)
 from infra.api.alpaca.bar import get_bar_alpaca_api_list
 from infra.db.peewee.client import PeeweeClient
 from infra.db.peewee.query.materia.bar import get_query_select_bar_alpaca
@@ -68,10 +74,11 @@ class ChartRepository:
         デフォルトの取得範囲は2000-01-01~now。
         """
         # 取得に必要なqueryを作成
+        # FIXME: クエリ生成関数にドメインモデルを渡すな
         query = get_query_select_bar_alpaca(
             symbol=symbol,
-            timeframe=timeframe,
-            adjustment=adjustment,
+            timeframe=depart_timeframe_to_peewee_table(timeframe),
+            adjustment=depart_adjustment_to_peewee_table(adjustment),
             start=start,
             end=end
         )

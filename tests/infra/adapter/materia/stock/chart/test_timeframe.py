@@ -6,6 +6,7 @@ from infra.adapter.materia.stock.chart.timeframe import (
     depart_timeframe_to_alpaca_api,
     depart_timeframe_to_peewee_table,
 )
+from infra.db.peewee.table.bar import TimeframeTable
 from tests.utils.mock.infra.db.peewee.bar import generate_table_bar_alpaca
 
 
@@ -22,16 +23,26 @@ def test_arrive_timeframe_from_peewee_table():
 
 
 def test_depart_timeframe_to_alpaca_api():
-    assert isinstance(depart_timeframe_to_alpaca_api(Timeframe.MIN), TimeFrameAlpaca)
-    assert isinstance(depart_timeframe_to_alpaca_api(Timeframe.HOUR), TimeFrameAlpaca)
-    assert isinstance(depart_timeframe_to_alpaca_api(Timeframe.DAY), TimeFrameAlpaca)
-    assert isinstance(depart_timeframe_to_alpaca_api(Timeframe.WEEK), TimeFrameAlpaca)
-    assert isinstance(depart_timeframe_to_alpaca_api(Timeframe.MONTH), TimeFrameAlpaca)
+    # minute
+    assert depart_timeframe_to_alpaca_api(Timeframe.MIN).amount == TimeFrameAlpaca.Minute.amount
+    assert depart_timeframe_to_alpaca_api(Timeframe.MIN).unit == TimeFrameAlpaca.Minute.unit
+    # hour
+    assert depart_timeframe_to_alpaca_api(Timeframe.HOUR).amount == TimeFrameAlpaca.Hour.amount
+    assert depart_timeframe_to_alpaca_api(Timeframe.HOUR).unit == TimeFrameAlpaca.Hour.unit
+    # day
+    assert depart_timeframe_to_alpaca_api(Timeframe.DAY).amount == TimeFrameAlpaca.Day.amount
+    assert depart_timeframe_to_alpaca_api(Timeframe.DAY).unit == TimeFrameAlpaca.Day.unit
+    # week
+    assert depart_timeframe_to_alpaca_api(Timeframe.WEEK).amount == TimeFrameAlpaca.Week.amount
+    assert depart_timeframe_to_alpaca_api(Timeframe.WEEK).unit == TimeFrameAlpaca.Week.unit
+    # month
+    assert depart_timeframe_to_alpaca_api(Timeframe.MONTH).amount == TimeFrameAlpaca.Month.amount
+    assert depart_timeframe_to_alpaca_api(Timeframe.MONTH).unit == TimeFrameAlpaca.Month.unit
 
 
 def test_depart_timeframe_to_peewee_table():
-    assert depart_timeframe_to_peewee_table(Timeframe.MIN) == 1
-    assert depart_timeframe_to_peewee_table(Timeframe.HOUR) == 2
-    assert depart_timeframe_to_peewee_table(Timeframe.DAY) == 4
-    assert depart_timeframe_to_peewee_table(Timeframe.WEEK) == 8
-    assert depart_timeframe_to_peewee_table(Timeframe.MONTH) == 16
+    assert depart_timeframe_to_peewee_table(Timeframe.MIN) == TimeframeTable.MIN
+    assert depart_timeframe_to_peewee_table(Timeframe.HOUR) == TimeframeTable.HOUR
+    assert depart_timeframe_to_peewee_table(Timeframe.DAY) == TimeframeTable.DAY
+    assert depart_timeframe_to_peewee_table(Timeframe.WEEK) == TimeframeTable.WEEK
+    assert depart_timeframe_to_peewee_table(Timeframe.MONTH) == TimeframeTable.MONTH

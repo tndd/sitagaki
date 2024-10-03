@@ -2,7 +2,7 @@ from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 from alpaca.data.timeframe import TimeFrameUnit
 
 from domain.materia.stock.chart.model import Timeframe
-from infra.db.peewee.table.bar import TableBarAlpaca
+from infra.db.peewee.table.bar import TableBarAlpaca, TimeframeTable
 
 
 def arrive_timeframe_from_peewee_table(bar_peewee_table: TableBarAlpaca) -> Timeframe:
@@ -10,11 +10,11 @@ def arrive_timeframe_from_peewee_table(bar_peewee_table: TableBarAlpaca) -> Time
     PeeweeTable -> Timeframe
     """
     mapping = {
-        1: Timeframe.MIN,
-        2: Timeframe.HOUR,
-        4: Timeframe.DAY,
-        8: Timeframe.WEEK,
-        16: Timeframe.MONTH,
+        TimeframeTable.MIN: Timeframe.MIN,
+        TimeframeTable.HOUR: Timeframe.HOUR,
+        TimeframeTable.DAY: Timeframe.DAY,
+        TimeframeTable.WEEK: Timeframe.WEEK,
+        TimeframeTable.MONTH: Timeframe.MONTH,
     }
     return mapping[bar_peewee_table.timeframe]
 
@@ -40,7 +40,7 @@ def depart_timeframe_to_alpaca_api(timeframe: Timeframe) -> TimeFrameAlpaca:
     return timeframe_map[timeframe]
 
 
-def depart_timeframe_to_peewee_table(timeframe: Timeframe) -> int:
+def depart_timeframe_to_peewee_table(timeframe: Timeframe) -> TimeframeTable:
     """
     Timeframe:
         Domain -> PeeweeTable
@@ -48,11 +48,11 @@ def depart_timeframe_to_peewee_table(timeframe: Timeframe) -> int:
     注意: TableBarAlpacaの定義を参照する事。
     """
     mapping = {
-        Timeframe.MIN: 1,
-        Timeframe.HOUR: 2,
-        Timeframe.DAY: 4,
-        Timeframe.WEEK: 8,
-        Timeframe.MONTH: 16,
+        Timeframe.MIN: TimeframeTable.MIN,
+        Timeframe.HOUR: TimeframeTable.HOUR,
+        Timeframe.DAY: TimeframeTable.DAY,
+        Timeframe.WEEK: TimeframeTable.WEEK,
+        Timeframe.MONTH: TimeframeTable.MONTH,
     }
     if timeframe not in mapping:
         raise ValueError(

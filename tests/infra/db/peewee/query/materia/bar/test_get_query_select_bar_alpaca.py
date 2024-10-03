@@ -2,8 +2,8 @@ from datetime import datetime
 
 import pytest
 
-from domain.materia.stock.chart.model import Adjustment, Timeframe
 from infra.db.peewee.query.materia.bar import get_query_select_bar_alpaca
+from infra.db.peewee.table.bar import AdjustmentTable, TimeframeTable
 
 
 def test_default(
@@ -26,8 +26,8 @@ def test_default(
     """
     query = get_query_select_bar_alpaca(
         symbol="AAPL",
-        timeframe=Timeframe.DAY,
-        adjustment=Adjustment.RAW,
+        timeframe=TimeframeTable.DAY,
+        adjustment=AdjustmentTable.RAW,
         start=datetime(2000, 1, 1),
         end=datetime.now()
     )
@@ -59,8 +59,8 @@ def test_symbol_and_timeframe(
     """
     query = get_query_select_bar_alpaca(
         symbol="AAPL",
-        timeframe=Timeframe.DAY,
-        adjustment=Adjustment.RAW,
+        timeframe=TimeframeTable.DAY,
+        adjustment=AdjustmentTable.RAW,
         start=datetime(2020, 1, 2),
         end=datetime(2020, 1, 3)
     )
@@ -84,8 +84,8 @@ def test_invalid_start_end(
     with pytest.raises(ValueError):
         get_query_select_bar_alpaca(
             symbol="AAPL",
-            timeframe=Timeframe.DAY,
-            adjustment=Adjustment.RAW,
+            timeframe=TimeframeTable.DAY,
+            adjustment=AdjustmentTable.RAW,
             start=datetime(2020, 1, 3),  # endより新しい
             end=datetime(2020, 1, 2)     # startより古い
         )
