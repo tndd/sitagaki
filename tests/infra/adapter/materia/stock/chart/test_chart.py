@@ -1,8 +1,8 @@
 from domain.materia.stock.chart.model import Adjustment, Bar, Chart, Timeframe
 from infra.adapter.materia.stock.chart.chart import (
     arrive_chart_from_bar_alpaca_api_list,
-    arrive_chart_from_peewee_table_list,
-    depart_chart_to_peewee_table_list,
+    arrive_chart_from_table_list,
+    depart_chart_to_table_list,
 )
 from infra.db.peewee.table.bar import TableBarAlpaca
 from tests.utils.mock.domain.materia.stock.chart import generate_chart
@@ -23,22 +23,22 @@ def test_arrive_chart_from_bar_alpaca_api_list():
     assert isinstance(chart, Chart)
 
 
-def test_arrive_chart_from_peewee_table_list():
+def test_arrive_chart_from_table_list():
     """
     bar_peewee_table<List> => Bar<List>
     """
     bar_peewee_table_list = generate_table_bar_alpaca_list()
-    chart = arrive_chart_from_peewee_table_list(bar_peewee_table_list)
+    chart = arrive_chart_from_table_list(bar_peewee_table_list)
     assert isinstance(chart, Chart)
     assert all(isinstance(bar, Bar) for bar in chart.bars)
 
 
-def test_depart_chart_to_peewee_table_list():
+def test_depart_chart_to_table_list():
     """
     変換確認
         Chart -> PeeweeTable<List>
     """
     chart = generate_chart()
-    bar_list_table = depart_chart_to_peewee_table_list(chart)
+    bar_list_table = depart_chart_to_table_list(chart)
     assert isinstance(bar_list_table, list)
     assert all(isinstance(bar_table, TableBarAlpaca) for bar_table in bar_list_table)

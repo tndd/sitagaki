@@ -9,8 +9,8 @@ from infra.adapter.materia.stock.chart.adjustment import (
 )
 from infra.adapter.materia.stock.chart.chart import (
     arrive_chart_from_bar_alpaca_api_list,
-    arrive_chart_from_peewee_table_list,
-    depart_chart_to_peewee_table_list,
+    arrive_chart_from_table_list,
+    depart_chart_to_table_list,
 )
 from infra.adapter.materia.stock.chart.timeframe import (
     depart_timeframe_to_alpaca_api,
@@ -56,7 +56,7 @@ class ChartRepository:
             timeframe=timeframe
         )
         # adapt: => peewee_table
-        bar_peewee_table_list = depart_chart_to_peewee_table_list(chart)
+        bar_peewee_table_list = depart_chart_to_table_list(chart)
         # DBのモデルリストを保存
         self.cli_db.insert_models(bar_peewee_table_list)
 
@@ -105,7 +105,7 @@ class ChartRepository:
                 """
                 raise LookupError('Barの取得件数が0件')
             # 取得物をドメイン層のbarモデルのリストに変換して返す
-            return arrive_chart_from_peewee_table_list(bar_list_peewee_table)
+            return arrive_chart_from_table_list(bar_list_peewee_table)
         except LookupError as le:
             # LATER: error_logという同じ実装を排除したい
             error_log = {

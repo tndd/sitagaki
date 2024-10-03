@@ -33,7 +33,7 @@ def arrive_chart_from_bar_alpaca_api_list(
     )
 
 
-def arrive_chart_from_peewee_table_list(bars_peewee_table: List[TableBarAlpaca]) -> Chart:
+def arrive_chart_from_table_list(bars_peewee_table: List[TableBarAlpaca]) -> Chart:
     """
     Chart:
         PeeweeTable<List> -> Domain
@@ -52,7 +52,7 @@ def arrive_chart_from_peewee_table_list(bars_peewee_table: List[TableBarAlpaca])
     )
 
 
-def depart_chart_to_peewee_table_list(chart: Chart) -> List[TableBarAlpaca]:
+def depart_chart_to_table_list(chart: Chart) -> List[TableBarAlpaca]:
     """
     Chart -> PeeweeTable<List>
     """
