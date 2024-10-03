@@ -1,9 +1,7 @@
 from typing import List
 
 from domain.materia.stock.chart.model import Adjustment, Chart, Timeframe
-from infra.adapter.materia.stock.chart.adjustment import (
-    arrive_adjustment_from_peewee_table,
-)
+from infra.adapter.materia.stock.chart.adjustment import arrive_adjustment_from_table
 from infra.adapter.materia.stock.chart.bar import (
     arrive_bar_from_alpaca_api,
     arrive_bar_from_table,
@@ -44,7 +42,7 @@ def arrive_chart_from_peewee_table_list(bars_peewee_table: List[TableBarAlpaca])
         raise ValueError("bars_peewee_tableが空です。")
     symbol = bars_peewee_table[0].symbol
     timeframe = arrive_timeframe_from_peewee_table(bars_peewee_table[0])
-    adjustment = arrive_adjustment_from_peewee_table(bars_peewee_table[0])
+    adjustment = arrive_adjustment_from_table(bars_peewee_table[0])
     bars = [arrive_bar_from_table(bar) for bar in bars_peewee_table]
     return Chart(
         symbol=symbol,

@@ -5,7 +5,7 @@ from typing import Optional
 from domain.materia.stock.chart.model import Adjustment, Chart, Timeframe
 from infra.adapter.materia.stock.chart.adjustment import (
     depart_adjustment_to_alpaca_api,
-    depart_adjustment_to_peewee_table,
+    depart_adjustment_to_table,
 )
 from infra.adapter.materia.stock.chart.chart import (
     arrive_chart_from_bar_alpaca_api_list,
@@ -78,7 +78,7 @@ class ChartRepository:
         query = get_query_select_bar_alpaca(
             symbol=symbol,
             timeframe=depart_timeframe_to_peewee_table(timeframe),
-            adjustment=depart_adjustment_to_peewee_table(adjustment),
+            adjustment=depart_adjustment_to_table(adjustment),
             start=start,
             end=end
         )
