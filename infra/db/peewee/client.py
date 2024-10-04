@@ -51,14 +51,15 @@ def exec_query(query):
     """
     return query
 
-def truncate_tables(keyword: str):
+def cleanup_tables(keyword: str):
     """
     テーブルを空にする
     """
-    if keyword != 'TRUNCATE_TEST_TABLES':
+    if keyword != 'DELETE_ALL':
         raise ValueError("keywordが異なるため、truncate_tablesを実行できません。")
 
-    tables = _DB.get_tables()
     with _DB.atomic():
+        tables = _DB.get_tables()
+        # テーブルを削除
         for table in tables:
-            _DB.execute_sql(f"TRUNCATE TABLE {table}")
+            _DB.execute_sql(f"DROP TABLE IF EXISTS {table}")

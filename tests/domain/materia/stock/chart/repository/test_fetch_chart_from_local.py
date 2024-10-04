@@ -7,7 +7,7 @@ from domain.materia.stock.chart.repository import fetch_chart_from_local
 
 
 def test_default(
-    prepare_table_bar_alpaca_on_db
+    load_table_bar_alpaca_on_db
 ):
     """
     時間軸省略時の取得動作確認
@@ -31,7 +31,7 @@ def test_default(
 
 
 def test_date_range(
-    prepare_table_bar_alpaca_on_db
+    load_table_bar_alpaca_on_db
 ):
     """
     シンボルと時間軸による絞り込み
@@ -64,7 +64,7 @@ def test_date_range(
 
 
 def test_not_exist_symbol(
-    prepare_table_bar_alpaca_on_db
+    load_table_bar_alpaca_on_db
 ):
     """
     対象データが存在せず取得できない場合

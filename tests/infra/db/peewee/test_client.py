@@ -116,7 +116,6 @@ def test_practice_select_models():
         __SampleUser(username='isaac', email='user9@ccc.com'),
         __SampleUser(username='joseph', email='user10@ccc.com'),
     ]
-    peewee_cli = create_peewee_client()
     peewee_cli.insert_models(users)
     # 1. 単純な取得
     retrieved_users = __SampleUser.select()

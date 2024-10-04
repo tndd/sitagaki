@@ -10,12 +10,15 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 import pytest
 
+from tests.utils.fixture.clear import cleanup_for_test
+from tests.utils.fixture.load import load_table_bar_alpaca_on_db
+
 # テスト用fixture
-# from tests.utils.fixture.infra.api.alpaca.bar import (
-#     replace_with_mock_get_barset_alpaca_api,
-#     replace_with_mock_get_barset_alpaca_api_fail_empty_barset,
-# )
-# from tests.utils.fixture.infra.db.peewee.table.bar import prepare_table_bar_alpaca_on_db
+from tests.utils.fixture.patch import (
+    patch_with_mock_get_barset_alpaca_api,
+    patch_with_mock_get_barset_alpaca_api_fail_empty_barset,
+)
+
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_session():
@@ -24,4 +27,4 @@ def setup_session():
 
 @pytest.fixture(scope="function", autouse=True)
 def setup_function():
-    pass
+    cleanup_for_test()
