@@ -7,7 +7,7 @@ from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 from infra.api.alpaca.bar import get_bar_alpaca_api_list
 
 
-def test_default(replace_with_mock_get_barset_alpaca_api):
+def test_default(patch_with_mock_get_barset_alpaca_api):
     """
     通信部分をモックにした簡易テスト
     """
@@ -21,7 +21,7 @@ def test_default(replace_with_mock_get_barset_alpaca_api):
     assert all(isinstance(bar, Bar) for bar in bar_alpaca_api_list)
 
 
-def test_response_is_empty_barset(replace_with_mock_get_barset_alpaca_api_fail_empty_barset):
+def test_response_is_empty_barset(patch_with_mock_get_barset_alpaca_api_fail_empty_barset):
     """
     存在しない条件を入力し、apiから空のBarSetが帰ってきた際の振る舞いのテスト
     """
