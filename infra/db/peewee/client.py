@@ -1,6 +1,13 @@
 from typing import List
 
-from peewee import Database, DatabaseProxy, Model, chunked
+from peewee import (
+    Database,
+    DatabaseProxy,
+    Model,
+    MySQLDatabase,
+    SqliteDatabase,
+    chunked,
+)
 
 DB_PROXY = DatabaseProxy()
 
@@ -48,3 +55,9 @@ class PeeweeClient:
             このメソッドは完全に合理的でないわけではないか？
         """
         return query
+
+
+def create_peewee_client() -> PeeweeClient:
+    test_db_sqlite = SqliteDatabase(':memory:')
+    DB_PROXY.initialize(test_db_sqlite)
+    return PeeweeClient(test_db_sqlite)

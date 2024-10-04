@@ -1,7 +1,7 @@
 import pytest
 from peewee import MySQLDatabase, SqliteDatabase
 
-from infra.db.peewee.client import DB_PROXY, PeeweeClient
+from infra.db.peewee.client import DB_PROXY, PeeweeClient, create_peewee_client
 
 
 @pytest.fixture
@@ -29,10 +29,8 @@ def test_peewee_cli_mysql():
 
 @pytest.fixture
 def test_peewee_cli_sqlite():
-    test_db_sqlite = SqliteDatabase(':memory:')
-    DB_PROXY.initialize(test_db_sqlite)
-    yield PeeweeClient(test_db_sqlite)
-    test_db_sqlite.close()
+    cli = create_peewee_client()
+    yield cli
 
 
 def truncate_tables(db):

@@ -1,6 +1,6 @@
 from peewee import AutoField, CharField
 
-from infra.db.peewee.client import PeeweeTable
+from infra.db.peewee.client import PeeweeClient, PeeweeTable, create_peewee_client
 
 
 # テスト用モデル
@@ -8,6 +8,11 @@ class __SampleUser(PeeweeTable):
     id = AutoField(primary_key=True)
     username = CharField()
     email = CharField()
+
+
+def test_create_peewee_client():
+    cli = create_peewee_client()
+    assert isinstance(cli, PeeweeClient)
 
 
 def test_insert_models(test_peewee_cli):
