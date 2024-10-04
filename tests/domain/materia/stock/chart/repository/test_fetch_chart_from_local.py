@@ -6,9 +6,7 @@ from domain.materia.stock.chart.model import Adjustment, Chart, Timeframe
 from domain.materia.stock.chart.repository import fetch_chart_from_local
 
 
-def test_default(
-    load_table_bar_alpaca_on_db
-):
+def test_default(load_table_bar_alpaca_on_db):
     """
     時間軸省略時の取得動作確認
         デフォルト日付範囲については、全範囲を網羅できる2000-01-01~nowとしている。
@@ -30,9 +28,7 @@ def test_default(
     assert all(100 <= bar.volume <= 102 for bar in chart.bars)
 
 
-def test_date_range(
-    load_table_bar_alpaca_on_db
-):
+def test_date_range(load_table_bar_alpaca_on_db):
     """
     シンボルと時間軸による絞り込み
 
@@ -63,9 +59,7 @@ def test_date_range(
     assert not any(bar.volume == 100 for bar in chart.bars)
 
 
-def test_not_exist_symbol(
-    load_table_bar_alpaca_on_db
-):
+def test_not_exist_symbol(load_table_bar_alpaca_on_db):
     """
     対象データが存在せず取得できない場合
 

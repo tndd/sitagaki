@@ -4,7 +4,6 @@ from domain.materia.stock.chart.model import Adjustment, Timeframe
 from domain.materia.stock.chart.repository import store_chart_from_online
 from infra.adapter.materia.stock.chart.adjustment import arrive_adjustment_from_table
 from infra.adapter.materia.stock.chart.timeframe import arrive_timeframe_from_table
-from infra.db.peewee.client import create_peewee_client
 from infra.db.peewee.table.bar import TableBarAlpaca
 
 
@@ -14,7 +13,7 @@ from infra.db.peewee.table.bar import TableBarAlpaca
 def test_all_combinations(
         timeframe,
         adjustment,
-        replace_with_mock_get_barset_alpaca_api
+        patch_with_mock_get_barset_alpaca_api
 ):
     """
     TimeframeとAdjustmentすべての組み合わせによる情報取得テスト

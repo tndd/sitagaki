@@ -1,8 +1,11 @@
+import pytest
+
 import infra.db.peewee.client as peewee_cli
 from infra.db.peewee.table.bar import TableBarAlpaca
 from tests.utils.mock.infra.db.peewee.bar import generate_table_bar_alpaca_list
 
 
+@pytest.fixture
 def load_table_bar_alpaca_on_db():
     """
     BarデータをDBに登録する。
