@@ -3,7 +3,7 @@ from enum import Enum
 from peewee import CharField, CompositeKey, DateTimeField, FloatField
 from peewee_enum_field import EnumField
 
-from infra.db.peewee.table.base import PeeweeTable
+from infra.db.peewee.client import PeeweeTable
 
 
 class TimeframeTable(Enum):

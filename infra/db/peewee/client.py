@@ -2,8 +2,14 @@ from typing import List
 
 from peewee import Model, SqliteDatabase, chunked
 
-db = SqliteDatabase(':memory:')
-db.connect()
+# DB接続
+DB = SqliteDatabase(':memory:')
+DB.connect()
+
+# テーブル基底クラス
+class PeeweeTable(Model):
+    class Meta:
+        database = DB
 
 
 def insert_models(
@@ -20,10 +26,10 @@ def insert_models(
     TModel = type(models[0])
     # テーブルが存在しない場合にテーブルを作成
     if not TModel.table_exists():
-        db.create_tables([TModel])
+        DB.create_tables([TModel])
     # モデルをデータベースに挿入
     data = [model.__data__ for model in models]
-    with db.atomic():
+    with DB.atomic():
         for batch in chunked(data, batch_size):
             TModel.replace_many(batch).execute()
 
@@ -46,7 +52,7 @@ def truncate_tables(keyword: str):
     if keyword != 'TRUNCATE_TEST_TABLES':
         raise ValueError("keywordが異なるため、truncate_tablesを実行できません。")
 
-    tables = db.get_tables()
-    with db.atomic():
+    tables = DB.get_tables()
+    with DB.atomic():
         for table in tables:
-            db.execute_sql(f"TRUNCATE TABLE {table}")
+            DB.execute_sql(f"TRUNCATE TABLE {table}")
