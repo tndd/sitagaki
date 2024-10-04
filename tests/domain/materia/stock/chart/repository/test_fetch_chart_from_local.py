@@ -3,11 +3,11 @@ from datetime import datetime
 import pytest
 
 from domain.materia.stock.chart.model import Adjustment, Chart, Timeframe
+from domain.materia.stock.chart.repository import fetch_chart_from_local
 
 
 def test_default(
-        test_chart_repo_mocked_with_alpaca_api,
-        prepare_table_bar_alpaca_on_db
+    prepare_table_bar_alpaca_on_db
 ):
     """
     時間軸省略時の取得動作確認
@@ -17,7 +17,7 @@ def test_default(
         1. 取得件数は３件
         2. AAPL_L3_DAY_RAWのデータが取得されているか（volume=100,101,102）
     """
-    chart = test_chart_repo_mocked_with_alpaca_api.fetch_chart_from_local(
+    chart = fetch_chart_from_local(
         symbol="AAPL",
         timeframe=Timeframe.DAY,
         adjustment=Adjustment.RAW
@@ -31,8 +31,7 @@ def test_default(
 
 
 def test_date_range(
-        test_chart_repo_mocked_with_alpaca_api,
-        prepare_table_bar_alpaca_on_db
+    prepare_table_bar_alpaca_on_db
 ):
     """
     シンボルと時間軸による絞り込み
@@ -47,7 +46,7 @@ def test_date_range(
         2. 日付が2020-01-02から2020-01-03の間のbarのみ取得
         3. volume=100のAAPL_L3_DAY_RAWのデータがスキップされているか
     """
-    chart = test_chart_repo_mocked_with_alpaca_api.fetch_chart_from_local(
+    chart = fetch_chart_from_local(
         symbol="AAPL",
         timeframe=Timeframe.DAY,
         adjustment=Adjustment.RAW,
@@ -65,8 +64,7 @@ def test_date_range(
 
 
 def test_not_exist_symbol(
-        test_chart_repo_mocked_with_alpaca_api,
-        prepare_table_bar_alpaca_on_db
+    prepare_table_bar_alpaca_on_db
 ):
     """
     対象データが存在せず取得できない場合
@@ -85,7 +83,7 @@ def test_not_exist_symbol(
     """
     # まずエラーが発生することを確認
     with pytest.raises(Exception) as excinfo:
-        chart = test_chart_repo_mocked_with_alpaca_api.fetch_chart_from_local(
+        fetch_chart_from_local(
             symbol="NOSYMBOL",
             timeframe=Timeframe.DAY,
             adjustment=Adjustment.RAW,
