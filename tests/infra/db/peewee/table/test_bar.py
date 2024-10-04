@@ -1,4 +1,4 @@
-from infra.db.peewee.client import create_peewee_client
+import infra.db.peewee.client as peewee_cli
 from infra.db.peewee.table.bar import AdjustmentTable, TableBarAlpaca, TimeframeTable
 from tests.utils.mock.infra.db.peewee.bar import (
     generate_table_bar_alpaca,
@@ -19,7 +19,6 @@ def test_table_bar_alpaca_is_created():
     # 投入用のTableBarAlpacaを作成
     table_bar_alpaca = generate_table_bar_alpaca()
     # テーブルに投入
-    peewee_cli = create_peewee_client()
     peewee_cli.insert_models([table_bar_alpaca])
     # テーブルの存在確認
     assert TableBarAlpaca.table_exists()
@@ -38,7 +37,6 @@ def test_table_bar_alpaca_list():
     # 投入用のTableBarAlpacaを作成
     table_bar_alpaca_list = generate_table_bar_alpaca_list()
     # テーブルに投入
-    peewee_cli = create_peewee_client()
     peewee_cli.insert_models(table_bar_alpaca_list)
     # 1. データが投入されたことを確認
     assert len(TableBarAlpaca.select()) == len(table_bar_alpaca_list)

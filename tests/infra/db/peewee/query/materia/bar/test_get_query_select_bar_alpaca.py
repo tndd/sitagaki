@@ -2,10 +2,10 @@ from datetime import datetime
 
 import pytest
 
-from infra.db.peewee.client import create_peewee_client
+import infra.db.peewee.client as peewee_cli
 from infra.db.peewee.query.materia.bar import get_query_select_bar_alpaca
 from infra.db.peewee.table.bar import AdjustmentTable, TimeframeTable
-from tests.utils.fixture.infra.db.peewee.table.bar import generate_table_bar_alpaca_list
+from tests.utils.mock.infra.db.peewee.bar import generate_table_bar_alpaca_list
 
 
 def test_default():
@@ -24,7 +24,6 @@ def test_default():
         2. シンボルが"AAPL"のbarのみ取得
     """
     # データ用意
-    peewee_cli = create_peewee_client()
     table_bar_alpaca_list = generate_table_bar_alpaca_list()
     peewee_cli.insert_models(table_bar_alpaca_list)
     # データ取得
@@ -59,7 +58,6 @@ def test_symbol_and_timeframe():
         3. 日付が2020-01-02から2020-01-03の間のbarのみ取得
     """
     # データ用意
-    peewee_cli = create_peewee_client()
     table_bar_alpaca_list = generate_table_bar_alpaca_list()
     peewee_cli.insert_models(table_bar_alpaca_list)
     # データ取得
@@ -85,7 +83,6 @@ def test_invalid_start_end():
     ValueErrorが発生することを確認する。
     """
     # データ用意
-    peewee_cli = create_peewee_client()
     table_bar_alpaca_list = generate_table_bar_alpaca_list()
     peewee_cli.insert_models(table_bar_alpaca_list)
     # データ取得
