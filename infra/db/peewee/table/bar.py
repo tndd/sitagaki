@@ -52,5 +52,5 @@ class TableBarAlpaca(PeeweeTable):
     vwap = FloatField(null=True)
 
     class Meta:
-        table_name = "bar_alpaca"
+        table_name = "alpaca_bar"
         primary_key = CompositeKey('timestamp', 'symbol', 'timeframe', 'adjustment')

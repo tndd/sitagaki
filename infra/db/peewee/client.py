@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import List
 
 from peewee import (
@@ -55,6 +56,18 @@ class PeeweeClient:
             このメソッドは完全に合理的でないわけではないか？
         """
         return query
+
+    def truncate_tables(self, keyword: str):
+        """
+        テーブルを空にする
+        """
+        if keyword != 'TRUNCATE_TEST_TABLES':
+            raise ValueError("keywordが異なるため、truncate_tablesを実行できません。")
+
+        tables = self.db.get_tables()
+        with self.db.atomic():
+            for table in tables:
+                self.db.execute_sql(f"TRUNCATE TABLE {table}")
 
 
 def create_peewee_client() -> PeeweeClient:
