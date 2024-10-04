@@ -21,9 +21,25 @@ from tests.utils.fixture.patch import (
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_session():
+    """
+    データベースの初期化
+        セッション開始時はデータベースが初期化された状態にする。
+    """
+    """
+    全通信部分をモック化
+        通信機能が実装されている箇所のみパッチを打ち消す形で、
+        部分的にオンラインテストを実行する形式とする。
+    """
     pass
 
 
 @pytest.fixture(scope="function", autouse=True)
 def setup_function():
+    """
+    各テスト開始時に実行されるfixture
+
+    データベースの初期化
+        各関数開始時にもデータベースは完全に初期化する。
+    """
     cleanup_for_test()
+    yield
