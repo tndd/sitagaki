@@ -12,5 +12,3 @@ def prepare_table_bar_alpaca_on_db():
     table_bar_alpaca_list = generate_table_bar_alpaca_list()
     peewee_cli = create_peewee_client()
     peewee_cli.insert_models(table_bar_alpaca_list)
-    yield
-    # 事後処理
