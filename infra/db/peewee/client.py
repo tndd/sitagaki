@@ -61,5 +61,6 @@ def cleanup_tables(keyword: str):
     with _DB.atomic():
         tables = _DB.get_tables()
         # テーブルを削除
+        # LATER: テーブル依存関係によっては失敗するので修正
         for table in tables:
             _DB.execute_sql(f"DROP TABLE IF EXISTS {table}")
