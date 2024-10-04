@@ -5,11 +5,5 @@ def cleanup_for_test():
     """
     テスト用にテーブルをまっさらにする。
     """
-    cleanup_on_db()
-
-
-def cleanup_on_db():
-    """
-    DBのデータを削除する。
-    """
+    # DBの初期化
     peewee_cli.cleanup_tables('DELETE_ALL')
