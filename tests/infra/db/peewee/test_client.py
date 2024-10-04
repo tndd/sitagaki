@@ -1,6 +1,7 @@
 from peewee import AutoField, CharField
 
-from infra.db.peewee.client import PeeweeClient, PeeweeTable, create_peewee_client
+import infra.db.peewee.client as peewee_cli
+from infra.db.peewee.client import PeeweeTable
 
 
 # テスト用モデル
@@ -8,11 +9,6 @@ class __SampleUser(PeeweeTable):
     id = AutoField(primary_key=True)
     username = CharField()
     email = CharField()
-
-
-def test_create_peewee_client():
-    cli = create_peewee_client()
-    assert isinstance(cli, PeeweeClient)
 
 
 def test_insert_models():
@@ -25,7 +21,6 @@ def test_insert_models():
         __SampleUser(username='user2', email='user2@example.com'),
         __SampleUser(username='user3', email='user3@example.com')
     ]
-    peewee_cli = create_peewee_client()
     # ユーザーデータ挿入
     peewee_cli.insert_models(users)
     # 挿入されたユーザーを取得
@@ -57,7 +52,6 @@ def test_insert_models_multiple():
         __SampleUser(username='user2', email='user2@example.com'),
         __SampleUser(username='user3', email='user3@example.com')
     ]
-    peewee_cli = create_peewee_client()
     # 1回目の投入
     peewee_cli.insert_models(users)
     retrieved_users = __SampleUser.select()
@@ -83,7 +77,6 @@ def test_insert_models_performance():
     users = [
         __SampleUser(username=f'user{i}', email=f'user{i}@example.com') for i in range(N)
     ]
-    peewee_cli = create_peewee_client()
     # データ挿入
     peewee_cli.insert_models(users)
     # データ取得
@@ -180,7 +173,6 @@ def test_insert_duplicate_key():
         __SampleUser(id=1, username='user1', email='user1@example.com'),
         __SampleUser(id=2, username='user2', email='user2@example.com'),
     ]
-    peewee_cli = create_peewee_client()
     peewee_cli.insert_models(users)
     assert len(__SampleUser.select()) == 2
     assert __SampleUser.select().where(__SampleUser.id == 1).get().username == 'user1'
