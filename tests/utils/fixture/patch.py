@@ -2,7 +2,7 @@ import pytest
 from alpaca.data.models import BarSet
 
 import infra.api.alpaca.bar
-from tests.utils.mock.infra.api.alpaca.bar import generate_barset_alpaca
+from tests.utils.generate.infra.api.alpaca.bar import generate_barset_alpaca
 
 MODULE_PATH_GET_BARSET_ALPACA_API = 'infra.api.alpaca.bar.get_barset_alpaca_api'
 

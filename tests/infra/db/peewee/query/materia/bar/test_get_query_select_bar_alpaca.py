@@ -5,7 +5,7 @@ import pytest
 import infra.db.peewee.client as peewee_cli
 from infra.db.peewee.query.materia.bar import get_query_select_bar_alpaca
 from infra.db.peewee.table.bar import AdjustmentTable, TimeframeTable
-from tests.utils.mock.infra.db.peewee.bar import generate_table_bar_alpaca_list
+from tests.utils.generate.infra.db.peewee.bar import generate_table_bar_alpaca_list
 
 
 def test_default():
