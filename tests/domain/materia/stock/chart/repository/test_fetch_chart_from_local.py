@@ -13,6 +13,7 @@ def _load_table_bar_alpaca_on_db():
     """
     BarデータをDBに登録する。
     """
+    # TODO: データ作成関数の分離の検討
     table_bar_alpaca_list = generate_table_bar_alpaca_list()
     peewee_cli.insert_models(table_bar_alpaca_list)
 
