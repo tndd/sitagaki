@@ -41,6 +41,8 @@ def setup_function():
 
     データベースの初期化
         各関数開始時にもデータベースは完全に初期化する。
+
+    # TODO: onlineマーカーの際にはモックを無効化する処理追加
     """
     cleanup_for_test()
     yield
