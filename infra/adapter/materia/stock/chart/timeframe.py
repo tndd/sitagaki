@@ -2,7 +2,7 @@ from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 from alpaca.data.timeframe import TimeFrameUnit
 
 from domain.materia.stock.chart.model import Timeframe
-from infra.db.peewee.table.bar import TableBarAlpaca, TimeframeTable
+from infra.db.peewee.table.alpaca.bar import TableBarAlpaca, TimeframeTable
 
 
 def arrive_timeframe_from_table(bar_table: TableBarAlpaca) -> Timeframe:

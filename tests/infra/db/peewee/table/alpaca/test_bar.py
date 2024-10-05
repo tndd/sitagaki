@@ -1,5 +1,5 @@
 import infra.db.peewee.client as peewee_cli
-from infra.db.peewee.table.bar import AdjustmentTable, TableBarAlpaca, TimeframeTable
+from infra.db.peewee.table.alpaca.bar import AdjustmentTable, TableBarAlpaca, TimeframeTable
 from tests.utils.generate.infra.db.peewee.bar import (
     generate_table_bar_alpaca,
     generate_table_bar_alpaca_list,

@@ -1,7 +1,7 @@
 from alpaca.data.requests import Adjustment as AdjustmentAlpaca
 
 from domain.materia.stock.chart.model import Adjustment
-from infra.db.peewee.table.bar import AdjustmentTable, TableBarAlpaca
+from infra.db.peewee.table.alpaca.bar import AdjustmentTable, TableBarAlpaca
 
 
 def arrive_adjustment_from_table(bar_table: TableBarAlpaca) -> Adjustment:

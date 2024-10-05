@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from infra.db.peewee.table.bar import AdjustmentTable, TableBarAlpaca, TimeframeTable
+from infra.db.peewee.table.alpaca.bar import AdjustmentTable, TableBarAlpaca, TimeframeTable
 
 
 def generate_table_bar_alpaca() -> TableBarAlpaca:

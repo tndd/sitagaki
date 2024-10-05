@@ -4,7 +4,7 @@ from infra.adapter.materia.stock.chart.chart import (
     arrive_chart_from_table_list,
     depart_chart_to_table_list,
 )
-from infra.db.peewee.table.bar import TableBarAlpaca
+from infra.db.peewee.table.alpaca.bar import TableBarAlpaca
 from tests.utils.generate.domain.materia.stock.chart import generate_chart
 from tests.utils.generate.infra.api.alpaca.bar import generate_bar_alpaca_list
 from tests.utils.generate.infra.db.peewee.bar import generate_table_bar_alpaca_list

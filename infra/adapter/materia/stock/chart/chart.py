@@ -9,7 +9,7 @@ from infra.adapter.materia.stock.chart.bar import (
 )
 from infra.adapter.materia.stock.chart.timeframe import arrive_timeframe_from_table
 from infra.api.alpaca.bar import Bar as BarAlpacaApi
-from infra.db.peewee.table.bar import TableBarAlpaca
+from infra.db.peewee.table.alpaca.bar import TableBarAlpaca
 
 
 def arrive_chart_from_bar_alpaca_api_list(
