@@ -67,7 +67,6 @@ def fetch_chart_from_local(
     デフォルトの取得範囲は2000-01-01~now。
     """
     # 取得に必要なqueryを作成
-    # FIXME: クエリ生成関数にドメインモデルを渡すな
     query = get_query_select_bar_alpaca(
         symbol=symbol,
         timeframe=depart_timeframe_to_table(timeframe),
