@@ -20,7 +20,6 @@ def test_all_combinations(
     LATER: alpaca_apiの通信部分のモックの戻り値
         もう少し引数に応じて結果変わるように、実際の動作っぽい動きにしたい。
     """
-    # TODO: もっと良い方法がある
     store_chart_from_online(
         symbol="AAPL",
         timeframe=timeframe,
