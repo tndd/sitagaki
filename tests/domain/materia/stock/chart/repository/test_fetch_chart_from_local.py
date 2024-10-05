@@ -9,7 +9,7 @@ from infra.db.peewee.table.alpaca.bar import TableBarAlpaca
 from tests.utils.generate.infra.db.peewee.bar import generate_table_bar_alpaca_list
 
 
-def load_table_bar_alpaca_on_db():
+def _load_table_bar_alpaca_on_db():
     """
     BarデータをDBに登録する。
     """
@@ -21,7 +21,7 @@ def test_load_table_bar_alpaca_on_db():
     """
     テスト用関数load_table_bar_alpaca_on_db()の動作確認
     """
-    load_table_bar_alpaca_on_db()
+    _load_table_bar_alpaca_on_db()
     result = TableBarAlpaca.select()
     # ファクトリのBar本数は10本
     assert len(result) == 10
@@ -38,7 +38,7 @@ def test_default():
         2. AAPL_L3_DAY_RAWのデータが取得されているか（volume=100,101,102）
     """
     # テストデータをDBに登録
-    load_table_bar_alpaca_on_db()
+    _load_table_bar_alpaca_on_db()
     # 取得
     chart = fetch_chart_from_local(
         symbol="AAPL",
@@ -68,7 +68,7 @@ def test_date_range():
         3. volume=100のAAPL_L3_DAY_RAWのデータがスキップされているか
     """
     # テストデータをDBに登録
-    load_table_bar_alpaca_on_db()
+    _load_table_bar_alpaca_on_db()
     # 取得
     chart = fetch_chart_from_local(
         symbol="AAPL",
@@ -107,7 +107,7 @@ def test_not_exist_symbol():
         そのため検索結果が見つからないことを表すLookupErrorを返す。
     """
     # テストデータをDBに登録
-    load_table_bar_alpaca_on_db()
+    _load_table_bar_alpaca_on_db()
     # まずエラーが発生することを確認
     with pytest.raises(Exception) as excinfo:
         fetch_chart_from_local(
