@@ -13,7 +13,7 @@ import pytest
 import infra.db.peewee.client as peewee_cli
 
 # テスト用fixture
-from tests.utils.fixture.infra.api.alpaca.bar import (
+from tests.utils.fixture.api.alpaca.bar import (
     fx_replace_with_mock_get_barset_alpaca_api_fail_empty_barset,
     patch_with_mock_get_barset_alpaca_api,
 )
