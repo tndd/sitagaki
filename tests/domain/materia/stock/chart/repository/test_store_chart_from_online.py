@@ -13,7 +13,6 @@ from infra.db.peewee.table.bar import TableBarAlpaca
 def test_all_combinations(
         timeframe,
         adjustment,
-        patch_with_mock_get_barset_alpaca_api
 ):
     """
     TimeframeとAdjustmentすべての組み合わせによる情報取得テスト

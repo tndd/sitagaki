@@ -20,7 +20,7 @@ from tests.utils.fixture.patch import (
 
 
 @pytest.fixture(scope="session", autouse=True)
-def setup_session():
+def setup_session(session_mocker):
     """
     データベースの初期化
         セッション開始時はデータベースが初期化された状態にする。
@@ -30,7 +30,8 @@ def setup_session():
         通信機能が実装されている箇所のみパッチを打ち消す形で、
         部分的にオンラインテストを実行する形式とする。
     """
-    pass
+    patch_with_mock_get_barset_alpaca_api(session_mocker)
+    yield
 
 
 @pytest.fixture(scope="function", autouse=True)
