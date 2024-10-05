@@ -17,7 +17,7 @@ from infra.adapter.materia.stock.chart.timeframe import (
     depart_timeframe_to_table,
 )
 from infra.api.alpaca.bar import get_bar_alpaca_api_list
-from infra.db.peewee.query.materia.stock.bar import get_query_select_bar_alpaca
+from infra.db.peewee.query.materia.stock.chart import get_query_select_bar_alpaca
 
 
 def store_chart_from_online(
