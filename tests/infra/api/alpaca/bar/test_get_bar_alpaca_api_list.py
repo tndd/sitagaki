@@ -7,7 +7,7 @@ from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 from infra.api.alpaca.bar import get_bar_alpaca_api_list
 
 
-def test_default(patch_with_mock_get_barset_alpaca_api):
+def test_default():
     """
     通信部分をモックにした簡易テスト
     """
