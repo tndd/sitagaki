@@ -8,6 +8,8 @@ load_dotenv()
 # プロジェクトルートへのパス通し
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
+import socket
+
 import pytest
 
 import infra.db.peewee.client as peewee_cli
@@ -46,3 +48,21 @@ def setup_function():
     """
     peewee_cli.cleanup_tables('DELETE_ALL')
     yield
+
+
+@pytest.fixture
+def airplane_mode():
+    """
+    # TODO: まだ正常に機能してない
+
+    このフィクスチャを適応したテストの通信は、
+    強制的に遮断状態となる。
+    """
+    original_socket = socket.socket
+    def blocked_socket(*args, **kwargs):
+        raise OSError("通信は遮断されています（機内モード発動中）")
+    socket.socket = blocked_socket
+    try:
+        yield
+    finally:
+        socket.socket = original_socket
