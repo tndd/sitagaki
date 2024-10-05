@@ -20,6 +20,13 @@ from tests.utils.patch.api.alpaca.bar import (
     patch_with_mock_get_barset_alpaca_api,
 )
 
+"""
+FIXME: monkeypatchに切り替え
+    mockerでは想定される動作を実現できていない。
+    パッチ化したはずの関数が一部でパッチ化されていない現象が発生している。
+    パッチ化した関数を直接呼び出した際に問題が起こるようだ。
+"""
+
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_session(session_mocker):
