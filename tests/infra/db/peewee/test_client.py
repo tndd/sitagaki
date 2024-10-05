@@ -1,6 +1,7 @@
 from peewee import AutoField, CharField
 
-from infra.db.peewee.client import PeeweeClient, PeeweeTable, create_peewee_client
+import infra.db.peewee.client as peewee_cli
+from infra.db.peewee.client import PeeweeTable
 
 
 # テスト用モデル
@@ -10,12 +11,7 @@ class __SampleUser(PeeweeTable):
     email = CharField()
 
 
-def test_create_peewee_client():
-    cli = create_peewee_client()
-    assert isinstance(cli, PeeweeClient)
-
-
-def test_insert_models(test_peewee_cli):
+def test_insert_models():
     """
     ３件のデータを投入し、その内容を確認する。
     """
@@ -26,7 +22,7 @@ def test_insert_models(test_peewee_cli):
         __SampleUser(username='user3', email='user3@example.com')
     ]
     # ユーザーデータ挿入
-    test_peewee_cli.insert_models(users)
+    peewee_cli.insert_models(users)
     # 挿入されたユーザーを取得
     retrieved_users = __SampleUser.select()
     # 取得したユーザーを検証
@@ -39,7 +35,7 @@ def test_insert_models(test_peewee_cli):
     assert retrieved_users[2].email == 'user3@example.com'
 
 
-def test_insert_models_multiple(test_peewee_cli):
+def test_insert_models_multiple():
     """
     複数回にわたって挿入する場合のテスト
 
@@ -57,11 +53,11 @@ def test_insert_models_multiple(test_peewee_cli):
         __SampleUser(username='user3', email='user3@example.com')
     ]
     # 1回目の投入
-    test_peewee_cli.insert_models(users)
+    peewee_cli.insert_models(users)
     retrieved_users = __SampleUser.select()
     assert len(retrieved_users) == 3
     # 2回目の投入
-    test_peewee_cli.insert_models(users)
+    peewee_cli.insert_models(users)
     retrieved_users = __SampleUser.select()
     assert len(retrieved_users) == 6
     # さらにテーブル内容を確認する
@@ -69,7 +65,7 @@ def test_insert_models_multiple(test_peewee_cli):
     assert len(retrieved_users) == 2
 
 
-def test_insert_models_performance(test_peewee_cli):
+def test_insert_models_performance():
     """
     挿入性能のテスト
 
@@ -82,13 +78,13 @@ def test_insert_models_performance(test_peewee_cli):
         __SampleUser(username=f'user{i}', email=f'user{i}@example.com') for i in range(N)
     ]
     # データ挿入
-    test_peewee_cli.insert_models(users)
+    peewee_cli.insert_models(users)
     # データ取得
     retrieved_users = __SampleUser.select()
     assert len(retrieved_users) == N
 
 
-def test_practice_select_models(test_peewee_cli):
+def test_practice_select_models():
     """
     データ取得のテスト
 
@@ -120,7 +116,7 @@ def test_practice_select_models(test_peewee_cli):
         __SampleUser(username='isaac', email='user9@ccc.com'),
         __SampleUser(username='joseph', email='user10@ccc.com'),
     ]
-    test_peewee_cli.insert_models(users)
+    peewee_cli.insert_models(users)
     # 1. 単純な取得
     retrieved_users = __SampleUser.select()
     assert len(retrieved_users) == 10
@@ -165,7 +161,7 @@ def test_practice_select_models(test_peewee_cli):
     assert set(['joseph', 'astar', 'casper']) == set(u.username for u in retrieved_users)
 
 
-def test_insert_duplicate_key(test_peewee_cli):
+def test_insert_duplicate_key():
     """
     重複したキーを挿入した場合のテスト
 
@@ -176,7 +172,7 @@ def test_insert_duplicate_key(test_peewee_cli):
         __SampleUser(id=1, username='user1', email='user1@example.com'),
         __SampleUser(id=2, username='user2', email='user2@example.com'),
     ]
-    test_peewee_cli.insert_models(users)
+    peewee_cli.insert_models(users)
     assert len(__SampleUser.select()) == 2
     assert __SampleUser.select().where(__SampleUser.id == 1).get().username == 'user1'
     assert __SampleUser.select().where(__SampleUser.id == 2).get().username == 'user2'
@@ -185,7 +181,7 @@ def test_insert_duplicate_key(test_peewee_cli):
         __SampleUser(id=1, username='user11', email='user11@example.com'),
         __SampleUser(id=2, username='user22', email='user22@example.com'),
     ]
-    test_peewee_cli.insert_models(users)
+    peewee_cli.insert_models(users)
     # 上書きされるが故に４件ではなく２件のみ
     assert len(__SampleUser.select()) == 2
     # 内容は上書きされていること

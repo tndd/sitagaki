@@ -1,13 +1,12 @@
 from dataclasses import dataclass
 
+import infra.db.peewee.client as peewee_cli
 from domain.materia.stock.ticker.model import Sector, Ticker
 from infra.api.alpaca.trade import get_assets
-from infra.db.peewee.client import PeeweeClient
 
 
 @dataclass
 class TickerRepository:
-    cli_db: PeeweeClient
 
     def pull_tickers_from_online(self) -> None:
         """

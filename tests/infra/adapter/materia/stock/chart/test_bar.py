@@ -4,10 +4,10 @@ from infra.adapter.materia.stock.chart.bar import (
     arrive_bar_from_table,
     depart_bar_to_table,
 )
-from infra.db.peewee.table.bar import TableBarAlpaca
-from tests.utils.mock.domain.materia.stock.chart import generate_bar
-from tests.utils.mock.infra.api.alpaca.bar import generate_bar_alpaca
-from tests.utils.mock.infra.db.peewee.bar import generate_table_bar_alpaca
+from infra.db.peewee.table.alpaca.bar import TableBarAlpaca
+from tests.utils.generate.domain.materia.stock.chart import generate_bar
+from tests.utils.generate.infra.api.alpaca.bar import generate_bar_alpaca
+from tests.utils.generate.infra.db.peewee.bar import generate_table_bar_alpaca
 
 
 def test_arrive_bar_from_alpaca_api():

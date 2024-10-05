@@ -2,14 +2,13 @@ from datetime import datetime
 
 import pytest
 
-from infra.db.peewee.query.materia.bar import get_query_select_bar_alpaca
-from infra.db.peewee.table.bar import AdjustmentTable, TimeframeTable
+import infra.db.peewee.client as peewee_cli
+from infra.db.peewee.query.materia.stock.chart import get_query_select_bar_alpaca
+from infra.db.peewee.table.alpaca.bar import AdjustmentTable, TimeframeTable
+from tests.utils.generate.infra.db.peewee.bar import generate_table_bar_alpaca_list
 
 
-def test_default(
-        test_peewee_cli,
-        prepare_table_bar_alpaca_on_db
-):
+def test_default():
     """
     シンボルのみによる絞り込み
 
@@ -24,6 +23,10 @@ def test_default(
             "AAPL_L3_DAY_RAW"の内容が取得される。
         2. シンボルが"AAPL"のbarのみ取得
     """
+    # データ用意
+    table_bar_alpaca_list = generate_table_bar_alpaca_list()
+    peewee_cli.insert_models(table_bar_alpaca_list)
+    # データ取得
     query = get_query_select_bar_alpaca(
         symbol="AAPL",
         timeframe=TimeframeTable.DAY,
@@ -31,17 +34,14 @@ def test_default(
         start=datetime(2000, 1, 1),
         end=datetime.now()
     )
-    bars_result_1 = test_peewee_cli.exec_query(query)
+    bars_result_1 = peewee_cli.exec_query(query)
     # 1-1 取得件数は３件
-    assert len(query) == 3
+    assert len(bars_result_1) == 3
     # 1-2 シンボルが"AAPL"のbarのみ取得
     assert all(bar.symbol == "AAPL" for bar in bars_result_1)
 
 
-def test_symbol_and_timeframe(
-        test_peewee_cli,
-        prepare_table_bar_alpaca_on_db
-):
+def test_symbol_and_timeframe():
     """
     シンボルと時間軸による絞り込み
 
@@ -57,6 +57,10 @@ def test_symbol_and_timeframe(
         2. シンボルが"AAPL"のbarのみ取得
         3. 日付が2020-01-02から2020-01-03の間のbarのみ取得
     """
+    # データ用意
+    table_bar_alpaca_list = generate_table_bar_alpaca_list()
+    peewee_cli.insert_models(table_bar_alpaca_list)
+    # データ取得
     query = get_query_select_bar_alpaca(
         symbol="AAPL",
         timeframe=TimeframeTable.DAY,
@@ -64,7 +68,7 @@ def test_symbol_and_timeframe(
         start=datetime(2020, 1, 2),
         end=datetime(2020, 1, 3)
     )
-    bars_result_2 = test_peewee_cli.exec_query(query)
+    bars_result_2 = peewee_cli.exec_query(query)
     # 2-1 取得件数は以下の日付の2件
     assert len(bars_result_2) == 2
     # 2-2 シンボルが"AAPL"のbarのみ取得
@@ -73,15 +77,16 @@ def test_symbol_and_timeframe(
     assert all(datetime(2020, 1, 2) <= bar.timestamp <= datetime(2020, 1, 3) for bar in bars_result_2)
 
 
-def test_invalid_start_end(
-        test_peewee_cli,
-        prepare_table_bar_alpaca_on_db
-):
+def test_invalid_start_end():
     """
     終了日 < 開始日という逆転した日付指定を行うテスト。
     ValueErrorが発生することを確認する。
     """
-    with pytest.raises(ValueError):
+    # データ用意
+    table_bar_alpaca_list = generate_table_bar_alpaca_list()
+    peewee_cli.insert_models(table_bar_alpaca_list)
+    # データ取得
+    with pytest.raises(ValueError) as e:
         get_query_select_bar_alpaca(
             symbol="AAPL",
             timeframe=TimeframeTable.DAY,
@@ -89,3 +94,4 @@ def test_invalid_start_end(
             start=datetime(2020, 1, 3),  # endより新しい
             end=datetime(2020, 1, 2)     # startより古い
         )
+        assert str(e.value) == "start must be before end"

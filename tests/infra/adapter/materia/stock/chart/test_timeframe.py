@@ -6,8 +6,8 @@ from infra.adapter.materia.stock.chart.timeframe import (
     depart_timeframe_to_alpaca_api,
     depart_timeframe_to_table,
 )
-from infra.db.peewee.table.bar import TimeframeTable
-from tests.utils.mock.infra.db.peewee.bar import generate_table_bar_alpaca
+from infra.db.peewee.table.alpaca.bar import TimeframeTable
+from tests.utils.generate.infra.db.peewee.bar import generate_table_bar_alpaca
 
 
 def test_arrive_timeframe_from_table():

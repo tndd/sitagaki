@@ -1,5 +1,6 @@
-from infra.db.peewee.table.bar import AdjustmentTable, TableBarAlpaca, TimeframeTable
-from tests.utils.mock.infra.db.peewee.bar import (
+import infra.db.peewee.client as peewee_cli
+from infra.db.peewee.table.alpaca.bar import AdjustmentTable, TableBarAlpaca, TimeframeTable
+from tests.utils.generate.infra.db.peewee.bar import (
     generate_table_bar_alpaca,
     generate_table_bar_alpaca_list,
 )
@@ -11,19 +12,19 @@ MEMO:
 """
 
 
-def test_table_bar_alpaca_is_created(test_peewee_cli):
+def test_table_bar_alpaca_is_created():
     """
     bar_alpacaテーブルは作成されうるモデルであるかを確認。
     """
     # 投入用のTableBarAlpacaを作成
     table_bar_alpaca = generate_table_bar_alpaca()
     # テーブルに投入
-    test_peewee_cli.insert_models([table_bar_alpaca])
+    peewee_cli.insert_models([table_bar_alpaca])
     # テーブルの存在確認
     assert TableBarAlpaca.table_exists()
 
 
-def test_table_bar_alpaca_list(test_peewee_cli):
+def test_table_bar_alpaca_list():
     """
     TableBarAlpacaのリストを投入および取得の基本テスト。
 
@@ -36,7 +37,7 @@ def test_table_bar_alpaca_list(test_peewee_cli):
     # 投入用のTableBarAlpacaを作成
     table_bar_alpaca_list = generate_table_bar_alpaca_list()
     # テーブルに投入
-    test_peewee_cli.insert_models(table_bar_alpaca_list)
+    peewee_cli.insert_models(table_bar_alpaca_list)
     # 1. データが投入されたことを確認
     assert len(TableBarAlpaca.select()) == len(table_bar_alpaca_list)
     # 2. symbol=AAPL and timeframe=DAY and adjustment = RAW のデータ取得

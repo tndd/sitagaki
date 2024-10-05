@@ -2,13 +2,34 @@ from datetime import datetime
 
 import pytest
 
+import infra.db.peewee.client as peewee_cli
 from domain.materia.stock.chart.model import Adjustment, Chart, Timeframe
+from domain.materia.stock.chart.repository import fetch_chart_from_local
+from infra.db.peewee.table.alpaca.bar import TableBarAlpaca
+from tests.utils.generate.infra.db.peewee.bar import generate_table_bar_alpaca_list
 
 
-def test_default(
-        test_chart_repo_mocked_with_alpaca_api,
-        prepare_table_bar_alpaca_on_db
-):
+def _load_table_bar_alpaca_on_db():
+    """
+    BarデータをDBに登録する。
+    """
+    # TODO: データ作成関数の分離の検討
+    table_bar_alpaca_list = generate_table_bar_alpaca_list()
+    peewee_cli.insert_models(table_bar_alpaca_list)
+
+### HELPER TEST
+def test_load_table_bar_alpaca_on_db():
+    """
+    テスト用関数load_table_bar_alpaca_on_db()の動作確認
+    """
+    _load_table_bar_alpaca_on_db()
+    result = TableBarAlpaca.select()
+    # ファクトリのBar本数は10本
+    assert len(result) == 10
+
+
+### MAIN TEST
+def test_default():
     """
     時間軸省略時の取得動作確認
         デフォルト日付範囲については、全範囲を網羅できる2000-01-01~nowとしている。
@@ -17,7 +38,10 @@ def test_default(
         1. 取得件数は３件
         2. AAPL_L3_DAY_RAWのデータが取得されているか（volume=100,101,102）
     """
-    chart = test_chart_repo_mocked_with_alpaca_api.fetch_chart_from_local(
+    # テストデータをDBに登録
+    _load_table_bar_alpaca_on_db()
+    # 取得
+    chart = fetch_chart_from_local(
         symbol="AAPL",
         timeframe=Timeframe.DAY,
         adjustment=Adjustment.RAW
@@ -30,10 +54,7 @@ def test_default(
     assert all(100 <= bar.volume <= 102 for bar in chart.bars)
 
 
-def test_date_range(
-        test_chart_repo_mocked_with_alpaca_api,
-        prepare_table_bar_alpaca_on_db
-):
+def test_date_range():
     """
     シンボルと時間軸による絞り込み
 
@@ -47,7 +68,10 @@ def test_date_range(
         2. 日付が2020-01-02から2020-01-03の間のbarのみ取得
         3. volume=100のAAPL_L3_DAY_RAWのデータがスキップされているか
     """
-    chart = test_chart_repo_mocked_with_alpaca_api.fetch_chart_from_local(
+    # テストデータをDBに登録
+    _load_table_bar_alpaca_on_db()
+    # 取得
+    chart = fetch_chart_from_local(
         symbol="AAPL",
         timeframe=Timeframe.DAY,
         adjustment=Adjustment.RAW,
@@ -64,12 +88,12 @@ def test_date_range(
     assert not any(bar.volume == 100 for bar in chart.bars)
 
 
-def test_not_exist_symbol(
-        test_chart_repo_mocked_with_alpaca_api,
-        prepare_table_bar_alpaca_on_db
-):
+def test_not_exist_symbol():
     """
     対象データが存在せず取得できない場合
+
+    load_table_bar_alpaca_on_db()で取得される情報に
+    以下のシンボルは存在しない。
 
     期待される結果:
         LookupErrorが発生
@@ -83,9 +107,11 @@ def test_not_exist_symbol(
         NOSYMBOLというシンボルは存在しないためchartを取得することはできない。
         そのため検索結果が見つからないことを表すLookupErrorを返す。
     """
+    # テストデータをDBに登録
+    _load_table_bar_alpaca_on_db()
     # まずエラーが発生することを確認
     with pytest.raises(Exception) as excinfo:
-        chart = test_chart_repo_mocked_with_alpaca_api.fetch_chart_from_local(
+        fetch_chart_from_local(
             symbol="NOSYMBOL",
             timeframe=Timeframe.DAY,
             adjustment=Adjustment.RAW,

@@ -2,7 +2,7 @@ from domain.materia.stock.chart.model import Adjustment, Bar, Timeframe
 from infra.adapter.materia.stock.chart.adjustment import depart_adjustment_to_table
 from infra.adapter.materia.stock.chart.timeframe import depart_timeframe_to_table
 from infra.api.alpaca.bar import Bar as BarAlpacaApi
-from infra.db.peewee.table.bar import TableBarAlpaca
+from infra.db.peewee.table.alpaca.bar import TableBarAlpaca
 
 
 def arrive_bar_from_alpaca_api(bar_alpaca_api: BarAlpacaApi) -> Bar:

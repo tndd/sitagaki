@@ -10,23 +10,39 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 import pytest
 
+import infra.db.peewee.client as peewee_cli
+
 # テスト用fixture
-from tests.utils.fixture.domain.materia.stock.chart import (
-    test_chart_repo_mocked_with_alpaca_api,
-    test_chart_repo_with_alpaca_api_fail_empty_barset,
-)
 from tests.utils.fixture.infra.api.alpaca.bar import (
-    replace_with_mock_get_barset_alpaca_api,
-    replace_with_mock_get_barset_alpaca_api_fail_empty_barset,
+    fx_replace_with_mock_get_barset_alpaca_api_fail_empty_barset,
+    patch_with_mock_get_barset_alpaca_api,
 )
-from tests.utils.fixture.infra.db.peewee.client import (
-    test_peewee_cli,
-    test_peewee_cli_mysql,
-    test_peewee_cli_sqlite,
-)
-from tests.utils.fixture.infra.db.peewee.table.bar import prepare_table_bar_alpaca_on_db
 
 
 @pytest.fixture(scope="session", autouse=True)
-def setup_session():
-    pass
+def setup_session(session_mocker):
+    """
+    データベースの初期化
+        セッション開始時はデータベースが初期化された状態にする。
+    """
+    """
+    全通信部分をモック化
+        通信機能が実装されている箇所のみパッチを打ち消す形で、
+        部分的にオンラインテストを実行する形式とする。
+    """
+    patch_with_mock_get_barset_alpaca_api(session_mocker)
+    yield
+
+
+@pytest.fixture(scope="function", autouse=True)
+def setup_function():
+    """
+    各テスト開始時に実行されるfixture
+
+    データベースの初期化
+        各関数開始時にもデータベースは完全に初期化する。
+
+    # FIXME: onlineマーカーの際にはモックを無効化する処理追加
+    """
+    peewee_cli.cleanup_tables('DELETE_ALL')
+    yield
