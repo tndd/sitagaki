@@ -10,8 +10,9 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 import pytest
 
+import infra.db.peewee.client as peewee_cli
+
 # テスト用fixture
-from tests.utils.fixture.clear import cleanup_for_test
 from tests.utils.fixture.patch import (
     patch_with_mock_get_barset_alpaca_api,
     patch_with_mock_get_barset_alpaca_api_fail_empty_barset,
@@ -43,5 +44,5 @@ def setup_function():
 
     # FIXME: onlineマーカーの際にはモックを無効化する処理追加
     """
-    cleanup_for_test()
+    peewee_cli.cleanup_tables('DELETE_ALL')
     yield
