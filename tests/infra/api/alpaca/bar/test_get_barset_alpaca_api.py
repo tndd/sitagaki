@@ -12,9 +12,12 @@ from infra.api.alpaca.bar import get_barset_alpaca_api
 def f():
     return 'this is original'
 
-def test_mock(mocker):
+def test_mock(monkeypatch):
     assert 'this is original' == f()
-    mocker.patch('tests.infra.api.alpaca.bar.test_get_barset_alpaca_api.f', return_value='this is mocked')
+    monkeypatch.setattr(
+        'tests.infra.api.alpaca.bar.test_get_barset_alpaca_api.f',
+        lambda: 'this is mocked'
+    )
     assert 'this is mocked' == f()
 
 
