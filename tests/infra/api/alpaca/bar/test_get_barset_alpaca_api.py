@@ -10,23 +10,43 @@ import infra.api.alpaca.bar as alpaca_bar
 from infra.api.alpaca.bar import f, g, get_barset_alpaca_api
 
 
+def h():
+    return f()
+
+def h_direct():
+    return alpaca_bar.f()
+
+def test_mock_h(monkeypatch):
+    assert 'original' == h()
+    monkeypatch.setattr(
+        'infra.api.alpaca.bar.f',
+        lambda: 'mocked'
+    )
+    assert 'mocked' == h() # これは失敗
+
+def test_mock_h_direct(monkeypatch):
+    assert 'original' == h_direct()
+    monkeypatch.setattr(
+        'infra.api.alpaca.bar.f',
+        lambda: 'mocked'
+    )
+    assert 'mocked' == h_direct() # 成功
+
 def test_mock_f(monkeypatch):
     assert 'original' == f()
     monkeypatch.setattr(
         'infra.api.alpaca.bar.f',
         lambda: 'mocked'
     )
-    assert 'mocked' == f()
+    assert 'mocked' == f() # これは失敗
 
-
-def test_mock_f_with_import(monkeypatch):
+def test_mock_f_direct(monkeypatch):
     assert 'original' == alpaca_bar.f()
     monkeypatch.setattr(
         'infra.api.alpaca.bar.f',
         lambda: 'mocked'
     )
-    assert 'mocked' == alpaca_bar.f()
-
+    assert 'mocked' == alpaca_bar.f() # 成功
 
 def test_mock_g(monkeypatch):
     assert 'original' == g()
@@ -35,7 +55,6 @@ def test_mock_g(monkeypatch):
         lambda: 'mocked'
     )
     assert 'mocked' == g()
-
 
 
 # 組み合わせのリスト作成
