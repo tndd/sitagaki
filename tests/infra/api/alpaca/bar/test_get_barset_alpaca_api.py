@@ -22,7 +22,7 @@ def test_mock_h(monkeypatch):
         'infra.api.alpaca.bar.f',
         lambda: 'mocked'
     )
-    assert 'mocked' == h() # これは失敗
+    assert 'mocked' == h() # 失敗
 
 def test_mock_h_direct(monkeypatch):
     assert 'original' == h_direct()
@@ -38,7 +38,7 @@ def test_mock_f(monkeypatch):
         'infra.api.alpaca.bar.f',
         lambda: 'mocked'
     )
-    assert 'mocked' == f() # これは失敗
+    assert 'mocked' == f() # 失敗
 
 def test_mock_f_direct(monkeypatch):
     assert 'original' == alpaca_bar.f()
@@ -54,7 +54,7 @@ def test_mock_g(monkeypatch):
         'infra.api.alpaca.bar.f',
         lambda: 'mocked'
     )
-    assert 'mocked' == g()
+    assert 'mocked' == g() # 成功
 
 
 # 組み合わせのリスト作成
