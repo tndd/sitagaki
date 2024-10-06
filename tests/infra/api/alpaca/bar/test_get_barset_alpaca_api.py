@@ -6,8 +6,7 @@ from alpaca.data.models import BarSet
 from alpaca.data.requests import Adjustment as AdjustmentAlpaca
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
-# from infra.api.alpaca.bar import get_barset_alpaca_api
-import infra.api.alpaca.bar as alpaca_api
+from infra.api.alpaca.bar import get_barset_alpaca_api
 
 # 組み合わせのリスト作成
 TIMEFRAMES = [
@@ -49,13 +48,13 @@ def test_default(timeframe, adjustment):
     assert len(barset.data['AAPL']) == 5
 
 
-# @pytest.mark.online
+@pytest.mark.online
 def test_response_is_empty_barset():
     """
     存在しないシンボルを指定した場合の振る舞いテスト
     """
     SYMBOL_DUMMY = 'NOSYMBOL'
-    barset_empty = alpaca_api.get_barset_alpaca_api(
+    barset_empty = get_barset_alpaca_api(
         symbol=SYMBOL_DUMMY,
         start=datetime(2024,1,1),
         timeframe=TimeFrameAlpaca.Day,
