@@ -16,8 +16,8 @@ import infra.db.peewee.client as peewee_cli
 
 # テスト用fixture
 from tests.utils.patch.api.alpaca.bar import (
-    fx_replace_with_mock_get_barset_alpaca_api_fail_empty_barset,
-    patch_with_mock_get_barset_alpaca_api,
+    fx_replace_patch_alpaca_get_stock_bars_empty,
+    patch_alpaca_get_stock_bars,
 )
 
 
@@ -34,7 +34,7 @@ def setup_function(request, mocker):
     # データの初期化
     peewee_cli.cleanup_tables('DELETE_ALL')
     # 通信関数のモック化
-    patch_with_mock_get_barset_alpaca_api(mocker)
+    patch_alpaca_get_stock_bars(mocker)
     # マーカーごとの特別処理
     if request.node.get_closest_marker('online') \
         or request.node.get_closest_marker('online_slow'):

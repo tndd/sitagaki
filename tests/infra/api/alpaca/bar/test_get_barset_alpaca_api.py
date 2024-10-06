@@ -48,7 +48,7 @@ def test_default(timeframe, adjustment):
     assert len(barset.data['AAPL']) == 5
 
 
-# @pytest.mark.online
+@pytest.mark.online
 def test_response_is_empty_barset():
     """
     存在しないシンボルを指定した場合の振る舞いテスト
@@ -62,6 +62,9 @@ def test_response_is_empty_barset():
     )
     # barsetの中身 => {'data': {'NOSYMBOL': []}}
     assert isinstance(barset_empty, BarSet)
+    # SYMBOL_DUMMYがキーに存在することを確認
+    assert SYMBOL_DUMMY in barset_empty.data
+    # データが空であることを確認
     assert len(barset_empty.data[SYMBOL_DUMMY]) == 0
 
 

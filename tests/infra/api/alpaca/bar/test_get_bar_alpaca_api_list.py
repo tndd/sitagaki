@@ -23,7 +23,7 @@ def test_default():
     assert len(bar_alpaca_api_list) == 5
     assert all(bar.symbol == 'MOCKSYMBOL' for bar in bar_alpaca_api_list)
 
-def test_response_is_empty_barset(fx_replace_with_mock_get_barset_alpaca_api_fail_empty_barset):
+def test_response_is_empty_barset(fx_replace_patch_alpaca_get_stock_bars_empty):
     """
     存在しない条件を入力し、apiから空のBarSetが帰ってきた際の振る舞いのテスト
     """
