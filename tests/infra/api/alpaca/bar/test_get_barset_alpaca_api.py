@@ -7,6 +7,7 @@ from alpaca.data.requests import Adjustment as AdjustmentAlpaca
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
 from infra.api.alpaca.bar import f, g, get_barset_alpaca_api
+import infra.api.alpaca.bar as alpaca_bar
 
 
 def test_mock_f(monkeypatch):
@@ -16,6 +17,15 @@ def test_mock_f(monkeypatch):
         lambda: 'mocked'
     )
     assert 'mocked' == f()
+
+
+def test_mock_f_with_import(monkeypatch):
+    assert 'original' == alpaca_bar.f()
+    monkeypatch.setattr(
+        'infra.api.alpaca.bar.f',
+        lambda: 'mocked'
+    )
+    assert 'mocked' == alpaca_bar.f()
 
 
 def test_mock_g(monkeypatch):
