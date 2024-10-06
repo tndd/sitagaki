@@ -6,19 +6,25 @@ from alpaca.data.models import BarSet
 from alpaca.data.requests import Adjustment as AdjustmentAlpaca
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
-from infra.api.alpaca.bar import get_barset_alpaca_api
+from infra.api.alpaca.bar import f, g, get_barset_alpaca_api
 
 
-def f():
-    return 'this is original'
-
-def test_mock(monkeypatch):
-    assert 'this is original' == f()
+def test_mock_f(monkeypatch):
+    assert 'original' == f()
     monkeypatch.setattr(
-        'tests.infra.api.alpaca.bar.test_get_barset_alpaca_api.f',
-        lambda: 'this is mocked'
+        'infra.api.alpaca.bar.f',
+        lambda: 'mocked'
     )
-    assert 'this is mocked' == f()
+    assert 'mocked' == f()
+
+
+def test_mock_g(monkeypatch):
+    assert 'original' == g()
+    monkeypatch.setattr(
+        'infra.api.alpaca.bar.f',
+        lambda: 'mocked'
+    )
+    assert 'mocked' == g()
 
 
 
