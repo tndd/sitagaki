@@ -1,7 +1,7 @@
 import pytest
+from alpaca.data.historical.stock import StockHistoricalDataClient
 from alpaca.data.models import BarSet
 
-import infra.api.alpaca.bar
 from tests.utils.generate.infra.api.alpaca.bar import generate_barset_alpaca
 
 
@@ -15,8 +15,8 @@ def patch_with_mock_get_barset_alpaca_api(mocker):
     通信をモックし、ダミーのBarSetを返す。
     """
     mocker.patch.object(
-        infra.api.alpaca.bar,
-        'get_barset_alpaca_api',
+        StockHistoricalDataClient,
+        'get_stock_bars',
         return_value=generate_barset_alpaca()
     )
 
@@ -27,7 +27,7 @@ def patch_with_mock_get_barset_alpaca_api_fail_empty_barset(mocker):
     そのためerrではなくfailとしている。
     """
     mocker.patch.object(
-        infra.api.alpaca.bar,
-        'get_barset_alpaca_api',
+        StockHistoricalDataClient,
+        'get_stock_bars',
         return_value=BarSet(raw_data={'NOSYMBOL': []})
     )

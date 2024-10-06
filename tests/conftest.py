@@ -36,7 +36,8 @@ def setup_function(request, mocker):
     # 通信関数のモック化
     patch_with_mock_get_barset_alpaca_api(mocker)
     # マーカーごとの特別処理
-    if request.node.get_closest_marker('online'):
+    if request.node.get_closest_marker('online') \
+        or request.node.get_closest_marker('online_slow'):
         # onlineテストではモックを一時的に無効化する
         mocker.stopall()
     yield
