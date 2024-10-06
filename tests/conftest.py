@@ -27,6 +27,12 @@ FIXME: monkeypatchに切り替え
     パッチ化した関数を直接呼び出した際に問題が起こるようだ。
 """
 
+def apply_mocks(mocker):
+    """
+    テスト全体に適応すべき一連のモックを登録
+    """
+    patch_with_mock_get_barset_alpaca_api(mocker)
+
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_session(session_mocker):
@@ -39,22 +45,26 @@ def setup_session(session_mocker):
         通信機能が実装されている箇所のみパッチを打ち消す形で、
         部分的にオンラインテストを実行する形式とする。
     """
-    patch_with_mock_get_barset_alpaca_api(session_mocker)
+    apply_mocks(session_mocker)
     yield
 
 
 @pytest.fixture(scope="function", autouse=True)
-def setup_function():
+def setup_function(request, mocker):
     """
     各テスト開始時に実行されるfixture
-
-    データベースの初期化
-        各関数開始時にもデータベースは完全に初期化する。
-
-    # FIXME: onlineマーカーの際にはモックを無効化する処理追加
     """
+    # データの初期化
     peewee_cli.cleanup_tables('DELETE_ALL')
-    yield
+    # マーカーごとの特別処理
+    if request.node.get_closest_marker('online'):
+        # onlineテストではモックを一時的に無効化する
+        mocker.stopall()
+        yield
+        apply_mocks(mocker)
+    else:
+        # 通常テスト
+        yield
 
 
 @pytest.fixture
