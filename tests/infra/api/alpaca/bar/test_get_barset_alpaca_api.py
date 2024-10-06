@@ -6,8 +6,8 @@ from alpaca.data.models import BarSet
 from alpaca.data.requests import Adjustment as AdjustmentAlpaca
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
-from infra.api.alpaca.bar import f, g, get_barset_alpaca_api
 import infra.api.alpaca.bar as alpaca_bar
+from infra.api.alpaca.bar import f, g, get_barset_alpaca_api
 
 
 def test_mock_f(monkeypatch):
