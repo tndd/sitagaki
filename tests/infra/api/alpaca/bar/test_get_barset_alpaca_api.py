@@ -40,6 +40,14 @@ def test_mock_f(monkeypatch):
     )
     assert 'mocked' == f() # 失敗
 
+def test_mock_f_local(monkeypatch):
+    assert 'original' == alpaca_bar.f()
+    monkeypatch.setattr(
+        'tests.infra.api.alpaca.bar.test_get_barset_alpaca_api.f',
+        lambda: 'mocked'
+    )
+    assert 'mocked' == f() # 成功
+
 def test_mock_f_direct(monkeypatch):
     assert 'original' == alpaca_bar.f()
     monkeypatch.setattr(
