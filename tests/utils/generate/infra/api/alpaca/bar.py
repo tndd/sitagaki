@@ -7,14 +7,11 @@ from infra.api.alpaca.bar import extract_bar_list_alpaca_api_from_barset
 
 def generate_barset_alpaca() -> BarSet:
     """
-    # TODO: 明らかにダミーのデータであるとわかるような数値にする
-        これはモック化が成功しているのかを確認するためにも使うため。
-
     AAPLのデータを生成する。
     いずれも2023/4/1 10:00~14:00の1時間足データ。
     """
     raw_data_barset = {
-        "AAPL": [
+        "MOCKSYMBOL": [
             {
                 "t": datetime(2023, 4, 1, 10, 0),
                 "o": 100.0,
