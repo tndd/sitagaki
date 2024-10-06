@@ -8,6 +8,17 @@ from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
 from infra.api.alpaca.bar import get_barset_alpaca_api
 
+
+def f():
+    return 'this is original'
+
+def test_mock(mocker):
+    assert 'this is original' == f()
+    mocker.patch('tests.infra.api.alpaca.bar.test_get_barset_alpaca_api.f', return_value='this is mocked')
+    assert 'this is mocked' == f()
+
+
+
 # 組み合わせのリスト作成
 TIMEFRAMES = [
     TimeFrameAlpaca.Minute,
