@@ -24,20 +24,6 @@ class AdjustmentTable(Enum):
 class TableBarAlpaca(PeeweeTable):
     """
     AlpacaのBarデータを保存するテーブル。
-
-    保存容量を抑えるため、timeframeとadjustmentについては
-    bitfieldを使用する。
-        timeframe:
-            * min = 1
-            * hour = 2
-            * day = 4
-            * week = 8
-            * month = 16
-        adjustment:
-            * raw = 1
-            * split = 2
-            * dividend = 4
-            * all = 8
     """
     timestamp = DateTimeField()
     symbol = CharField()
@@ -51,6 +37,6 @@ class TableBarAlpaca(PeeweeTable):
     trade_count = FloatField(null=True)
     vwap = FloatField(null=True)
 
-    class Meta(PeeweeTable.Meta):
+    class Meta:
         table_name = "alpaca_bar"
         primary_key = CompositeKey('timestamp', 'symbol', 'timeframe', 'adjustment')

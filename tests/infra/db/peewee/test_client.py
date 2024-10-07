@@ -11,7 +11,7 @@ class SampleUser(PeeweeTable):
     username = CharField()
     email = CharField()
 
-    class Meta(PeeweeTable.Meta):
+    class Meta:
         # テーブル名を重複させないため
         table_name = '__test_user_f3875f7f'
 
