@@ -48,7 +48,6 @@ class PeeweeTable(Model):
 @dataclass
 class PeeweeClient:
     db: Database = create_db()
-    work_mode: WorkMode = get_work_mode()
 
     def __post_init__(self):
         """
@@ -64,8 +63,9 @@ class PeeweeClient:
         """
         このクライアントがテストモードで動いているのかどうかを返す。
         """
-        return self.work_mode is WorkMode.TEST \
-            or self.work_mode is WorkMode.IN_MEMORY
+        work_mode = get_work_mode()
+        return work_mode is WorkMode.TEST \
+            or work_mode is WorkMode.IN_MEMORY
 
     def insert_models(
         self,

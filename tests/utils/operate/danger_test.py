@@ -1,3 +1,7 @@
+from os import environ
+
+import pytest
+
 from infra.db.peewee.client import PeeweeClient
 
 peewee_cli = PeeweeClient()
@@ -14,3 +18,16 @@ def cleanup_tables():
         # テーブルを削除
         for table in tables:
             peewee_cli.db.execute_sql(f"DROP TABLE IF EXISTS {table}")
+
+
+### TEST
+def test_cleanup_tables():
+    """
+    テスト環境以外で本当にエラーが出ているか
+    """
+    environ['WORK_MODE'] = 'PROD'
+    with pytest.raises(ValueError):
+        cleanup_tables()
+    environ['WORK_MODE'] = 'DEV'
+    with pytest.raises(ValueError):
+        cleanup_tables()
