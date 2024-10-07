@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Sequence, cast
 
 from domain.materia.stock.chart.model import Adjustment, Chart, Timeframe
 from infra.adapter.materia.stock.chart.adjustment import (
@@ -19,6 +19,7 @@ from infra.adapter.materia.stock.chart.timeframe import (
 from infra.api.alpaca.bar import get_bar_alpaca_api_list
 from infra.db.peewee.client import PeeweeClient
 from infra.db.peewee.query.materia.stock.chart import get_query_select_bar_alpaca
+from infra.db.peewee.table.alpaca.bar import TableBarAlpaca
 
 
 @dataclass
@@ -82,20 +83,11 @@ class ChartRepository:
             end=end
         )
         try:
-            """
-            例外処理はリポジトリで行う。
-
-            例えば下のような検索結果０というのも本来は異常事態だ。
-
-            だがデータ取得関数get_bar_alpaca_api_list()からすれば、
-            条件に忠実に従い0件という結果を持ってきたという正常な振る舞いでしかない。
-
-            しかし、この結果はリポジトリにとってはエラーとなる。
-            リポジトリはプログラム側ではなくユーザー側の都合で例外を発生させる。
-            だからdomain-infra間で例外に対する相違が生まれる。
-            """
-            # barデータをDBから取得
-            bar_list_table = self.cli_db.exec_query(query)
+            # TableBarAlpacaのリストを取得
+            bar_list_table = cast(
+                Sequence[TableBarAlpaca],
+                self.cli_db.exec_query(query)
+            )
             if not bar_list_table:
                 """
                 Barの取得件数が0件の場合、エラーを発生させる。
@@ -133,7 +125,7 @@ class ChartRepository:
         symbol: str,
         timeframe: Timeframe,
         adjustment: Adjustment
-    ) -> datetime:
+    ) -> datetime:  # type: ignore
         """
         指定された条件のシンボルの、
         DBに保存されている最新の日付を取得する。

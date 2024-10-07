@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Sequence
 
 from domain.materia.stock.chart.model import Adjustment, Chart, Timeframe
 from infra.adapter.materia.stock.chart.adjustment import arrive_adjustment_from_table
@@ -31,7 +31,7 @@ def arrive_chart_from_bar_alpaca_api_list(
     )
 
 
-def arrive_chart_from_table_list(bar_table_list: List[TableBarAlpaca]) -> Chart:
+def arrive_chart_from_table_list(bar_table_list: Sequence[TableBarAlpaca]) -> Chart:
     """
     Chart:
         PeeweeTable<List> -> Domain
