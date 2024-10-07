@@ -1,7 +1,6 @@
 from peewee import AutoField, CharField
 
-import infra.db.peewee.client as peewee_cli
-from infra.db.peewee.client import PeeweeTable
+from infra.db.peewee.client import PeeweeClient, PeeweeTable, create_db, get_work_mode
 
 
 # テスト用モデル
@@ -9,6 +8,9 @@ class __SampleUser(PeeweeTable):
     id = AutoField(primary_key=True)
     username = CharField()
     email = CharField()
+
+# テスト用peeweeクライアント
+peewee_cli = PeeweeClient()
 
 
 def test_insert_models():
