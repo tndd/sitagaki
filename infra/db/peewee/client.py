@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from functools import lru_cache
 from typing import List
 
 from peewee import (
@@ -13,6 +14,7 @@ from peewee import (
 from infra.db.common import WorkMode, get_work_mode
 
 
+@lru_cache(maxsize=None)
 def create_db() -> Database:
     """
     動作モードに応じてDBを作成する
