@@ -8,21 +8,56 @@ load_dotenv()
 # プロジェクトルートへのパス通し
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
+import socket
+from os import environ
+
 import pytest
 
+from tests.utils.operate.danger import cleanup_tables
+
 # テスト用fixture
-from tests.utils.fixture.domain.materia.finance.chart import (
-    test_chart_repo_mocked_with_alpaca_api,
-    test_chart_repo_with_alpaca_api_fail_empty_barset,
+from tests.utils.patch.api.alpaca.bar import (
+    fx_replace_patch_alpaca_get_stock_bars_empty,
+    patch_alpaca_get_stock_bars,
 )
-from tests.utils.fixture.infra.api.alpaca.bar import (
-    replace_with_mock_get_barset_alpaca_api,
-    replace_with_mock_get_barset_alpaca_api_fail_empty_barset,
-)
-from tests.utils.fixture.infra.db.peewee import test_peewee_cli
-from tests.utils.fixture.infra.db.table.bar import prepare_table_bar_alpaca_on_db
 
 
 @pytest.fixture(scope="session", autouse=True)
-def setup_session():
-    pass
+def setup_session(session_mocker):
+    # 環境変数WorkModeをテスト仕様に強制する
+    environ['WORK_MODE'] = 'IN_MEMORY'
+
+
+@pytest.fixture(scope="function", autouse=True)
+def setup_function(request, mocker):
+    """
+    各テスト開始時に実行されるfixture
+    """
+    # データの初期化
+    cleanup_tables()
+    # 通信関数のモック化
+    patch_alpaca_get_stock_bars(mocker)
+    # マーカーごとの特別処理
+    if request.node.get_closest_marker('online') \
+        or request.node.get_closest_marker('online_slow'):
+        # onlineテストではモックを一時的に無効化する
+        mocker.stopall()
+    yield
+
+
+@pytest.fixture
+def airplane_mode():
+    """
+    # TODO: まだ正常に機能してない
+
+    このフィクスチャを適応したテストの通信は、
+    強制的に遮断状態となる。
+    """
+    original_socket = socket.socket
+    def blocked_socket(*args, **kwargs):
+        raise OSError("通信は遮断されています（機内モード発動中）")
+    socket.socket = blocked_socket
+    try:
+        yield
+    finally:
+        socket.socket = original_socket

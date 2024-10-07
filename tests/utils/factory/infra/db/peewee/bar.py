@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from infra.db.peewee.table.bar import TableBarAlpaca
+from infra.db.peewee.table.alpaca.bar import AdjustmentTable, TableBarAlpaca, TimeframeTable
 
 
 def generate_table_bar_alpaca() -> TableBarAlpaca:
@@ -11,8 +11,8 @@ def generate_table_bar_alpaca() -> TableBarAlpaca:
     return TableBarAlpaca(
         symbol="AAPL",
         timestamp=datetime(2020, 1, 1),
-        timeframe=1,
-        adjustment=1,
+        timeframe=TimeframeTable.MIN,
+        adjustment=AdjustmentTable.RAW,
         open=100.0,
         high=105.0,
         low=99.0,
@@ -56,8 +56,8 @@ def generate_table_bar_alpaca_list() -> list[TableBarAlpaca]:
         TableBarAlpaca(
             symbol="AAPL",
             timestamp=datetime(2020, 1, 1),
-            timeframe=4,
-            adjustment=1,
+            timeframe=TimeframeTable.DAY,
+            adjustment=AdjustmentTable.RAW,
             open=100.0,
             high=105.0,
             low=99.0,
@@ -68,8 +68,8 @@ def generate_table_bar_alpaca_list() -> list[TableBarAlpaca]:
         TableBarAlpaca(
             symbol="AAPL",
             timestamp=datetime(2020, 1, 2),
-            timeframe=4,
-            adjustment=1,
+            timeframe=TimeframeTable.DAY,
+            adjustment=AdjustmentTable.RAW,
             open=101.0,
             high=106.0,
             low=100.0,
@@ -80,8 +80,8 @@ def generate_table_bar_alpaca_list() -> list[TableBarAlpaca]:
         TableBarAlpaca(
             symbol="AAPL",
             timestamp=datetime(2020, 1, 3),
-            timeframe=4,
-            adjustment=1,
+            timeframe=TimeframeTable.DAY,
+            adjustment=AdjustmentTable.RAW,
             open=102.0,
             high=107.0,
             low=101.0,
@@ -94,8 +94,8 @@ def generate_table_bar_alpaca_list() -> list[TableBarAlpaca]:
         TableBarAlpaca(
             symbol="AAPL",
             timestamp=datetime(2020, 1, 1),
-            timeframe=1,
-            adjustment=1,
+            timeframe=TimeframeTable.MIN,
+            adjustment=AdjustmentTable.RAW,
             open=100.0,
             high=105.0,
             low=99.0,
@@ -106,8 +106,8 @@ def generate_table_bar_alpaca_list() -> list[TableBarAlpaca]:
         TableBarAlpaca(
             symbol="AAPL",
             timestamp=datetime(2020, 1, 2),
-            timeframe=1,
-            adjustment=1,
+            timeframe=TimeframeTable.MIN,
+            adjustment=AdjustmentTable.RAW,
             open=101.0,
             high=106.0,
             low=100.0,
@@ -118,8 +118,8 @@ def generate_table_bar_alpaca_list() -> list[TableBarAlpaca]:
         TableBarAlpaca(
             symbol="AAPL",
             timestamp=datetime(2020, 1, 3),
-            timeframe=1,
-            adjustment=1,
+            timeframe=TimeframeTable.MIN,
+            adjustment=AdjustmentTable.RAW,
             open=102.0,
             high=107.0,
             low=101.0,
@@ -132,8 +132,8 @@ def generate_table_bar_alpaca_list() -> list[TableBarAlpaca]:
         TableBarAlpaca(
             symbol="AAPL",
             timestamp=datetime(2020, 1, 1),
-            timeframe=16,
-            adjustment=8,
+            timeframe=TimeframeTable.MONTH,
+            adjustment=AdjustmentTable.ALL,
             open=100.0,
             high=105.0,
             low=99.0,
@@ -144,8 +144,8 @@ def generate_table_bar_alpaca_list() -> list[TableBarAlpaca]:
         TableBarAlpaca(
             symbol="AAPL",
             timestamp=datetime(2020, 1, 2),
-            timeframe=16,
-            adjustment=8,
+            timeframe=TimeframeTable.MONTH,
+            adjustment=AdjustmentTable.ALL,
             open=100.0,
             high=105.0,
             low=99.0,
@@ -158,8 +158,8 @@ def generate_table_bar_alpaca_list() -> list[TableBarAlpaca]:
         TableBarAlpaca(
             symbol="GOOG",
             timestamp=datetime(2020, 1, 1),
-            timeframe=4,
-            adjustment=1,
+            timeframe=TimeframeTable.DAY,
+            adjustment=AdjustmentTable.RAW,
             open=200.0,
             high=205.0,
             low=199.0,
@@ -170,8 +170,8 @@ def generate_table_bar_alpaca_list() -> list[TableBarAlpaca]:
         TableBarAlpaca(
             symbol="GOOG",
             timestamp=datetime(2020, 1, 2),
-            timeframe=4,
-            adjustment=1,
+            timeframe=TimeframeTable.DAY,
+            adjustment=AdjustmentTable.RAW,
             open=201.0,
             high=206.0,
             low=200.0,
