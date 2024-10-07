@@ -4,7 +4,7 @@ from infra.db.peewee.table.alpaca.bar import (
     TableBarAlpaca,
     TimeframeTable,
 )
-from tests.utils.generate.infra.db.peewee.bar import (
+from tests.utils.mock.infra.db.peewee.bar import (
     generate_table_bar_alpaca,
     generate_table_bar_alpaca_list,
 )
