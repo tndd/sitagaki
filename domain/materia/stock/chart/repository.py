@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Optional, Sequence, cast
+from typing import Any, Optional, Sequence, TypeGuard
 
 from domain.materia.stock.chart.model import Adjustment, Chart, Timeframe
 from infra.adapter.materia.stock.chart.adjustment import (
@@ -20,6 +20,18 @@ from infra.api.alpaca.bar import get_bar_alpaca_api_list
 from infra.db.peewee.client import PeeweeClient
 from infra.db.peewee.query.materia.stock.chart import get_query_select_bar_alpaca
 from infra.db.peewee.table.alpaca.bar import TableBarAlpaca
+
+
+def is_type_table_bar_alpaca(
+    seq: Sequence[Any]
+) -> TypeGuard[Sequence[TableBarAlpaca]]:
+    """
+    リストの中身がTableBarAlpacaであるかを判定する。
+
+    基本的に取得されるテーブルの型は全て同じであるため、
+    型のチェックは初めの一つのみを検証する形式とする。
+    """
+    return len(seq) > 0 and isinstance(seq[0], TableBarAlpaca)
 
 
 @dataclass
@@ -84,10 +96,7 @@ class ChartRepository:
         )
         try:
             # TableBarAlpacaのリストを取得
-            bar_list_table = cast(
-                Sequence[TableBarAlpaca],
-                self.cli_db.exec_query(query)
-            )
+            bar_list_table = self.cli_db.exec_query(query)
             if not bar_list_table:
                 """
                 Barの取得件数が0件の場合、エラーを発生させる。
@@ -95,6 +104,8 @@ class ChartRepository:
                 もし通信での失敗であれば0件という情報すら返らないだろう。
                 """
                 raise LookupError('Barの取得件数が0件')
+            if not is_type_table_bar_alpaca(bar_list_table):
+                raise TypeError('取得したデータの型が"TableBarAlpaca"ではありません')
             # 取得物をドメイン層のbarモデルのリストに変換して返す
             return arrive_chart_from_table_list(bar_list_table)
         except LookupError as le:
