@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Sequence
+from typing import Final, List, Sequence
 
 from peewee import Database, Model, MySQLDatabase, SqliteDatabase, chunked
 
@@ -30,7 +30,7 @@ def create_db() -> Database:
     return SqliteDatabase(':memory:')
 
 # peeweeの仕様上、ここでなんらかのDBをインスタンス化しておかねばならない
-DB_PEEWEE = create_db()
+DB_PEEWEE: Final[Database] = create_db()
 
 # Peeweeテーブルの基底クラス
 class PeeweeTable(Model):
