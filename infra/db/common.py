@@ -36,3 +36,13 @@ def read_work_mode_from_env() -> WorkMode:
 
 # ワークモードは不可逆的に決定される
 CURRENT_WORK_MODE: Final[WorkMode] = read_work_mode_from_env()
+
+
+def is_test_mode() -> bool:
+    """
+    テストモードまたはインメモリモードかどうかを返す
+    """
+    return CURRENT_WORK_MODE in (
+        WorkMode.TEST,
+        WorkMode.IN_MEMORY,
+    )

@@ -43,13 +43,6 @@ class PeeweeTable(Model):
 class PeeweeClient:
     db: Database = DB_PEEWEE
 
-    def is_test_mode(self) -> bool:
-        """
-        このクライアントがテストモードで動いているのかどうかを返す。
-        """
-        return CURRENT_WORK_MODE is WorkMode.TEST \
-            or CURRENT_WORK_MODE is WorkMode.IN_MEMORY
-
     def insert_models(
         self,
         models: Sequence[Model],
