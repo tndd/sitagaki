@@ -13,7 +13,7 @@ class WorkMode(Enum):
     IN_MEMORY = 'IN_MEMORY'
 
 
-def get_work_mode() -> WorkMode:
+def read_work_mode_from_env() -> WorkMode:
     """
     環境変数からワークモードを決定する。
     "WORK_MODE"という環境変数名を指定しておくこと。
@@ -35,4 +35,4 @@ def get_work_mode() -> WorkMode:
     return work_mode
 
 # ワークモードは不可逆的に決定される
-CURRENT_WORK_MODE: Final[WorkMode] = get_work_mode()
+CURRENT_WORK_MODE: Final[WorkMode] = read_work_mode_from_env()
