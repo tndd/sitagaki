@@ -6,7 +6,7 @@ from infra.db.peewee.client import PeeweeClient, PeeweeTable
 peewee_cli = PeeweeClient()
 
 # テスト用モデル
-class TestUser(PeeweeTable):
+class SampleUser(PeeweeTable):
     id = AutoField(primary_key=True)
     username = CharField()
     email = CharField()
@@ -16,12 +16,12 @@ class TestUser(PeeweeTable):
         table_name = '__test_user_f3875f7f'
 
 
-def generate_test_users(n: int) -> list[TestUser]:
+def generate_test_users(n: int) -> list[SampleUser]:
     """
-    N件のテストユーザーを生成する。
+    N件のサンプルユーザーを生成する。
     """
     return [
-        TestUser(
+        SampleUser(
             username=f'user{i}',
             email=f'user{i}@example.com'
         ) for i in range(1, n+1)
@@ -29,7 +29,7 @@ def generate_test_users(n: int) -> list[TestUser]:
 
 def insert_test_users(n: int):
     """
-    N件のテストユーザーを挿入する。
+    N件のサンプルユーザーを挿入する。
     """
     users = generate_test_users(n)
     peewee_cli.insert_models(users)
@@ -48,10 +48,10 @@ def test_insert_models():
     ３件のデータを投入し、その内容を確認する。
     """
     N = 3
-    # テストユーザーを挿入
+    # サンプルユーザーを挿入
     insert_test_users(N)
     # 挿入されたユーザーを取得
-    retrieved_users = TestUser.select()
+    retrieved_users = SampleUser.select()
     # 取得したユーザーを検証
     assert len(retrieved_users) == N
     assert retrieved_users[0].username == 'user1'
@@ -77,14 +77,14 @@ def test_insert_models_multiple():
     users = generate_test_users(3)
     # 1回目の投入
     peewee_cli.insert_models(users)
-    retrieved_users = TestUser.select()
+    retrieved_users = SampleUser.select()
     assert len(retrieved_users) == 3
     # 2回目の投入
     peewee_cli.insert_models(users)
-    retrieved_users = TestUser.select()
+    retrieved_users = SampleUser.select()
     assert len(retrieved_users) == 6
     # さらにテーブル内容を確認する
-    retrieved_users = TestUser.select().where(TestUser.username == 'user1')
+    retrieved_users = SampleUser.select().where(SampleUser.username == 'user1')
     assert len(retrieved_users) == 2
 
 
@@ -98,7 +98,7 @@ def test_insert_models_performance():
     N = 10000
     insert_test_users(N)
     # データ取得
-    retrieved_users = TestUser.select()
+    retrieved_users = SampleUser.select()
     assert len(retrieved_users) == N
 
 
@@ -123,36 +123,36 @@ def test_practice_select_models():
         joseph, astar, casperの3件のデータが取得できていること
     """
     users = [
-        TestUser(username='astar', email='user1@aaa.com'),
-        TestUser(username='barbara', email='user2@aaa.com'),
-        TestUser(username='casper', email='user3@bbb.com'),
-        TestUser(username='dominant', email='user4@bbb.com'),
-        TestUser(username='edward', email='user5@bbb.com'),
-        TestUser(username='froite', email='user6@bbb.com'),
-        TestUser(username='gabriel', email='user7@ccc.com'),
-        TestUser(username='hannah', email='user8@ccc.com'),
-        TestUser(username='isaac', email='user9@ccc.com'),
-        TestUser(username='joseph', email='user10@ccc.com'),
+        SampleUser(username='astar', email='user1@aaa.com'),
+        SampleUser(username='barbara', email='user2@aaa.com'),
+        SampleUser(username='casper', email='user3@bbb.com'),
+        SampleUser(username='dominant', email='user4@bbb.com'),
+        SampleUser(username='edward', email='user5@bbb.com'),
+        SampleUser(username='froite', email='user6@bbb.com'),
+        SampleUser(username='gabriel', email='user7@ccc.com'),
+        SampleUser(username='hannah', email='user8@ccc.com'),
+        SampleUser(username='isaac', email='user9@ccc.com'),
+        SampleUser(username='joseph', email='user10@ccc.com'),
     ]
     peewee_cli.insert_models(users)
     # 1. 単純な取得
-    retrieved_users = TestUser.select()
+    retrieved_users = SampleUser.select()
     assert len(retrieved_users) == 10
     # 2. aaa.comで絞り込み
-    retrieved_users = TestUser.select().where(TestUser.email.contains('aaa.com'))
+    retrieved_users = SampleUser.select().where(SampleUser.email.contains('aaa.com'))
     assert len(retrieved_users) == 2
     assert set(['astar', 'barbara']) == set(u.username for u in retrieved_users)
     # 3. aaa.comかつastarの絞り込み
-    retrieved_users = TestUser.select().where(
-        TestUser.email.contains('aaa.com')
-        & (TestUser.username == 'astar')
+    retrieved_users = SampleUser.select().where(
+        SampleUser.email.contains('aaa.com')
+        & (SampleUser.username == 'astar')
     )
     assert len(retrieved_users) == 1
     # 4. aaa.com または bbb.comで絞り込み
-    retrieved_users = TestUser.select().where(
+    retrieved_users = SampleUser.select().where(
         (
-            TestUser.email.contains('aaa.com')
-            | TestUser.email.contains('bbb.com')
+            SampleUser.email.contains('aaa.com')
+            | SampleUser.email.contains('bbb.com')
         )
     )
     assert len(retrieved_users) == 6
@@ -167,14 +167,14 @@ def test_practice_select_models():
         ]
     ) == set(u.username for u in retrieved_users)
     # 5. ddd.comで絞り込み
-    retrieved_users = TestUser.select().where(TestUser.email.contains('ddd.com'))
+    retrieved_users = SampleUser.select().where(SampleUser.email.contains('ddd.com'))
     assert len(retrieved_users) == 0
     # 6. 正規表現: 名前がaから始まる
-    retrieved_users = TestUser.select().where(TestUser.username.startswith('a'))
+    retrieved_users = SampleUser.select().where(SampleUser.username.startswith('a'))
     assert len(retrieved_users) == 1
     assert set(['astar']) == set(u.username for u in retrieved_users)
     # 7. 正規表現: 名前がjから始まる or 名前がrで終わる
-    retrieved_users = TestUser.select().where((TestUser.username.startswith('j') | TestUser.username.endswith('r')))
+    retrieved_users = SampleUser.select().where((SampleUser.username.startswith('j') | SampleUser.username.endswith('r')))
     assert len(retrieved_users) == 3
     assert set(['joseph', 'astar', 'casper']) == set(u.username for u in retrieved_users)
 
@@ -187,21 +187,21 @@ def test_insert_duplicate_key():
     """
     # 1回目の挿入
     users = [
-        TestUser(id=1, username='user1', email='user1@example.com'),
-        TestUser(id=2, username='user2', email='user2@example.com'),
+        SampleUser(id=1, username='user1', email='user1@example.com'),
+        SampleUser(id=2, username='user2', email='user2@example.com'),
     ]
     peewee_cli.insert_models(users)
-    assert len(TestUser.select()) == 2
-    assert TestUser.select().where(TestUser.id == 1).get().username == 'user1'
-    assert TestUser.select().where(TestUser.id == 2).get().username == 'user2'
+    assert len(SampleUser.select()) == 2
+    assert SampleUser.select().where(SampleUser.id == 1).get().username == 'user1'
+    assert SampleUser.select().where(SampleUser.id == 2).get().username == 'user2'
     # 2回目の挿入
     users = [
-        TestUser(id=1, username='user11', email='user11@example.com'),
-        TestUser(id=2, username='user22', email='user22@example.com'),
+        SampleUser(id=1, username='user11', email='user11@example.com'),
+        SampleUser(id=2, username='user22', email='user22@example.com'),
     ]
     peewee_cli.insert_models(users)
     # 上書きされるが故に４件ではなく２件のみ
-    assert len(TestUser.select()) == 2
+    assert len(SampleUser.select()) == 2
     # 内容は上書きされていること
-    assert TestUser.select().where(TestUser.id == 1).get().username == 'user11'
-    assert TestUser.select().where(TestUser.id == 2).get().username == 'user22'
+    assert SampleUser.select().where(SampleUser.id == 1).get().username == 'user11'
+    assert SampleUser.select().where(SampleUser.id == 2).get().username == 'user22'
