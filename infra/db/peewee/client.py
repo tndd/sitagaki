@@ -1,9 +1,9 @@
 from dataclasses import dataclass
-from typing import List
+from typing import Final, List, Sequence
 
 from peewee import Database, Model, MySQLDatabase, SqliteDatabase, chunked
 
-from infra.db.common import WorkMode, get_work_mode
+from infra.db.common import CURRENT_WORK_MODE, WorkMode
 
 
 def create_db() -> Database:
@@ -14,23 +14,24 @@ def create_db() -> Database:
         * PROD: 本番用DB(MYSQL)
         * 指定なし: SQLite in memory
     """
-    work_mode = get_work_mode()
     db_config = {
         WorkMode.TEST: {'name': 'fuli_test', 'port': 6002},
         WorkMode.DEV: {'name': 'fuli_dev', 'port': 6001},
         WorkMode.PROD: {'name': 'fuli', 'port': 6000},
     }
-    if work_mode in db_config:
+    if CURRENT_WORK_MODE in db_config:
         return MySQLDatabase(
-            **db_config[work_mode],
+            **db_config[CURRENT_WORK_MODE],
             user='mysqluser',
             password='mysqlpassword',
             host='localhost'
         )
-    return SqliteDatabase(':memory:')
+    elif CURRENT_WORK_MODE is WorkMode.IN_MEMORY:
+        return SqliteDatabase(':memory:')
+    raise ValueError(f"指定されたワークモードは存在しません: {CURRENT_WORK_MODE}")
 
 # peeweeの仕様上、ここでなんらかのDBをインスタンス化しておかねばならない
-DB_PEEWEE = create_db()
+DB_PEEWEE: Final[Database] = create_db()
 
 # Peeweeテーブルの基底クラス
 class PeeweeTable(Model):
@@ -42,17 +43,9 @@ class PeeweeTable(Model):
 class PeeweeClient:
     db: Database = DB_PEEWEE
 
-    def is_test_mode(self) -> bool:
-        """
-        このクライアントがテストモードで動いているのかどうかを返す。
-        """
-        work_mode = get_work_mode()
-        return work_mode is WorkMode.TEST \
-            or work_mode is WorkMode.IN_MEMORY
-
     def insert_models(
         self,
-        models: List[Model],
+        models: Sequence[Model],
         batch_size: int = 10000,
     ):
         """
@@ -72,7 +65,7 @@ class PeeweeClient:
             for batch in chunked(data, batch_size):
                 TModel.replace_many(batch).execute()
 
-    def exec_query(self, query):
+    def exec_query(self, query) -> Sequence[Model]:
         """
         WARN: queryを実行するメソッドの修正
             本来、peeweeのqueryは明示的にexecute()を呼び出す必要はない。

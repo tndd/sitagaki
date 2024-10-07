@@ -11,7 +11,7 @@ class SampleUser(PeeweeTable):
     username = CharField()
     email = CharField()
 
-    class Meta:
+    class Meta(PeeweeTable.Meta):
         # テーブル名を重複させないため
         table_name = '__test_user_f3875f7f'
 
@@ -36,13 +36,6 @@ def insert_test_users(n: int):
 
 
 ### TEST ###
-def test_is_test_mode():
-    """
-    テスト中、クライアントはテストモードと返すか
-    """
-    assert peewee_cli.is_test_mode() is True
-
-
 def test_insert_models():
     """
     ３件のデータを投入し、その内容を確認する。

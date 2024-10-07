@@ -51,6 +51,6 @@ class TableBarAlpaca(PeeweeTable):
     trade_count = FloatField(null=True)
     vwap = FloatField(null=True)
 
-    class Meta:
+    class Meta(PeeweeTable.Meta):
         table_name = "alpaca_bar"
         primary_key = CompositeKey('timestamp', 'symbol', 'timeframe', 'adjustment')
