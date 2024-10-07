@@ -1,7 +1,6 @@
 from datetime import datetime
 from typing import Optional
 
-import infra.db.peewee.client as cli_db
 from domain.materia.stock.chart.model import Adjustment, Chart, Timeframe
 from infra.adapter.materia.stock.chart.adjustment import (
     depart_adjustment_to_alpaca_api,
@@ -17,9 +16,10 @@ from infra.adapter.materia.stock.chart.timeframe import (
     depart_timeframe_to_table,
 )
 from infra.api.alpaca.bar import get_bar_alpaca_api_list
+from infra.db.peewee.client import PeeweeClient
 from infra.db.peewee.query.materia.stock.chart import get_query_select_bar_alpaca
 
-
+cli_db = PeeweeClient()
 def store_chart_from_online(
     symbol: str,
     timeframe: Timeframe,

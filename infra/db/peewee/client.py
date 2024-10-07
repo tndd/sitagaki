@@ -89,7 +89,7 @@ class PeeweeClient:
             for batch in chunked(data, batch_size):
                 TModel.replace_many(batch).execute()
 
-    def exec_query(query):
+    def exec_query(self, query):
         """
         WARN: queryを実行するメソッドの修正
             本来、peeweeのqueryは明示的にexecute()を呼び出す必要はない。

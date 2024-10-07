@@ -2,12 +2,13 @@ from datetime import datetime
 
 import pytest
 
-import infra.db.peewee.client as peewee_cli
 from domain.materia.stock.chart.model import Adjustment, Chart, Timeframe
 from domain.materia.stock.chart.repository import fetch_chart_from_local
+from infra.db.peewee.client import PeeweeClient
 from infra.db.peewee.table.alpaca.bar import TableBarAlpaca
 from tests.utils.generate.infra.db.peewee.bar import generate_table_bar_alpaca_list
 
+peewee_cli = PeeweeClient()
 
 def _load_table_bar_alpaca_on_db():
     """
