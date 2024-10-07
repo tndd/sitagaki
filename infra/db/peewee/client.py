@@ -30,17 +30,17 @@ def create_db() -> Database:
     return SqliteDatabase(':memory:')
 
 # peeweeの仕様上、ここでなんらかのDBをインスタンス化しておかねばならない
-_DB = create_db()
+DB_PEEWEE = create_db()
 
 # Peeweeテーブルの基底クラス
 class PeeweeTable(Model):
     class Meta:
-        database = _DB
+        database = DB_PEEWEE
 
 
 @dataclass
 class PeeweeClient:
-    db: Database = _DB
+    db: Database = DB_PEEWEE
 
     def is_test_mode(self) -> bool:
         """
