@@ -1,15 +1,49 @@
+from os import getenv
 from typing import List
 
-from peewee import Model, SqliteDatabase, chunked
+from peewee import Database, Model, MySQLDatabase, SqliteDatabase, chunked
 
-# DB設定
-"""
-LATER: DB接続先
-    今のところは強制的にSQLiteを使用する設定にしている。
-    将来的には接続先をテスト、本番によって変更できるようにする。
-"""
-_DB = SqliteDatabase(':memory:')
 
+def _create_db() -> Database:
+    """
+    動作モードに応じてDBを作成する
+        * TEST: テスト用DB(MYSQL)
+        * DEV: 開発用DB(MYSQL)
+        * PROD: 本番用DB(MYSQL)
+        * 指定なし: SQLite in memory
+    """
+    WORK_MODE = getenv('WORK_MODE', 'DEFAULT')
+    if WORK_MODE == 'TEST':
+        db = MySQLDatabase(
+            'fuli_test',
+            user='mysqluser',
+            password='mysqlpassword',
+            host='localhost',
+            port=6002,
+        )
+    elif WORK_MODE == 'DEV':
+        db = MySQLDatabase(
+            'fuli_dev',
+            user='mysqluser',
+            password='mysqlpassword',
+            host='localhost',
+            port=6001,
+        )
+    elif WORK_MODE == 'PROD':
+        db = MySQLDatabase(
+            'fuli',
+            user='mysqluser',
+            password='mysqlpassword',
+            host='localhost',
+            port=6000,
+        )
+    else:
+        # デフォルト動作はsqlite
+        db = SqliteDatabase(':memory:')
+    return db
+
+
+_DB = _create_db()
 
 # テーブル基底クラス
 class PeeweeTable(Model):
