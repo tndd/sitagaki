@@ -1,6 +1,6 @@
 from peewee import AutoField, CharField
 
-from infra.db.peewee.client import PeeweeClient, PeeweeTable, create_db, get_work_mode
+from infra.db.peewee.client import PeeweeClient, PeeweeTable
 
 
 # テスト用モデル
@@ -11,6 +11,13 @@ class __SampleUser(PeeweeTable):
 
 # テスト用peeweeクライアント
 peewee_cli = PeeweeClient()
+
+
+def test_is_test_mode():
+    """
+    テスト中、クライアントはテストモードと返すか
+    """
+    assert peewee_cli.is_test_mode() is True
 
 
 def test_insert_models():
