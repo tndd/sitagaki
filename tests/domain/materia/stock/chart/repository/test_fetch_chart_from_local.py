@@ -3,12 +3,13 @@ from datetime import datetime
 import pytest
 
 from domain.materia.stock.chart.model import Adjustment, Chart, Timeframe
-from domain.materia.stock.chart.repository import fetch_chart_from_local
+from domain.materia.stock.chart.repository import ChartRepository
 from infra.db.peewee.client import PeeweeClient
 from infra.db.peewee.table.alpaca.bar import TableBarAlpaca
 from tests.utils.factory.infra.db.peewee.bar import generate_table_bar_alpaca_list
 
 peewee_cli = PeeweeClient()
+chart_repo = ChartRepository()
 
 def _load_table_bar_alpaca_on_db():
     """
@@ -42,7 +43,7 @@ def test_default():
     # テストデータをDBに登録
     _load_table_bar_alpaca_on_db()
     # 取得
-    chart = fetch_chart_from_local(
+    chart = chart_repo.fetch_chart_from_local(
         symbol="AAPL",
         timeframe=Timeframe.DAY,
         adjustment=Adjustment.RAW
@@ -72,7 +73,7 @@ def test_date_range():
     # テストデータをDBに登録
     _load_table_bar_alpaca_on_db()
     # 取得
-    chart = fetch_chart_from_local(
+    chart = chart_repo.fetch_chart_from_local(
         symbol="AAPL",
         timeframe=Timeframe.DAY,
         adjustment=Adjustment.RAW,
@@ -112,7 +113,7 @@ def test_not_exist_symbol():
     _load_table_bar_alpaca_on_db()
     # まずエラーが発生することを確認
     with pytest.raises(Exception) as excinfo:
-        fetch_chart_from_local(
+        chart_repo.fetch_chart_from_local(
             symbol="NOSYMBOL",
             timeframe=Timeframe.DAY,
             adjustment=Adjustment.RAW,
