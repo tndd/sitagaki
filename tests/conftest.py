@@ -14,14 +14,13 @@ from os import environ
 import pytest
 
 from infra.db.peewee.client import PeeweeClient
+from tests.utils.operate.danger import cleanup_tables
 
 # テスト用fixture
 from tests.utils.patch.api.alpaca.bar import (
     fx_replace_patch_alpaca_get_stock_bars_empty,
     patch_alpaca_get_stock_bars,
 )
-
-peewee_cli_for_conftest = PeeweeClient()
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -36,7 +35,7 @@ def setup_function(request, mocker):
     各テスト開始時に実行されるfixture
     """
     # データの初期化
-    peewee_cli_for_conftest.cleanup_tables('DELETE_ALL')
+    cleanup_tables()
     # 通信関数のモック化
     patch_alpaca_get_stock_bars(mocker)
     # マーカーごとの特別処理

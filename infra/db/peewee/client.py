@@ -108,22 +108,3 @@ class PeeweeClient:
         with self.db.atomic():
             for sql in sqls:
                 self.db.execute_sql(sql)
-
-    def cleanup_tables(self, keyword: str):
-        """
-        >>>DANGER<<<
-
-        テーブルを空にする。
-        """
-        work_mode = get_work_mode()
-        if work_mode not in (WorkMode.IN_MEMORY, WorkMode.TEST):
-            raise ValueError(f"cleanup_tablesはテストモードのみ実行可能。現在のモード: {work_mode}")
-        if keyword != 'DELETE_ALL':
-            # あまりに危険なので２重にチェック
-            raise ValueError("keywordが異なるため、truncate_tablesを実行できません。")
-        with self.db.atomic():
-            tables = self.db.get_tables()
-            # テーブルを削除
-            # LATER: テーブル依存関係によっては失敗するので修正
-            for table in tables:
-                self.db.execute_sql(f"DROP TABLE IF EXISTS {table}")
