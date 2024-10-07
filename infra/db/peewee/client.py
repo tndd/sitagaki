@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List
 
 from peewee import (
@@ -47,7 +47,7 @@ class PeeweeTable(Model):
 
 @dataclass
 class PeeweeClient:
-    db: Database = create_db()
+    db: Database = field(default_factory=create_db)
 
     def __post_init__(self):
         """

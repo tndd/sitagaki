@@ -13,7 +13,6 @@ from os import environ
 
 import pytest
 
-from infra.db.peewee.client import PeeweeClient
 from tests.utils.operate.danger import cleanup_tables
 
 # テスト用fixture
