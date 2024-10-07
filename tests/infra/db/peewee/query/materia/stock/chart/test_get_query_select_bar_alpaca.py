@@ -5,7 +5,7 @@ import pytest
 from infra.db.peewee.client import PeeweeClient
 from infra.db.peewee.query.materia.stock.chart import get_query_select_bar_alpaca
 from infra.db.peewee.table.alpaca.bar import AdjustmentTable, TimeframeTable
-from tests.utils.mock.infra.db.peewee.bar import generate_table_bar_alpaca_list
+from tests.utils.factory.infra.db.peewee.bar import generate_table_bar_alpaca_list
 
 peewee_cli = PeeweeClient()
 

@@ -1,5 +1,5 @@
 from domain.materia.stock.chart.model import Bar, Chart
-from tests.utils.mock.domain.materia.stock.chart import generate_bar, generate_chart
+from tests.utils.factory.domain.materia.stock.chart import generate_bar, generate_chart
 
 
 def test_generate_bar():

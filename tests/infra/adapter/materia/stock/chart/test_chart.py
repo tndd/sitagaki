@@ -5,9 +5,9 @@ from infra.adapter.materia.stock.chart.chart import (
     depart_chart_to_table_list,
 )
 from infra.db.peewee.table.alpaca.bar import TableBarAlpaca
-from tests.utils.mock.domain.materia.stock.chart import generate_chart
-from tests.utils.mock.infra.api.alpaca.bar import generate_bar_alpaca_list
-from tests.utils.mock.infra.db.peewee.bar import generate_table_bar_alpaca_list
+from tests.utils.factory.domain.materia.stock.chart import generate_chart
+from tests.utils.factory.infra.api.alpaca.bar import generate_bar_alpaca_list
+from tests.utils.factory.infra.db.peewee.bar import generate_table_bar_alpaca_list
 
 
 def test_arrive_chart_from_bar_alpaca_api_list():
