@@ -1,7 +1,3 @@
-from os import environ
-
-import pytest
-
 from infra.db.peewee.client import PeeweeClient
 
 peewee_cli = PeeweeClient()
