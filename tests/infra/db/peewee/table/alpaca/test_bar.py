@@ -1,6 +1,10 @@
-import infra.db.peewee.client as peewee_cli
-from infra.db.peewee.table.alpaca.bar import AdjustmentTable, TableBarAlpaca, TimeframeTable
-from tests.utils.generate.infra.db.peewee.bar import (
+from infra.db.peewee.client import PeeweeClient
+from infra.db.peewee.table.alpaca.bar import (
+    AdjustmentTable,
+    TableBarAlpaca,
+    TimeframeTable,
+)
+from tests.utils.factory.infra.db.peewee.bar import (
     generate_table_bar_alpaca,
     generate_table_bar_alpaca_list,
 )
@@ -10,6 +14,8 @@ MEMO:
     基本的にはTableBarAlpacaがテーブルクラスとして機能しているかを確認する。
     だがその他にも挿入や取得などの一通りの動作確認も行っておく。
 """
+
+peewee_cli = PeeweeClient()
 
 
 def test_table_bar_alpaca_is_created():

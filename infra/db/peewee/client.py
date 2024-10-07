@@ -1,10 +1,12 @@
-from os import getenv
+from dataclasses import dataclass
 from typing import List
 
 from peewee import Database, Model, MySQLDatabase, SqliteDatabase, chunked
 
+from infra.db.common import WorkMode, get_work_mode
 
-def _create_db() -> Database:
+
+def create_db() -> Database:
     """
     動作モードに応じてDBを作成する
         * TEST: テスト用DB(MYSQL)
@@ -12,89 +14,80 @@ def _create_db() -> Database:
         * PROD: 本番用DB(MYSQL)
         * 指定なし: SQLite in memory
     """
-    WORK_MODE = getenv('WORK_MODE', 'DEFAULT')
-    if WORK_MODE == 'TEST':
-        db = MySQLDatabase(
-            'fuli_test',
+    work_mode = get_work_mode()
+    db_config = {
+        WorkMode.TEST: {'name': 'fuli_test', 'port': 6002},
+        WorkMode.DEV: {'name': 'fuli_dev', 'port': 6001},
+        WorkMode.PROD: {'name': 'fuli', 'port': 6000},
+    }
+    if work_mode in db_config:
+        return MySQLDatabase(
+            **db_config[work_mode],
             user='mysqluser',
             password='mysqlpassword',
-            host='localhost',
-            port=6002,
+            host='localhost'
         )
-    elif WORK_MODE == 'DEV':
-        db = MySQLDatabase(
-            'fuli_dev',
-            user='mysqluser',
-            password='mysqlpassword',
-            host='localhost',
-            port=6001,
-        )
-    elif WORK_MODE == 'PROD':
-        db = MySQLDatabase(
-            'fuli',
-            user='mysqluser',
-            password='mysqlpassword',
-            host='localhost',
-            port=6000,
-        )
-    else:
-        # デフォルト動作はsqlite
-        db = SqliteDatabase(':memory:')
-    return db
+    return SqliteDatabase(':memory:')
 
+# peeweeの仕様上、ここでなんらかのDBをインスタンス化しておかねばならない
+DB_PEEWEE = create_db()
 
-_DB = _create_db()
-
-# テーブル基底クラス
+# Peeweeテーブルの基底クラス
 class PeeweeTable(Model):
     class Meta:
-        database = _DB
+        database = DB_PEEWEE
 
 
-# DB操作メソッド
-def insert_models(
-    models: List[Model],
-    batch_size: int = 10000,
-):
-    """
-    NOTE: インサート速度の向上方法調査
-        sqlalchemyも試してみたが、そちらもおおよそ同じ早さ。
-        並列化しようにもpeeweeの場合、ピクルか問題により難しい。
-        ここは一旦棚上げした方が良さそう。
-    """
-    # モデルの型を取得
-    TModel = type(models[0])
-    # テーブルが存在しない場合にテーブルを作成
-    if not TModel.table_exists():
-        _DB.create_tables([TModel])
-    # モデルをデータベースに挿入
-    data = [model.__data__ for model in models]
-    with _DB.atomic():
-        for batch in chunked(data, batch_size):
-            TModel.replace_many(batch).execute()
+@dataclass
+class PeeweeClient:
+    db: Database = DB_PEEWEE
 
-def exec_query(query):
-    """
-    WARN: queryを実行するメソッドの修正
-        本来、peeweeのqueryは明示的にexecute()を呼び出す必要はない。
-        だがクエリ実行はクライアントを介して行うという一貫性を持たせるため、
-        このメソッドを用意する。
+    def is_test_mode(self) -> bool:
+        """
+        このクライアントがテストモードで動いているのかどうかを返す。
+        """
+        work_mode = get_work_mode()
+        return work_mode is WorkMode.TEST \
+            or work_mode is WorkMode.IN_MEMORY
 
-        それにクエリ実行の前後に何らかの処理を行うことも考えられるため、
-        このメソッドは完全に合理的でないわけではないか？
-    """
-    return query
+    def insert_models(
+        self,
+        models: List[Model],
+        batch_size: int = 10000,
+    ):
+        """
+        NOTE: インサート速度の向上方法調査
+            sqlalchemyも試してみたが、そちらもおおよそ同じ早さ。
+            並列化しようにもpeeweeの場合、ピクルか問題により難しい。
+            ここは一旦棚上げした方が良さそう。
+        """
+        # モデルの型を取得
+        TModel = type(models[0])
+        # テーブルが存在しない場合にテーブルを作成
+        if not TModel.table_exists():
+            self.db.create_tables([TModel])
+        # モデルをデータベースに挿入
+        data = [model.__data__ for model in models]
+        with self.db.atomic():
+            for batch in chunked(data, batch_size):
+                TModel.replace_many(batch).execute()
 
-def cleanup_tables(keyword: str):
-    """
-    テーブルを空にする
-    """
-    if keyword != 'DELETE_ALL':
-        raise ValueError("keywordが異なるため、truncate_tablesを実行できません。")
+    def exec_query(self, query):
+        """
+        WARN: queryを実行するメソッドの修正
+            本来、peeweeのqueryは明示的にexecute()を呼び出す必要はない。
+            だがクエリ実行はクライアントを介して行うという一貫性を持たせるため、
+            このメソッドを用意する。
 
-    with _DB.atomic():
-        tables = _DB.get_tables()
-        # テーブルを削除
-        # LATER: テーブル依存関係によっては失敗するので修正
-        for table in tables:
-            _DB.execute_sql(f"DROP TABLE IF EXISTS {table}")
+            それにクエリ実行の前後に何らかの処理を行うことも考えられるため、
+            このメソッドは完全に合理的でないわけではないか？
+        """
+        return query
+
+    def exec_sqls(self, sqls: List[str]):
+        """
+        任意のSQLを実行する
+        """
+        with self.db.atomic():
+            for sql in sqls:
+                self.db.execute_sql(sql)

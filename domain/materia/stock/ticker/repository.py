@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-import infra.db.peewee.client as peewee_cli
 from domain.materia.stock.ticker.model import Sector, Ticker
 from infra.api.alpaca.trade import get_assets
 

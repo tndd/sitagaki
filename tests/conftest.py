@@ -9,10 +9,11 @@ load_dotenv()
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 import socket
+from os import environ
 
 import pytest
 
-import infra.db.peewee.client as peewee_cli
+from tests.utils.operate.danger import cleanup_tables
 
 # テスト用fixture
 from tests.utils.patch.api.alpaca.bar import (
@@ -23,7 +24,8 @@ from tests.utils.patch.api.alpaca.bar import (
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_session(session_mocker):
-    pass
+    # 環境変数WorkModeをテスト仕様に強制する
+    environ['WORK_MODE'] = 'IN_MEMORY'
 
 
 @pytest.fixture(scope="function", autouse=True)
@@ -32,7 +34,7 @@ def setup_function(request, mocker):
     各テスト開始時に実行されるfixture
     """
     # データの初期化
-    peewee_cli.cleanup_tables('DELETE_ALL')
+    cleanup_tables()
     # 通信関数のモック化
     patch_alpaca_get_stock_bars(mocker)
     # マーカーごとの特別処理
