@@ -38,9 +38,10 @@ def arrive_chart_from_table_list(bar_table_list: List[TableBarAlpaca]) -> Chart:
     """
     if not bar_table_list:
         raise ValueError("bars_tableが空です。")
-    symbol = bar_table_list[0].symbol
-    timeframe = arrive_timeframe_from_table(bar_table_list[0])
-    adjustment = arrive_adjustment_from_table(bar_table_list[0])
+    head_table = bar_table_list[0]
+    symbol = str(head_table.symbol)
+    timeframe = arrive_timeframe_from_table(head_table)
+    adjustment = arrive_adjustment_from_table(head_table)
     bars = [arrive_bar_from_table(bar_table) for bar_table in bar_table_list]
     return Chart(
         symbol=symbol,

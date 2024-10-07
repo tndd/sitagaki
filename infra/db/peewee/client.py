@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List
+from typing import List, Sequence
 
 from peewee import Database, Model, MySQLDatabase, SqliteDatabase, chunked
 
@@ -52,7 +52,7 @@ class PeeweeClient:
 
     def insert_models(
         self,
-        models: List[Model],
+        models: Sequence[Model],
         batch_size: int = 10000,
     ):
         """
@@ -72,7 +72,7 @@ class PeeweeClient:
             for batch in chunked(data, batch_size):
                 TModel.replace_many(batch).execute()
 
-    def exec_query(self, query):
+    def exec_query(self, query) -> Sequence[Model]:
         """
         WARN: queryを実行するメソッドの修正
             本来、peeweeのqueryは明示的にexecute()を呼び出す必要はない。
