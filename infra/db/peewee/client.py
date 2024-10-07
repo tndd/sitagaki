@@ -3,7 +3,7 @@ from typing import Final, List, Sequence
 
 from peewee import Database, Model, MySQLDatabase, SqliteDatabase, chunked
 
-from infra.db.common import WorkMode, get_work_mode
+from infra.db.common import CURRENT_WORK_MODE, WorkMode
 
 
 def create_db() -> Database:
@@ -14,20 +14,21 @@ def create_db() -> Database:
         * PROD: 本番用DB(MYSQL)
         * 指定なし: SQLite in memory
     """
-    work_mode = get_work_mode()
     db_config = {
         WorkMode.TEST: {'name': 'fuli_test', 'port': 6002},
         WorkMode.DEV: {'name': 'fuli_dev', 'port': 6001},
         WorkMode.PROD: {'name': 'fuli', 'port': 6000},
     }
-    if work_mode in db_config:
+    if CURRENT_WORK_MODE in db_config:
         return MySQLDatabase(
-            **db_config[work_mode],
+            **db_config[CURRENT_WORK_MODE],
             user='mysqluser',
             password='mysqlpassword',
             host='localhost'
         )
-    return SqliteDatabase(':memory:')
+    elif CURRENT_WORK_MODE is WorkMode.IN_MEMORY:
+        return SqliteDatabase(':memory:')
+    raise ValueError(f"指定されたワークモードは存在しません: {CURRENT_WORK_MODE}")
 
 # peeweeの仕様上、ここでなんらかのDBをインスタンス化しておかねばならない
 DB_PEEWEE: Final[Database] = create_db()
@@ -46,9 +47,8 @@ class PeeweeClient:
         """
         このクライアントがテストモードで動いているのかどうかを返す。
         """
-        work_mode = get_work_mode()
-        return work_mode is WorkMode.TEST \
-            or work_mode is WorkMode.IN_MEMORY
+        return CURRENT_WORK_MODE is WorkMode.TEST \
+            or CURRENT_WORK_MODE is WorkMode.IN_MEMORY
 
     def insert_models(
         self,
