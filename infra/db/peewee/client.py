@@ -48,6 +48,7 @@ class PeeweeTable(Model):
 @dataclass
 class PeeweeClient:
     db: Database = create_db()
+    work_mode: WorkMode = get_work_mode()
 
     def __post_init__(self):
         """
@@ -58,6 +59,13 @@ class PeeweeClient:
         initializeはモジュール内ではなくここで行うのが妥当。
         """
         DB_PROXY.initialize(self.db)
+
+    def is_test_mode(self) -> bool:
+        """
+        このクライアントがテストモードで動いているのかどうかを返す。
+        """
+        return self.work_mode is WorkMode.TEST \
+            or self.work_mode is WorkMode.IN_MEMORY
 
     def insert_models(
         self,
