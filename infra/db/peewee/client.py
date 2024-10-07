@@ -1,20 +1,11 @@
-from dataclasses import dataclass, field
-from functools import lru_cache
+from dataclasses import dataclass
 from typing import List
 
-from peewee import (
-    Database,
-    DatabaseProxy,
-    Model,
-    MySQLDatabase,
-    SqliteDatabase,
-    chunked,
-)
+from peewee import Database, Model, MySQLDatabase, SqliteDatabase, chunked
 
 from infra.db.common import WorkMode, get_work_mode
 
 
-@lru_cache(maxsize=None)
 def create_db() -> Database:
     """
     動作モードに応じてDBを作成する
@@ -39,27 +30,17 @@ def create_db() -> Database:
     return SqliteDatabase(':memory:')
 
 # peeweeの仕様上、ここでなんらかのDBをインスタンス化しておかねばならない
-DB_PROXY = DatabaseProxy()
+_DB = create_db()
 
 # Peeweeテーブルの基底クラス
 class PeeweeTable(Model):
     class Meta:
-        database = DB_PROXY
+        database = _DB
 
 
 @dataclass
 class PeeweeClient:
-    db: Database = field(default_factory=create_db)
-
-    def __post_init__(self):
-        """
-        このクライアントをインスタンス化することで、
-        初めてデータベースが実体化する。
-
-        全てのDB操作はここで行われるのだから、
-        initializeはモジュール内ではなくここで行うのが妥当。
-        """
-        DB_PROXY.initialize(self.db)
+    db: Database = _DB
 
     def is_test_mode(self) -> bool:
         """
