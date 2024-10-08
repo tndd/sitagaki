@@ -33,8 +33,11 @@ def test_depart_adjustment_to_alpaca_api(domain_adjustment, expected_alpaca_adju
     assert depart_adjustment_to_alpaca_api(domain_adjustment) == expected_alpaca_adjustment
 
 
-def test_depart_adjustment_to_table():
-    assert depart_adjustment_to_table(Adjustment.RAW) == AdjustmentTable.RAW
-    assert depart_adjustment_to_table(Adjustment.SPLIT) == AdjustmentTable.SPLIT
-    assert depart_adjustment_to_table(Adjustment.DIVIDEND) == AdjustmentTable.DIVIDEND
-    assert depart_adjustment_to_table(Adjustment.ALL) == AdjustmentTable.ALL
+@pytest.mark.parametrize("domain_adjustment, expected_table_adjustment", [
+    (Adjustment.RAW, AdjustmentTable.RAW),
+    (Adjustment.SPLIT, AdjustmentTable.SPLIT),
+    (Adjustment.DIVIDEND, AdjustmentTable.DIVIDEND),
+    (Adjustment.ALL, AdjustmentTable.ALL),
+])
+def test_depart_adjustment_to_table(domain_adjustment, expected_table_adjustment):
+    assert depart_adjustment_to_table(domain_adjustment) == expected_table_adjustment
