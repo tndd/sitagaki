@@ -38,7 +38,7 @@ class TimestampOfSymbol(BaseModel):
     シンボルのtimestampを表す。
     """
     symbol: str
-    timestamp: datetime
+    timestamp: Optional[datetime]
 
     def is_latest(self) -> bool:
         """
@@ -47,5 +47,8 @@ class TimestampOfSymbol(BaseModel):
         最新であるかどうかは、
         timestampが今日の日付より新しいかで判定する。
         """
+        if self.timestamp is None:
+            # 日付なしならば最新ではないのは確実
+            return False
         return self.timestamp > datetime.now().date()
 
