@@ -1,4 +1,5 @@
-from domain.materia.stock.chart.model import Adjustment, Bar, Timeframe
+from domain.materia.stock.chart.const import Adjustment, Timeframe
+from domain.materia.stock.chart.model import Bar
 from infra.adapter.materia.stock.chart.bar import (
     arrive_bar_from_alpaca_api,
     arrive_bar_from_table,

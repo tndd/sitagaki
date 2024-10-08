@@ -1,4 +1,4 @@
-from domain.materia.stock.chart.model import Adjustment, Timeframe
+from domain.materia.stock.chart.const import Adjustment, Timeframe
 from infra.db.peewee.query.materia.stock.chart import (
     get_query_select_latest_timestamp_of_bar_alpaca,
 )

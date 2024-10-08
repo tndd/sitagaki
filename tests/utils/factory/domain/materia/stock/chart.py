@@ -1,11 +1,11 @@
 from datetime import datetime
 
-from domain.materia.stock.chart.model import Adjustment, Bar, Chart, Timeframe
+from domain.materia.stock.chart.const import Adjustment, Timeframe
+from domain.materia.stock.chart.model import Bar, Chart
 
 
 def generate_bar() -> Bar:
     return Bar(
-        symbol="AAPL",
         timestamp=datetime(2024, 1, 2, 5, 0, 0),
         open=187.15,
         high=188.44,

@@ -1,6 +1,6 @@
 from alpaca.data.requests import Adjustment as AdjustmentAlpaca
 
-from domain.materia.stock.chart.model import Adjustment
+from domain.materia.stock.chart.const import Adjustment
 from infra.adapter.materia.stock.chart.adjustment import (
     arrive_adjustment_from_table,
     depart_adjustment_to_alpaca_api,

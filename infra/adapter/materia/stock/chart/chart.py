@@ -1,6 +1,7 @@
 from typing import List, Sequence
 
-from domain.materia.stock.chart.model import Adjustment, Chart, Timeframe
+from domain.materia.stock.chart.const import Adjustment, Timeframe
+from domain.materia.stock.chart.model import Chart
 from infra.adapter.materia.stock.chart.adjustment import arrive_adjustment_from_table
 from infra.adapter.materia.stock.chart.bar import (
     arrive_bar_from_alpaca_api,

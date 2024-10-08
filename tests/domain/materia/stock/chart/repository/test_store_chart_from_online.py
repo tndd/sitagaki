@@ -1,6 +1,6 @@
 import pytest
 
-from domain.materia.stock.chart.model import Adjustment, Timeframe
+from domain.materia.stock.chart.const import Adjustment, Timeframe
 from domain.materia.stock.chart.repository import ChartRepository
 from infra.adapter.materia.stock.chart.adjustment import arrive_adjustment_from_table
 from infra.adapter.materia.stock.chart.timeframe import arrive_timeframe_from_table

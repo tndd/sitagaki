@@ -1,6 +1,6 @@
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
-from domain.materia.stock.chart.model import Timeframe
+from domain.materia.stock.chart.const import Timeframe
 from infra.adapter.materia.stock.chart.timeframe import (
     arrive_timeframe_from_table,
     depart_timeframe_to_alpaca_api,
