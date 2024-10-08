@@ -1,3 +1,4 @@
+import pytest
 from alpaca.data.enums import Adjustment as AdjustmentAlpaca
 
 from domain.materia.stock.chart.const import Adjustment
@@ -22,11 +23,14 @@ def test_arrive_adjustment_from_table():
     assert adjustment == Adjustment.RAW
 
 
-def test_depart_adjustment_to_alpaca_api():
-    assert depart_adjustment_to_alpaca_api(Adjustment.RAW) == AdjustmentAlpaca.RAW
-    assert depart_adjustment_to_alpaca_api(Adjustment.SPLIT) == AdjustmentAlpaca.SPLIT
-    assert depart_adjustment_to_alpaca_api(Adjustment.DIVIDEND) == AdjustmentAlpaca.DIVIDEND
-    assert depart_adjustment_to_alpaca_api(Adjustment.ALL) == AdjustmentAlpaca.ALL
+@pytest.mark.parametrize("domain_adjustment, expected_alpaca_adjustment", [
+    (Adjustment.RAW, AdjustmentAlpaca.RAW),
+    (Adjustment.SPLIT, AdjustmentAlpaca.SPLIT),
+    (Adjustment.DIVIDEND, AdjustmentAlpaca.DIVIDEND),
+    (Adjustment.ALL, AdjustmentAlpaca.ALL),
+])
+def test_depart_adjustment_to_alpaca_api(domain_adjustment, expected_alpaca_adjustment):
+    assert depart_adjustment_to_alpaca_api(domain_adjustment) == expected_alpaca_adjustment
 
 
 def test_depart_adjustment_to_table():
