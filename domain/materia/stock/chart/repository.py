@@ -3,16 +3,12 @@ from datetime import datetime
 from typing import Any, Optional, Sequence, TypeGuard
 
 from domain.materia.stock.chart.model import Adjustment, Chart, Timeframe
-from infra.adapter.materia.stock.chart.adjustment import (
-    depart_adjustment_to_alpaca_api,
-    depart_adjustment_to_table,
-)
-from infra.adapter.materia.stock.chart.chart import (
+from infra.adapter.materia.stock.chart import (
     arrive_chart_from_bar_alpaca_api_list,
     arrive_chart_from_table_list,
+    depart_adjustment_to_alpaca_api,
+    depart_adjustment_to_table,
     depart_chart_to_table_list,
-)
-from infra.adapter.materia.stock.chart.timeframe import (
     depart_timeframe_to_alpaca_api,
     depart_timeframe_to_table,
 )
