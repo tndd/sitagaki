@@ -2,8 +2,8 @@ from datetime import datetime, timedelta
 
 import pytest
 from alpaca.common.exceptions import APIError
+from alpaca.data.enums import Adjustment as AdjustmentAlpaca
 from alpaca.data.models import BarSet
-from alpaca.data.requests import Adjustment as AdjustmentAlpaca
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
 from infra.api.alpaca.bar import get_barset_alpaca_api

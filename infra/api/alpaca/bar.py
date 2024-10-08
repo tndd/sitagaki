@@ -1,8 +1,9 @@
 from datetime import datetime, timedelta
 from typing import List, Optional
 
+from alpaca.data.enums import Adjustment
 from alpaca.data.models.bars import Bar, BarSet
-from alpaca.data.requests import Adjustment, StockBarsRequest
+from alpaca.data.requests import StockBarsRequest
 from alpaca.data.timeframe import TimeFrame
 
 from .client import historical_cli

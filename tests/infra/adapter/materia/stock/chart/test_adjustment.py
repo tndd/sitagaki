@@ -1,4 +1,4 @@
-from alpaca.data.requests import Adjustment as AdjustmentAlpaca
+from alpaca.data.enums import Adjustment as AdjustmentAlpaca
 
 from domain.materia.stock.chart.const import Adjustment
 from infra.adapter.materia.stock.chart.adjustment import (

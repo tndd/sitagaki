@@ -1,7 +1,7 @@
 from datetime import datetime
 
+from alpaca.data.enums import Adjustment as AdjustmentAlpaca
 from alpaca.data.models import Bar
-from alpaca.data.requests import Adjustment as AdjustmentAlpaca
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
 from infra.api.alpaca.bar import get_bar_alpaca_api_list
