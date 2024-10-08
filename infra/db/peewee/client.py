@@ -65,7 +65,7 @@ class PeeweeClient:
             for batch in chunked(data, batch_size):
                 TModel.replace_many(batch).execute()
 
-    def exec_query(self, query: ModelSelect) -> Sequence[Model]:
+    def exec_query_fetch(self, query: ModelSelect) -> Sequence[Model]:
         """
         WARN: queryを実行するメソッドの修正
             本来、peeweeのqueryは明示的にexecute()を呼び出す必要はない。
@@ -77,7 +77,7 @@ class PeeweeClient:
         """
         return list(query)
 
-    def exec_retrieve_sql(self, sql: str) -> Sequence[dict]:
+    def exec_sql_fetch(self, sql: str) -> Sequence[dict]:
         """
         任意の生SQLを実行する
         実行結果はカラム名と値の辞書形式のリストとして返される

@@ -96,7 +96,7 @@ class ChartRepository:
         )
         try:
             # TableBarAlpacaのリストを取得
-            bar_list_table = self.cli_db.exec_query(query)
+            bar_list_table = self.cli_db.exec_query_fetch(query)
             if not bar_list_table:
                 """
                 Barの取得件数が0件の場合、エラーを発生させる。

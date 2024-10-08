@@ -36,7 +36,7 @@ def test_default():
         start=datetime(2000, 1, 1),
         end=datetime.now()
     )
-    bars_result_1 = peewee_cli.exec_query(query)
+    bars_result_1 = peewee_cli.exec_query_fetch(query)
     # 1-1 取得件数は３件
     assert len(bars_result_1) == 3
     # 1-2 シンボルが"AAPL"のbarのみ取得
@@ -70,7 +70,7 @@ def test_symbol_and_timeframe():
         start=datetime(2020, 1, 2),
         end=datetime(2020, 1, 3)
     )
-    bars_result_2 = peewee_cli.exec_query(query)
+    bars_result_2 = peewee_cli.exec_query_fetch(query)
     # 2-1 取得件数は以下の日付の2件
     assert len(bars_result_2) == 2
     # 2-2 シンボルが"AAPL"のbarのみ取得

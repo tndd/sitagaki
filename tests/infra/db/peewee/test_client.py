@@ -202,14 +202,14 @@ def test_insert_duplicate_key():
     assert SampleUser.select().where(SampleUser.id == 2).get().username == 'user22'
 
 
-def test_exec_retrieve_sql():
+def test_exec_sql_fetch():
     """
-    exec_retrieve_sqlのテスト
+    exec_sql_fetchのテスト
     """
     # テーブルにデータを挿入
     insert_test_users(10)
     sql = f"SELECT * FROM {TEST_TABLE_NAME} WHERE id % 2 = 0"
-    retrieved_users = peewee_cli.exec_retrieve_sql(sql)
+    retrieved_users = peewee_cli.exec_sql_fetch(sql)
     # データが取得できていること
     assert len(retrieved_users) == 5
     assert all(user['id'] % 2 == 0 for user in retrieved_users)
