@@ -60,3 +60,21 @@ class Chart(BaseModel):
     timeframe: Timeframe
     adjustment: Adjustment
     bars: List[Bar]
+
+
+class TimestampOfSymbol(BaseModel):
+    """
+    シンボルのtimestampを表す。
+    """
+    symbol: str
+    timestamp: datetime
+
+    def is_latest(self) -> bool:
+        """
+        最新のtimestampかどうかを返す。
+
+        最新であるかどうかは、
+        timestampが今日の日付より新しいかで判定する。
+        """
+        return self.timestamp > datetime.now().date()
+
