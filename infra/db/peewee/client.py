@@ -1,7 +1,7 @@
 from dataclasses import dataclass
-from typing import Final, List, Sequence
+from typing import Final, Sequence
 
-from peewee import Database, Model, MySQLDatabase, SqliteDatabase, chunked
+from peewee import Database, Model, ModelSelect, MySQLDatabase, SqliteDatabase, chunked
 
 from infra.db.common import CURRENT_WORK_MODE, WorkMode
 
@@ -65,7 +65,7 @@ class PeeweeClient:
             for batch in chunked(data, batch_size):
                 TModel.replace_many(batch).execute()
 
-    def exec_query(self, query) -> Sequence[Model]:
+    def exec_query(self, query: ModelSelect) -> Sequence[Model]:
         """
         WARN: queryを実行するメソッドの修正
             本来、peeweeのqueryは明示的にexecute()を呼び出す必要はない。
@@ -75,12 +75,13 @@ class PeeweeClient:
             それにクエリ実行の前後に何らかの処理を行うことも考えられるため、
             このメソッドは完全に合理的でないわけではないか？
         """
-        return query
+        return list(query)
 
-    def exec_sqls(self, sqls: List[str]):
+    def exec_retrieve_sql(self, sql: str) -> Sequence[dict]:
         """
         任意のSQLを実行する
         """
         with self.db.atomic():
-            for sql in sqls:
-                self.db.execute_sql(sql)
+            cursor = self.db.execute_sql(sql)
+            columns = [column[0] for column in cursor.description]
+            return [dict(zip(columns, row)) for row in cursor.fetchall()]

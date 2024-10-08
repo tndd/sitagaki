@@ -2,7 +2,11 @@ from datetime import datetime
 
 from peewee import ModelSelect
 
-from infra.db.peewee.table.alpaca.bar import AdjustmentTable, TableBarAlpaca, TimeframeTable
+from infra.db.peewee.table.alpaca.bar import (
+    AdjustmentTable,
+    TableBarAlpaca,
+    TimeframeTable,
+)
 
 
 def get_query_select_bar_alpaca(

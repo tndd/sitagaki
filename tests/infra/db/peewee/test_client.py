@@ -2,6 +2,8 @@ from peewee import AutoField, CharField
 
 from infra.db.peewee.client import PeeweeClient, PeeweeTable
 
+TEST_TABLE_NAME = '__test_user_f3875f7f'
+
 # テスト用peeweeクライアント
 peewee_cli = PeeweeClient()
 
@@ -13,7 +15,7 @@ class SampleUser(PeeweeTable):
 
     class Meta:
         # テーブル名を重複させないため
-        table_name = '__test_user_f3875f7f'
+        table_name = TEST_TABLE_NAME
 
 
 def generate_test_users(n: int) -> list[SampleUser]:
@@ -198,3 +200,16 @@ def test_insert_duplicate_key():
     # 内容は上書きされていること
     assert SampleUser.select().where(SampleUser.id == 1).get().username == 'user11'
     assert SampleUser.select().where(SampleUser.id == 2).get().username == 'user22'
+
+
+def test_exec_retrieve_sql():
+    """
+    exec_retrieve_sqlのテスト
+    """
+    # テーブルにデータを挿入
+    insert_test_users(10)
+    sql = f"SELECT * FROM {TEST_TABLE_NAME} WHERE id % 2 = 0"
+    retrieved_users = peewee_cli.exec_retrieve_sql(sql)
+    # データが取得できていること
+    assert len(retrieved_users) == 5
+    assert all(user['id'] % 2 == 0 for user in retrieved_users)
