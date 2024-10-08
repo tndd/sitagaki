@@ -133,7 +133,7 @@ class ChartRepository:
 
     def fetch_latest_timestamp_of_symbol(
         self,
-        symbol: str,
+        symbol: str | Sequence[str],
         timeframe: Timeframe,
         adjustment: Adjustment
     ) -> datetime:  # type: ignore
@@ -143,7 +143,8 @@ class ChartRepository:
 
         未取得の場合、datetime(2000,1,1)を返す。
 
-        MEMO: この始まりのdatetime(2000,1,1)は定数化しよう。
+        MEMO: この始まりのdatetime(2000,1,1)は定数化。
+        MEMO: symbolは単発でもリストでも受け取れるようにしておく。
         """
         # TODO: 続きの実装
         pass
