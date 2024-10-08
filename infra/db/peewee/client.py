@@ -79,7 +79,8 @@ class PeeweeClient:
 
     def exec_retrieve_sql(self, sql: str) -> Sequence[dict]:
         """
-        任意のSQLを実行する
+        任意の生SQLを実行する
+        実行結果はカラム名と値の辞書形式のリストとして返される
         """
         with self.db.atomic():
             cursor = self.db.execute_sql(sql)
