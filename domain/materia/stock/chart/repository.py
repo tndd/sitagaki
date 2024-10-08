@@ -128,14 +128,14 @@ class ChartRepository:
             }
             raise Exception(error_log)
 
-    def fetch_latest_timestamp_of_symbol(
+    def fetch_latest_timestamp_of_symbols(
         self,
-        symbol: str | Sequence[str],
+        symbols: Sequence[str],
         timeframe: Timeframe,
         adjustment: Adjustment
     ) -> Sequence[TimestampOfSymbol]:  # type: ignore
         """
-        指定された条件のシンボルの、
+        指定されたシンボルリストに対する、
         DBに保存されている最新の日付を取得する。
 
         未取得の場合、Noneを返す。
