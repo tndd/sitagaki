@@ -1,7 +1,8 @@
 from dataclasses import dataclass, field
+from typing import Sequence
 
 from domain.materia.stock.chart.const import Adjustment, Timeframe
-from domain.materia.stock.chart.model import Chart
+from domain.materia.stock.chart.model import Chart, SymbolTimestamp
 from domain.materia.stock.chart.repository import ChartRepository
 
 
@@ -11,7 +12,7 @@ class ChartUsecase:
 
     def update_chart(
         self,
-        symbol: str,
+        symbols: Sequence[str],
         timeframe: Timeframe,
         adjustment: Adjustment
     ) -> None:
@@ -22,9 +23,17 @@ class ChartUsecase:
         DB上にある最新のtimestamp~可能な限り直近のデータ。
         """
         # 最新のtimestampを取得
-        latest_timestamp = self.rp_chart.fetch_latest_timestamp_of_symbol(symbol, timeframe, adjustment)
-        # それ以降のデータで更新
-        self.rp_chart.store_chart_from_online(symbol, timeframe, adjustment, latest_timestamp)
+        symbol_timestamp_set = self.rp_chart.fetch_latest_timestamp_of_symbol_ls(symbols, timeframe, adjustment)
+        # 更新対象のシンボルを抽出
+        update_targets_symbol_timestamp = symbol_timestamp_set.get_update_target_symbols()
+        # シンボルごとにデータ更新
+        for symbol_timestamp in update_targets_symbol_timestamp:
+            self.rp_chart.store_chart_from_online(
+                symbol=symbol_timestamp.symbol,
+                timeframe=timeframe,
+                adjustment=adjustment,
+                start=symbol_timestamp.timestamp
+            )
 
     def fetch_chart(
         self,
@@ -45,3 +54,4 @@ class ChartUsecase:
             self.update_chart(symbol, timeframe, adjustment)
         # データの取得
         return self.rp_chart.fetch_chart_from_local(symbol, timeframe, adjustment)
+

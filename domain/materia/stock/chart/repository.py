@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import Any, Optional, Sequence, TypeGuard
 
 from domain.materia.stock.chart.const import Adjustment, Timeframe
-from domain.materia.stock.chart.model import Chart, TimestampOfSymbol
+from domain.materia.stock.chart.model import Chart, SymbolTimestampSet
 from infra.adapter.materia.stock.chart import (
     arrive_chart_from_bar_alpaca_api_list,
     arrive_chart_from_table_list,
@@ -128,12 +128,12 @@ class ChartRepository:
             }
             raise Exception(error_log)
 
-    def fetch_latest_timestamp_of_symbols(
+    def fetch_latest_timestamp_of_symbol_ls(
         self,
         symbols: Sequence[str],
         timeframe: Timeframe,
         adjustment: Adjustment
-    ) -> Sequence[TimestampOfSymbol]:  # type: ignore
+    ) -> SymbolTimestampSet:
         """
         指定されたシンボルリストに対する、
         DBに保存されている最新の日付を取得する。

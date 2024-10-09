@@ -1,5 +1,6 @@
 from datetime import datetime
-from typing import List, Optional
+from symtable import Symbol
+from typing import Optional, Sequence
 
 from pydantic import BaseModel
 
@@ -30,25 +31,45 @@ class Chart(BaseModel):
     symbol: str
     timeframe: Timeframe
     adjustment: Adjustment
-    bars: List[Bar]
+    bars: Sequence[Bar]
 
 
-class TimestampOfSymbol(BaseModel):
+class SymbolTimestamp(BaseModel):
     """
     シンボルのtimestampを表す。
     """
     symbol: str
     timestamp: Optional[datetime]
 
-    def is_latest(self) -> bool:
+    def is_update_target(self) -> bool:
         """
-        最新のtimestampかどうかを返す。
+        アップデート対象であるかを判定する。
 
-        最新であるかどうかは、
-        timestampが今日の日付より新しいかで判定する。
+        timestampが今日の日付より古ければ対象と判定される。
         """
         if self.timestamp is None:
-            # 日付なしならば最新ではないのは確実
-            return False
-        return self.timestamp > datetime.now().date()
+            # 日付なしならば、まだ情報取得が行われていないので対象
+            return True
+        return self.timestamp < datetime.now().date()
 
+
+class SymbolTimestampSet(BaseModel):
+    """
+    シンボルのtimestampの集合を表す。
+
+    メタ情報としてこの情報の出所としての
+    timeframe,adjustmentを持つ。
+    """
+    timeframe: Timeframe
+    adjustment: Adjustment
+    timestamp_of_symbol_ls: Sequence[SymbolTimestamp]
+
+    def get_update_target_symbols(self) -> Sequence[SymbolTimestamp]:
+        """
+        データ更新対象のシンボルを抽出する。
+        """
+        return [
+            timestamp_of_symbol
+            for timestamp_of_symbol in self.timestamp_of_symbol_ls
+            if timestamp_of_symbol.is_update_target()
+        ]
