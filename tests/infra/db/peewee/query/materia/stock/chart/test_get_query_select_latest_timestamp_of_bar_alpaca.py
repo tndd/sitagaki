@@ -5,5 +5,5 @@ from infra.db.peewee.query.materia.stock.chart import (
 
 
 def test_default():
-    # TODO: _load_table_bar_alpaca_on_dbの汎用化が終わり次第
+    # TODO: _load_table_bar_alpaca_on_db()の汎用化が終わり次第
     pass
