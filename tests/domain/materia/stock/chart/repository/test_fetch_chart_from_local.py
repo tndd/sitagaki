@@ -15,8 +15,11 @@ chart_repo = ChartRepository()
 def _load_table_bar_alpaca_on_db():
     """
     BarデータをDBに登録する。
+
+    TODO: データ作成関数の分離の検討
+        他のテストでこの関数を使う部分が現れた。
+        つまり共通化の時が来た。
     """
-    # LATER: データ作成関数の分離の検討
     table_bar_alpaca_list = generate_table_bar_alpaca_list()
     peewee_cli.insert_models(table_bar_alpaca_list)
 
