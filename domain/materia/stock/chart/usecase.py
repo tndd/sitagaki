@@ -6,7 +6,7 @@ from domain.materia.stock.chart.repository import ChartRepository
 
 
 @dataclass
-class ChartService:
+class ChartUsecase:
     rp_chart: ChartRepository = field(default_factory=ChartRepository)
 
     def fetch_chart(

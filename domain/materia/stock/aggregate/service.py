@@ -1,12 +1,12 @@
 from dataclasses import dataclass
 
-from domain.materia.stock.chart.service import ChartService
+from domain.materia.stock.chart.usecase import ChartUsecase
 from domain.materia.stock.ticker.service import TickerService
 
 
 @dataclass
 class StockAggService:
-    chart_service: ChartService
+    chart_service: ChartUsecase
     ticker_service: TickerService
 
     def update_charts(self) -> None:
