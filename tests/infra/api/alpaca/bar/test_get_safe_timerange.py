@@ -26,6 +26,17 @@ def test_default():
     assert time_range.end < datetime.now() - timedelta(minutes=DELAY)
 
 
+def test_normal_combinations():
+    """
+    0. start=None, end=None => ROOT_START_DATETIME, 15m前
+    1. start=None, end=未来 => ROOT_START_DATETIME, 15m前
+    2. start=None, end=範囲内 => ROOT_START_DATETIME, 変更なし
+    3. start=範囲内, end=範囲内 => 変更なし, 変更なし
+    4. start=範囲内, end=未来 => 変更なし, 15m前
+    """
+    pass
+
+
 @pytest.mark.parametrize(
     'start,end',
     [
