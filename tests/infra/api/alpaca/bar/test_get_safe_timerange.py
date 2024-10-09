@@ -34,7 +34,7 @@ def test_default():
         (datetime(2020, 1, 1), datetime.now() + timedelta(minutes=1), datetime(2020, 1, 1)),
     ]
 )
-def test_replaced_end(start, end, expected_start):
+def test_replaced_future_end(start, end, expected_start):
     """
     未来のendを指定した場合、15mより前の時刻が返されるかを主眼に置いたテスト。
 
@@ -48,14 +48,24 @@ def test_replaced_end(start, end, expected_start):
     assert time_range.end < datetime.now() - timedelta(minutes=DELAY)
 
 
-def test_normal_timerange():
+@pytest.mark.parametrize(
+    'start,end,expected_start',
+    [
+        (None, datetime(2020, 1, 1), ROOT_START_DATETIME),
+        (datetime(2020, 1, 1), datetime(2021, 1, 1), datetime(2020, 1, 1)),
+    ]
+)
+def test_replaced_valid_timerange(start, end, expected_start):
     """
     通常範囲内のstart,endの変換およびスルーを確認する。
 
     0. start=None, end=範囲内 => ROOT_START_DATETIME, 変更なし
     1. start=範囲内, end=範囲内 => 変更なし, 変更なし
     """
-    pass
+    time_range = get_safe_timerange(start, end)
+    assert isinstance(time_range, TimeRange)
+    assert time_range.start == expected_start
+    assert time_range.end == end
 
 
 @pytest.mark.parametrize(
