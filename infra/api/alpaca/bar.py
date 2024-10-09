@@ -30,20 +30,14 @@ class AlpacaApiBarClient:
         end: Optional[datetime] = None,
         limit: Optional[int] = None
     ) -> BarSet:
-        # TODO: 安全な日付指定機能を分離。テストをしやすくするためにも
-        # startに指定がない場合、ROOT_START_DATETIMEを指定
-        if start is None:
-            start = ROOT_START_DATETIME
-        # endが今の時刻の15分前を超えていたらNoneにする
-        if end and end > datetime.now() - timedelta(minutes=15):
-            end = None
+        time_range = get_safe_timerange(start, end)
         # リクエスト作成
         rq = StockBarsRequest(
             symbol_or_symbols=symbol,
             timeframe=timeframe,
             adjustment=adjustment,
-            start=start,
-            end=end,
+            start=time_range.start,
+            end=time_range.end,
             limit=limit
         )
         return self.cli.get_stock_bars(rq) # type: ignore
