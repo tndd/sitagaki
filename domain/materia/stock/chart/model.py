@@ -1,6 +1,4 @@
 from datetime import datetime
-from symtable import Symbol
-from typing import Optional, Sequence
 
 from pydantic import BaseModel
 
@@ -17,8 +15,8 @@ class Bar(BaseModel):
     low: float
     close: float
     volume: float
-    trade_count: Optional[float]
-    vwap: Optional[float]
+    trade_count: float | None
+    vwap: float | None
 
 
 class Chart(BaseModel):
@@ -31,7 +29,7 @@ class Chart(BaseModel):
     symbol: str
     timeframe: Timeframe
     adjustment: Adjustment
-    bars: Sequence[Bar]
+    bars: list[Bar]
 
 
 class SymbolTimestamp(BaseModel):
@@ -39,7 +37,7 @@ class SymbolTimestamp(BaseModel):
     シンボルのtimestampを表す。
     """
     symbol: str
-    timestamp: Optional[datetime]
+    timestamp: datetime | None
 
     def is_update_target(self) -> bool:
         """
@@ -62,9 +60,9 @@ class SymbolTimestampSet(BaseModel):
     """
     timeframe: Timeframe
     adjustment: Adjustment
-    timestamp_of_symbol_ls: Sequence[SymbolTimestamp]
+    timestamp_of_symbol_ls: list[SymbolTimestamp]
 
-    def get_update_target_symbols(self) -> Sequence[SymbolTimestamp]:
+    def get_update_target_symbols(self) -> list[SymbolTimestamp]:
         """
         データ更新対象のシンボルを抽出する。
         """
