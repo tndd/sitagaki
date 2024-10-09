@@ -13,7 +13,7 @@ from infra.adapter.materia.stock.chart import (
     depart_timeframe_to_alpaca_api,
     depart_timeframe_to_table,
 )
-from infra.api.alpaca.bar import get_bar_alpaca_api_list
+from infra.api.alpaca.bar import AlpacaApiBarClient
 from infra.db.peewee.client import PeeweeClient
 from infra.db.peewee.query.materia.stock.chart import get_query_select_bar_alpaca
 from infra.db.peewee.table.alpaca.bar import TableBarAlpaca
@@ -34,6 +34,7 @@ def is_type_table_bar_alpaca(
 @dataclass
 class ChartRepository:
     cli_db: PeeweeClient = field(default_factory=PeeweeClient)
+    cli_alpaca: AlpacaApiBarClient = field(default_factory=AlpacaApiBarClient)
 
     def store_chart_from_online(
         self,
@@ -51,7 +52,7 @@ class ChartRepository:
         2000-01-01から可能な限り最新のデータを取得する。
         """
         # barsデータを取得
-        bar_alpaca_api_list = get_bar_alpaca_api_list(
+        bar_alpaca_api_list = self.cli_alpaca.get_bar_alpaca_api_list(
             symbol=symbol,
             timeframe=depart_timeframe_to_alpaca_api(timeframe),
             adjustment=depart_adjustment_to_alpaca_api(adjustment),

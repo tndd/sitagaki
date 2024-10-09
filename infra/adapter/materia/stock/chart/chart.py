@@ -1,5 +1,7 @@
 from typing import List, Sequence
 
+from alpaca.data.models import Bar as BarAlpacaApi
+
 from domain.materia.stock.chart.const import Adjustment, Timeframe
 from domain.materia.stock.chart.model import Chart
 from infra.adapter.materia.stock.chart.adjustment import arrive_adjustment_from_table
@@ -9,7 +11,6 @@ from infra.adapter.materia.stock.chart.bar import (
     depart_bar_to_table,
 )
 from infra.adapter.materia.stock.chart.timeframe import arrive_timeframe_from_table
-from infra.api.alpaca.bar import Bar as BarAlpacaApi
 from infra.db.peewee.table.alpaca.bar import TableBarAlpaca
 
 

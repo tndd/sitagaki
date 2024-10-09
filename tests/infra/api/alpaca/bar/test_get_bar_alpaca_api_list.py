@@ -4,14 +4,16 @@ from alpaca.data.enums import Adjustment as AdjustmentAlpaca
 from alpaca.data.models import Bar
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
-from infra.api.alpaca.bar import get_bar_alpaca_api_list
+from infra.api.alpaca.bar import AlpacaApiBarClient
+
+cli_alpaca = AlpacaApiBarClient()
 
 
 def test_default():
     """
     通信部分をモックにした簡易テスト
     """
-    bar_alpaca_api_list = get_bar_alpaca_api_list(
+    bar_alpaca_api_list = cli_alpaca.get_bar_alpaca_api_list(
         symbol='AAPL',
         start=datetime(2024,1,1),
         timeframe=TimeFrameAlpaca.Day,
@@ -27,7 +29,7 @@ def test_response_is_empty_barset(fx_replace_patch_alpaca_get_stock_bars_empty):
     """
     存在しない条件を入力し、apiから空のBarSetが帰ってきた際の振る舞いのテスト
     """
-    bar_alpaca_api_list = get_bar_alpaca_api_list(
+    bar_alpaca_api_list = cli_alpaca.get_bar_alpaca_api_list(
         symbol='NOSYMBOL',
         start=datetime(2024,1,1),
         timeframe=TimeFrameAlpaca.Day,

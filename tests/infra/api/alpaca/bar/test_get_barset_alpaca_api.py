@@ -6,7 +6,9 @@ from alpaca.data.enums import Adjustment as AdjustmentAlpaca
 from alpaca.data.models import BarSet
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
-from infra.api.alpaca.bar import get_barset_alpaca_api
+from infra.api.alpaca.bar import AlpacaApiBarClient
+
+cli_alpaca = AlpacaApiBarClient()
 
 # 組み合わせのリスト作成
 TIMEFRAMES = [
@@ -35,7 +37,7 @@ def test_default(timeframe, adjustment):
     通信が正常に行えているかという観点でのテスト。
     """
     # timeframe X adjustmentの組み合わせを全通り試す
-    barset = get_barset_alpaca_api(
+    barset = cli_alpaca.get_barset_alpaca_api(
         symbol="AAPL",
         start=datetime(2024,1,1),
         timeframe=timeframe,
@@ -54,7 +56,7 @@ def test_response_is_empty_barset():
     存在しないシンボルを指定した場合の振る舞いテスト
     """
     SYMBOL_DUMMY = 'NOSYMBOL'
-    barset_empty = get_barset_alpaca_api(
+    barset_empty = cli_alpaca.get_barset_alpaca_api(
         symbol=SYMBOL_DUMMY,
         start=datetime(2024,1,1),
         timeframe=TimeFrameAlpaca.Day,
@@ -81,7 +83,7 @@ def test_invalid_start_end():
             * エラーメッセージに'end should not be before start'が含まれる
     """
     with pytest.raises(Exception) as excinfo:
-        barset = get_barset_alpaca_api(
+        barset = cli_alpaca.get_barset_alpaca_api(
             symbol='AAPL',
             start=datetime(2024,1,1),
             end=datetime(2023,1,1),
@@ -99,7 +101,7 @@ def test_over_timestamp():
     alpaca apiの制限を超えた日付を指定した場合のテスト
     get_barset_alpaca_api()の安全装置が機能しているかを確認。
     """
-    barset = get_barset_alpaca_api(
+    barset = cli_alpaca.get_barset_alpaca_api(
         symbol='AAPL',
         start=datetime(2024,1,1),
         end=datetime.now() + timedelta(days=1), # endに未来の日付を指定
