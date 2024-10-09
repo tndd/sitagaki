@@ -16,6 +16,7 @@ def get_query_select_bar_alpaca(
     start: datetime,
     end: datetime
 ) -> ModelSelect:
+    # TODO: Noneを受け入れられるように
     """
     指定されたsymbol,timeframe,adjustmentの条件に一致するbarデータを取得する。
     start~endの範囲内のbarデータを取得する。

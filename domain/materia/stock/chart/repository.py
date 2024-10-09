@@ -80,6 +80,7 @@ class ChartRepository:
         start: datetime = datetime(2000, 1, 1),
         end: datetime = datetime.now()
     ) -> Chart:
+        # TODO: 日付指定をNoneを受け入れられるように
         """
         ローカルのDBから指定されたシンボルのbarを取得する。
 

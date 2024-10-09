@@ -24,6 +24,7 @@ class AlpacaApiBarClient:
         end: Optional[datetime] = None,
         limit: Optional[int] = None
     ) -> BarSet:
+        # TODO: 安全な日付指定機能を分離。テストをしやすくするためにも
         # startに指定がない場合、ROOT_START_DATETIMEを指定
         if start is None:
             start = ROOT_START_DATETIME
