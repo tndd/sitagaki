@@ -1,5 +1,3 @@
-from typing import List, Sequence
-
 from alpaca.data.models import Bar as BarAlpacaApi
 
 from domain.materia.stock.chart.const import Adjustment, Timeframe
@@ -15,7 +13,7 @@ from infra.db.peewee.table.alpaca.bar import TableBarAlpaca
 
 
 def arrive_chart_from_bar_alpaca_api_list(
-        bars_alpaca_api: List[BarAlpacaApi],
+        bars_alpaca_api: list[BarAlpacaApi],
         adjustment: Adjustment,
         timeframe: Timeframe
 ) -> Chart:
@@ -33,7 +31,7 @@ def arrive_chart_from_bar_alpaca_api_list(
     )
 
 
-def arrive_chart_from_table_list(bar_table_list: Sequence[TableBarAlpaca]) -> Chart:
+def arrive_chart_from_table_list(bar_table_list: list[TableBarAlpaca]) -> Chart:
     """
     Chart:
         PeeweeTable<List> -> Domain
@@ -53,7 +51,7 @@ def arrive_chart_from_table_list(bar_table_list: Sequence[TableBarAlpaca]) -> Ch
     )
 
 
-def depart_chart_to_table_list(chart: Chart) -> List[TableBarAlpaca]:
+def depart_chart_to_table_list(chart: Chart) -> list[TableBarAlpaca]:
     """
     Chart -> PeeweeTable<List>
     """

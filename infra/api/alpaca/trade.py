@@ -1,5 +1,4 @@
 from os import getenv
-from typing import List
 
 from alpaca.trading.client import TradingClient
 from alpaca.trading.models import Asset
@@ -10,7 +9,7 @@ cli_trading = TradingClient(
     secret_key=getenv('APCA_SECRET')
 )
 
-def get_assets() -> List[Asset]:
+def get_assets() -> list[Asset]:
     """
     全てのtickerリストを取得する。
 

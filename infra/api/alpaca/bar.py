@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from typing import List, Optional
 
 from alpaca.data.enums import Adjustment
 from alpaca.data.historical import StockHistoricalDataClient
@@ -26,9 +25,9 @@ class AlpacaApiBarClient:
         symbol: str,
         timeframe: TimeFrame,
         adjustment: Adjustment,
-        start: Optional[datetime] = None,
-        end: Optional[datetime] = None,
-        limit: Optional[int] = None
+        start: datetime | None = None,
+        end: datetime | None = None,
+        limit: int | None = None
     ) -> BarSet:
         time_range = get_safe_timerange(start, end)
         # リクエスト作成
@@ -47,10 +46,10 @@ class AlpacaApiBarClient:
         symbol: str,
         timeframe: TimeFrame,
         adjustment: Adjustment,
-        start: Optional[datetime] = None,
-        end: Optional[datetime] = None,
-        limit: Optional[int] = None
-    ) -> List[Bar]:
+        start: datetime | None = None,
+        end: datetime | None = None,
+        limit: int | None = None
+    ) -> list[Bar]:
         """
         日足のヒストリカルバー情報を取得。
         endを指定しなかった場合、可能な限り直近のデータを取得するようになってる。
@@ -63,7 +62,7 @@ class AlpacaApiBarClient:
 
 
 ### Helper ###
-def extract_bar_list_alpaca_api_from_barset(barset: BarSet) -> List[Bar]:
+def extract_bar_list_alpaca_api_from_barset(barset: BarSet) -> list[Bar]:
     """
     BarSetの中からBarのリストを取り出す。
     """
