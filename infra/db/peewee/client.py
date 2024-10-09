@@ -55,15 +55,15 @@ class PeeweeClient:
             ここは一旦棚上げした方が良さそう。
         """
         # モデルの型を取得
-        TModel = type(models[0])
+        model_t = type(models[0])
         # テーブルが存在しない場合にテーブルを作成
-        if not TModel.table_exists():
-            self.db.create_tables([TModel])
+        if not model_t.table_exists():
+            self.db.create_tables([model_t])
         # モデルをデータベースに挿入
         data = [model.__data__ for model in models]
         with self.db.atomic():
             for batch in chunked(data, batch_size):
-                TModel.replace_many(batch).execute()
+                model_t.replace_many(batch).execute()
 
     def exec_query_fetch(self, query: ModelSelect) -> Sequence[Model]:
         """
