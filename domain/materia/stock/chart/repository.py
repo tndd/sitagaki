@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Any, Optional, Sequence, TypeGuard
+from typing import Any, Sequence, TypeGuard
 
 from domain.materia.stock.chart.const import Adjustment, Timeframe
 from domain.materia.stock.chart.model import Chart, SymbolTimestampSet
@@ -40,9 +40,9 @@ class ChartRepository:
         symbol: str,
         timeframe: Timeframe,
         adjustment: Adjustment,
-        start: datetime = datetime(2000, 1, 1),
-        end: Optional[datetime] = None,
-        limit: Optional[int] = None
+        start: datetime | None = None,
+        end: datetime | None = None,
+        limit: int | None = None
     ) -> None:
         """
         指定されたシンボルのbarデータをonlineから取得し、DBに保存する。
