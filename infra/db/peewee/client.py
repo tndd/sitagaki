@@ -75,7 +75,7 @@ class PeeweeClient:
             それにクエリ実行の前後に何らかの処理を行うことも考えられるため、
             このメソッドは完全に合理的でないわけではないか？
         """
-        return query.iterator()
+        return list(query)
 
     def exec_sql_fetch(self, sql: str) -> Sequence[dict]:
         """
