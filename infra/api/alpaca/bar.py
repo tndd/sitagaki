@@ -7,8 +7,14 @@ from alpaca.data.historical import StockHistoricalDataClient
 from alpaca.data.models.bars import Bar, BarSet
 from alpaca.data.requests import StockBarsRequest
 from alpaca.data.timeframe import TimeFrame
+from pydantic import BaseModel
 
-from .client import ROOT_START_DATETIME, historical_cli
+from .client import DELAY, ROOT_START_DATETIME, historical_cli
+
+
+class TimeRange(BaseModel):
+    start: datetime
+    end: datetime
 
 
 @dataclass
@@ -68,3 +74,23 @@ def extract_bar_list_alpaca_api_from_barset(barset: BarSet) -> List[Bar]:
     BarSetの中からBarのリストを取り出す。
     """
     return next(iter(barset.data.values()))
+
+
+def get_safe_timerange(
+    start: datetime | None,
+    end: datetime | None
+) -> TimeRange:
+    """
+    alpacaの時間指定のために、startとendを安全な形式にする。
+    """
+    end_safe = datetime.now() - timedelta(minutes=DELAY)
+    # startに指定がない場合、ROOT_START_DATETIMEを指定
+    if start is None:
+        start = ROOT_START_DATETIME
+    # endがNone or 今の時刻の15分前を超えていたらNoneにする
+    if not end or end > end_safe:
+        end = end_safe
+    if start >= end:
+        raise ValueError('startはendよりも新しい日付である必要があります。')
+    print(start, end)
+    return TimeRange(start=start, end=end)
