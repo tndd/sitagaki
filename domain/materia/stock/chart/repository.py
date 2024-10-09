@@ -45,6 +45,7 @@ class ChartRepository:
         end: datetime | None = None,
         limit: int | None = None
     ) -> None:
+        # TODO: デフォルト引数変更につきテストの追加
         """
         指定されたシンボルのbarデータをonlineから取得し、DBに保存する。
 
@@ -144,5 +145,4 @@ class ChartRepository:
         MEMO: この始まりのdatetime(2000,1,1)は定数化。
         MEMO: symbolは単発でもリストでも受け取れるようにしておく。
         """
-        # TODO: 続きの実装
         pass

@@ -5,5 +5,5 @@ from infra.db.peewee.query.materia.stock.chart import (
 
 
 def test_default():
-    # TODO: テスト完成
+    # TODO: 実装
     pass

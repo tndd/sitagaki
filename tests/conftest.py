@@ -48,7 +48,7 @@ def setup_function(request, mocker):
 @pytest.fixture
 def airplane_mode():
     """
-    # TODO: まだ正常に機能してない
+    # LATER: まだ正常に機能してない
 
     このフィクスチャを適応したテストの通信は、
     強制的に遮断状態となる。
