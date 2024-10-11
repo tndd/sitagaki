@@ -27,7 +27,7 @@
         },
         "BUG": {
             "icon": "bug",
-            "iconColour": "red",
+            "iconColour": "deeppink",
         },
         "TODO": {
             "iconColour": "orange",
@@ -47,7 +47,7 @@
         },
         "WARN": {
             "icon": "alert",
-            "iconColour": "gray",
+            "iconColour": "blueviolet",
         },
         "NOTE": {
             "icon": "note",
@@ -57,7 +57,7 @@
             "icon": "clock",
         },
         "MEMO": {
-            "icon": "note",
+            "icon": "paste",
             "iconColour": "royalblue",
         }
     },
