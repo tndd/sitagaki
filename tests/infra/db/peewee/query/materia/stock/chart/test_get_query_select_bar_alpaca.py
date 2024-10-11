@@ -2,15 +2,15 @@ from datetime import datetime
 
 import pytest
 
-from infra.db.peewee.client import PeeweeClient
-from infra.db.peewee.query.materia.stock.chart import get_query_select_bar_alpaca
-from infra.db.peewee.table.alpaca.bar import AdjustmentTable, TimeframeTable
-from tests.utils.factory.infra.db.peewee.bar import generate_table_bar_alpaca_list
+from fixture.factory.infra.db.peewee.bar import generate_table_bar_alpaca_list
+from src.infra.db.peewee.client import PeeweeClient
+from src.infra.db.peewee.query.materia.stock.chart import get_query_select_bar_alpaca
+from src.infra.db.peewee.table.alpaca.bar import AdjustmentTable, TimeframeTable
 
 peewee_cli = PeeweeClient()
 
 
-def test_default():
+def test_basic():
     """
     シンボルのみによる絞り込み
 

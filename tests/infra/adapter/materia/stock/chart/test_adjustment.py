@@ -1,14 +1,14 @@
 import pytest
 from alpaca.data.enums import Adjustment as AdjustmentAlpaca
+from fixture.factory.infra.db.peewee.bar import generate_table_bar_alpaca
 
-from domain.materia.stock.chart.const import Adjustment
-from infra.adapter.materia.stock.chart.adjustment import (
+from src.domain.materia.stock.chart.const import Adjustment
+from src.infra.adapter.materia.stock.chart.adjustment import (
     arrive_adjustment_from_table,
     depart_adjustment_to_alpaca_api,
     depart_adjustment_to_table,
 )
-from infra.db.peewee.table.alpaca.bar import AdjustmentTable
-from tests.utils.factory.infra.db.peewee.bar import generate_table_bar_alpaca
+from src.infra.db.peewee.table.alpaca.bar import AdjustmentTable
 
 
 def test_arrive_adjustment_from_table():

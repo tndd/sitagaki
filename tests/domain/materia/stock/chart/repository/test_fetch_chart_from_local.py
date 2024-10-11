@@ -2,40 +2,17 @@ from datetime import datetime
 
 import pytest
 
-from domain.materia.stock.chart.const import Adjustment, Timeframe
-from domain.materia.stock.chart.model import Chart
-from domain.materia.stock.chart.repository import ChartRepository
-from infra.db.peewee.client import PeeweeClient
-from infra.db.peewee.table.alpaca.bar import TableBarAlpaca
-from tests.utils.factory.infra.db.peewee.bar import generate_table_bar_alpaca_list
+from fixture.operate import load_table_bar_alpaca_on_db
+from src.domain.materia.stock.chart.const import Adjustment, Timeframe
+from src.domain.materia.stock.chart.model import Chart
+from src.domain.materia.stock.chart.repository import ChartRepository
+from src.infra.db.peewee.client import PeeweeClient
 
 peewee_cli = PeeweeClient()
 chart_repo = ChartRepository()
 
-def _load_table_bar_alpaca_on_db():
-    """
-    BarデータをDBに登録する。
 
-    TODO: データ作成関数の分離の検討
-        他のテストでこの関数を使う部分が現れた。
-        つまり共通化の時が来た。
-    """
-    table_bar_alpaca_list = generate_table_bar_alpaca_list()
-    peewee_cli.insert_models(table_bar_alpaca_list)
-
-### HELPER TEST
-def test_load_table_bar_alpaca_on_db():
-    """
-    テスト用関数load_table_bar_alpaca_on_db()の動作確認
-    """
-    _load_table_bar_alpaca_on_db()
-    result = TableBarAlpaca.select()
-    # ファクトリのBar本数は10本
-    assert len(result) == 10
-
-
-### MAIN TEST
-def test_default():
+def test_basic():
     """
     時間軸省略時の取得動作確認
         デフォルト日付範囲については、全範囲を網羅できる2000-01-01~nowとしている。
@@ -45,7 +22,7 @@ def test_default():
         2. AAPL_L3_DAY_RAWのデータが取得されているか（volume=100,101,102）
     """
     # テストデータをDBに登録
-    _load_table_bar_alpaca_on_db()
+    load_table_bar_alpaca_on_db()
     # 取得
     chart = chart_repo.fetch_chart_from_local(
         symbol="AAPL",
@@ -75,7 +52,7 @@ def test_date_range():
         3. volume=100のAAPL_L3_DAY_RAWのデータがスキップされているか
     """
     # テストデータをDBに登録
-    _load_table_bar_alpaca_on_db()
+    load_table_bar_alpaca_on_db()
     # 取得
     chart = chart_repo.fetch_chart_from_local(
         symbol="AAPL",
@@ -114,7 +91,7 @@ def test_not_exist_symbol():
         そのため検索結果が見つからないことを表すLookupErrorを返す。
     """
     # テストデータをDBに登録
-    _load_table_bar_alpaca_on_db()
+    load_table_bar_alpaca_on_db()
     # まずエラーが発生することを確認
     with pytest.raises(Exception) as excinfo:
         chart_repo.fetch_chart_from_local(

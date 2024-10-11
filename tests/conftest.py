@@ -1,30 +1,25 @@
-import sys
 from os import environ
-from pathlib import Path
 
 from dotenv import load_dotenv
 
-# 環境変数の読み込み
+# 環境変数をテスト用のものに強制適用
 load_dotenv()
 environ['WORK_MODE'] = 'IN_MEMORY'
-# プロジェクトルートへのパス通し
-sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 import socket
 
 import pytest
 
-from tests.utils.fixture import fx_replace_api_alpaca_get_stock_bars_empty
-from tests.utils.operate.danger import cleanup_tables
+from fixture.operate import cleanup_tables
 
 # テスト用fixture
-from tests.utils.patch.api.alpaca.bar import patch_get_stock_bars
+from fixture.patch.api.alpaca.bar import patch_get_stock_bars
+from fixture.pyfx import fx_replace_api_alpaca_get_stock_bars_empty
 
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_session(session_mocker):
     pass
-
 
 
 @pytest.fixture(scope="function", autouse=True)

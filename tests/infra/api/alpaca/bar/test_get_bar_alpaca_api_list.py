@@ -5,12 +5,12 @@ from alpaca.data.enums import Adjustment as AdjustmentAlpaca
 from alpaca.data.models import Bar
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
-from infra.api.alpaca.bar import AlpacaApiBarClient
+from src.infra.api.alpaca.bar import AlpacaApiBarClient
 
 cli_alpaca = AlpacaApiBarClient()
 
 
-def test_default():
+def test_basic():
     """
     通信部分をモックにした簡易テスト
     """
@@ -24,7 +24,7 @@ def test_default():
     assert all(isinstance(bar, Bar) for bar in bar_alpaca_api_list)
     # モック化されているかの確認も兼ねたテスト
     assert len(bar_alpaca_api_list) == 5
-    assert all(bar.symbol == 'MOCKSYMBOL' for bar in bar_alpaca_api_list)
+    assert all(bar.symbol == 'MOCKSYMBOL_30C779F3' for bar in bar_alpaca_api_list)
 
 def test_response_is_empty_barset(fx_replace_api_alpaca_get_stock_bars_empty):
     """

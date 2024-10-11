@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 import pytest
 
-from infra.api.alpaca.bar import (
+from src.infra.api.alpaca.bar import (
     DELAY,
     ROOT_START_DATETIME,
     TimeRange,
@@ -10,7 +10,7 @@ from infra.api.alpaca.bar import (
 )
 
 
-def test_default():
+def test_basic():
     """
     デフォルトのテスト
 

@@ -1,7 +1,7 @@
 import pytest
 from alpaca.trading.models import Asset
 
-from infra.api.alpaca.trade import get_assets
+from src.infra.api.alpaca.trade import get_assets
 
 
 @pytest.mark.online_slow

@@ -1,6 +1,6 @@
 from peewee import AutoField, CharField
 
-from infra.db.peewee.client import PeeweeClient, PeeweeTable
+from src.infra.db.peewee.client import PeeweeClient, PeeweeTable
 
 TEST_TABLE_NAME = '__test_user_f3875f7f'
 
