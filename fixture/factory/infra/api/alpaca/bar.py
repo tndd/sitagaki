@@ -11,7 +11,7 @@ def generate_barset_alpaca() -> BarSet:
     いずれも2023/4/1 10:00~14:00の1時間足データ。
     """
     raw_data_barset = {
-        "MOCKSYMBOL": [
+        "MOCKSYMBOL_30C779F3": [
             {
                 "t": datetime(2023, 4, 1, 10, 0),
                 "o": 100.0,
