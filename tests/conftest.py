@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 environ['WORK_MODE'] = 'IN_MEMORY'
 # プロジェクトルートへのパス通し
-sys.path.append(str(Path(__file__).resolve().parent.parent))
+# sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 import socket
 
