@@ -4,7 +4,6 @@ from decorator import decorator
 from src.infra.db.common import is_test_mode
 
 
-@pytest.mark.skip # 基本的にこのファイルはテスト対象にはならないが念の為
 @decorator
 def test_only(f, *args, **kwargs):
     """
