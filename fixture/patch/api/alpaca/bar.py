@@ -24,5 +24,5 @@ def patch_get_stock_bars_empty(mocker):
     mocker.patch.object(
         StockHistoricalDataClient,
         'get_stock_bars',
-        return_value=BarSet(raw_data={'NOSYMBOL': []})
+        return_value=BarSet(raw_data={'NOSYMBOL_2602E09F': []})
     )
