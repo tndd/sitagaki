@@ -66,31 +66,31 @@
     ],
     "folder-path-color.folders": [
         {
-            "path": "domain",
+            "path": "src/domain",
             "symbol": "D",
             "tooltip": "DOMAIN",
             "color": "red"
         },
         {
-            "path": "infra/adapter",
+            "path": "src/infra/adapter",
             "symbol": "🔌💽",
             "tooltip": "INFRA",
             "color": "yellow"
         },
         {
-            "path": "infra/api",
+            "path": "src/infra/api",
             "symbol": "📡💽",
             "tooltip": "INFRA",
             "color": "yellow"
         },
         {
-            "path": "infra/db",
+            "path": "src/infra/db",
             "symbol": "🗄️💽",
             "tooltip": "INFRA",
             "color": "yellow"
         },
         {
-            "path": "infra",
+            "path": "src/infra",
             "symbol": "💽",
             "tooltip": "INFRA",
             "color": "yellow"
