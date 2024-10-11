@@ -78,7 +78,7 @@ def generate_bar_alpaca() -> Bar:
         "n": 50,     # trade_count
         "vw": 101.5  # vwap
     }
-    return Bar(symbol="AAPL", raw_data=raw_data)
+    return Bar(symbol="MOCKSYMBOL_076E9AE1", raw_data=raw_data)
 
 
 def generate_bar_alpaca_list() -> list[Bar]:

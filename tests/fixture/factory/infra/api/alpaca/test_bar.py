@@ -10,11 +10,12 @@ from fixture.factory.infra.api.alpaca.bar import (
 def test_generate_barset_alpaca():
     barset = generate_barset_alpaca()
     assert isinstance(barset, BarSet)
-
+    assert 'MOCKSYMBOL_30C779F3' in barset.data
 
 def test_generate_bar_alpaca():
     bar = generate_bar_alpaca()
     assert isinstance(bar, Bar)
+    assert bar.symbol == 'MOCKSYMBOL_076E9AE1'
 
 
 def test_generate_bar_alpaca_list():
