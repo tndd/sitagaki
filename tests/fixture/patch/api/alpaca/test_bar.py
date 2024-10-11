@@ -1,4 +1,3 @@
-import pytest
 from alpaca.data.enums import Adjustment
 from alpaca.data.models import BarSet
 from alpaca.data.timeframe import TimeFrame
