@@ -1,6 +1,6 @@
 from typing import Sequence, cast
 
-from infra.db.peewee.client import PeeweeClient
+from src.infra.db.peewee.client import PeeweeClient
 from tests.utils.decorator import test_only
 
 peewee_cli = PeeweeClient()

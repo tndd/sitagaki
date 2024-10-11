@@ -1,4 +1,4 @@
-from domain.materia.stock.chart.model import Bar, Chart
+from src.domain.materia.stock.chart.model import Bar, Chart
 from tests.utils.factory.domain.materia.stock.chart import generate_bar, generate_chart
 
 

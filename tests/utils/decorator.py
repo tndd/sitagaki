@@ -1,7 +1,7 @@
 import pytest
 from decorator import decorator
 
-from infra.db.common import is_test_mode
+from src.infra.db.common import is_test_mode
 
 
 @pytest.mark.skip # 基本的にこのファイルはテスト対象にはならないが念の為
