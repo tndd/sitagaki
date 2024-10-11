@@ -5,7 +5,7 @@ from src.infra.db.common import is_test_mode
 
 
 @decorator
-def test_only(f, *args, **kwargs):
+def only_test(f, *args, **kwargs):
     """
     テストモード以外で実行するとエラーを吐き強制終了させるデコレータ。
     """

@@ -1,13 +1,13 @@
 from typing import Sequence, cast
 
-from fixture.decorator import test_only
+from fixture.decorator import only_test
 from fixture.factory.infra.db.peewee.bar import generate_table_bar_alpaca_list
 from src.infra.db.peewee.client import PeeweeClient
 
 peewee_cli = PeeweeClient()
 
 
-@test_only
+@only_test
 def cleanup_tables():
     """
     テーブルを空にする。
