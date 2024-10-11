@@ -1,7 +1,13 @@
 import pytest
 
+import src.infra.db.common
 from fixture.decorator import only_test
 from src.infra.db.common import WorkMode
+
+print(f"Contents of src.infra.db.common: {dir(src.infra.db.common)}")
+print(f"CURRENT_WORK_MODE in src.infra.db.common: {'CURRENT_WORK_MODE' in dir(src.infra.db.common)}")
+if 'CURRENT_WORK_MODE' in dir(src.infra.db.common):
+    print(f"Value of CURRENT_WORK_MODE: {src.infra.db.common.CURRENT_WORK_MODE}")
 
 
 @pytest.mark.parametrize(
@@ -17,6 +23,7 @@ def test_only_test(mocker, work_mode):
         "src.infra.db.common.CURRENT_WORK_MODE",
         work_mode
     )
+    print(f"After patch - Value of CURRENT_WORK_MODE: {src.infra.db.common.CURRENT_WORK_MODE}")
     CURRENT_WORK_MODE = work_mode # HACK: これを追加するとなぜかテスト期待通りの動作となる
     # ワークモードが変更されているかを確認
     assert work_mode is CURRENT_WORK_MODE
