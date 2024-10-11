@@ -1,10 +1,8 @@
-import sys
 from os import environ
-from pathlib import Path
 
 from dotenv import load_dotenv
 
-# 環境変数の読み込み
+# 最速のタイミングで環境変数を読み込み
 load_dotenv()
 environ['WORK_MODE'] = 'IN_MEMORY'
 
@@ -12,7 +10,7 @@ import socket
 
 import pytest
 
-from fixture.operate.danger import cleanup_tables
+from fixture.operate import cleanup_tables
 
 # テスト用fixture
 from fixture.patch.api.alpaca.bar import patch_get_stock_bars
@@ -22,7 +20,6 @@ from fixture.pyfx import fx_replace_api_alpaca_get_stock_bars_empty
 @pytest.fixture(scope="session", autouse=True)
 def setup_session(session_mocker):
     pass
-
 
 
 @pytest.fixture(scope="function", autouse=True)
