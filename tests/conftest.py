@@ -14,7 +14,7 @@ import socket
 
 import pytest
 
-from tests.utils.fixture import fx_replace_api_alpaca_get_stock_bars_empty
+from tests.utils.pyfx import fx_replace_api_alpaca_get_stock_bars_empty
 from tests.utils.operate.danger import cleanup_tables
 
 # テスト用fixture
