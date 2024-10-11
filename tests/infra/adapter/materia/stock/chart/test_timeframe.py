@@ -1,4 +1,5 @@
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
+from fixture.factory.infra.db.peewee.bar import generate_table_bar_alpaca
 
 from src.domain.materia.stock.chart.const import Timeframe
 from src.infra.adapter.materia.stock.chart.timeframe import (
@@ -7,7 +8,6 @@ from src.infra.adapter.materia.stock.chart.timeframe import (
     depart_timeframe_to_table,
 )
 from src.infra.db.peewee.table.alpaca.bar import TimeframeTable
-from tests.utils.factory.infra.db.peewee.bar import generate_table_bar_alpaca
 
 
 def test_arrive_timeframe_from_table():

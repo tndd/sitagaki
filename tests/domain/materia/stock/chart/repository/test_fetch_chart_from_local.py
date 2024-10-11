@@ -1,13 +1,13 @@
 from datetime import datetime
 
 import pytest
+from fixture.factory.infra.db.peewee.bar import generate_table_bar_alpaca_list
 
 from src.domain.materia.stock.chart.const import Adjustment, Timeframe
 from src.domain.materia.stock.chart.model import Chart
 from src.domain.materia.stock.chart.repository import ChartRepository
 from src.infra.db.peewee.client import PeeweeClient
 from src.infra.db.peewee.table.alpaca.bar import TableBarAlpaca
-from tests.utils.factory.infra.db.peewee.bar import generate_table_bar_alpaca_list
 
 peewee_cli = PeeweeClient()
 chart_repo = ChartRepository()

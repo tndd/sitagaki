@@ -1,8 +1,8 @@
-from src.infra.db.peewee.table.alpaca.bar import TableBarAlpaca
-from tests.utils.factory.infra.db.peewee.bar import (
+from fixture.factory.infra.db.peewee.bar import (
     generate_table_bar_alpaca,
     generate_table_bar_alpaca_list,
 )
+from src.infra.db.peewee.table.alpaca.bar import TableBarAlpaca
 
 
 def test_generate_table_bar_alpaca():

@@ -13,12 +13,11 @@ environ['WORK_MODE'] = 'IN_MEMORY'
 import socket
 
 import pytest
-
-from tests.utils.pyfx import fx_replace_api_alpaca_get_stock_bars_empty
-from tests.utils.operate.danger import cleanup_tables
+from fixture.operate.danger import cleanup_tables
 
 # テスト用fixture
-from tests.utils.patch.api.alpaca.bar import patch_get_stock_bars
+from fixture.patch.api.alpaca.bar import patch_get_stock_bars
+from fixture.pyfx import fx_replace_api_alpaca_get_stock_bars_empty
 
 
 @pytest.fixture(scope="session", autouse=True)

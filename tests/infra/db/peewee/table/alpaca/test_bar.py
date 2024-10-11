@@ -1,12 +1,13 @@
+from fixture.factory.infra.db.peewee.bar import (
+    generate_table_bar_alpaca,
+    generate_table_bar_alpaca_list,
+)
+
 from src.infra.db.peewee.client import PeeweeClient
 from src.infra.db.peewee.table.alpaca.bar import (
     AdjustmentTable,
     TableBarAlpaca,
     TimeframeTable,
-)
-from tests.utils.factory.infra.db.peewee.bar import (
-    generate_table_bar_alpaca,
-    generate_table_bar_alpaca_list,
 )
 
 """

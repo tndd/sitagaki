@@ -2,7 +2,7 @@ import pytest
 from alpaca.data.historical.stock import StockHistoricalDataClient
 from alpaca.data.models import BarSet
 
-from tests.utils.factory.infra.api.alpaca.bar import generate_barset_alpaca
+from fixture.factory.infra.api.alpaca.bar import generate_barset_alpaca
 
 
 def patch_get_stock_bars(mocker):

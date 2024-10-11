@@ -1,11 +1,11 @@
 from datetime import datetime
 
 import pytest
+from fixture.factory.infra.db.peewee.bar import generate_table_bar_alpaca_list
 
 from src.infra.db.peewee.client import PeeweeClient
 from src.infra.db.peewee.query.materia.stock.chart import get_query_select_bar_alpaca
 from src.infra.db.peewee.table.alpaca.bar import AdjustmentTable, TimeframeTable
-from tests.utils.factory.infra.db.peewee.bar import generate_table_bar_alpaca_list
 
 peewee_cli = PeeweeClient()
 

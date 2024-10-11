@@ -1,6 +1,6 @@
 import pytest
 
-from tests.utils.patch.api.alpaca.bar import patch_get_stock_bars_empty
+from fixture.patch.api.alpaca.bar import patch_get_stock_bars_empty
 
 
 @pytest.fixture

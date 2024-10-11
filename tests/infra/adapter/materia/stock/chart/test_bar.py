@@ -1,3 +1,7 @@
+from fixture.factory.domain.materia.stock.chart import generate_bar
+from fixture.factory.infra.api.alpaca.bar import generate_bar_alpaca
+from fixture.factory.infra.db.peewee.bar import generate_table_bar_alpaca
+
 from src.domain.materia.stock.chart.const import Adjustment, Timeframe
 from src.domain.materia.stock.chart.model import Bar
 from src.infra.adapter.materia.stock.chart.bar import (
@@ -6,9 +10,6 @@ from src.infra.adapter.materia.stock.chart.bar import (
     depart_bar_to_table,
 )
 from src.infra.db.peewee.table.alpaca.bar import TableBarAlpaca
-from tests.utils.factory.domain.materia.stock.chart import generate_bar
-from tests.utils.factory.infra.api.alpaca.bar import generate_bar_alpaca
-from tests.utils.factory.infra.db.peewee.bar import generate_table_bar_alpaca
 
 
 def test_arrive_bar_from_alpaca_api():

@@ -1,5 +1,5 @@
+from fixture.factory.domain.materia.stock.chart import generate_bar, generate_chart
 from src.domain.materia.stock.chart.model import Bar, Chart
-from tests.utils.factory.domain.materia.stock.chart import generate_bar, generate_chart
 
 
 def test_generate_bar():
