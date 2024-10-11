@@ -9,15 +9,16 @@
         "**/.pytest_cache": true
     },
     "todo-tree.general.tags": [
-        "FIXME",
-        "BUG",
-        "TODO",
-        "LATER",
+        "FIXME",         // 直ちに修正を行う最優先事項であることを表す。
+        "BUG",           // 明確に不具合が発生している場所を表す。
+        "TODO",          // 今後作業が必要な箇所を表す。
+        "LATER",         // TODOほどではないが、今後作業が必要な箇所を表す。
+        "WARN",          // 一時的な応急処置など、今後警戒が必要な部分を表す。
+        "HACK",          // 注意が必要な目的実現のための直感的でない動作をしうる箇所を表す。
+        "NOTE",          // 長文での動作説明や調査内容を記録する際に使う
+        "MEMO",          // 大まかな今後の作業メモ。ざっくりした方針など。
         "[ ]",
         "[x]",
-        "WARN",
-        "HACK",
-        "NOTE"
     ],
     "todo-tree.highlights.customHighlight": {
         "FIXME": {
