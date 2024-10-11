@@ -5,11 +5,6 @@ from alpaca.data.models import BarSet
 from tests.utils.factory.infra.api.alpaca.bar import generate_barset_alpaca
 
 
-@pytest.fixture
-def fx_replace_patch_alpaca_get_stock_bars_empty(mocker):
-    patch_get_stock_bars_empty(mocker)
-
-
 def patch_get_stock_bars(mocker):
     """
     通信をモックし、ダミーのBarSetを返す。

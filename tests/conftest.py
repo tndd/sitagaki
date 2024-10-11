@@ -13,13 +13,11 @@ from os import environ
 
 import pytest
 
+from tests.utils.fixture import fx_replace_api_alpaca_get_stock_bars_empty
 from tests.utils.operate.danger import cleanup_tables
 
 # テスト用fixture
-from tests.utils.patch.api.alpaca.bar import (
-    fx_replace_patch_alpaca_get_stock_bars_empty,
-    patch_get_stock_bars,
-)
+from tests.utils.patch.api.alpaca.bar import patch_get_stock_bars
 
 
 @pytest.fixture(scope="session", autouse=True)
