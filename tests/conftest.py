@@ -2,7 +2,7 @@ from os import environ
 
 from dotenv import load_dotenv
 
-# 最速のタイミングで環境変数を読み込み
+# 環境変数をテスト用のものに強制適用
 load_dotenv()
 environ['WORK_MODE'] = 'IN_MEMORY'
 
