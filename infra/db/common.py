@@ -27,11 +27,12 @@ def read_work_mode_from_env() -> WorkMode:
         work_mode = WorkMode.DEV
     elif env_work_mode == 'PROD':
         work_mode = WorkMode.PROD
-    elif env_work_mode == 'IN_MEMORY' or env_work_mode == 'NO_SET':
-        # 環境変数未指定時についてもIN_MEMORYを返す
+    elif env_work_mode == 'IN_MEMORY':
         work_mode = WorkMode.IN_MEMORY
+    elif env_work_mode == 'NO_SET':
+        raise ValueError("WORK_MODEが指定されていません。")
     else:
-        raise ValueError(f"指定されたワークモードは存在しません: {env_work_mode}")
+        raise ValueError(f"指定されたWORK_MODEは存在しません: {env_work_mode}")
     return work_mode
 
 # ワークモードは不可逆的に決定される

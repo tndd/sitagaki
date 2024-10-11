@@ -1,15 +1,16 @@
 import sys
+from os import environ
 from pathlib import Path
 
 from dotenv import load_dotenv
 
 # 環境変数の読み込み
 load_dotenv()
+environ['WORK_MODE'] = 'IN_MEMORY'
 # プロジェクトルートへのパス通し
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 import socket
-from os import environ
 
 import pytest
 
@@ -22,8 +23,8 @@ from tests.utils.patch.api.alpaca.bar import patch_get_stock_bars
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_session(session_mocker):
-    # 環境変数WorkModeをテスト仕様に強制する
-    environ['WORK_MODE'] = 'IN_MEMORY'
+    pass
+
 
 
 @pytest.fixture(scope="function", autouse=True)
