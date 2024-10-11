@@ -7,10 +7,10 @@ from tests.utils.factory.infra.api.alpaca.bar import generate_barset_alpaca
 
 @pytest.fixture
 def fx_replace_patch_alpaca_get_stock_bars_empty(mocker):
-    patch_alpaca_get_stock_bars_empty(mocker)
+    patch_get_stock_bars_empty(mocker)
 
 
-def patch_alpaca_get_stock_bars(mocker):
+def patch_get_stock_bars(mocker):
     """
     通信をモックし、ダミーのBarSetを返す。
     """
@@ -20,7 +20,7 @@ def patch_alpaca_get_stock_bars(mocker):
         return_value=generate_barset_alpaca()
     )
 
-def patch_alpaca_get_stock_bars_empty(mocker):
+def patch_get_stock_bars_empty(mocker):
     """
     空のBarSetを返す。
     ただし空のBarSetという戻り値はあり得ることなのでエラーではない。

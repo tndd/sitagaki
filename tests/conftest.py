@@ -18,7 +18,7 @@ from tests.utils.operate.danger import cleanup_tables
 # テスト用fixture
 from tests.utils.patch.api.alpaca.bar import (
     fx_replace_patch_alpaca_get_stock_bars_empty,
-    patch_alpaca_get_stock_bars,
+    patch_get_stock_bars,
 )
 
 
@@ -36,7 +36,7 @@ def setup_function(request, mocker):
     # データの初期化
     cleanup_tables()
     # 通信関数のモック化
-    patch_alpaca_get_stock_bars(mocker)
+    patch_get_stock_bars(mocker)
     # マーカーごとの特別処理
     if request.node.get_closest_marker('online') \
         or request.node.get_closest_marker('online_slow'):
