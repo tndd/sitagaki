@@ -2,19 +2,12 @@ from fixture.factory.infra.db.peewee.bar import (
     generate_table_bar_alpaca,
     generate_table_bar_alpaca_list,
 )
-
 from src.infra.db.peewee.client import PeeweeClient
 from src.infra.db.peewee.table.alpaca.bar import (
     AdjustmentTable,
     TableBarAlpaca,
     TimeframeTable,
 )
-
-"""
-MEMO:
-    基本的にはTableBarAlpacaがテーブルクラスとして機能しているかを確認する。
-    だがその他にも挿入や取得などの一通りの動作確認も行っておく。
-"""
 
 peewee_cli = PeeweeClient()
 
