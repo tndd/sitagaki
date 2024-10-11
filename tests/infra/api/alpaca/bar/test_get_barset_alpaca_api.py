@@ -28,7 +28,7 @@ ADJUSTMENTS = [
 @pytest.mark.parametrize("timeframe,adjustment", [
     (tf, adj) for tf in TIMEFRAMES for adj in ADJUSTMENTS
 ])
-def test_default(timeframe, adjustment):
+def test_basic(timeframe, adjustment):
     """
     BarSetを取得する機能の通信テスト
     TimeframeとAdjustmentの全ての組み合わせを試す。

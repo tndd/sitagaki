@@ -12,7 +12,7 @@ peewee_cli = PeeweeClient()
 chart_repo = ChartRepository()
 
 
-def test_default():
+def test_basic():
     """
     時間軸省略時の取得動作確認
         デフォルト日付範囲については、全範囲を網羅できる2000-01-01~nowとしている。

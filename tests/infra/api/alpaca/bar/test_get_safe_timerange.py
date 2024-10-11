@@ -10,7 +10,7 @@ from src.infra.api.alpaca.bar import (
 )
 
 
-def test_default():
+def test_basic():
     """
     デフォルトのテスト
 

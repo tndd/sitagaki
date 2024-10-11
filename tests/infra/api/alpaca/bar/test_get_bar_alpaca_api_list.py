@@ -10,7 +10,7 @@ from src.infra.api.alpaca.bar import AlpacaApiBarClient
 cli_alpaca = AlpacaApiBarClient()
 
 
-def test_default():
+def test_basic():
     """
     通信部分をモックにした簡易テスト
     """

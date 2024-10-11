@@ -5,7 +5,7 @@ from src.infra.db.peewee.query.materia.stock.chart import (
 )
 
 
-def test_default():
+def test_basic():
     return # TODO: テストコードの作成
     load_table_bar_alpaca_on_db()
 
