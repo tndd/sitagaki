@@ -1,7 +1,7 @@
 import pytest
 
 from fixture.decorator import only_test
-from src.infra.db.common import CURRENT_WORK_MODE, WorkMode
+from src.infra.db.common import WorkMode
 
 
 @pytest.mark.parametrize(
@@ -15,7 +15,7 @@ def test_only_test(mocker, work_mode):
     # ワークモードを強制変更
     mocker.patch(
         "src.infra.db.common.CURRENT_WORK_MODE",
-        new=work_mode
+        work_mode
     )
     CURRENT_WORK_MODE = work_mode # HACK: これを追加するとなぜかテスト期待通りの動作となる
     # ワークモードが変更されているかを確認
