@@ -11,19 +11,20 @@ def generate_bar() -> Bar:
         high=188.44,
         low=183.885,
         close=185.64,
-        volume=82496943.0,
+        volume=114514.305358,
         trade_count=1009074.0,
         vwap=185.937347
     )
 
 
 def generate_chart(
-        symbol: str = "AAPL",
+        symbol: str = "MOCKSYMBOL_94CE5395",
         timeframe: Timeframe = Timeframe.DAY,
         adjustment: Adjustment = Adjustment.RAW,
 ) -> Chart:
     """
-    AAPLのChartデータ
+    Chartデータ
+        * symbol="MOCKSYMBOL_94CE5395"
         * 3件
         * adjustment="RAW"
         * timeframe="DAY"
