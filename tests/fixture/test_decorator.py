@@ -24,9 +24,9 @@ def test_only_test(mocker, work_mode):
         work_mode
     )
     print(f"After patch - Value of CURRENT_WORK_MODE: {src.infra.db.common.CURRENT_WORK_MODE}")
-    CURRENT_WORK_MODE = work_mode # HACK: これを追加するとなぜかテスト期待通りの動作となる
+    # CURRENT_WORK_MODE = work_mode # HACK: これを追加するとなぜかテスト期待通りの動作となる
     # ワークモードが変更されているかを確認
-    assert work_mode is CURRENT_WORK_MODE
+    assert work_mode is src.infra.db.common.CURRENT_WORK_MODE
     # デコレータ検証用関数
     @only_test
     def _f():
