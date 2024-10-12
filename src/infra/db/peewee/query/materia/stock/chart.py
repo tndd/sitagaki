@@ -18,6 +18,10 @@ def get_query_select_bar_alpaca(
     end: datetime | None
 ) -> ModelSelect:
     """
+    FIXME: endの指定廃止に伴うクエリ生成箇所の修正
+        get_safe_timerange()のend廃止に伴い、
+        このクエリ生成関数の修正も必要となる。
+
     指定されたsymbol,timeframe,adjustmentの条件に一致するbarデータを取得する。
     start~endの範囲内のbarデータを取得する。
 

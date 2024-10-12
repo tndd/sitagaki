@@ -9,6 +9,11 @@ from src.infra.api.alpaca.bar import (
     get_safe_timerange,
 )
 
+"""
+FIXME: end廃止修正に伴うテスト修正
+    endの指定を廃止に伴い、このテストも修正が必要。
+"""
+
 
 def test_basic():
     """
