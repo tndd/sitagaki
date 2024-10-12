@@ -45,7 +45,6 @@ class ChartRepository:
         end: datetime | None = None,
         limit: int | None = None
     ) -> None:
-        # TODO: デフォルト引数変更につきテストの追加
         """
         指定されたシンボルのbarデータをonlineから取得し、DBに保存する。
 
