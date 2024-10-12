@@ -75,6 +75,14 @@ def get_safe_timerange(
 ) -> TimeRange:
     """
     alpacaの時間指定のために、startとendを安全な形式にする。
+
+    start:
+        未指定時は2000-01-01とする。
+    end:
+        未指定時は現在時刻の15分前とする。
+        その時刻を超えていた場合は、15分前に再設定する。
+
+    startがendよりも新しい日付である場合はエラーとする。
     """
     end_safe = datetime.now() - timedelta(minutes=DELAY)
     # startに指定がない場合、ROOT_START_DATETIMEを指定
