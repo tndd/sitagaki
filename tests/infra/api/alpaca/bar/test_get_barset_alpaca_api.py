@@ -11,6 +11,30 @@ from src.infra.api.alpaca.bar import AlpacaApiBarClient
 cli_alpaca = AlpacaApiBarClient()
 
 
+
+@pytest.mark.online
+def test_basic():
+    """
+    基本的な通信テスト。
+    start,end未指定時の動作も検証する。
+
+    FIXME: テスト失敗
+        現在endの範囲指定機能がalpaca側の想定外の仕様のため、このテストが失敗する。
+        こちら側での修正後、このテストの確認を行う。
+    """
+    # timeframe X adjustmentの組み合わせを全通り試す
+    barset = cli_alpaca.get_barset_alpaca_api(
+        symbol="AAPL",
+        timeframe=TimeFrameAlpaca.Day,
+        adjustment=AdjustmentAlpaca.RAW,
+        limit=5
+    )
+    # LATER: 将来的にはログなどの方法で中身を確認する方針に変更
+    assert isinstance(barset, BarSet)
+    # limitによる取得数制限の確認
+    assert len(barset.data['AAPL']) == 5
+
+
 @pytest.mark.online
 def test_invalid_timerange():
     """
@@ -25,6 +49,7 @@ def test_invalid_timerange():
         limit=5,
         end=datetime.now() + timedelta(minutes=20) # 確実に範囲を超過している
     )
+
 
 # 組み合わせのリスト作成
 TIMEFRAMES = [
@@ -44,7 +69,7 @@ ADJUSTMENTS = [
 @pytest.mark.parametrize("timeframe,adjustment", [
     (tf, adj) for tf in TIMEFRAMES for adj in ADJUSTMENTS
 ])
-def test_basic(timeframe, adjustment):
+def test_combination_tf_adj(timeframe, adjustment):
     """
     BarSetを取得する機能の通信テスト
     TimeframeとAdjustmentの全ての組み合わせを試す。
@@ -55,7 +80,6 @@ def test_basic(timeframe, adjustment):
     # timeframe X adjustmentの組み合わせを全通り試す
     barset = cli_alpaca.get_barset_alpaca_api(
         symbol="AAPL",
-        start=datetime(2024,1,1),
         timeframe=timeframe,
         adjustment=adjustment,
         limit=5
