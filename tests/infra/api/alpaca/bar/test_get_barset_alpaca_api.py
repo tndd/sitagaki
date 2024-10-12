@@ -10,6 +10,22 @@ from src.infra.api.alpaca.bar import AlpacaApiBarClient
 
 cli_alpaca = AlpacaApiBarClient()
 
+
+@pytest.mark.online
+def test_invalid_timerange():
+    """
+    Alpacaが認めていない範囲のendを指定するとエラーが発生するかの検証。
+    """
+    exp_message = 'subscription does not permit querying recent SIP data'
+    with pytest.raises(APIError, match=exp_message):
+        cli_alpaca.get_barset_alpaca_api(
+        symbol="AAPL",
+        timeframe=TimeFrameAlpaca.Day,
+        adjustment=AdjustmentAlpaca.RAW,
+        limit=5,
+        end=datetime.now() + timedelta(minutes=20) # 確実に範囲を超過している
+    )
+
 # 組み合わせのリスト作成
 TIMEFRAMES = [
     TimeFrameAlpaca.Minute,
