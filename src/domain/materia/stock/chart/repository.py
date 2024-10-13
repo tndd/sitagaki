@@ -76,10 +76,9 @@ class ChartRepository:
         symbol: str,
         timeframe: Timeframe,
         adjustment: Adjustment,
-        start: datetime = datetime(2000, 1, 1),
-        end: datetime = datetime.now()
+        start: datetime | None = None,
+        end: datetime | None = None
     ) -> Chart:
-        # TODO: 日付指定をNoneを受け入れられるように
         """
         ローカルのDBから指定されたシンボルのbarを取得する。
 
