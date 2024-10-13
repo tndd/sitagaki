@@ -2,7 +2,7 @@ from fixture.infra.db.peewee.table.alpaca.bar import (
     generate_table_bar_alpaca,
     generate_table_bar_alpaca_list,
 )
-from src.infra.db.peewee.client import PEEWEE_CLI
+from src.infra.db.peewee.client import CLI_PEEWEE
 from src.infra.db.peewee.table.alpaca.bar import (
     AdjustmentTable,
     TableBarAlpaca,
@@ -17,7 +17,7 @@ def test_table_bar_alpaca_is_created():
     # 投入用のTableBarAlpacaを作成
     table_bar_alpaca = generate_table_bar_alpaca()
     # テーブルに投入
-    PEEWEE_CLI.insert_models([table_bar_alpaca])
+    CLI_PEEWEE.insert_models([table_bar_alpaca])
     # テーブルの存在確認
     assert TableBarAlpaca.table_exists()
 
@@ -35,7 +35,7 @@ def test_table_bar_alpaca_list():
     # 投入用のTableBarAlpacaを作成
     table_bar_alpaca_list = generate_table_bar_alpaca_list()
     # テーブルに投入
-    PEEWEE_CLI.insert_models(table_bar_alpaca_list)
+    CLI_PEEWEE.insert_models(table_bar_alpaca_list)
     # 1. データが投入されたことを確認
     assert len(TableBarAlpaca.select()) == len(table_bar_alpaca_list)
     # 2. symbol=AAPL and timeframe=DAY and adjustment = RAW のデータ取得

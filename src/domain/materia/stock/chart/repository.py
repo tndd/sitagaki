@@ -14,7 +14,7 @@ from src.infra.adapter.materia.stock.chart import (
     depart_timeframe_to_table,
 )
 from src.infra.api.alpaca.bar import AlpacaApiBarClient
-from src.infra.db.peewee.client import PEEWEE_CLI, PeeweeClient
+from src.infra.db.peewee.client import CLI_PEEWEE, PeeweeClient
 from src.infra.db.peewee.query.materia.stock.chart import get_query_select_bar_alpaca
 
 
@@ -133,6 +133,6 @@ class ChartRepository:
 
 # シングルトン
 REPO_CHART = ChartRepository(
-    cli_db=PEEWEE_CLI,
+    cli_db=CLI_PEEWEE,
     cli_alpaca=AlpacaApiBarClient()
 )

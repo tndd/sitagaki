@@ -101,4 +101,4 @@ class PeeweeClient:
 db = create_db()
 _DB_PROXY.initialize(db)
 # シングルトンなpeewee_cli
-PEEWEE_CLI = PeeweeClient(db)
+CLI_PEEWEE = PeeweeClient(db)
