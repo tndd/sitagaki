@@ -5,9 +5,7 @@ import pytest
 from fixture.infra.db.peewee.table.alpaca.bar import load_table_bar_alpaca_on_db
 from src.domain.materia.stock.chart.const import Adjustment, Timeframe
 from src.domain.materia.stock.chart.model import Chart
-from src.domain.materia.stock.chart.repository import ChartRepository
-
-chart_repo = ChartRepository()
+from src.domain.materia.stock.chart.repository import CHART_REPO
 
 
 def test_basic():
@@ -22,7 +20,7 @@ def test_basic():
     # テストデータをDBに登録
     load_table_bar_alpaca_on_db()
     # 取得
-    chart = chart_repo.fetch_chart_from_local(
+    chart = CHART_REPO.fetch_chart_from_local(
         symbol="AAPL",
         timeframe=Timeframe.DAY,
         adjustment=Adjustment.RAW
@@ -52,7 +50,7 @@ def test_date_range():
     # テストデータをDBに登録
     load_table_bar_alpaca_on_db()
     # 取得
-    chart = chart_repo.fetch_chart_from_local(
+    chart = CHART_REPO.fetch_chart_from_local(
         symbol="AAPL",
         timeframe=Timeframe.DAY,
         adjustment=Adjustment.RAW,
@@ -92,7 +90,7 @@ def test_not_exist_symbol():
     load_table_bar_alpaca_on_db()
     # まずエラーが発生することを確認
     with pytest.raises(Exception) as excinfo:
-        chart_repo.fetch_chart_from_local(
+        CHART_REPO.fetch_chart_from_local(
             symbol="NOSYMBOL",
             timeframe=Timeframe.DAY,
             adjustment=Adjustment.RAW,

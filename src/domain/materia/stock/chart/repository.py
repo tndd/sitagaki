@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime
 from typing import Sequence
 
@@ -14,14 +14,14 @@ from src.infra.adapter.materia.stock.chart import (
     depart_timeframe_to_table,
 )
 from src.infra.api.alpaca.bar import AlpacaApiBarClient
-from src.infra.db.peewee.client import PeeweeClient
+from src.infra.db.peewee.client import PEEWEE_CLI, PeeweeClient
 from src.infra.db.peewee.query.materia.stock.chart import get_query_select_bar_alpaca
 
 
 @dataclass
 class ChartRepository:
-    cli_db: PeeweeClient = field(default_factory=PeeweeClient)
-    cli_alpaca: AlpacaApiBarClient = field(default_factory=AlpacaApiBarClient)
+    cli_db: PeeweeClient
+    cli_alpaca: AlpacaApiBarClient
 
     def store_chart_from_online(
         self,
@@ -129,3 +129,10 @@ class ChartRepository:
         MEMO: symbolは単発でもリストでも受け取れるようにしておく。
         """
         pass
+
+
+# シングルトン
+CHART_REPO = ChartRepository(
+    cli_db=PEEWEE_CLI,
+    cli_alpaca=AlpacaApiBarClient()
+)
