@@ -1,11 +1,18 @@
 from datetime import datetime
 
+import pytest
 from alpaca.data.historical.stock import StockHistoricalDataClient
 from alpaca.data.models import BarSet
 from alpaca.data.models.bars import Bar, BarSet
 
 from fixture.factory.infra.api.alpaca.bar import generate_barset_alpaca
+from fixture.patch.api.alpaca.bar import patch_get_stock_bars_empty
 from src.infra.api.alpaca.bar import extract_bar_list_alpaca_api_from_barset
+
+
+@pytest.fixture
+def fx_replace_api_alpaca_get_stock_bars_empty(mocker):
+    patch_get_stock_bars_empty(mocker)
 
 
 def load_table_bar_alpaca_on_db():
