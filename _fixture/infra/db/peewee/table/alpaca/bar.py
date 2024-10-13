@@ -7,6 +7,14 @@ from src.infra.db.peewee.table.alpaca.bar import (
 )
 
 
+def load_table_bar_alpaca_on_db():
+    """
+    BarデータをDBに登録する。
+    """
+    table_bar_alpaca_list = generate_table_bar_alpaca_list()
+    peewee_cli.insert_models(table_bar_alpaca_list)
+
+
 def generate_table_bar_alpaca() -> TableBarAlpaca:
     """
     timeframe: 1 -> min

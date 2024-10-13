@@ -6,21 +6,12 @@ from alpaca.data.models import BarSet
 from alpaca.data.models.bars import Bar, BarSet
 
 from fixture.factory.infra.api.alpaca.bar import generate_barset_alpaca
-from fixture.patch.api.alpaca.bar import patch_get_stock_bars_empty
 from src.infra.api.alpaca.bar import extract_bar_list_alpaca_api_from_barset
 
 
 @pytest.fixture
 def fx_replace_api_alpaca_get_stock_bars_empty(mocker):
     patch_get_stock_bars_empty(mocker)
-
-
-def load_table_bar_alpaca_on_db():
-    """
-    BarデータをDBに登録する。
-    """
-    table_bar_alpaca_list = generate_table_bar_alpaca_list()
-    peewee_cli.insert_models(table_bar_alpaca_list)
 
 
 def patch_get_stock_bars(mocker):
