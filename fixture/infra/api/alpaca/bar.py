@@ -1,8 +1,39 @@
 from datetime import datetime
 
+import pytest
+from alpaca.data.historical.stock import StockHistoricalDataClient
 from alpaca.data.models.bars import Bar, BarSet
 
+from fixture.infra.api.alpaca.bar import generate_barset_alpaca
 from src.infra.api.alpaca.bar import extract_bar_list_alpaca_api_from_barset
+
+
+@pytest.fixture
+def fx_replace_api_alpaca_get_stock_bars_empty(mocker):
+    patch_get_stock_bars_empty(mocker)
+
+
+def patch_get_stock_bars(mocker):
+    """
+    通信をモックし、ダミーのBarSetを返す。
+    """
+    mocker.patch.object(
+        StockHistoricalDataClient,
+        'get_stock_bars',
+        return_value=generate_barset_alpaca()
+    )
+
+def patch_get_stock_bars_empty(mocker):
+    """
+    空のBarSetを返す。
+    ただし空のBarSetという戻り値はあり得ることなのでエラーではない。
+    そのためerrではなくfailとしている。
+    """
+    mocker.patch.object(
+        StockHistoricalDataClient,
+        'get_stock_bars',
+        return_value=BarSet(raw_data={'NOSYMBOL_2602E09F': []})
+    )
 
 
 def generate_barset_alpaca() -> BarSet:
@@ -82,4 +113,8 @@ def generate_bar_alpaca() -> Bar:
 
 
 def generate_bar_alpaca_list() -> list[Bar]:
+    """
+    BarSetはそのままだと使いづらいので、
+    そこからBarのリストを抜き出して返す機能を関数化した。
+    """
     return extract_bar_list_alpaca_api_from_barset(generate_barset_alpaca())

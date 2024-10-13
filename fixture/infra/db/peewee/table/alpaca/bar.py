@@ -1,10 +1,21 @@
 from datetime import datetime
 
+from src.infra.db.peewee.client import PeeweeClient
 from src.infra.db.peewee.table.alpaca.bar import (
     AdjustmentTable,
     TableBarAlpaca,
     TimeframeTable,
 )
+
+peewee_cli = PeeweeClient()
+
+
+def load_table_bar_alpaca_on_db():
+    """
+    BarデータをDBに登録する。
+    """
+    table_bar_alpaca_list = generate_table_bar_alpaca_list()
+    peewee_cli.insert_models(table_bar_alpaca_list)
 
 
 def generate_table_bar_alpaca() -> TableBarAlpaca:
