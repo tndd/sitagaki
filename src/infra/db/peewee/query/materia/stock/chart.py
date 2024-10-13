@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from peewee import ModelSelect
+from peewee import ModelSelect, fn
 
 from src.infra.db.peewee.table.alpaca.bar import (
     AdjustmentTable,
@@ -32,22 +32,26 @@ def get_query_select_bar_alpaca(
 
 
 def get_query_select_latest_timestamp_of_bar_alpaca(
-    symbol: str,
+    symbols: list[str],
     timeframe: TimeframeTable,
     adjustment: AdjustmentTable
 ) -> ModelSelect:
     """
-    指定されたtimeframe,adjustmentのシンボルの最新の日付を取得
+    指定されたtimeframe,adjustmentについて、
+    渡されたシンボル一覧の最新取得日のモデルを返す
     """
     query = TableBarAlpaca.select(
-        TableBarAlpaca.timestamp
+        TableBarAlpaca.symbol,
+        fn.MAX(TableBarAlpaca.timestamp)
     ).where(
-        TableBarAlpaca.symbol == symbol,
+        TableBarAlpaca.symbol.in_(symbols),
         TableBarAlpaca.timeframe == timeframe,
         TableBarAlpaca.adjustment == adjustment
+    ).group_by(
+        TableBarAlpaca.symbol
     ).order_by(
-        TableBarAlpaca.timestamp.desc()
-    ).limit(1)
+        TableBarAlpaca.symbol
+    )
     return query
 
 
