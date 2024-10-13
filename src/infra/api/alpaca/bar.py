@@ -44,12 +44,6 @@ class AlpacaApiBarClient:
         """
         日足のヒストリカルバー情報を取得。
         BarSetからBarのリストを取り出して返却するまで行う。
-
-        NOTE: endの指定がない理由
-            基本的にオンライン上からデータを取得する場合、最新の日付までのデータを求める。
-            それ以外のシチュエーションはほぼ浮かばない。
-            そんなものが仮にあったとしても、こちら側でいらない部分を間引けばいいだけ。
-            無駄に動作を複雑化させたくないので、やはりendは扱わない。
         """
         barset = self.get_barset_alpaca_api(symbol, timeframe, adjustment, start, limit)
         return extract_bar_list_alpaca_api_from_barset(barset)

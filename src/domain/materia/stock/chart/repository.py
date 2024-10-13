@@ -29,11 +29,14 @@ class ChartRepository:
         timeframe: Timeframe,
         adjustment: Adjustment,
         start: datetime | None = None,
-        end: datetime | None = None,
         limit: int | None = None
     ) -> None:
         """
         指定されたシンボルのbarデータをonlineから取得し、DBに保存する。
+
+        NOTE: endの指定がない理由
+            基本的にオンライン上からデータを取得する場合、最新の日付までのデータを求めるから。
+            endを指定したデータ取得の必要性を感じないし、いらない部分があるなら捨てればいい。
         """
         # barsデータを取得
         bar_alpaca_api_list = self.cli_alpaca.get_bar_alpaca_api_list(
@@ -41,7 +44,6 @@ class ChartRepository:
             timeframe=depart_timeframe_to_alpaca_api(timeframe),
             adjustment=depart_adjustment_to_alpaca_api(adjustment),
             start=start,
-            end=end,
             limit=limit
         )
         # adapt: <= alpaca_api
