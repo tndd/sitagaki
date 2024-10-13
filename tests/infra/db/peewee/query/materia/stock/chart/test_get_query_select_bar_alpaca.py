@@ -26,6 +26,7 @@ def test_basic():
         2. シンボルが"AAPL"のbarのみ取得
     """
     # データ用意
+    # TODO: 投入部分の関数化
     table_bar_alpaca_list = generate_table_bar_alpaca_list()
     peewee_cli.insert_models(table_bar_alpaca_list)
     # データ取得
