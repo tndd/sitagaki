@@ -1,13 +1,11 @@
 from datetime import datetime
 
-from src.infra.db.peewee.client import PeeweeClient
+from src.infra.db.peewee.client import PEEWEE_CLI as peewee_cli
 from src.infra.db.peewee.table.alpaca.bar import (
     AdjustmentTable,
     TableBarAlpaca,
     TimeframeTable,
 )
-
-peewee_cli = PeeweeClient()
 
 
 def load_table_bar_alpaca_on_db():

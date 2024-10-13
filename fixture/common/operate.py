@@ -1,9 +1,7 @@
 from typing import Sequence, cast
 
 from fixture.common.decorator import only_test
-from src.infra.db.peewee.client import PeeweeClient
-
-peewee_cli = PeeweeClient()
+from src.infra.db.peewee.client import PEEWEE_CLI as peewee_cli
 
 
 @only_test

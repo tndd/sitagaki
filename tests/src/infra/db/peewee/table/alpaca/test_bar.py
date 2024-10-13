@@ -2,14 +2,12 @@ from fixture.infra.db.peewee.table.alpaca.bar import (
     generate_table_bar_alpaca,
     generate_table_bar_alpaca_list,
 )
-from src.infra.db.peewee.client import PeeweeClient
+from src.infra.db.peewee.client import PEEWEE_CLI as peewee_cli
 from src.infra.db.peewee.table.alpaca.bar import (
     AdjustmentTable,
     TableBarAlpaca,
     TimeframeTable,
 )
-
-peewee_cli = PeeweeClient()
 
 
 def test_table_bar_alpaca_is_created():

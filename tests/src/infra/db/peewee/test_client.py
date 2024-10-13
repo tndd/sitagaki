@@ -1,11 +1,10 @@
 from peewee import AutoField, CharField
 
-from src.infra.db.peewee.client import PeeweeClient, PeeweeTable
+from src.infra.db.peewee.client import PEEWEE_CLI as peewee_cli
+from src.infra.db.peewee.client import PeeweeTable
 
 TEST_TABLE_NAME = '__test_user_f3875f7f'
 
-# テスト用peeweeクライアント
-peewee_cli = PeeweeClient()
 
 # テスト用モデル
 class SampleUser(PeeweeTable):

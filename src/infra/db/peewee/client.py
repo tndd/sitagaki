@@ -1,9 +1,19 @@
 from dataclasses import dataclass
-from typing import Final, Sequence
+from typing import Sequence
 
-from peewee import Database, Model, ModelSelect, MySQLDatabase, SqliteDatabase, chunked
+from peewee import (
+    Database,
+    DatabaseProxy,
+    Model,
+    ModelSelect,
+    MySQLDatabase,
+    SqliteDatabase,
+    chunked,
+)
 
 from src.infra.db.common import CURRENT_WORK_MODE, WorkMode
+
+DB_PROXY: DatabaseProxy = DatabaseProxy()
 
 
 def create_db() -> Database:
@@ -30,18 +40,16 @@ def create_db() -> Database:
         return SqliteDatabase(':memory:')
     raise ValueError(f"指定されたワークモードは存在しません: {CURRENT_WORK_MODE}")
 
-# peeweeの仕様上、ここでなんらかのDBをインスタンス化しておかねばならない
-DB_PEEWEE: Final[Database] = create_db()
 
 # Peeweeテーブルの基底クラス
 class PeeweeTable(Model):
     class Meta:
-        database = DB_PEEWEE
+        database = DB_PROXY
 
 
 @dataclass
 class PeeweeClient:
-    db: Database = DB_PEEWEE
+    db: Database = DB_PROXY
 
     def insert_models(
         self,
@@ -88,9 +96,9 @@ class PeeweeClient:
             return [dict(zip(columns, row)) for row in cursor.fetchall()]
 
 
-"""
-TODO: シングルトンなpeewee_cliを作る。
-    そうすれば、クラス作成時にDB_PROXYを渡す形式を取れる。
-    その上接続先がブレる問題も気にする必要がなくなる。
-"""
-# PEEWEE_CLI = PeeweeClient()
+
+# データベースを初期化
+db = create_db()
+DB_PROXY.initialize(db)
+# シングルトンなpeewee_cli
+PEEWEE_CLI = PeeweeClient(db)
