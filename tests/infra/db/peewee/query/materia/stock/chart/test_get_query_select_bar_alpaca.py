@@ -33,8 +33,6 @@ def test_basic():
         symbol="AAPL",
         timeframe=TimeframeTable.DAY,
         adjustment=AdjustmentTable.RAW,
-        start=datetime(2000, 1, 1),
-        end=datetime.now()
     )
     bars_result_1 = peewee_cli.exec_query_fetch(query)
     # 1-1 取得件数は３件
@@ -71,7 +69,7 @@ def test_symbol_and_timeframe():
         end=datetime(2020, 1, 3)
     )
     bars_result_2 = peewee_cli.exec_query_fetch(query)
-    # 2-1 取得件数は以下の日付の2件
+    # 2-1 取得件数は以下の日付の2件 (2020-01-01は省かれている)
     assert len(bars_result_2) == 2
     # 2-2 シンボルが"AAPL"のbarのみ取得
     assert all(bar.symbol == "AAPL" for bar in bars_result_2)
@@ -88,7 +86,7 @@ def test_invalid_start_end():
     table_bar_alpaca_list = generate_table_bar_alpaca_list()
     peewee_cli.insert_models(table_bar_alpaca_list)
     # データ取得
-    with pytest.raises(ValueError) as e:
+    with pytest.raises(ValueError, match="EID:45b0f55b"):
         get_query_select_bar_alpaca(
             symbol="AAPL",
             timeframe=TimeframeTable.DAY,
@@ -96,4 +94,3 @@ def test_invalid_start_end():
             start=datetime(2020, 1, 3),  # endより新しい
             end=datetime(2020, 1, 2)     # startより古い
         )
-        assert str(e.value) == "start must be before end"

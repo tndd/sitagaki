@@ -1,12 +1,11 @@
 from datetime import datetime, timedelta
 
 import pytest
-from alpaca.common.exceptions import APIError
 from alpaca.data.enums import Adjustment as AdjustmentAlpaca
 from alpaca.data.models import BarSet
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
-from src.infra.api.alpaca.bar import AlpacaApiBarClient
+from src.infra.api.alpaca.bar import ROOT_START_DATETIME, AlpacaApiBarClient
 
 cli_alpaca = AlpacaApiBarClient()
 
@@ -16,11 +15,7 @@ cli_alpaca = AlpacaApiBarClient()
 def test_basic():
     """
     基本的な通信テスト。
-    start,end未指定時の動作も検証する。
-
-    FIXME: テスト失敗
-        現在endの範囲指定機能がalpaca側の想定外の仕様のため、このテストが失敗する。
-        こちら側での修正後、このテストの確認を行う。
+    デフォルト引数による動作検証。
     """
     # timeframe X adjustmentの組み合わせを全通り試す
     barset = cli_alpaca.get_barset_alpaca_api(
@@ -33,22 +28,6 @@ def test_basic():
     assert isinstance(barset, BarSet)
     # limitによる取得数制限の確認
     assert len(barset.data['AAPL']) == 5
-
-
-@pytest.mark.online
-def test_invalid_timerange():
-    """
-    Alpacaが認めていない範囲のendを指定するとエラーが発生するかの検証。
-    """
-    exp_message = 'subscription does not permit querying recent SIP data'
-    with pytest.raises(APIError, match=exp_message):
-        cli_alpaca.get_barset_alpaca_api(
-        symbol="AAPL",
-        timeframe=TimeFrameAlpaca.Day,
-        adjustment=AdjustmentAlpaca.RAW,
-        limit=5,
-        end=datetime.now() + timedelta(minutes=20) # 確実に範囲を超過している
-    )
 
 
 # 組み合わせのリスト作成
@@ -110,44 +89,38 @@ def test_response_is_empty_barset():
     assert len(barset_empty.data[SYMBOL_DUMMY]) == 0
 
 
-@pytest.mark.online
-def test_invalid_start_end():
+def test_future_start():
     """
-    startとendの指定が不適切な場合
-
-    case1: start > end
-        終了日より開始日の方が新しい場合
-
-        期待値:
-            * エラー発生(APIError)
-            * エラーメッセージに'end should not be before start'が含まれる
+    startに未来を指定した場合エラーが発生する
     """
-    with pytest.raises(Exception) as excinfo:
+    with pytest.raises(ValueError, match="EID:3e00e226"):
         barset = cli_alpaca.get_barset_alpaca_api(
             symbol='AAPL',
-            start=datetime(2024,1,1),
-            end=datetime(2023,1,1),
+            start=datetime.now() + timedelta(days=1),
             timeframe=TimeFrameAlpaca.Day,
             adjustment=AdjustmentAlpaca.RAW
         )
-    # エラータイプの確認
-    assert excinfo.type == APIError
-    assert 'end should not be before start' in str(excinfo.value)
 
 
 @pytest.mark.online
-def test_over_timestamp():
+@pytest.mark.parametrize("start", [
+    ROOT_START_DATETIME,
+    datetime(2020,1,1),
+    None
+])
+def test_valid_starts(start):
     """
-    alpaca apiの制限を超えた日付を指定した場合のテスト
-    get_barset_alpaca_api()の安全装置が機能しているかを確認。
+    適正なstartが指定されている場合のテスト
+        1. ROOT_START_DATETIME
+        2. 2020-01-01
+        3. Noneを指定
     """
     barset = cli_alpaca.get_barset_alpaca_api(
         symbol='AAPL',
-        start=datetime(2024,1,1),
-        end=datetime.now() + timedelta(days=1), # endに未来の日付を指定
+        start=start,
         timeframe=TimeFrameAlpaca.Day,
         adjustment=AdjustmentAlpaca.RAW,
-        limit=5
+        limit=3
     )
     assert isinstance(barset, BarSet)
-    assert len(barset.data['AAPL']) == 5
+    assert len(barset.data['AAPL']) == 3

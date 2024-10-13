@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Any, Sequence, TypeGuard
+from typing import Sequence
 
 from src.domain.materia.stock.chart.const import Adjustment, Timeframe
 from src.domain.materia.stock.chart.model import Chart, SymbolTimestampSet
@@ -16,19 +16,6 @@ from src.infra.adapter.materia.stock.chart import (
 from src.infra.api.alpaca.bar import AlpacaApiBarClient
 from src.infra.db.peewee.client import PeeweeClient
 from src.infra.db.peewee.query.materia.stock.chart import get_query_select_bar_alpaca
-from src.infra.db.peewee.table.alpaca.bar import TableBarAlpaca
-
-
-def is_type_table_bar_alpaca(
-    seq: Sequence[Any]
-) -> TypeGuard[Sequence[TableBarAlpaca]]:
-    """
-    リストの中身がTableBarAlpacaであるかを判定する。
-
-    基本的に取得されるテーブルの型は全て同じであるため、
-    型のチェックは初めの一つのみを検証する形式とする。
-    """
-    return len(seq) > 0 and isinstance(seq[0], TableBarAlpaca)
 
 
 @dataclass
@@ -42,14 +29,14 @@ class ChartRepository:
         timeframe: Timeframe,
         adjustment: Adjustment,
         start: datetime | None = None,
-        end: datetime | None = None,
         limit: int | None = None
     ) -> None:
         """
         指定されたシンボルのbarデータをonlineから取得し、DBに保存する。
 
-        start,endを指定しなかった場合、
-        2000-01-01から可能な限り最新のデータを取得する。
+        NOTE: endの指定がない理由
+            基本的にオンライン上からデータを取得する場合、最新の日付までのデータを求めるから。
+            endを指定したデータ取得の必要性を感じないし、いらない部分があるなら捨てればいい。
         """
         # barsデータを取得
         bar_alpaca_api_list = self.cli_alpaca.get_bar_alpaca_api_list(
@@ -57,7 +44,6 @@ class ChartRepository:
             timeframe=depart_timeframe_to_alpaca_api(timeframe),
             adjustment=depart_adjustment_to_alpaca_api(adjustment),
             start=start,
-            end=end,
             limit=limit
         )
         # adapt: <= alpaca_api
@@ -76,14 +62,13 @@ class ChartRepository:
         symbol: str,
         timeframe: Timeframe,
         adjustment: Adjustment,
-        start: datetime = datetime(2000, 1, 1),
-        end: datetime = datetime.now()
+        start: datetime | None = None,
+        end: datetime | None = None
     ) -> Chart:
-        # TODO: 日付指定をNoneを受け入れられるように
         """
         ローカルのDBから指定されたシンボルのbarを取得する。
 
-        デフォルトの取得範囲は2000-01-01~now。
+        不足データをオンラインから取得するみたいな気の利いた動作はさせていない。
         """
         # 取得に必要なqueryを作成
         query = get_query_select_bar_alpaca(
@@ -103,8 +88,6 @@ class ChartRepository:
                 もし通信での失敗であれば0件という情報すら返らないだろう。
                 """
                 raise LookupError('Barの取得件数が0件')
-            if not is_type_table_bar_alpaca(bar_list_table):
-                raise TypeError('取得したデータの型が"TableBarAlpaca"ではありません')
             # 取得物をドメイン層のbarモデルのリストに変換して返す
             return arrive_chart_from_table_list(bar_list_table)
         except LookupError as le:
