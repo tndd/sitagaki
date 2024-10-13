@@ -39,20 +39,17 @@ class AlpacaApiBarClient:
         timeframe: TimeFrame,
         adjustment: Adjustment,
         start: datetime | None = None,
-        end: datetime | None = None,
         limit: int | None = None
     ) -> list[Bar]:
         """
         日足のヒストリカルバー情報を取得。
-        endを指定しなかった場合、可能な限り直近のデータを取得するようになってる。
-            * 現在時刻から１５分前までのデータを取得できる。
-
         BarSetからBarのリストを取り出して返却するまで行う。
 
-        TODO: end廃止によるendの扱いについて
-            endについては後方互換のため引数としては受け取っているが、
-            それがget_barset_alpaca_apiに渡されることはない。
-            後にendを全廃予定。
+        NOTE: endの指定がない理由
+            基本的にオンライン上からデータを取得する場合、最新の日付までのデータを求める。
+            それ以外のシチュエーションはほぼ浮かばない。
+            そんなものが仮にあったとしても、こちら側でいらない部分を間引けばいいだけ。
+            無駄に動作を複雑化させたくないので、やはりendは扱わない。
         """
         barset = self.get_barset_alpaca_api(symbol, timeframe, adjustment, start, limit)
         return extract_bar_list_alpaca_api_from_barset(barset)
