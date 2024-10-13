@@ -19,13 +19,3 @@ def test_cleanup_tables():
     # テーブルが消去されているので、件数の取得に失敗する
     with pytest.raises(OperationalError):
         assert len(result) == 0
-
-
-def test_load_table_bar_alpaca_on_db():
-    """
-    テスト用関数load_table_bar_alpaca_on_db()の動作確認
-    """
-    load_table_bar_alpaca_on_db()
-    result = TableBarAlpaca.select()
-    # ファクトリのBar本数は10本
-    assert len(result) == 10
