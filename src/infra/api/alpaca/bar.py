@@ -77,6 +77,14 @@ def get_safe_start(start: datetime | None) -> datetime:
         # デフォルトの開始日時より前の日付が指定されている場合はデフォルトの開始日時を指定
         return ROOT_START_DATETIME
     elif start > datetime.now():
-        # 現在時刻より未来の日付が指定されている場合はエラー
+        """
+        現在時刻より未来の日付が指定されている場合はエラー
+
+        NOTE: 現在時刻を条件に含めない理由
+            そうしてもいいのだが、now()というのはあまりに精密であり、
+            ある箇所でのnow()とここのnow()の値が変わってしまい、
+            意図通り現在時刻の入力をエラーにするという挙動にならない。
+            そのためここは思い切って現在時刻を明確に上回るものをエラーとしている。
+        """
         raise ValueError("入力されたStartが現在時刻よりも未来が指定されてる。 EID:3e00e226")
     return start
