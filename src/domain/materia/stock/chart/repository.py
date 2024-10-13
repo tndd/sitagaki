@@ -47,9 +47,6 @@ class ChartRepository:
     ) -> None:
         """
         指定されたシンボルのbarデータをonlineから取得し、DBに保存する。
-
-        start,endを指定しなかった場合、
-        2000-01-01から可能な限り最新のデータを取得する。
         """
         # barsデータを取得
         bar_alpaca_api_list = self.cli_alpaca.get_bar_alpaca_api_list(
@@ -82,7 +79,7 @@ class ChartRepository:
         """
         ローカルのDBから指定されたシンボルのbarを取得する。
 
-        デフォルトの取得範囲は2000-01-01~now。
+        不足データをオンラインから取得するみたいな気の利いた動作はさせていない。
         """
         # 取得に必要なqueryを作成
         query = get_query_select_bar_alpaca(
