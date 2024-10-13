@@ -13,7 +13,7 @@ from peewee import (
 
 from src.infra.db.common import CURRENT_WORK_MODE, WorkMode
 
-DB_PROXY: DatabaseProxy = DatabaseProxy()
+_DB_PROXY: DatabaseProxy = DatabaseProxy()
 
 
 def create_db() -> Database:
@@ -44,12 +44,12 @@ def create_db() -> Database:
 # Peeweeテーブルの基底クラス
 class PeeweeTable(Model):
     class Meta:
-        database = DB_PROXY
+        database = _DB_PROXY
 
 
 @dataclass
 class PeeweeClient:
-    db: Database = DB_PROXY
+    db: Database = _DB_PROXY
 
     def insert_models(
         self,
@@ -99,6 +99,6 @@ class PeeweeClient:
 
 # データベースを初期化
 db = create_db()
-DB_PROXY.initialize(db)
+_DB_PROXY.initialize(db)
 # シングルトンなpeewee_cli
 PEEWEE_CLI = PeeweeClient(db)
