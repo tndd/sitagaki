@@ -1,4 +1,4 @@
-from fixture.factory.infra.db.peewee.bar import (
+from fixture.infra.db.peewee.table.alpaca.bar import (
     generate_table_bar_alpaca,
     generate_table_bar_alpaca_list,
 )

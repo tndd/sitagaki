@@ -2,7 +2,7 @@ from alpaca.data.enums import Adjustment
 from alpaca.data.models import BarSet
 from alpaca.data.timeframe import TimeFrame
 
-from fixture.patch.api.alpaca.bar import (
+from fixture.infra.api.alpaca.bar import (
     patch_get_stock_bars,
     patch_get_stock_bars_empty,
 )

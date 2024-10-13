@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pytest
 
-from fixture.operate import load_table_bar_alpaca_on_db
+from fixture.infra.db.peewee.table.alpaca.bar import load_table_bar_alpaca_on_db
 from src.domain.materia.stock.chart.const import Adjustment, Timeframe
 from src.domain.materia.stock.chart.model import Chart
 from src.domain.materia.stock.chart.repository import ChartRepository

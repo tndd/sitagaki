@@ -1,7 +1,6 @@
-from fixture.factory.domain.materia.stock.chart import generate_bar
-from fixture.factory.infra.api.alpaca.bar import generate_bar_alpaca
-from fixture.factory.infra.db.peewee.bar import generate_table_bar_alpaca
-
+from fixture.domain.materia.stock.chart import generate_bar
+from fixture.infra.api.alpaca.bar import generate_bar_alpaca
+from fixture.infra.db.peewee.table.alpaca.bar import generate_table_bar_alpaca
 from src.domain.materia.stock.chart.const import Adjustment, Timeframe
 from src.domain.materia.stock.chart.model import Bar
 from src.infra.adapter.materia.stock.chart.bar import (

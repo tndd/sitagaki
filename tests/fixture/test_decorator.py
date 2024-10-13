@@ -1,8 +1,8 @@
 import pytest
 
 import src.infra.db.common as common
-from fixture.decorator import only_test
-from src.infra.db.common import WorkMode, is_test_mode
+from fixture.common.decorator import only_test
+from src.infra.db.common import is_test_mode
 
 
 @pytest.mark.parametrize(

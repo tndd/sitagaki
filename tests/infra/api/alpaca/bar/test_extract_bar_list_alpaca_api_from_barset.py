@@ -1,6 +1,6 @@
 from alpaca.data.models import Bar, BarSet
-from fixture.factory.infra.api.alpaca.bar import generate_barset_alpaca
 
+from fixture.infra.api.alpaca.bar import generate_barset_alpaca
 from src.infra.api.alpaca.bar import extract_bar_list_alpaca_api_from_barset
 
 

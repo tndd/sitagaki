@@ -1,6 +1,6 @@
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
-from fixture.factory.infra.db.peewee.bar import generate_table_bar_alpaca
 
+from fixture.infra.db.peewee.table.alpaca.bar import generate_table_bar_alpaca
 from src.domain.materia.stock.chart.const import Timeframe
 from src.infra.adapter.materia.stock.chart.timeframe import (
     arrive_timeframe_from_table,

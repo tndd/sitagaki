@@ -4,7 +4,6 @@ import pytest
 from alpaca.data.historical.stock import StockHistoricalDataClient
 from alpaca.data.models.bars import Bar, BarSet
 
-from fixture.infra.api.alpaca.bar import generate_barset_alpaca
 from src.infra.api.alpaca.bar import extract_bar_list_alpaca_api_from_barset
 
 
