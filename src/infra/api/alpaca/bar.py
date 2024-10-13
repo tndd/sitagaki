@@ -6,14 +6,8 @@ from alpaca.data.historical import StockHistoricalDataClient
 from alpaca.data.models.bars import Bar, BarSet
 from alpaca.data.requests import StockBarsRequest
 from alpaca.data.timeframe import TimeFrame
-from pydantic import BaseModel
 
-from .client import DELAY, ROOT_START_DATETIME, historical_cli
-
-
-class TimeRange(BaseModel):
-    start: datetime
-    end: datetime
+from .client import ROOT_START_DATETIME, historical_cli
 
 
 @dataclass
@@ -26,17 +20,15 @@ class AlpacaApiBarClient:
         timeframe: TimeFrame,
         adjustment: Adjustment,
         start: datetime | None = None,
-        end: datetime | None = None,
         limit: int | None = None
     ) -> BarSet:
-        time_range = get_safe_timerange(start, end)
+        start = get_safe_start(start)
         # リクエスト作成
         rq = StockBarsRequest(
             symbol_or_symbols=symbol,
             timeframe=timeframe,
             adjustment=adjustment,
-            start=time_range.start,
-            end=time_range.end,
+            start=start,
             limit=limit
         )
         return self.cli.get_stock_bars(rq) # type: ignore
@@ -56,8 +48,13 @@ class AlpacaApiBarClient:
             * 現在時刻から１５分前までのデータを取得できる。
 
         BarSetからBarのリストを取り出して返却するまで行う。
+
+        TODO: end廃止によるendの扱いについて
+            endについては後方互換のため引数としては受け取っているが、
+            それがget_barset_alpaca_apiに渡されることはない。
+            後にendを全廃予定。
         """
-        barset = self.get_barset_alpaca_api(symbol, timeframe, adjustment, start, end, limit)
+        barset = self.get_barset_alpaca_api(symbol, timeframe, adjustment, start, limit)
         return extract_bar_list_alpaca_api_from_barset(barset)
 
 
@@ -69,41 +66,17 @@ def extract_bar_list_alpaca_api_from_barset(barset: BarSet) -> list[Bar]:
     return next(iter(barset.data.values()))
 
 
-def get_safe_timerange(
-    start: datetime | None,
-    end: datetime | None
-) -> TimeRange:
+def get_safe_start(start: datetime | None) -> datetime:
     """
-    FIXME: endの指定を廃止
-        AlpacaのAPIはendの範囲に制限がある。
-        基本的には最新の15分前のデータまでしか取得できない。
-        だが検証の結果、一概に現在時刻の15分前までというわけではないらしい。
-        そのため、もうend等指定機能自体をなくす方針にする。
-        実際endを指定するユースケースはほぼ思い当たらない。
-
-        廃止方針
-            1. end廃止
-            2. 特定の閾値を超えたendをNoneに置換
-
-
-    alpacaの時間指定のために、startとendを安全な形式にする。
-
-    start:
-        未指定時は2000-01-01とする。
-    end:
-        未指定時は現在時刻の15分前とする。
-        その時刻を超えていた場合は、15分前に再設定する。
-
-    startがendよりも新しい日付である場合はエラーとする。
+    渡されたstartを安全な日付に変換する
     """
-    end_safe = datetime.now() - timedelta(minutes=DELAY)
-    # startに指定がない場合、ROOT_START_DATETIMEを指定
     if start is None:
-        start = ROOT_START_DATETIME
-    # endがNone or 今の時刻の15分前を超えていたらNoneにする
-    if not end or end > end_safe:
-        end = end_safe
-    if start >= end:
-        raise ValueError('startはendよりも新しい日付である必要があります。')
-    print(start, end)
-    return TimeRange(start=start, end=end)
+        # 未指定の場合はROOT_START_DATETIMEを指定
+        return ROOT_START_DATETIME
+    elif start < ROOT_START_DATETIME:
+        # デフォルトの開始日時より前の日付が指定されている場合はデフォルトの開始日時を指定
+        return ROOT_START_DATETIME
+    elif start > datetime.now():
+        # 現在時刻より未来の日付が指定されている場合はエラー
+        raise ValueError("入力されたStartが現在時刻よりも未来が指定されてる。 EID:3e00e226")
+    return start

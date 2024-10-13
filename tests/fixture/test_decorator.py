@@ -46,5 +46,5 @@ def test_only_test(mocker, work_mode):
         assert _f()
     else:
         # テストモード状態でなければ、関数_fはValueErrorで阻まれ実行されない
-        with pytest.raises(ValueError, match="error_id: 019d3665"):
+        with pytest.raises(ValueError, match="EID:019d3665"):
             _f()
