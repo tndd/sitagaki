@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import pytest
 from alpaca.data.enums import Adjustment as AdjustmentAlpaca
@@ -26,6 +26,7 @@ def test_basic():
     assert len(bar_alpaca_api_list) == 5
     assert all(bar.symbol == 'MOCKSYMBOL_30C779F3' for bar in bar_alpaca_api_list)
 
+
 def test_response_is_empty_barset(fx_replace_api_alpaca_get_stock_bars_empty):
     """
     存在しない条件を入力し、apiから空のBarSetが帰ってきた際の振る舞いのテスト
@@ -41,27 +42,20 @@ def test_response_is_empty_barset(fx_replace_api_alpaca_get_stock_bars_empty):
 
 
 @pytest.mark.parametrize(
-    'start,end',
+    'start',
     [
-        (datetime(2020, 1, 1), datetime(2000, 1, 1)),
-        (datetime(2001, 1, 1), datetime(2001, 1, 1)),
+        datetime.now() + timedelta(seconds=1),
+        datetime.now() + timedelta(minutes=15),
     ]
 )
-def test_invalid_time_range(start, end):
+def test_invalid_start(start):
     """
-    startがendよりも新しい日付であった場合にエラーとなるかの検証。
-
-    test_reverse_start_endでも検証しているが、
-    念のため、外部から使われるこちらの使う側でも検証する。
-
-    0. 逆転
-    1. 同じ日付
+    startが現在時刻や未来の日時を指定した場合エラーとなるかを検証
     """
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="EID:3e00e226"):
         cli_alpaca.get_bar_alpaca_api_list(
             symbol='AAPL',
             timeframe=TimeFrameAlpaca.Day,
             adjustment=AdjustmentAlpaca.RAW,
             start=start,
-            end=end,
         )
