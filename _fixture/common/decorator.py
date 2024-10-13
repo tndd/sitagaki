@@ -1,3 +1,4 @@
+import pytest
 from decorator import decorator
 
 from src.infra.db.common import is_test_mode
