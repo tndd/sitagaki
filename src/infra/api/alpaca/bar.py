@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from alpaca.data.enums import Adjustment
 from alpaca.data.historical import StockHistoricalDataClient
