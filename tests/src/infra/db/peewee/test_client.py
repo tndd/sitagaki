@@ -1,11 +1,9 @@
 from peewee import AutoField, CharField
 
-from src.infra.db.peewee.client import PeeweeClient, PeeweeTable
+from src.infra.db.peewee.client import CLI_PEEWEE, PeeweeTable
 
 TEST_TABLE_NAME = '__test_user_f3875f7f'
 
-# テスト用peeweeクライアント
-peewee_cli = PeeweeClient()
 
 # テスト用モデル
 class SampleUser(PeeweeTable):
@@ -34,7 +32,7 @@ def insert_test_users(n: int):
     N件のサンプルユーザーを挿入する。
     """
     users = generate_test_users(n)
-    peewee_cli.insert_models(users)
+    CLI_PEEWEE.insert_models(users)
 
 
 ### TEST ###
@@ -71,11 +69,11 @@ def test_insert_models_multiple():
     # 挿入するユーザーインスタンスのリストを作成
     users = generate_test_users(3)
     # 1回目の投入
-    peewee_cli.insert_models(users)
+    CLI_PEEWEE.insert_models(users)
     retrieved_users = SampleUser.select()
     assert len(retrieved_users) == 3
     # 2回目の投入
-    peewee_cli.insert_models(users)
+    CLI_PEEWEE.insert_models(users)
     retrieved_users = SampleUser.select()
     assert len(retrieved_users) == 6
     # さらにテーブル内容を確認する
@@ -129,7 +127,7 @@ def test_practice_select_models():
         SampleUser(username='isaac', email='user9@ccc.com'),
         SampleUser(username='joseph', email='user10@ccc.com'),
     ]
-    peewee_cli.insert_models(users)
+    CLI_PEEWEE.insert_models(users)
     # 1. 単純な取得
     retrieved_users = SampleUser.select()
     assert len(retrieved_users) == 10
@@ -185,7 +183,7 @@ def test_insert_duplicate_key():
         SampleUser(id=1, username='user1', email='user1@example.com'),
         SampleUser(id=2, username='user2', email='user2@example.com'),
     ]
-    peewee_cli.insert_models(users)
+    CLI_PEEWEE.insert_models(users)
     assert len(SampleUser.select()) == 2
     assert SampleUser.select().where(SampleUser.id == 1).get().username == 'user1'
     assert SampleUser.select().where(SampleUser.id == 2).get().username == 'user2'
@@ -194,7 +192,7 @@ def test_insert_duplicate_key():
         SampleUser(id=1, username='user11', email='user11@example.com'),
         SampleUser(id=2, username='user22', email='user22@example.com'),
     ]
-    peewee_cli.insert_models(users)
+    CLI_PEEWEE.insert_models(users)
     # 上書きされるが故に４件ではなく２件のみ
     assert len(SampleUser.select()) == 2
     # 内容は上書きされていること
@@ -209,7 +207,7 @@ def test_exec_sql_fetch():
     # テーブルにデータを挿入
     insert_test_users(10)
     sql = f"SELECT * FROM {TEST_TABLE_NAME} WHERE id % 2 = 0"
-    retrieved_users = peewee_cli.exec_sql_fetch(sql)
+    retrieved_users = CLI_PEEWEE.exec_sql_fetch(sql)
     # データが取得できていること
     assert len(retrieved_users) == 5
     assert all(user['id'] % 2 == 0 for user in retrieved_users)

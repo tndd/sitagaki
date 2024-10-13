@@ -1,13 +1,11 @@
 from datetime import datetime
 
 from fixture.infra.db.peewee.table.alpaca.bar import load_table_bar_alpaca_on_db
-from src.infra.db.peewee.client import PeeweeClient
+from src.infra.db.peewee.client import CLI_PEEWEE
 from src.infra.db.peewee.query.materia.stock.chart import (
     get_query_select_latest_timestamp_of_bar_alpaca,
 )
 from src.infra.db.peewee.table.alpaca.bar import AdjustmentTable, TimeframeTable
-
-peewee_cli = PeeweeClient()
 
 
 def test_basic():
@@ -17,7 +15,7 @@ def test_basic():
         timeframe=TimeframeTable.DAY,
         adjustment=AdjustmentTable.RAW,
     )
-    result = peewee_cli.exec_query_fetch(query)
+    result = CLI_PEEWEE.exec_query_fetch(query)
     # orderbyによりAAPL,GOOGの2件が返るはず
     assert len(result) == 2
     # AAPLの日付
