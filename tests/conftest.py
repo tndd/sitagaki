@@ -1,31 +1,27 @@
-import sys
-from pathlib import Path
+from os import environ
 
 from dotenv import load_dotenv
 
-# 環境変数の読み込み
+# 環境変数をテスト用のものに強制適用
 load_dotenv()
-# プロジェクトルートへのパス通し
-sys.path.append(str(Path(__file__).resolve().parent.parent))
+environ['WORK_MODE'] = 'IN_MEMORY'
 
 import socket
-from os import environ
 
 import pytest
 
-from tests.utils.operate.danger import cleanup_tables
+from fixture.common.operate import cleanup_tables
 
 # テスト用fixture
-from tests.utils.patch.api.alpaca.bar import (
-    fx_replace_patch_alpaca_get_stock_bars_empty,
-    patch_alpaca_get_stock_bars,
+from fixture.infra.api.alpaca.bar import (
+    fx_replace_api_alpaca_get_stock_bars_empty,
+    patch_get_stock_bars,
 )
 
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_session(session_mocker):
-    # 環境変数WorkModeをテスト仕様に強制する
-    environ['WORK_MODE'] = 'IN_MEMORY'
+    pass
 
 
 @pytest.fixture(scope="function", autouse=True)
@@ -36,7 +32,7 @@ def setup_function(request, mocker):
     # データの初期化
     cleanup_tables()
     # 通信関数のモック化
-    patch_alpaca_get_stock_bars(mocker)
+    patch_get_stock_bars(mocker)
     # マーカーごとの特別処理
     if request.node.get_closest_marker('online') \
         or request.node.get_closest_marker('online_slow'):
@@ -48,7 +44,7 @@ def setup_function(request, mocker):
 @pytest.fixture
 def airplane_mode():
     """
-    # TODO: まだ正常に機能してない
+    # LATER: まだ正常に機能してない
 
     このフィクスチャを適応したテストの通信は、
     強制的に遮断状態となる。
