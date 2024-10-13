@@ -86,3 +86,11 @@ class PeeweeClient:
             cursor = self.db.execute_sql(sql)
             columns = [column[0] for column in cursor.description]
             return [dict(zip(columns, row)) for row in cursor.fetchall()]
+
+
+"""
+TODO: シングルトンなpeewee_cliを作る。
+    そうすれば、クラス作成時にDB_PROXYを渡す形式を取れる。
+    その上接続先がブレる問題も気にする必要がなくなる。
+"""
+# PEEWEE_CLI = PeeweeClient()
