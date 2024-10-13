@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Any, Sequence, TypeGuard
+from typing import Sequence
 
 from src.domain.materia.stock.chart.const import Adjustment, Timeframe
 from src.domain.materia.stock.chart.model import Chart, SymbolTimestampSet
@@ -16,19 +16,6 @@ from src.infra.adapter.materia.stock.chart import (
 from src.infra.api.alpaca.bar import AlpacaApiBarClient
 from src.infra.db.peewee.client import PeeweeClient
 from src.infra.db.peewee.query.materia.stock.chart import get_query_select_bar_alpaca
-from src.infra.db.peewee.table.alpaca.bar import TableBarAlpaca
-
-
-def is_type_table_bar_alpaca(
-    seq: Sequence[Any]
-) -> TypeGuard[Sequence[TableBarAlpaca]]:
-    """
-    リストの中身がTableBarAlpacaであるかを判定する。
-
-    基本的に取得されるテーブルの型は全て同じであるため、
-    型のチェックは初めの一つのみを検証する形式とする。
-    """
-    return len(seq) > 0 and isinstance(seq[0], TableBarAlpaca)
 
 
 @dataclass
@@ -99,8 +86,6 @@ class ChartRepository:
                 もし通信での失敗であれば0件という情報すら返らないだろう。
                 """
                 raise LookupError('Barの取得件数が0件')
-            if not is_type_table_bar_alpaca(bar_list_table):
-                raise TypeError('取得したデータの型が"TableBarAlpaca"ではありません')
             # 取得物をドメイン層のbarモデルのリストに変換して返す
             return arrive_chart_from_table_list(bar_list_table)
         except LookupError as le:
