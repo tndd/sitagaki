@@ -2,7 +2,6 @@ from datetime import datetime
 
 from peewee import ModelSelect
 
-from src.infra.api.alpaca.bar import get_safe_timerange
 from src.infra.db.peewee.table.alpaca.bar import (
     AdjustmentTable,
     TableBarAlpaca,
@@ -14,31 +13,22 @@ def get_query_select_bar_alpaca(
     symbol: str,
     timeframe: TimeframeTable,
     adjustment: AdjustmentTable,
-    start: datetime | None,
-    end: datetime | None
+    start: datetime | None = None,
+    end: datetime | None = None
 ) -> ModelSelect:
     """
-    FIXME: endの指定廃止に伴うクエリ生成箇所の修正
-        get_safe_timerange()のend廃止に伴い、
-        このクエリ生成関数の修正も必要となる。
-
     指定されたsymbol,timeframe,adjustmentの条件に一致するbarデータを取得する。
     start~endの範囲内のbarデータを取得する。
-
-    MEMO: get_safe_timerange()の使用について
-        apiとクエリ作成は別物であるため、このようにapiのメソッドを使うというのは責任範囲を超えている気もする。
-        しかしクエリとはapiから引っ張ってきたデータを取り出すためのものであるため、
-        apiのメソッドでstart,endのバリデーションを行うことに合理性はある。
-        一応垣根を越えたメソッドの利用であるためここにメモは残しておく。
     """
-    time_range = get_safe_timerange(start, end)
-    query = TableBarAlpaca.select().where(
+    # まずシンボル、Timeframe,Adjustmentでの絞り込み
+    query_with_time = TableBarAlpaca.select().where(
         TableBarAlpaca.symbol == symbol,
         TableBarAlpaca.timeframe == timeframe,
         TableBarAlpaca.adjustment == adjustment,
-        TableBarAlpaca.timestamp.between(time_range.start, time_range.end)
     )
-    return query
+    # start,endの内容に合わせて絞り込み
+    query_with_time = _filter_query_by_timerange(query_with_time, start, end)
+    return query_with_time
 
 
 def get_query_select_latest_timestamp_of_bar_alpaca(
@@ -58,4 +48,23 @@ def get_query_select_latest_timestamp_of_bar_alpaca(
     ).order_by(
         TableBarAlpaca.timestamp.desc()
     ).limit(1)
+    return query
+
+
+### Helper
+def _filter_query_by_timerange(
+    query: ModelSelect,
+    start: datetime | None,
+    end: datetime | None
+) -> ModelSelect:
+    # startがendよりも新しい場合はエラー
+    if start is not None and end is not None and start > end:
+        raise ValueError("startがendよりも新しい日付です。EID:45b0f55b")
+    # start,endの内容に合わせ、query絞り込み
+    if start is not None and end is not None:
+        query = query.where(TableBarAlpaca.timestamp.between(start, end))
+    elif start is not None:
+        query = query.where(TableBarAlpaca.timestamp >= start)
+    elif end is not None:
+        query = query.where(TableBarAlpaca.timestamp <= end)
     return query
