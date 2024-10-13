@@ -123,4 +123,8 @@ def generate_bar_alpaca() -> Bar:
 
 
 def generate_bar_alpaca_list() -> list[Bar]:
+    """
+    BarSetはそのままだと使いづらいので、
+    そこからBarのリストを抜き出して返す機能を関数化した。
+    """
     return extract_bar_list_alpaca_api_from_barset(generate_barset_alpaca())
