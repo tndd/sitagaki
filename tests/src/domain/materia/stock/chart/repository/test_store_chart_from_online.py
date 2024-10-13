@@ -1,7 +1,7 @@
 import pytest
 
 from src.domain.materia.stock.chart.const import Adjustment, Timeframe
-from src.domain.materia.stock.chart.repository import CHART_REPO
+from src.domain.materia.stock.chart.repository import REPO_CHART
 from src.infra.adapter.materia.stock.chart.adjustment import (
     arrive_adjustment_from_table,
 )
@@ -22,7 +22,7 @@ def test_all_combinations(
     LATER: alpaca_apiの通信部分のモックの戻り値
         もう少し引数に応じて結果変わるように、実際の動作っぽい動きにしたい。
     """
-    CHART_REPO.store_chart_from_online(
+    REPO_CHART.store_chart_from_online(
         symbol="AAPL",
         timeframe=timeframe,
         adjustment=adjustment,

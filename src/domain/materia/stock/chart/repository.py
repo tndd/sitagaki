@@ -132,7 +132,7 @@ class ChartRepository:
 
 
 # シングルトン
-CHART_REPO = ChartRepository(
+REPO_CHART = ChartRepository(
     cli_db=PEEWEE_CLI,
     cli_alpaca=AlpacaApiBarClient()
 )
