@@ -4,7 +4,7 @@ from typing import Sequence
 
 from src.domain.materia.alpaca.bar.const import Adjustment, Timeframe
 from src.domain.materia.alpaca.bar.model import Chart, SymbolTimestampSet
-from src.infra.adapter.materia.stock.chart import (
+from src.infra.adapter.materia.alpaca.bar import (
     arrive_chart_from_bar_alpaca_api_list,
     arrive_chart_from_table_list,
     depart_adjustment_to_alpaca_api,

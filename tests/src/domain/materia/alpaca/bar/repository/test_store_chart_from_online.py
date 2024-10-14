@@ -2,10 +2,8 @@ import pytest
 
 from src.domain.materia.alpaca.bar.const import Adjustment, Timeframe
 from src.domain.materia.alpaca.bar.repository import REPO_CHART
-from src.infra.adapter.materia.stock.chart.adjustment import (
-    arrive_adjustment_from_table,
-)
-from src.infra.adapter.materia.stock.chart.timeframe import arrive_timeframe_from_table
+from src.infra.adapter.materia.alpaca.bar.adjustment import arrive_adjustment_from_table
+from src.infra.adapter.materia.alpaca.bar.timeframe import arrive_timeframe_from_table
 from src.infra.db.peewee.table.alpaca.bar import TableBarAlpaca
 
 

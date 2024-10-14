@@ -3,7 +3,7 @@ from fixture.infra.api.alpaca.bar import factory_bar_alpaca_list
 from fixture.infra.db.peewee.table.alpaca.bar import factory_table_bar_alpaca_list
 from src.domain.materia.alpaca.bar.const import Adjustment, Timeframe
 from src.domain.materia.alpaca.bar.model import Bar, Chart
-from src.infra.adapter.materia.stock.chart.chart import (
+from src.infra.adapter.materia.alpaca.bar.chart import (
     arrive_chart_from_bar_alpaca_api_list,
     arrive_chart_from_table_list,
     depart_chart_to_table_list,

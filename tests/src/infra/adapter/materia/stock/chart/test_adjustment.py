@@ -3,7 +3,7 @@ from alpaca.data.enums import Adjustment as AdjustmentAlpaca
 
 from fixture.infra.db.peewee.table.alpaca.bar import factory_table_bar_alpaca
 from src.domain.materia.alpaca.bar.const import Adjustment
-from src.infra.adapter.materia.stock.chart.adjustment import (
+from src.infra.adapter.materia.alpaca.bar.adjustment import (
     arrive_adjustment_from_table,
     depart_adjustment_to_alpaca_api,
     depart_adjustment_to_table,
