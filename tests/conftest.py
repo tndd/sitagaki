@@ -10,13 +10,12 @@ import socket
 
 import pytest
 
-from fixture.common.operate import cleanup_tables
-
 # テスト用fixture
 from fixture.infra.api.alpaca.bar import (
     fx_replace_api_alpaca_get_stock_bars_empty,
     patch_get_stock_bars,
 )
+from fixture.operate import cleanup_tables
 
 
 @pytest.fixture(scope="session", autouse=True)
