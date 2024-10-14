@@ -3,10 +3,10 @@ from alpaca.data.models.bars import Bar, BarSet
 from alpaca.data.timeframe import TimeFrame
 
 from fixture.infra.api.alpaca.bar import (
+    factory_bar_alpaca,
+    factory_bar_alpaca_list,
+    factory_barset_alpaca,
     fx_replace_api_alpaca_get_stock_bars_empty,
-    generate_bar_alpaca,
-    generate_bar_alpaca_list,
-    generate_barset_alpaca,
     patch_get_stock_bars,
     patch_get_stock_bars_empty,
 )
@@ -58,18 +58,18 @@ def test_patch_get_stock_bars_empty(mocker):
     assert len(barset_mock.data['NOSYMBOL_2602E09F']) == 0
 
 
-def test_generate_barset_alpaca():
-    barset = generate_barset_alpaca()
+def test_factory_barset_alpaca():
+    barset = factory_barset_alpaca()
     assert isinstance(barset, BarSet)
     assert 'MOCKSYMBOL_30C779F3' in barset.data
 
-def test_generate_bar_alpaca():
-    bar = generate_bar_alpaca()
+def test_factory_bar_alpaca():
+    bar = factory_bar_alpaca()
     assert isinstance(bar, Bar)
     assert bar.symbol == 'MOCKSYMBOL_076E9AE1'
 
 
-def test_generate_bar_alpaca_list():
-    bars = generate_bar_alpaca_list()
+def test_factory_bar_alpaca_list():
+    bars = factory_bar_alpaca_list()
     assert isinstance(bars, list)
     assert all(isinstance(bar, Bar) for bar in bars)

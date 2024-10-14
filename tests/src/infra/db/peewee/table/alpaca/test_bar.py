@@ -1,15 +1,13 @@
 from fixture.infra.db.peewee.table.alpaca.bar import (
-    generate_table_bar_alpaca,
-    generate_table_bar_alpaca_list,
+    factory_table_bar_alpaca,
+    factory_table_bar_alpaca_list,
 )
-from src.infra.db.peewee.client import PeeweeClient
+from src.infra.db.peewee.client import CLI_PEEWEE
 from src.infra.db.peewee.table.alpaca.bar import (
     AdjustmentTable,
     TableBarAlpaca,
     TimeframeTable,
 )
-
-peewee_cli = PeeweeClient()
 
 
 def test_table_bar_alpaca_is_created():
@@ -17,9 +15,9 @@ def test_table_bar_alpaca_is_created():
     bar_alpacaテーブルは作成されうるモデルであるかを確認。
     """
     # 投入用のTableBarAlpacaを作成
-    table_bar_alpaca = generate_table_bar_alpaca()
+    table_bar_alpaca = factory_table_bar_alpaca()
     # テーブルに投入
-    peewee_cli.insert_models([table_bar_alpaca])
+    CLI_PEEWEE.insert_models([table_bar_alpaca])
     # テーブルの存在確認
     assert TableBarAlpaca.table_exists()
 
@@ -35,9 +33,7 @@ def test_table_bar_alpaca_list():
         ０件のデータが取得されることを確認
     """
     # 投入用のTableBarAlpacaを作成
-    table_bar_alpaca_list = generate_table_bar_alpaca_list()
-    # テーブルに投入
-    peewee_cli.insert_models(table_bar_alpaca_list)
+    table_bar_alpaca_list = factory_table_bar_alpaca_list(INSERT=True)
     # 1. データが投入されたことを確認
     assert len(TableBarAlpaca.select()) == len(table_bar_alpaca_list)
     # 2. symbol=AAPL and timeframe=DAY and adjustment = RAW のデータ取得

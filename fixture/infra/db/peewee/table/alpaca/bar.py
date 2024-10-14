@@ -1,24 +1,15 @@
 from datetime import datetime
 
-from src.infra.db.peewee.client import PeeweeClient
+from fixture.infra.db.peewee.table.decorator import auto_insert
 from src.infra.db.peewee.table.alpaca.bar import (
     AdjustmentTable,
     TableBarAlpaca,
     TimeframeTable,
 )
 
-peewee_cli = PeeweeClient()
 
-
-def load_table_bar_alpaca_on_db():
-    """
-    BarデータをDBに登録する。
-    """
-    table_bar_alpaca_list = generate_table_bar_alpaca_list()
-    peewee_cli.insert_models(table_bar_alpaca_list)
-
-
-def generate_table_bar_alpaca() -> TableBarAlpaca:
+@auto_insert
+def factory_table_bar_alpaca() -> TableBarAlpaca:
     """
     timeframe: 1 -> min
     adjustment: 1 -> raw
@@ -37,7 +28,8 @@ def generate_table_bar_alpaca() -> TableBarAlpaca:
     )
 
 
-def generate_table_bar_alpaca_list() -> list[TableBarAlpaca]:
+@auto_insert
+def factory_table_bar_alpaca_list() -> list[TableBarAlpaca]:
     """
     AAPL,GOOGのテーブルデータを生成する。
 
