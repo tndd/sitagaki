@@ -1,6 +1,6 @@
 from alpaca.data.models import Bar, BarSet
 
-from fixture.infra.api.alpaca.bar import generate_barset_alpaca
+from fixture.infra.api.alpaca.bar import factory_barset_alpaca
 from src.infra.api.alpaca.bar import extract_bar_list_alpaca_api_from_barset
 
 
@@ -9,7 +9,7 @@ def test_extract_default():
     BarSetの中からBarのリストを取り出す機能のテスト
     """
     # case1: 正常系
-    barset_empty = generate_barset_alpaca()
+    barset_empty = factory_barset_alpaca()
     # BarSetの中からBarのリストを取り出す
     bars = extract_bar_list_alpaca_api_from_barset(barset_empty)
     assert isinstance(bars, list)

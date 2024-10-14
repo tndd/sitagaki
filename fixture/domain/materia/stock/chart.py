@@ -4,7 +4,7 @@ from src.domain.materia.stock.chart.const import Adjustment, Timeframe
 from src.domain.materia.stock.chart.model import Bar, Chart
 
 
-def generate_bar() -> Bar:
+def factory_bar() -> Bar:
     return Bar(
         timestamp=datetime(2024, 1, 2, 5, 0, 0),
         open=187.15,
@@ -17,7 +17,7 @@ def generate_bar() -> Bar:
     )
 
 
-def generate_chart(
+def factory_chart(
         symbol: str = "MOCKSYMBOL_94CE5395",
         timeframe: Timeframe = Timeframe.DAY,
         adjustment: Adjustment = Adjustment.RAW,

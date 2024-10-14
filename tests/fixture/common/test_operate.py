@@ -4,13 +4,13 @@ from peewee import OperationalError
 from fixture.common.operate import cleanup_tables
 from fixture.infra.db.peewee.table.alpaca.bar import (
     TableBarAlpaca,
-    load_table_bar_alpaca_on_db,
+    factory_table_bar_alpaca_list,
 )
 
 
 def test_cleanup_tables():
     # テーブルにデータを登録し中身を確認
-    load_table_bar_alpaca_on_db()
+    factory_table_bar_alpaca_list(INSERT=True)
     result = TableBarAlpaca.select()
     assert len(result) == 10
     # テーブルを空にする

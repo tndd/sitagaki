@@ -19,7 +19,7 @@ def patch_get_stock_bars(mocker):
     mocker.patch.object(
         StockHistoricalDataClient,
         'get_stock_bars',
-        return_value=generate_barset_alpaca()
+        return_value=factory_barset_alpaca()
     )
 
 def patch_get_stock_bars_empty(mocker):
@@ -35,7 +35,7 @@ def patch_get_stock_bars_empty(mocker):
     )
 
 
-def generate_barset_alpaca() -> BarSet:
+def factory_barset_alpaca() -> BarSet:
     """
     AAPLのデータを生成する。
     いずれも2023/4/1 10:00~14:00の1時間足データ。
@@ -97,7 +97,7 @@ def generate_barset_alpaca() -> BarSet:
     return BarSet(raw_data_barset)
 
 
-def generate_bar_alpaca() -> Bar:
+def factory_bar_alpaca() -> Bar:
     raw_data = {
         "t": datetime(2023, 4, 1, 10, 0),  # timestamp
         "o": 100.0,  # open
@@ -111,9 +111,9 @@ def generate_bar_alpaca() -> Bar:
     return Bar(symbol="MOCKSYMBOL_076E9AE1", raw_data=raw_data)
 
 
-def generate_bar_alpaca_list() -> list[Bar]:
+def factory_bar_alpaca_list() -> list[Bar]:
     """
     BarSetはそのままだと使いづらいので、
     そこからBarのリストを抜き出して返す機能を関数化した。
     """
-    return extract_bar_list_alpaca_api_from_barset(generate_barset_alpaca())
+    return extract_bar_list_alpaca_api_from_barset(factory_barset_alpaca())
