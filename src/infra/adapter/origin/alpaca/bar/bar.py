@@ -1,9 +1,9 @@
 from alpaca.data.models import Bar as BarAlpacaApi
 
-from src.domain.materia.alpaca.bar.const import Adjustment, Timeframe
-from src.domain.materia.alpaca.bar.model import Bar
-from src.infra.adapter.materia.alpaca.bar.adjustment import depart_adjustment_to_table
-from src.infra.adapter.materia.alpaca.bar.timeframe import depart_timeframe_to_table
+from src.domain.origin.alpaca.bar.const import Adjustment, Timeframe
+from src.domain.origin.alpaca.bar.model import Bar
+from src.infra.adapter.origin.alpaca.bar.adjustment import depart_adjustment_to_table
+from src.infra.adapter.origin.alpaca.bar.timeframe import depart_timeframe_to_table
 from src.infra.db.peewee.table.alpaca.bar import TableBarAlpaca
 
 

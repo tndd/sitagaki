@@ -3,9 +3,9 @@ from datetime import datetime
 import pytest
 
 from fixture.infra.db.peewee.table.alpaca.bar import factory_table_bar_alpaca_list
-from src.domain.materia.alpaca.bar.const import Adjustment, Timeframe
-from src.domain.materia.alpaca.bar.model import Chart
-from src.domain.materia.alpaca.bar.repository import REPO_CHART
+from src.domain.origin.alpaca.bar.const import Adjustment, Timeframe
+from src.domain.origin.alpaca.bar.model import Chart
+from src.domain.origin.alpaca.bar.repository import REPO_CHART
 
 
 def test_basic():

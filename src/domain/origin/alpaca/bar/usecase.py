@@ -1,9 +1,9 @@
 from dataclasses import dataclass, field
 from typing import Sequence
 
-from src.domain.materia.alpaca.bar.const import Adjustment, Timeframe
-from src.domain.materia.alpaca.bar.model import Chart, SymbolTimestamp
-from src.domain.materia.alpaca.bar.repository import ChartRepository
+from src.domain.origin.alpaca.bar.const import Adjustment, Timeframe
+from src.domain.origin.alpaca.bar.model import Chart, SymbolTimestamp
+from src.domain.origin.alpaca.bar.repository import ChartRepository
 
 
 @dataclass

@@ -1,4 +1,4 @@
-from src.domain.materia.alpaca.ticker.repository import TickerRepository
+from src.domain.origin.alpaca.ticker.repository import TickerRepository
 
 
 def test_fetch_tickers_of_sector_from_local():

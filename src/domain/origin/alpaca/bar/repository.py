@@ -2,9 +2,9 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Sequence
 
-from src.domain.materia.alpaca.bar.const import Adjustment, Timeframe
-from src.domain.materia.alpaca.bar.model import Chart, SymbolTimestampSet
-from src.infra.adapter.materia.alpaca.bar import (
+from src.domain.origin.alpaca.bar.const import Adjustment, Timeframe
+from src.domain.origin.alpaca.bar.model import Chart, SymbolTimestampSet
+from src.infra.adapter.origin.alpaca.bar import (
     arrive_chart_from_bar_alpaca_api_list,
     arrive_chart_from_table_list,
     depart_adjustment_to_alpaca_api,
@@ -15,7 +15,7 @@ from src.infra.adapter.materia.alpaca.bar import (
 )
 from src.infra.api.alpaca.bar import AlpacaApiBarClient
 from src.infra.db.peewee.client import CLI_PEEWEE, PeeweeClient
-from src.infra.db.peewee.query.materia.stock.chart import get_query_select_bar_alpaca
+from src.infra.db.peewee.query.origin.stock.chart import get_query_select_bar_alpaca
 
 
 @dataclass

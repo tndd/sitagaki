@@ -1,14 +1,14 @@
 from alpaca.data.models import Bar as BarAlpacaApi
 
-from src.domain.materia.alpaca.bar.const import Adjustment, Timeframe
-from src.domain.materia.alpaca.bar.model import Chart
-from src.infra.adapter.materia.alpaca.bar.adjustment import arrive_adjustment_from_table
-from src.infra.adapter.materia.alpaca.bar.bar import (
+from src.domain.origin.alpaca.bar.const import Adjustment, Timeframe
+from src.domain.origin.alpaca.bar.model import Chart
+from src.infra.adapter.origin.alpaca.bar.adjustment import arrive_adjustment_from_table
+from src.infra.adapter.origin.alpaca.bar.bar import (
     arrive_bar_from_alpaca_api,
     arrive_bar_from_table,
     depart_bar_to_table,
 )
-from src.infra.adapter.materia.alpaca.bar.timeframe import arrive_timeframe_from_table
+from src.infra.adapter.origin.alpaca.bar.timeframe import arrive_timeframe_from_table
 from src.infra.db.peewee.table.alpaca.bar import TableBarAlpaca
 
 

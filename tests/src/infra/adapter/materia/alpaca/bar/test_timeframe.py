@@ -1,8 +1,8 @@
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
 from fixture.infra.db.peewee.table.alpaca.bar import factory_table_bar_alpaca
-from src.domain.materia.alpaca.bar.const import Timeframe
-from src.infra.adapter.materia.alpaca.bar.timeframe import (
+from src.domain.origin.alpaca.bar.const import Timeframe
+from src.infra.adapter.origin.alpaca.bar.timeframe import (
     arrive_timeframe_from_table,
     depart_timeframe_to_alpaca_api,
     depart_timeframe_to_table,

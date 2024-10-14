@@ -2,7 +2,7 @@ from datetime import datetime
 
 from fixture.infra.db.peewee.table.alpaca.bar import factory_table_bar_alpaca_list
 from src.infra.db.peewee.client import CLI_PEEWEE
-from src.infra.db.peewee.query.materia.stock.chart import (
+from src.infra.db.peewee.query.origin.stock.chart import (
     get_query_select_latest_timestamp_of_bar_alpaca,
 )
 from src.infra.db.peewee.table.alpaca.bar import AdjustmentTable, TimeframeTable
