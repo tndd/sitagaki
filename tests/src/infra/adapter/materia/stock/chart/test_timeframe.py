@@ -1,6 +1,6 @@
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 
-from fixture.infra.db.peewee.table.alpaca.bar import generate_table_bar_alpaca
+from fixture.infra.db.peewee.table.alpaca.bar import factory_table_bar_alpaca
 from src.domain.materia.stock.chart.const import Timeframe
 from src.infra.adapter.materia.stock.chart.timeframe import (
     arrive_timeframe_from_table,
@@ -16,7 +16,7 @@ def test_arrive_timeframe_from_table():
 
     timeframeがminであることが期待できる。
     """
-    bar_table = generate_table_bar_alpaca()
+    bar_table = factory_table_bar_alpaca()
     timeframe = arrive_timeframe_from_table(bar_table)
     assert isinstance(timeframe, Timeframe)
     assert timeframe == Timeframe.MIN

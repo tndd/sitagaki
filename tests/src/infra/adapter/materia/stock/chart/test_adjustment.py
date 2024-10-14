@@ -1,7 +1,7 @@
 import pytest
 from alpaca.data.enums import Adjustment as AdjustmentAlpaca
 
-from fixture.infra.db.peewee.table.alpaca.bar import generate_table_bar_alpaca
+from fixture.infra.db.peewee.table.alpaca.bar import factory_table_bar_alpaca
 from src.domain.materia.stock.chart.const import Adjustment
 from src.infra.adapter.materia.stock.chart.adjustment import (
     arrive_adjustment_from_table,
@@ -17,7 +17,7 @@ def test_arrive_adjustment_from_table():
 
     adjustmentがrawであることが期待できる。
     """
-    bar_table = generate_table_bar_alpaca()
+    bar_table = factory_table_bar_alpaca()
     adjustment = arrive_adjustment_from_table(bar_table)
     assert isinstance(adjustment, Adjustment)
     assert adjustment == Adjustment.RAW

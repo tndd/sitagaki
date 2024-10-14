@@ -1,6 +1,6 @@
-from fixture.domain.materia.stock.chart import generate_bar
-from fixture.infra.api.alpaca.bar import generate_bar_alpaca
-from fixture.infra.db.peewee.table.alpaca.bar import generate_table_bar_alpaca
+from fixture.domain.materia.stock.chart import factory_bar
+from fixture.infra.api.alpaca.bar import factory_bar_alpaca
+from fixture.infra.db.peewee.table.alpaca.bar import factory_table_bar_alpaca
 from src.domain.materia.stock.chart.const import Adjustment, Timeframe
 from src.domain.materia.stock.chart.model import Bar
 from src.infra.adapter.materia.stock.chart.bar import (
@@ -15,7 +15,7 @@ def test_arrive_bar_from_alpaca_api():
     """
     bar_alpaca_api => Bar
     """
-    bar_alpaca_api = generate_bar_alpaca()
+    bar_alpaca_api = factory_bar_alpaca()
     bar = arrive_bar_from_alpaca_api(bar_alpaca_api)
     assert isinstance(bar, Bar)
 
@@ -24,13 +24,13 @@ def test_arrive_bar_from_table():
     """
     bar_table => Bar
     """
-    bar_table = generate_table_bar_alpaca()
+    bar_table = factory_table_bar_alpaca()
     bar = arrive_bar_from_table(bar_table)
     assert isinstance(bar, Bar)
 
 
 def test_depart_bar_to_table():
-    bar = generate_bar()
+    bar = factory_bar()
     bar_table = depart_bar_to_table(
         bar,
         symbol="AAPL",

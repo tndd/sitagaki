@@ -12,11 +12,11 @@ def load_table_bar_alpaca_on_db():
     """
     BarデータをDBに登録する。
     """
-    table_bar_alpaca_list = generate_table_bar_alpaca_list()
+    table_bar_alpaca_list = factory_table_bar_alpaca_list()
     CLI_PEEWEE.insert_models(table_bar_alpaca_list)
 
 
-def generate_table_bar_alpaca() -> TableBarAlpaca:
+def factory_table_bar_alpaca() -> TableBarAlpaca:
     """
     timeframe: 1 -> min
     adjustment: 1 -> raw
@@ -35,7 +35,7 @@ def generate_table_bar_alpaca() -> TableBarAlpaca:
     )
 
 
-def generate_table_bar_alpaca_list() -> list[TableBarAlpaca]:
+def factory_table_bar_alpaca_list() -> list[TableBarAlpaca]:
     """
     AAPL,GOOGのテーブルデータを生成する。
 

@@ -16,7 +16,7 @@ class SampleUser(PeeweeTable):
         table_name = TEST_TABLE_NAME
 
 
-def generate_test_users(n: int) -> list[SampleUser]:
+def factory_test_users(n: int) -> list[SampleUser]:
     """
     N件のサンプルユーザーを生成する。
     """
@@ -31,7 +31,7 @@ def insert_test_users(n: int):
     """
     N件のサンプルユーザーを挿入する。
     """
-    users = generate_test_users(n)
+    users = factory_test_users(n)
     CLI_PEEWEE.insert_models(users)
 
 
@@ -67,7 +67,7 @@ def test_insert_models_multiple():
             * usernameが"user1"のデータが2件。
     """
     # 挿入するユーザーインスタンスのリストを作成
-    users = generate_test_users(3)
+    users = factory_test_users(3)
     # 1回目の投入
     CLI_PEEWEE.insert_models(users)
     retrieved_users = SampleUser.select()
