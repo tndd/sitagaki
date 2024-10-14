@@ -1,6 +1,7 @@
 from fixture.infra.db.peewee.table.alpaca.bar import (
     factory_table_bar_alpaca,
     factory_table_bar_alpaca_list,
+    factory_table_bar_alpaca_list_times_shuffle,
 )
 from src.infra.db.peewee.client import CLI_PEEWEE
 from src.infra.db.peewee.table.alpaca.bar import (
@@ -46,3 +47,14 @@ def test_table_bar_alpaca_list():
     assert len(TableBarAlpaca.select().where(
         TableBarAlpaca.adjustment == AdjustmentTable.SPLIT,
     )) == 0
+
+
+def test_factory_table_bar_alpaca_list_times_shuffle():
+    """
+    factory_table_bar_alpaca_list_times_shuffle()で生成されるデータの
+    日付がランダムにシャッフルされていることを確認
+    """
+    table_bar_alpaca_list = factory_table_bar_alpaca_list_times_shuffle(INSERT=True)
+    assert len(table_bar_alpaca_list) == 10
+    # データが投入されたことを確認
+    assert len(TableBarAlpaca.select()) == 10

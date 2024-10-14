@@ -1,4 +1,5 @@
 from datetime import datetime
+from random import shuffle
 
 from fixture.infra.db.peewee.table.decorator import auto_insert
 from src.infra.db.peewee.table.alpaca.bar import (
@@ -13,13 +14,14 @@ def factory_table_bar_alpaca(
     symbol: str = "AAPL",
     timeframe: TimeframeTable = TimeframeTable.MIN,
     adjustment: AdjustmentTable = AdjustmentTable.RAW,
+    timestamp: datetime = datetime(2020, 1, 1),
 ) -> TableBarAlpaca:
     """
     AAPL,MIN,RAWのBarテーブルデータを生成する。
     """
     return TableBarAlpaca(
         symbol=symbol,
-        timestamp=datetime(2020, 1, 1),
+        timestamp=timestamp,
         timeframe=timeframe,
         adjustment=adjustment,
         open=100.0,
@@ -200,7 +202,7 @@ def factory_table_bar_alpaca_list() -> list[TableBarAlpaca]:
 
 
 @auto_insert
-def factory_table_bar_alpaca_list_2() -> list[TableBarAlpaca]:
+def factory_table_bar_alpaca_list_times_shuffle() -> list[TableBarAlpaca]:
     """
     AAPL, GOOGのデータテーブルを生成
     timeframe=DAY, adjustment=RAWに固定。
@@ -208,3 +210,23 @@ def factory_table_bar_alpaca_list_2() -> list[TableBarAlpaca]:
 
     合計10件
     """
+    def _create_bar_data(symbol, year, month, day_start):
+        """
+        指定した日付から5日間のデータを生成する。
+        """
+        return [
+            factory_table_bar_alpaca(
+                symbol=symbol,
+                timeframe=TimeframeTable.DAY,
+                adjustment=AdjustmentTable.RAW,
+                timestamp=datetime(year, month, day)
+            )
+            for day in range(day_start, day_start + 5)
+        ]
+
+    AAPL = _create_bar_data("AAPL", 2020, 1, 1)
+    GOOG = _create_bar_data("GOOG", 2021, 1, 1)
+    # テーブルの並びはランダムにシャッフルして返す
+    tables = AAPL + GOOG
+    shuffle(tables)
+    return tables
