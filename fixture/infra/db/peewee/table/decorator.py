@@ -6,10 +6,16 @@ from src.infra.db.peewee.client import CLI_PEEWEE, PeeweeTable
 def auto_insert(func):
     """
     ファクトリにより作成されたモデルをDBに自動で登録するデコレータ。
-    INSERTを指定することでON,OFFを切り替え可能。
     デフォルトではOFF。
 
-    少しでも込み入ったことをするとなると、pip-decoratorは使い物にならない。
+    >> ATTENTION <<
+        デコレート先関数のキーワード引数に"INSERT"を指定することで、
+        DBインサート機能のON,OFFを切り替え可能
+
+    NOTE:
+        少しでも込み入ったことをするとなると、
+        pip-decoratorは使い物にならないので、
+        このデコレータは直書きしてる。
     """
     @wraps(func)
     def wrapper(*args, INSERT=False, **kwargs):
