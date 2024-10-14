@@ -1,4 +1,4 @@
-from fixture.domain.materia.stock.chart import factory_bar, factory_chart
+from fixture.domain.materia.alpaca.bar import factory_bar, factory_chart
 from src.domain.materia.alpaca.bar.model import Bar, Chart
 
 
