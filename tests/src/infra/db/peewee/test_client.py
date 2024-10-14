@@ -2,7 +2,7 @@ from peewee import AutoField, CharField
 
 from src.infra.db.peewee.client import CLI_PEEWEE, PeeweeTable
 
-TEST_TABLE_NAME = '__test_user_f3875f7f'
+TEST_TABLE_NAME = '__test_table_7cf5453d'
 
 
 # テスト用モデル
@@ -10,7 +10,6 @@ class SampleUser(PeeweeTable):
     id = AutoField(primary_key=True)
     username = CharField()
     email = CharField()
-
     class Meta:
         # テーブル名を重複させないため
         table_name = TEST_TABLE_NAME
