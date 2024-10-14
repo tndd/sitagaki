@@ -2,14 +2,6 @@ from functools import wraps
 
 from src.infra.db.peewee.client import CLI_PEEWEE, PeeweeTable
 
-"""
-TODO: commonに入れるかそのままか？
-    先例に従うならば、table/commonにこのファイルは所属するべき。
-    だが何でもかんでもcommonに入れるのも冗長すぎる。
-    だったらfixture/commonのcommonもいらないのでは？という話になってくる。
-    結論を出すように。
-"""
-
 
 def auto_insert(func):
     """

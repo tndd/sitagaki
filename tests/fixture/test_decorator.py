@@ -1,7 +1,7 @@
 import pytest
 
 import src.infra.db.common as common
-from fixture.common.decorator import only_test
+from fixture.decorator import only_test
 from src.infra.db.common import is_test_mode
 
 

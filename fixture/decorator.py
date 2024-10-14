@@ -11,4 +11,3 @@ def only_test(f, *args, **kwargs):
     if not is_test_mode():
         raise ValueError("テストモードではないため、実行できません。 EID:019d3665")
     return f(*args, **kwargs)
-

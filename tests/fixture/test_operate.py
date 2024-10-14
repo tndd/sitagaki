@@ -1,11 +1,11 @@
 import pytest
 from peewee import OperationalError
 
-from fixture.common.operate import cleanup_tables
 from fixture.infra.db.peewee.table.alpaca.bar import (
     TableBarAlpaca,
     factory_table_bar_alpaca_list,
 )
+from fixture.operate import cleanup_tables
 
 
 def test_cleanup_tables():
