@@ -1,1 +1,0 @@
-sns,掲示板、google_trendなどの世間の反応系

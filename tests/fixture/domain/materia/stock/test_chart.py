@@ -1,5 +1,5 @@
-from fixture.domain.materia.stock.chart import factory_bar, factory_chart
-from src.domain.materia.stock.chart.model import Bar, Chart
+from fixture.domain.origin.alpaca.bar import factory_bar, factory_chart
+from src.domain.origin.alpaca.bar.model import Bar, Chart
 
 
 def test_factory_bar():
