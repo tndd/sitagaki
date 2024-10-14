@@ -53,6 +53,12 @@ def test_only_test(mocker, work_mode):
 
 
 def test_auto_insert():
+    """
+    auto_insertがテーブルへの挿入機能を果たせているかを確認。
+
+    また引数INSERTを指定することで、
+    挿入機能のON,OFFを切り替え可能であることも確認する。
+    """
     TEST_TABLE_NAME = '__test_table_7cf5453d'
     # テスト用モデル
     class _SampleUser(PeeweeTable):
