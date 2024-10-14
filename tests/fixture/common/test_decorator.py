@@ -1,8 +1,10 @@
 import pytest
+from peewee import AutoField, CharField
 
 import src.infra.db.common as common
-from fixture.common.decorator import only_test
+from fixture.common.decorator import auto_insert, only_test
 from src.infra.db.common import is_test_mode
+from src.infra.db.peewee.client import CLI_PEEWEE, PeeweeTable
 
 
 @pytest.mark.parametrize(
@@ -48,3 +50,42 @@ def test_only_test(mocker, work_mode):
         # テストモード状態でなければ、関数_fはValueErrorで阻まれ実行されない
         with pytest.raises(ValueError, match="EID:019d3665"):
             _f()
+
+
+def test_auto_insert():
+    TEST_TABLE_NAME = '__test_table_7cf5453d'
+    # テスト用モデル
+    class _SampleUser(PeeweeTable):
+        id = AutoField(primary_key=True)
+        username = CharField()
+        email = CharField()
+        class Meta:
+            table_name = TEST_TABLE_NAME
+    # テスト用モデル作成ファクトリ
+    @auto_insert
+    def _factory_sample_users():
+        users = [
+            _SampleUser(
+                username=f'user{i}',
+                email=f'user{i}@example.com'
+            ) for i in range(10)
+        ]
+        return users
+    ### テスト用モデル作成(auto_insert無効) ###
+    users_off = _factory_sample_users() # デフォルト状態では無効となっている
+    # テスト用モデルが作成されているかを確認
+    assert len(users_off) == 10
+    assert all(isinstance(user, _SampleUser) for user in users_off)
+    # データ挿入は行われていないので、データを取得することはできない
+    with pytest.raises(Exception, match=f"no such table: {TEST_TABLE_NAME}"):
+        users_from_db = _SampleUser.select()
+        len(users_from_db) # ここでエラー発生が期待される
+
+    ### テスト用モデル作成(auto_insert有効) ###
+    users_on = _factory_sample_users(INSERT=True)
+    # テスト用モデルが作成されているかを確認
+    assert len(users_on) == 10
+    assert all(isinstance(user, _SampleUser) for user in users_on)
+    # データ挿入が行われているので、データを取得することができる
+    users_from_db = _SampleUser.select()
+    assert len(users_from_db) == 10

@@ -1,7 +1,9 @@
+from functools import wraps
+
 from decorator import decorator
 
 from src.infra.db.common import is_test_mode
-from src.infra.db.peewee.client import CLI_PEEWEE, PeeweeTable
+from src.infra.db.peewee.client import CLI_PEEWEE
 
 
 @decorator
@@ -14,15 +16,20 @@ def only_test(f, *args, **kwargs):
     return f(*args, **kwargs)
 
 
-@decorator
-def auto_insert(f, enable=False, *args, **kwargs):
+def auto_insert(func):
     """
     ファクトリにより作成されたモデルをDBに自動で登録するデコレータ。
-    ON,OFFを切り替え可能。
+    INSERTを指定することでON,OFFを切り替え可能。
+    デフォルトではOFF。
+
+    少しでも込み入ったことをするとなると、pip-decoratorは使い物にならない。
     """
-    models: list[PeeweeTable] | PeeweeTable = f(*args, **kwargs)
-    if not isinstance(models, list):
-        models = [models]
-    if enable:
-        CLI_PEEWEE.insert_models(models)
-    return models
+    @wraps(func)
+    def wrapper(*args, INSERT=False, **kwargs):
+        models = func(*args, **kwargs)
+        if not isinstance(models, list):
+            models = [models]
+        if INSERT:
+            CLI_PEEWEE.insert_models(models)
+        return models
+    return wrapper
