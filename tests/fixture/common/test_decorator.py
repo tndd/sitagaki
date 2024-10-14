@@ -4,7 +4,7 @@ from peewee import AutoField, CharField
 import src.infra.db.common as common
 from fixture.common.decorator import auto_insert, only_test
 from src.infra.db.common import is_test_mode
-from src.infra.db.peewee.client import CLI_PEEWEE, PeeweeTable
+from src.infra.db.peewee.client import PeeweeTable
 
 
 @pytest.mark.parametrize(
