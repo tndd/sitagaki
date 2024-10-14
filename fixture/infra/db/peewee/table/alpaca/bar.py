@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from fixture.common.decorator import auto_insert
+from fixture.infra.db.peewee.table.decorator import auto_insert
 from src.infra.db.peewee.table.alpaca.bar import (
     AdjustmentTable,
     TableBarAlpaca,
