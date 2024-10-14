@@ -69,18 +69,19 @@ def test_auto_insert():
             table_name = TEST_TABLE_NAME
     # テスト用モデル作成ファクトリ
     @auto_insert
-    def _factory_sample_users():
+    def _factory_sample_users(n: int):
         users = [
             _SampleUser(
                 username=f'user{i}',
                 email=f'user{i}@example.com'
-            ) for i in range(10)
+            ) for i in range(n)
         ]
         return users
     ### テスト用モデル作成(auto_insert無効) ###
-    users_off = _factory_sample_users() # デフォルト状態では無効となっている
+    N = 10 # モデル作成数
+    users_off = _factory_sample_users(N) # デフォルト状態では無効となっている
     # テスト用モデルが作成されているかを確認
-    assert len(users_off) == 10
+    assert len(users_off) == N
     assert all(isinstance(user, _SampleUser) for user in users_off)
     # データ挿入は行われていないので、データを取得することはできない
     with pytest.raises(Exception, match=f"no such table: {TEST_TABLE_NAME}"):
@@ -88,10 +89,10 @@ def test_auto_insert():
         len(users_from_db) # ここでエラー発生が期待される
 
     ### テスト用モデル作成(auto_insert有効) ###
-    users_on = _factory_sample_users(INSERT=True)
+    users_on = _factory_sample_users(N, INSERT=True)
     # テスト用モデルが作成されているかを確認
-    assert len(users_on) == 10
+    assert len(users_on) == N
     assert all(isinstance(user, _SampleUser) for user in users_on)
     # データ挿入が行われているので、データを取得することができる
     users_from_db = _SampleUser.select()
-    assert len(users_from_db) == 10
+    assert len(users_from_db) == N
