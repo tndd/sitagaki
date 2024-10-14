@@ -33,9 +33,7 @@ def test_table_bar_alpaca_list():
         ０件のデータが取得されることを確認
     """
     # 投入用のTableBarAlpacaを作成
-    table_bar_alpaca_list = factory_table_bar_alpaca_list()
-    # テーブルに投入
-    CLI_PEEWEE.insert_models(table_bar_alpaca_list)
+    table_bar_alpaca_list = factory_table_bar_alpaca_list(INSERT=True)
     # 1. データが投入されたことを確認
     assert len(TableBarAlpaca.select()) == len(table_bar_alpaca_list)
     # 2. symbol=AAPL and timeframe=DAY and adjustment = RAW のデータ取得

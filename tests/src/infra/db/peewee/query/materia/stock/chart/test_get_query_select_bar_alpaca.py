@@ -24,9 +24,7 @@ def test_basic():
         2. シンボルが"AAPL"のbarのみ取得
     """
     # データ用意
-    # TODO: 投入部分の関数化
-    table_bar_alpaca_list = factory_table_bar_alpaca_list()
-    CLI_PEEWEE.insert_models(table_bar_alpaca_list)
+    factory_table_bar_alpaca_list(INSERT=True)
     # データ取得
     query = get_query_select_bar_alpaca(
         symbol="AAPL",
@@ -57,8 +55,7 @@ def test_symbol_and_timeframe():
         3. 日付が2020-01-02から2020-01-03の間のbarのみ取得
     """
     # データ用意
-    table_bar_alpaca_list = factory_table_bar_alpaca_list()
-    CLI_PEEWEE.insert_models(table_bar_alpaca_list)
+    factory_table_bar_alpaca_list(INSERT=True)
     # データ取得
     query = get_query_select_bar_alpaca(
         symbol="AAPL",
@@ -82,8 +79,7 @@ def test_invalid_start_end():
     ValueErrorが発生することを確認する。
     """
     # データ用意
-    table_bar_alpaca_list = factory_table_bar_alpaca_list()
-    CLI_PEEWEE.insert_models(table_bar_alpaca_list)
+    factory_table_bar_alpaca_list(INSERT=True)
     # データ取得
     with pytest.raises(ValueError, match="EID:45b0f55b"):
         get_query_select_bar_alpaca(
