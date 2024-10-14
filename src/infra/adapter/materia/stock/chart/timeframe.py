@@ -1,7 +1,7 @@
 from alpaca.data.timeframe import TimeFrame as TimeFrameAlpaca
 from alpaca.data.timeframe import TimeFrameUnit
 
-from src.domain.materia.stock.chart.const import Timeframe
+from src.domain.materia.alpaca.bar.const import Timeframe
 from src.infra.db.peewee.table.alpaca.bar import TableBarAlpaca, TimeframeTable
 
 

@@ -2,8 +2,8 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Sequence
 
-from src.domain.materia.stock.chart.const import Adjustment, Timeframe
-from src.domain.materia.stock.chart.model import Chart, SymbolTimestampSet
+from src.domain.materia.alpaca.bar.const import Adjustment, Timeframe
+from src.domain.materia.alpaca.bar.model import Chart, SymbolTimestampSet
 from src.infra.adapter.materia.stock.chart import (
     arrive_chart_from_bar_alpaca_api_list,
     arrive_chart_from_table_list,

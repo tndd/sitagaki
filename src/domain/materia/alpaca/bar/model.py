@@ -2,7 +2,7 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
-from src.domain.materia.stock.chart.const import Adjustment, Timeframe
+from src.domain.materia.alpaca.bar.const import Adjustment, Timeframe
 
 
 class Bar(BaseModel):

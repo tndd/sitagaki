@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from src.domain.materia.stock.chart.const import Adjustment, Timeframe
-from src.domain.materia.stock.chart.model import Bar, Chart
+from src.domain.materia.alpaca.bar.const import Adjustment, Timeframe
+from src.domain.materia.alpaca.bar.model import Bar, Chart
 
 
 def factory_bar() -> Bar:

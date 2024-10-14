@@ -1,6 +1,6 @@
 from alpaca.data.enums import Adjustment as AdjustmentAlpaca
 
-from src.domain.materia.stock.chart.const import Adjustment
+from src.domain.materia.alpaca.bar.const import Adjustment
 from src.infra.db.peewee.table.alpaca.bar import AdjustmentTable, TableBarAlpaca
 
 

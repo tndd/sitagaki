@@ -1,7 +1,7 @@
 import pytest
 
-from src.domain.materia.stock.chart.const import Adjustment, Timeframe
-from src.domain.materia.stock.chart.repository import REPO_CHART
+from src.domain.materia.alpaca.bar.const import Adjustment, Timeframe
+from src.domain.materia.alpaca.bar.repository import REPO_CHART
 from src.infra.adapter.materia.stock.chart.adjustment import (
     arrive_adjustment_from_table,
 )

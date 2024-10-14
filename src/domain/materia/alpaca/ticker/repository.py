@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from src.domain.materia.stock.ticker.model import Sector, Ticker
+from src.domain.materia.alpaca.ticker.model import Sector, Ticker
 from src.infra.api.alpaca.trade import get_assets
 
 
