@@ -9,16 +9,19 @@ from src.infra.db.peewee.table.alpaca.bar import (
 
 
 @auto_insert
-def factory_table_bar_alpaca() -> TableBarAlpaca:
+def factory_table_bar_alpaca(
+    symbol: str = "AAPL",
+    timeframe: TimeframeTable = TimeframeTable.MIN,
+    adjustment: AdjustmentTable = AdjustmentTable.RAW,
+) -> TableBarAlpaca:
     """
-    timeframe: 1 -> min
-    adjustment: 1 -> raw
+    AAPL,MIN,RAWのBarテーブルデータを生成する。
     """
     return TableBarAlpaca(
-        symbol="AAPL",
+        symbol=symbol,
         timestamp=datetime(2020, 1, 1),
-        timeframe=TimeframeTable.MIN,
-        adjustment=AdjustmentTable.RAW,
+        timeframe=timeframe,
+        adjustment=adjustment,
         open=100.0,
         high=105.0,
         low=99.0,
@@ -194,3 +197,14 @@ def factory_table_bar_alpaca_list() -> list[TableBarAlpaca]:
         AAPL_L2_MONTH_ALL +
         GOOG_L2_DAY_RAW
     )
+
+
+@auto_insert
+def factory_table_bar_alpaca_list_2() -> list[TableBarAlpaca]:
+    """
+    AAPL, GOOGのデータテーブルを生成
+    timeframe=DAY, adjustment=RAWに固定。
+    日付の違いに特化して生成を行う。
+
+    合計10件
+    """
