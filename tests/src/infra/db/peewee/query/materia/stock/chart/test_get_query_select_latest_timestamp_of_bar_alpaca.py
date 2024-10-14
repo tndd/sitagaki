@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from fixture.infra.db.peewee.table.alpaca.bar import load_table_bar_alpaca_on_db
+from fixture.infra.db.peewee.table.alpaca.bar import factory_table_bar_alpaca_list
 from src.infra.db.peewee.client import CLI_PEEWEE
 from src.infra.db.peewee.query.materia.stock.chart import (
     get_query_select_latest_timestamp_of_bar_alpaca,
@@ -9,7 +9,7 @@ from src.infra.db.peewee.table.alpaca.bar import AdjustmentTable, TimeframeTable
 
 
 def test_basic():
-    load_table_bar_alpaca_on_db()
+    factory_table_bar_alpaca_list(INSERT=True)
     query = get_query_select_latest_timestamp_of_bar_alpaca(
         symbols=['AAPL', 'GOOG'],
         timeframe=TimeframeTable.DAY,

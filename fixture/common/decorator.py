@@ -3,7 +3,7 @@ from functools import wraps
 from decorator import decorator
 
 from src.infra.db.common import is_test_mode
-from src.infra.db.peewee.client import CLI_PEEWEE
+from src.infra.db.peewee.client import CLI_PEEWEE, PeeweeTable
 
 
 @decorator
@@ -26,10 +26,10 @@ def auto_insert(func):
     """
     @wraps(func)
     def wrapper(*args, INSERT=False, **kwargs):
-        models = func(*args, **kwargs)
-        if not isinstance(models, list):
-            models = [models]
+        result: list[PeeweeTable] | PeeweeTable = func(*args, **kwargs)
         if INSERT:
+            # 単体のテーブルモデルを返すファクトリもあるので、その場合はリストに変換
+            models = [result] if not isinstance(result, list) else result
             CLI_PEEWEE.insert_models(models)
-        return models
+        return result
     return wrapper

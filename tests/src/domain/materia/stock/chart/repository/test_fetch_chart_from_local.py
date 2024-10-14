@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pytest
 
-from fixture.infra.db.peewee.table.alpaca.bar import load_table_bar_alpaca_on_db
+from fixture.infra.db.peewee.table.alpaca.bar import factory_table_bar_alpaca_list
 from src.domain.materia.stock.chart.const import Adjustment, Timeframe
 from src.domain.materia.stock.chart.model import Chart
 from src.domain.materia.stock.chart.repository import REPO_CHART
@@ -18,7 +18,7 @@ def test_basic():
         2. AAPL_L3_DAY_RAWのデータが取得されているか（volume=100,101,102）
     """
     # テストデータをDBに登録
-    load_table_bar_alpaca_on_db()
+    factory_table_bar_alpaca_list(INSERT=True)
     # 取得
     chart = REPO_CHART.fetch_chart_from_local(
         symbol="AAPL",
@@ -48,7 +48,7 @@ def test_date_range():
         3. volume=100のAAPL_L3_DAY_RAWのデータがスキップされているか
     """
     # テストデータをDBに登録
-    load_table_bar_alpaca_on_db()
+    factory_table_bar_alpaca_list(INSERT=True)
     # 取得
     chart = REPO_CHART.fetch_chart_from_local(
         symbol="AAPL",
@@ -71,7 +71,7 @@ def test_not_exist_symbol():
     """
     対象データが存在せず取得できない場合
 
-    load_table_bar_alpaca_on_db()で取得される情報に
+    factory_table_bar_alpaca_listで取得される情報に
     以下のシンボルは存在しない。
 
     期待される結果:
@@ -87,7 +87,7 @@ def test_not_exist_symbol():
         そのため検索結果が見つからないことを表すLookupErrorを返す。
     """
     # テストデータをDBに登録
-    load_table_bar_alpaca_on_db()
+    factory_table_bar_alpaca_list(INSERT=True)
     # まずエラーが発生することを確認
     with pytest.raises(Exception) as excinfo:
         REPO_CHART.fetch_chart_from_local(
