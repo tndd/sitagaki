@@ -23,7 +23,7 @@ class ChartUsecase:
         DB上にある最新のtimestamp~可能な限り直近のデータ。
         """
         # 最新のtimestampを取得
-        symbol_timestamp_set = self.rp_chart.fetch_latest_timestamp_of_symbol_ls(symbols, timeframe, adjustment)
+        symbol_timestamp_set = self.rp_chart.fetch_latest_symbol_timestamp_set(symbols, timeframe, adjustment)
         # 更新対象のシンボルを抽出
         update_targets_symbol_timestamp = symbol_timestamp_set.get_update_target_symbols()
         # シンボルごとにデータ更新

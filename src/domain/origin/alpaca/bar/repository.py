@@ -113,7 +113,7 @@ class ChartRepository:
             }
             raise Exception(error_log)
 
-    def fetch_latest_timestamp_of_symbol_ls(
+    def fetch_latest_symbol_timestamp_set(
         self,
         symbols: Sequence[str],
         timeframe: Timeframe,
@@ -124,6 +124,8 @@ class ChartRepository:
         DBに保存されている最新の日付を取得する。
         未取得のシンボルについては、timestamp=Noneとして返す。
         """
+        # シンボルごとの最新日付取得
+        # 取得したシンボルと日付のペアのリストをSymbolTimestampSetに変換
         pass
 
 
