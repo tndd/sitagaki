@@ -15,7 +15,10 @@ from src.infra.adapter.origin.alpaca.bar import (
 )
 from src.infra.api.alpaca.bar import AlpacaApiBarClient
 from src.infra.db.peewee.client import CLI_PEEWEE, PeeweeClient
-from src.infra.db.peewee.query.origin.alpaca.bar import get_query_select_bar_alpaca
+from src.infra.db.peewee.query.origin.alpaca.bar import (
+    get_query_select_bar_alpaca,
+    get_query_select_latest_timestamp_of_bar_alpaca,
+)
 
 
 @dataclass
@@ -38,14 +41,18 @@ class ChartRepository:
             基本的にオンライン上からデータを取得する場合、最新の日付までのデータを求めるから。
             endを指定したデータ取得の必要性を感じないし、いらない部分があるなら捨てればいい。
         """
-        # barsデータを取得
-        bar_alpaca_api_list = self.cli_alpaca.get_bar_alpaca_api_list(
-            symbol=symbol,
-            timeframe=depart_timeframe_to_alpaca_api(timeframe),
-            adjustment=depart_adjustment_to_alpaca_api(adjustment),
-            start=start,
-            limit=limit
-        )
+        try:
+            # barsデータを取得
+            bar_alpaca_api_list = self.cli_alpaca.get_bar_alpaca_api_list(
+                symbol=symbol,
+                timeframe=depart_timeframe_to_alpaca_api(timeframe),
+                adjustment=depart_adjustment_to_alpaca_api(adjustment),
+                start=start,
+                limit=limit
+            )
+        except Exception as e:
+            # LATER: 通信失敗時のエラー処理
+            raise e
         # adapt: <= alpaca_api
         chart = arrive_chart_from_bar_alpaca_api_list(
             bars_alpaca_api=bar_alpaca_api_list,
@@ -125,6 +132,16 @@ class ChartRepository:
         未取得のシンボルについては、timestamp=Noneとして返す。
         """
         # シンボルごとの最新日付取得
+        query = get_query_select_latest_timestamp_of_bar_alpaca(
+            symbols=symbols,
+            timeframe=depart_timeframe_to_table(timeframe),
+            adjustment=depart_adjustment_to_table(adjustment)
+        )
+        try:
+            model_talbe_ls = self.cli_db.exec_query_fetch(query)
+        except Exception as e:
+            # LATER: エラー処理
+            raise e
         # 取得したシンボルと日付のペアのリストをSymbolTimestampSetに変換
         pass
 
