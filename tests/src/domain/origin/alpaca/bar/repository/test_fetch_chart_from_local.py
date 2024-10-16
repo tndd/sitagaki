@@ -18,7 +18,7 @@ def test_basic():
         2. AAPL_L3_DAY_RAWのデータが取得されているか（volume=100,101,102）
     """
     # テストデータをDBに登録
-    factory_table_bar_alpaca_list(INSERT=True)
+    factory_table_bar_alpaca_list.load()
     # 取得
     chart = REPO_CHART.fetch_chart_from_local(
         symbol="AAPL",
@@ -48,7 +48,7 @@ def test_date_range():
         3. volume=100のAAPL_L3_DAY_RAWのデータがスキップされているか
     """
     # テストデータをDBに登録
-    factory_table_bar_alpaca_list(INSERT=True)
+    factory_table_bar_alpaca_list.load()
     # 取得
     chart = REPO_CHART.fetch_chart_from_local(
         symbol="AAPL",
@@ -87,7 +87,7 @@ def test_not_exist_symbol():
         そのため検索結果が見つからないことを表すLookupErrorを返す。
     """
     # テストデータをDBに登録
-    factory_table_bar_alpaca_list(INSERT=True)
+    factory_table_bar_alpaca_list.load()
     # まずエラーが発生することを確認
     with pytest.raises(Exception) as excinfo:
         REPO_CHART.fetch_chart_from_local(

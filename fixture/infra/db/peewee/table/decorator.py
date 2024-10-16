@@ -5,12 +5,8 @@ from src.infra.db.peewee.client import CLI_PEEWEE, PeeweeTable
 
 def auto_insert(func):
     """
-    ファクトリにより作成されたモデルをDBに自動で登録するデコレータ。
-    デフォルトではOFF。
-
-    >> ATTENTION <<
-        デコレート先関数のキーワード引数に"INSERT"を指定することで、
-        DBインサート機能のON,OFFを切り替え可能
+    ファクトリに自動投入関数を付与するデコレータ。
+    FUCTORY_FUNC.load()と呼び出すことで、DBへのインサートが可能。
 
     NOTE:
         少しでも込み入ったことをするとなると、
@@ -18,11 +14,22 @@ def auto_insert(func):
         このデコレータは直書きしてる。
     """
     @wraps(func)
-    def wrapper(*args, INSERT=False, **kwargs):
+    def wrapper(*args, **kwargs):
+        """
+        基本的にはファクトリ関数をそのまま返す
+        だからauto_insertデコレータをつけるだけでなら無害だ。
+        """
+        return func(*args, **kwargs)
+
+    def load(*args, **kwargs):
+        """
+        .load()が呼び出された場合、DBへのインサートが行われる。
+        """
         result: list[PeeweeTable] | PeeweeTable = func(*args, **kwargs)
-        if INSERT:
-            # 単体のテーブルモデルを返すファクトリもあるので、その場合はリストに変換
-            models = [result] if not isinstance(result, list) else result
-            CLI_PEEWEE.insert_models(models)
+        # ファクトリの戻り値はリストだけでなく単体の可能性もあるため、リストに変換
+        models = [result] if not isinstance(result, list) else result
+        CLI_PEEWEE.insert_models(models)
         return result
+
+    wrapper.load = load
     return wrapper

@@ -42,7 +42,7 @@ def test_auto_insert():
         len(users_from_db) # ここでエラー発生が期待される
 
     ### テスト用モデル作成(auto_insert有効) ###
-    users_on = _factory_sample_users(N, INSERT=True)
+    users_on = _factory_sample_users.load(N)
     # テスト用モデルが作成されているかを確認
     assert len(users_on) == N
     assert all(isinstance(user, _SampleUser) for user in users_on)

@@ -10,7 +10,7 @@ from fixture.operate import cleanup_tables
 
 def test_cleanup_tables():
     # テーブルにデータを登録し中身を確認
-    factory_table_bar_alpaca_list(INSERT=True)
+    factory_table_bar_alpaca_list.load()
     result = TableBarAlpaca.select()
     assert len(result) == 10
     # テーブルを空にする

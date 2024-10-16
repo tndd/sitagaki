@@ -12,7 +12,7 @@ from src.infra.db.peewee.table.alpaca.bar import AdjustmentTable, TimeframeTable
 
 
 def test_basic():
-    factory_table_bar_alpaca_list(INSERT=True)
+    factory_table_bar_alpaca_list.load()
     query = get_query_select_latest_timestamp_of_bar_alpaca(
         symbols=['AAPL', 'GOOG'],
         timeframe=TimeframeTable.DAY,
@@ -33,7 +33,7 @@ def test_tables_shuffled():
     """
     シャッフルされたテーブルの一覧からも期待される最新の日付が取れるか確認
     """
-    factory_table_bar_alpaca_list_times_shuffle(INSERT=True)
+    factory_table_bar_alpaca_list_times_shuffle.load()
     query = get_query_select_latest_timestamp_of_bar_alpaca(
         symbols=['AAPL', 'GOOG'],
         timeframe=TimeframeTable.DAY,
@@ -56,7 +56,7 @@ def test_not_exist_symbol():
 
     期待: 存在しないシンボルは無視されてリストが返る
     """
-    factory_table_bar_alpaca_list(INSERT=True)
+    factory_table_bar_alpaca_list.load()
     # MSFTは存在しないシンボル
     query = get_query_select_latest_timestamp_of_bar_alpaca(
         symbols=['AAPL', 'GOOG', 'MSFT'],
@@ -74,7 +74,7 @@ def test_not_exist_symbol_all():
 
     期待: 空のリスト
     """
-    factory_table_bar_alpaca_list(INSERT=True)
+    factory_table_bar_alpaca_list.load()
     query = get_query_select_latest_timestamp_of_bar_alpaca(
         symbols=['MOCKSMB0', 'MOCKSMB1', 'MOCKSMB2'],
         timeframe=TimeframeTable.DAY,

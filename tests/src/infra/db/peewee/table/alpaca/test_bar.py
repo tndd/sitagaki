@@ -34,7 +34,7 @@ def test_table_bar_alpaca_list():
         ０件のデータが取得されることを確認
     """
     # 投入用のTableBarAlpacaを作成
-    table_bar_alpaca_list = factory_table_bar_alpaca_list(INSERT=True)
+    table_bar_alpaca_list = factory_table_bar_alpaca_list.load()
     # 1. データが投入されたことを確認
     assert len(TableBarAlpaca.select()) == len(table_bar_alpaca_list)
     # 2. symbol=AAPL and timeframe=DAY and adjustment = RAW のデータ取得
@@ -54,7 +54,7 @@ def test_factory_table_bar_alpaca_list_times_shuffle():
     factory_table_bar_alpaca_list_times_shuffle()で生成されるデータの
     日付がランダムにシャッフルされていることを確認
     """
-    table_bar_alpaca_list = factory_table_bar_alpaca_list_times_shuffle(INSERT=True)
+    table_bar_alpaca_list = factory_table_bar_alpaca_list_times_shuffle.load()
     assert len(table_bar_alpaca_list) == 10
     # データが投入されたことを確認
     assert len(TableBarAlpaca.select()) == 10
