@@ -3,7 +3,7 @@ from functools import wraps
 from src.infra.db.peewee.client import CLI_PEEWEE, PeeweeTable
 
 
-def auto_insert(func):
+def insertable(func):
     """
     ファクトリにより作成されたモデルをDBに自動で登録するデコレータ。
     デフォルトではOFF。

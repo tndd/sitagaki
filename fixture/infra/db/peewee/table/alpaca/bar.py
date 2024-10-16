@@ -1,7 +1,7 @@
 from datetime import datetime
 from random import shuffle
 
-from fixture.infra.db.peewee.table.decorator import auto_insert
+from fixture.infra.db.peewee.table.decorator import insertable
 from src.infra.db.peewee.table.alpaca.bar import (
     AdjustmentTable,
     TableBarAlpaca,
@@ -9,7 +9,7 @@ from src.infra.db.peewee.table.alpaca.bar import (
 )
 
 
-@auto_insert
+@insertable
 def factory_table_bar_alpaca(
     symbol: str = "AAPL",
     timeframe: TimeframeTable = TimeframeTable.MIN,
@@ -33,7 +33,7 @@ def factory_table_bar_alpaca(
     )
 
 
-@auto_insert
+@insertable
 def factory_table_bar_alpaca_list() -> list[TableBarAlpaca]:
     """
     AAPL,GOOGのテーブルデータを生成する。
@@ -201,7 +201,7 @@ def factory_table_bar_alpaca_list() -> list[TableBarAlpaca]:
     )
 
 
-@auto_insert
+@insertable
 def factory_table_bar_alpaca_list_times_shuffle() -> list[TableBarAlpaca]:
     """
     AAPL, GOOGのデータテーブルを生成

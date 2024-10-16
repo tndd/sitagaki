@@ -1,13 +1,13 @@
 import pytest
 from peewee import AutoField, CharField
 
-from fixture.infra.db.peewee.table.decorator import auto_insert
+from fixture.infra.db.peewee.table.decorator import insertable
 from src.infra.db.peewee.client import PeeweeTable
 
 
-def test_auto_insert():
+def test_insertable():
     """
-    auto_insertがテーブルへの挿入機能を果たせているかを確認。
+    insertableがテーブルへの挿入機能を果たせているかを確認。
 
     また引数INSERTを指定することで、
     挿入機能のON,OFFを切り替え可能であることも確認する。
@@ -21,7 +21,7 @@ def test_auto_insert():
         class Meta:
             table_name = TEST_TABLE_NAME
     # テスト用モデル作成ファクトリ
-    @auto_insert
+    @insertable
     def _factory_sample_users(n: int):
         users = [
             _SampleUser(
@@ -30,7 +30,7 @@ def test_auto_insert():
             ) for i in range(n)
         ]
         return users
-    ### テスト用モデル作成(auto_insert無効) ###
+    ### テスト用モデル作成(insertable無効) ###
     N = 10 # モデル作成数
     users_off = _factory_sample_users(N) # デフォルト状態では無効となっている
     # テスト用モデルが作成されているかを確認
@@ -41,7 +41,7 @@ def test_auto_insert():
         users_from_db = _SampleUser.select()
         len(users_from_db) # ここでエラー発生が期待される
 
-    ### テスト用モデル作成(auto_insert有効) ###
+    ### テスト用モデル作成(insertable有効) ###
     users_on = _factory_sample_users(N, INSERT=True)
     # テスト用モデルが作成されているかを確認
     assert len(users_on) == N
