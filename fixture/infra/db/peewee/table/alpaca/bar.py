@@ -1,6 +1,8 @@
 from datetime import datetime
 from random import shuffle
 
+from numpy import insert
+
 from fixture.infra.db.peewee.table.decorator import insertable
 from src.infra.db.peewee.table.alpaca.bar import (
     AdjustmentTable,
@@ -230,3 +232,17 @@ def factory_table_bar_alpaca_list_times_shuffle() -> list[TableBarAlpaca]:
     tables = AAPL + GOOG
     shuffle(tables)
     return tables
+
+
+@insertable
+def factory_table_bar_alpaca_latest_timestamps() -> list[TableBarAlpaca]:
+    """
+    複数のシンボルについて、それぞれ１つづつテーブルを生成する。
+
+    ARQ,BAL,ALM
+    """
+    symbols = ["ARQ", "BAL", "ALM"]
+    return [
+        factory_table_bar_alpaca(symbol=symbol)
+        for symbol in symbols
+    ]
