@@ -122,11 +122,7 @@ class ChartRepository:
         """
         指定されたシンボルリストに対する、
         DBに保存されている最新の日付を取得する。
-
-        未取得の場合、Noneを返す。
-
-        MEMO: この始まりのdatetime(2000,1,1)は定数化。
-        MEMO: symbolは単発でもリストでも受け取れるようにしておく。
+        未取得のシンボルについては、timestamp=Noneとして返す。
         """
         pass
 
