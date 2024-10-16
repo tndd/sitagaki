@@ -40,8 +40,8 @@ def get_query_select_latest_timestamp_of_bar_alpaca(
     指定されたtimeframe,adjustmentについて、
     渡されたシンボル一覧の最新取得日のモデルを返す
 
-    TODO: 存在しないシンボルに対しても結果を返す
-        存在しないシンボルもtimestamp=Noneとして結果を返させたい。
+    注意:
+        存在しないシンボルについての結果は返らない。
     """
     query = TableBarAlpaca.select(
         TableBarAlpaca.symbol,
