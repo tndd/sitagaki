@@ -15,7 +15,7 @@ from src.infra.adapter.origin.alpaca.bar import (
 )
 from src.infra.api.alpaca.bar import AlpacaApiBarClient
 from src.infra.db.peewee.client import CLI_PEEWEE, PeeweeClient
-from src.infra.db.peewee.query.origin.stock.chart import get_query_select_bar_alpaca
+from src.infra.db.peewee.query.origin.alpaca.bar import get_query_select_bar_alpaca
 
 
 @dataclass

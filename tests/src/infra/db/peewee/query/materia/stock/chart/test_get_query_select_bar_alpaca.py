@@ -4,7 +4,7 @@ import pytest
 
 from fixture.infra.db.peewee.table.alpaca.bar import factory_table_bar_alpaca_list
 from src.infra.db.peewee.client import CLI_PEEWEE
-from src.infra.db.peewee.query.origin.stock.chart import get_query_select_bar_alpaca
+from src.infra.db.peewee.query.origin.alpaca.bar import get_query_select_bar_alpaca
 from src.infra.db.peewee.table.alpaca.bar import AdjustmentTable, TimeframeTable
 
 
