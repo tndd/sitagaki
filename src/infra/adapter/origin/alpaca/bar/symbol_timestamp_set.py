@@ -1,5 +1,3 @@
-from sys import ps1
-
 from src.domain.origin.alpaca.bar.model import SymbolTimestamp, SymbolTimestampSet
 from src.infra.db.peewee.table.alpaca.bar import TableBarAlpaca
 
