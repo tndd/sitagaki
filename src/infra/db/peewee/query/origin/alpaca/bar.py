@@ -31,7 +31,7 @@ def get_query_select_bar_alpaca(
     return query_with_time
 
 
-def get_query_select_latest_timestamp_of_bar_alpaca(
+def get_query_select_bar_alpaca_latest_timestamp_of_symbols(
     symbols: list[str],
     timeframe: TimeframeTable,
     adjustment: AdjustmentTable

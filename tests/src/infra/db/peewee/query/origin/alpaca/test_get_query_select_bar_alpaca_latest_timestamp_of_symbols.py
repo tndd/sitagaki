@@ -6,14 +6,14 @@ from fixture.infra.db.peewee.table.alpaca.bar import (
 )
 from src.infra.db.peewee.client import CLI_PEEWEE
 from src.infra.db.peewee.query.origin.alpaca.bar import (
-    get_query_select_latest_timestamp_of_bar_alpaca,
+    get_query_select_bar_alpaca_latest_timestamp_of_symbols,
 )
 from src.infra.db.peewee.table.alpaca.bar import AdjustmentTable, TimeframeTable
 
 
 def test_basic():
     factory_table_bar_alpaca_list(INSERT=True)
-    query = get_query_select_latest_timestamp_of_bar_alpaca(
+    query = get_query_select_bar_alpaca_latest_timestamp_of_symbols(
         symbols=['AAPL', 'GOOG'],
         timeframe=TimeframeTable.DAY,
         adjustment=AdjustmentTable.RAW,
@@ -34,7 +34,7 @@ def test_tables_shuffled():
     シャッフルされたテーブルの一覧からも期待される最新の日付が取れるか確認
     """
     factory_table_bar_alpaca_list_times_shuffle(INSERT=True)
-    query = get_query_select_latest_timestamp_of_bar_alpaca(
+    query = get_query_select_bar_alpaca_latest_timestamp_of_symbols(
         symbols=['AAPL', 'GOOG'],
         timeframe=TimeframeTable.DAY,
         adjustment=AdjustmentTable.RAW,
@@ -58,7 +58,7 @@ def test_not_exist_symbol():
     """
     factory_table_bar_alpaca_list(INSERT=True)
     # MSFTは存在しないシンボル
-    query = get_query_select_latest_timestamp_of_bar_alpaca(
+    query = get_query_select_bar_alpaca_latest_timestamp_of_symbols(
         symbols=['AAPL', 'GOOG', 'MSFT'],
         timeframe=TimeframeTable.DAY,
         adjustment=AdjustmentTable.RAW,
@@ -75,7 +75,7 @@ def test_not_exist_symbol_all():
     期待: 空のリスト
     """
     factory_table_bar_alpaca_list(INSERT=True)
-    query = get_query_select_latest_timestamp_of_bar_alpaca(
+    query = get_query_select_bar_alpaca_latest_timestamp_of_symbols(
         symbols=['MOCKSMB0', 'MOCKSMB1', 'MOCKSMB2'],
         timeframe=TimeframeTable.DAY,
         adjustment=AdjustmentTable.RAW,
