@@ -60,7 +60,7 @@ class SymbolTimestampSet(BaseModel):
     """
     timeframe: Timeframe
     adjustment: Adjustment
-    timestamp_of_symbol_ls: list[SymbolTimestamp]
+    data: list[SymbolTimestamp]
 
     def get_update_target_symbols(self) -> list[SymbolTimestamp]:
         """
@@ -68,6 +68,6 @@ class SymbolTimestampSet(BaseModel):
         """
         return [
             timestamp_of_symbol
-            for timestamp_of_symbol in self.timestamp_of_symbol_ls
+            for timestamp_of_symbol in self.data
             if timestamp_of_symbol.is_update_target()
         ]
