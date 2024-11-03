@@ -238,8 +238,9 @@ def factory_table_bar_alpaca_list_times_shuffle() -> list[TableBarAlpaca]:
 def factory_table_bar_alpaca_latest_timestamps() -> list[TableBarAlpaca]:
     """
     複数のシンボルについて、それぞれ１つづつテーブルを生成する。
-
-    ARQ,BAL,ALM
+        timeframe=min
+        adjustment=raw
+        symbols=ARQ,BAL,ALM
     """
     symbols = ["ARQ", "BAL", "ALM"]
     return [
