@@ -18,7 +18,7 @@ TODO: 関数名が長すぎる問題の検討
 """
 
 
-def get_query_select_bar_alpaca(
+def get_query_bar_alpaca(
     symbol: str,
     timeframe: TimeframeTable,
     adjustment: AdjustmentTable,
@@ -40,14 +40,14 @@ def get_query_select_bar_alpaca(
     return query_with_time
 
 
-def get_query_select_bar_alpaca_latest_timestamp_of_symbols(
+def get_query_latest_timestamps(
     timeframe: TimeframeTable,
     adjustment: AdjustmentTable,
     symbols: list[str] | None = None
 ) -> ModelSelect:
     """
     指定されたtimeframe,adjustmentについて、
-    渡されたシンボル一覧の最新取得日のモデルを返す
+    渡された各シンボルの最新取得日のモデルを返す
 
     > シンボルの指定がない場合
         DB状に存在する指定条件のシンボル全てを返す
