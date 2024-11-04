@@ -17,8 +17,8 @@ from src.infra.adapter.origin.alpaca.bar import (
 from src.infra.api.alpaca.bar import AlpacaApiBarClient
 from src.infra.db.peewee.client import CLI_PEEWEE, PeeweeClient
 from src.infra.db.peewee.query.origin.alpaca.bar import (
-    get_query_select_bar_alpaca,
-    get_query_select_bar_alpaca_latest_timestamp_of_symbols,
+    get_query_bar_alpaca,
+    get_query_latest_timestamps,
 )
 
 
@@ -79,7 +79,7 @@ class ChartRepository:
         不足データをオンラインから取得するみたいな気の利いた動作はさせていない。
         """
         # 取得に必要なqueryを作成
-        query = get_query_select_bar_alpaca(
+        query = get_query_bar_alpaca(
             symbol=symbol,
             timeframe=depart_timeframe_to_table(timeframe),
             adjustment=depart_adjustment_to_table(adjustment),
@@ -135,7 +135,7 @@ class ChartRepository:
             timestamp=Noneとして返す
         """
         # シンボルごとの最新日付取得
-        query = get_query_select_bar_alpaca_latest_timestamp_of_symbols(
+        query = get_query_latest_timestamps(
             symbols=symbols,
             timeframe=depart_timeframe_to_table(timeframe),
             adjustment=depart_adjustment_to_table(adjustment)

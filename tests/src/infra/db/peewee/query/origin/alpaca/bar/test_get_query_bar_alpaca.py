@@ -4,7 +4,7 @@ import pytest
 
 from fixture.infra.db.peewee.table.alpaca.bar import factory_table_bar_alpaca_list
 from src.infra.db.peewee.client import CLI_PEEWEE
-from src.infra.db.peewee.query.origin.alpaca.bar import get_query_select_bar_alpaca
+from src.infra.db.peewee.query.origin.alpaca.bar import get_query_bar_alpaca
 from src.infra.db.peewee.table.alpaca.bar import AdjustmentTable, TimeframeTable
 
 
@@ -26,7 +26,7 @@ def test_basic():
     # データ用意
     factory_table_bar_alpaca_list(INSERT=True)
     # データ取得
-    query = get_query_select_bar_alpaca(
+    query = get_query_bar_alpaca(
         symbol="AAPL",
         timeframe=TimeframeTable.DAY,
         adjustment=AdjustmentTable.RAW,
@@ -57,7 +57,7 @@ def test_symbol_and_timeframe():
     # データ用意
     factory_table_bar_alpaca_list(INSERT=True)
     # データ取得
-    query = get_query_select_bar_alpaca(
+    query = get_query_bar_alpaca(
         symbol="AAPL",
         timeframe=TimeframeTable.DAY,
         adjustment=AdjustmentTable.RAW,
@@ -82,7 +82,7 @@ def test_invalid_start_end():
     factory_table_bar_alpaca_list(INSERT=True)
     # データ取得
     with pytest.raises(ValueError, match="EID:45b0f55b"):
-        get_query_select_bar_alpaca(
+        get_query_bar_alpaca(
             symbol="AAPL",
             timeframe=TimeframeTable.DAY,
             adjustment=AdjustmentTable.RAW,

@@ -5,9 +5,7 @@ from fixture.infra.db.peewee.table.alpaca.bar import (
     factory_table_bar_alpaca_list_times_shuffle,
 )
 from src.infra.db.peewee.client import CLI_PEEWEE
-from src.infra.db.peewee.query.origin.alpaca.bar import (
-    get_query_select_bar_alpaca_latest_timestamp_of_symbols,
-)
+from src.infra.db.peewee.query.origin.alpaca.bar import get_query_latest_timestamps
 from src.infra.db.peewee.table.alpaca.bar import AdjustmentTable, TimeframeTable
 
 
@@ -17,7 +15,7 @@ def test_basic():
     さらにsymbol未指定時、きちんとAAPL,GOOG全ての情報が取得対象となっていることも確認
     """
     factory_table_bar_alpaca_list(INSERT=True)
-    query = get_query_select_bar_alpaca_latest_timestamp_of_symbols(
+    query = get_query_latest_timestamps(
         timeframe=TimeframeTable.DAY,
         adjustment=AdjustmentTable.RAW,
     )
@@ -38,7 +36,7 @@ def test_designation_symbol():
     GOOGの情報は除外されAAPLの最新の情報のみが取得できているか
     """
     factory_table_bar_alpaca_list(INSERT=True)
-    query = get_query_select_bar_alpaca_latest_timestamp_of_symbols(
+    query = get_query_latest_timestamps(
         timeframe=TimeframeTable.DAY,
         adjustment=AdjustmentTable.RAW,
         symbols=['AAPL']
@@ -56,7 +54,7 @@ def test_tables_shuffled():
     シャッフルされたテーブルの一覧からも期待される最新の日付が取れるか確認
     """
     factory_table_bar_alpaca_list_times_shuffle(INSERT=True)
-    query = get_query_select_bar_alpaca_latest_timestamp_of_symbols(
+    query = get_query_latest_timestamps(
         symbols=['AAPL', 'GOOG'],
         timeframe=TimeframeTable.DAY,
         adjustment=AdjustmentTable.RAW,
@@ -80,7 +78,7 @@ def test_not_exist_symbol():
     """
     factory_table_bar_alpaca_list(INSERT=True)
     # MSFTは存在しないシンボル
-    query = get_query_select_bar_alpaca_latest_timestamp_of_symbols(
+    query = get_query_latest_timestamps(
         symbols=['AAPL', 'GOOG', 'MSFT'],
         timeframe=TimeframeTable.DAY,
         adjustment=AdjustmentTable.RAW,
@@ -97,7 +95,7 @@ def test_not_exist_symbol_all():
     期待: 空のリスト
     """
     factory_table_bar_alpaca_list(INSERT=True)
-    query = get_query_select_bar_alpaca_latest_timestamp_of_symbols(
+    query = get_query_latest_timestamps(
         symbols=['MOCKSMB0', 'MOCKSMB1', 'MOCKSMB2'],
         timeframe=TimeframeTable.DAY,
         adjustment=AdjustmentTable.RAW,
@@ -115,7 +113,7 @@ def test_duplicate_symbols():
     """
     factory_table_bar_alpaca_list(INSERT=True)
     # AAPlが３つ重複してる
-    query = get_query_select_bar_alpaca_latest_timestamp_of_symbols(
+    query = get_query_latest_timestamps(
         symbols=['AAPL', 'GOOG', 'MSFT', 'AAPL', 'AAPL'],
         timeframe=TimeframeTable.DAY,
         adjustment=AdjustmentTable.RAW,
