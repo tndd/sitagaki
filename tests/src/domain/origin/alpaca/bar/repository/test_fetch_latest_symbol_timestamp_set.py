@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from fixture.infra.db.peewee.table.alpaca.bar import (
     factory_table_bar_alpaca_list_times_shuffle,
 )
@@ -14,3 +16,29 @@ def test_basic():
     )
     assert isinstance(symbol_timestamp_set, SymbolTimestampSet)
     assert len(symbol_timestamp_set.data) == 2
+    # 取得データはAAPL,GOOGであり、日付は最新であることを確認
+    assert symbol_timestamp_set.data['AAPL'] == datetime(2020, 1, 5)
+    assert symbol_timestamp_set.data['GOOG'] == datetime(2021, 1, 5)
+
+
+def test_designate_symbols():
+    """
+    symbolsを指定した場合の動作
+
+    存在するシンボルは無論の事、
+    存在しないシンボルのtimeframeについてはNoneであることを確認。
+    """
+    factory_table_bar_alpaca_list_times_shuffle(INSERT=True)
+    symbol_timestamp_set = REPO_CHART.fetch_latest_symbol_timestamp_set(
+        timeframe=Timeframe.DAY,
+        adjustment=Adjustment.RAW,
+        symbols=['AAPL', 'XXXX', 'YYYY']
+    )
+    assert isinstance(symbol_timestamp_set, SymbolTimestampSet)
+    # 指定シンボル分の件数は取得される
+    assert len(symbol_timestamp_set.data) == 3
+    # AAPLについては最新の日付
+    assert symbol_timestamp_set.data['AAPL'] == datetime(2020, 1, 5)
+    # XXXX,YYYYについてはNone
+    assert symbol_timestamp_set.data['XXXX'] is None
+    assert symbol_timestamp_set.data['YYYY'] is None
