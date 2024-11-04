@@ -48,7 +48,9 @@ def test_duplicate_symbol():
     """
     重複するシンボルを受け取ってしまった場合の動作
 
-    # TODO: 本当はクエリ段階で確認すべき
+    # NOTE: 重複時の挙動
+        SQLクエリは重複した条件を指定しても１回しかフィルタリングはしない。
+        だからリポジトリ側で重複処理をしなかったとしても、重複による問題は起こらない。
     """
     factory_table_bar_alpaca_list_times_shuffle(INSERT=True)
     symbol_timestamp_set = REPO_CHART.fetch_latest_symbol_timestamp_set(
