@@ -32,25 +32,6 @@ class Chart(BaseModel):
     bars: list[Bar]
 
 
-class SymbolTimestamp(BaseModel):
-    """
-    シンボルのtimestampを表す。
-    """
-    symbol: str
-    timestamp: datetime | None
-
-    def is_update_target(self) -> bool:
-        """
-        アップデート対象であるかを判定する。
-
-        timestampが今日の日付より古ければ対象と判定される。
-        """
-        if self.timestamp is None:
-            # 日付なしならば、まだ情報取得が行われていないので対象
-            return True
-        return self.timestamp < datetime.now().date()
-
-
 class SymbolTimestampSet(BaseModel):
     """
     シンボルのtimestampの集合を表す。
@@ -60,14 +41,22 @@ class SymbolTimestampSet(BaseModel):
     """
     timeframe: Timeframe
     adjustment: Adjustment
-    data: list[SymbolTimestamp]
+    data: dict[str, datetime | None]
 
-    def get_update_target_symbols(self) -> list[SymbolTimestamp]:
+    def get_update_target_symbols(
+        self,
+        cutoff: datetime = datetime.now()
+    ) -> list[str]:
         """
         データ更新対象のシンボルを抽出する。
+
+        > 対象となる基準
+            timestampがNone
+            timestampがcutoffよりも前の日付
         """
-        return [
-            timestamp_of_symbol
-            for timestamp_of_symbol in self.data
-            if timestamp_of_symbol.is_update_target()
+        update_target_symbols = [
+            symbol
+            for symbol, timestamp in self.data.items()
+            if timestamp is None or timestamp < cutoff
         ]
+        return update_target_symbols

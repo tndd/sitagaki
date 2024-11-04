@@ -25,7 +25,7 @@ class ChartUsecase:
         # 最新のtimestampを取得
         symbol_timestamp_set = self.rp_chart.fetch_latest_symbol_timestamp_set(symbols, timeframe, adjustment)
         # 更新対象のシンボルを抽出
-        update_targets_symbol_timestamp = symbol_timestamp_set.get_update_target_symbols()
+        update_targets_symbol_timestamp = symbol_timestamp_set.update_target_symbols()
         # シンボルごとにデータ更新
         for symbol_timestamp in update_targets_symbol_timestamp:
             self.rp_chart.store_chart_from_online(
@@ -54,4 +54,3 @@ class ChartUsecase:
             self.update_chart(symbol, timeframe, adjustment)
         # データの取得
         return self.rp_chart.fetch_chart_from_local(symbol, timeframe, adjustment)
-

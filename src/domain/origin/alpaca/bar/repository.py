@@ -7,7 +7,7 @@ from src.domain.origin.alpaca.bar.model import Chart, SymbolTimestampSet
 from src.infra.adapter.origin.alpaca.bar import (
     arrive_chart_from_bar_alpaca_api_list,
     arrive_chart_from_table_list,
-    arrive_symbol_timestamp_ls_from_table,
+    arrive_symbol_timestamp_dict_from_table,
     depart_adjustment_to_alpaca_api,
     depart_adjustment_to_table,
     depart_chart_to_table_list,
@@ -145,15 +145,16 @@ class ChartRepository:
         except Exception as e:
             # LATER: エラー処理
             raise e
-        # 取得したシンボルと日付のペアのリストをSymbolTimestampSetに変換
-        symbol_timestamp_ls = arrive_symbol_timestamp_ls_from_table(
+        # 取得したシンボルと日付のペアを辞書へ変換。
+        # 存在しない日付のtimestampのNoneへの置き換えも行う。
+        symbol_timestamp_dc = arrive_symbol_timestamp_dict_from_table(
             symbols=symbols,
             tables=model_talbe_ls
         )
         return SymbolTimestampSet(
             timeframe=timeframe,
             adjustment=adjustment,
-            data=symbol_timestamp_ls
+            data=symbol_timestamp_dc
         )
 
 
