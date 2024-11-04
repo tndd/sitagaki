@@ -42,3 +42,25 @@ def test_designate_symbols():
     # XXXX,YYYYについてはNone
     assert symbol_timestamp_set.data['XXXX'] is None
     assert symbol_timestamp_set.data['YYYY'] is None
+
+
+def test_duplicate_symbol():
+    """
+    重複するシンボルを受け取ってしまった場合の動作
+
+    # TODO: 本当はクエリ段階で確認すべき
+    """
+    factory_table_bar_alpaca_list_times_shuffle(INSERT=True)
+    symbol_timestamp_set = REPO_CHART.fetch_latest_symbol_timestamp_set(
+        timeframe=Timeframe.DAY,
+        adjustment=Adjustment.RAW,
+        symbols=['AAPL', 'XXXX', 'YYYY', 'AAPL']
+    )
+    assert isinstance(symbol_timestamp_set, SymbolTimestampSet)
+    # 指定シンボル分の件数は取得される
+    assert len(symbol_timestamp_set.data) == 3
+    # AAPLについては最新の日付
+    assert symbol_timestamp_set.data['AAPL'] == datetime(2020, 1, 5)
+    # XXXX,YYYYについてはNone
+    assert symbol_timestamp_set.data['XXXX'] is None
+    assert symbol_timestamp_set.data['YYYY'] is None
