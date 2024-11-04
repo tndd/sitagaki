@@ -8,15 +8,6 @@ from src.infra.db.peewee.table.alpaca.bar import (
     TimeframeTable,
 )
 
-"""
-TODO: 関数名が長すぎる問題の検討
-    ディレクトリ位置によって、何を対象としたクエリであるかは分かる。
-    だから関数名に対象まで記述する必要があるかを検討する。
-    なにせあまりに関数名が長すぎるからな。
-    だが名前を短くしすぎた場合、インポート時に名前衝突が起こるのではないかと心配してる。
-    心配しすぎな気もする。
-"""
-
 
 def get_query_bar_alpaca(
     symbol: str,
