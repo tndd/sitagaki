@@ -146,7 +146,6 @@ class ChartRepository:
             # LATER: エラー処理
             raise e
         # 取得したシンボルと日付のペアのリストをSymbolTimestampSetに変換
-        # TODO: arrive_symbol_timestamp_ls_from_tableのsymbol=Noneへの対応
         symbol_timestamp_ls = arrive_symbol_timestamp_ls_from_table(
             symbols=symbols,
             tables=model_talbe_ls
