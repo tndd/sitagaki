@@ -104,3 +104,27 @@ def test_not_exist_symbol_all():
     )
     result = CLI_PEEWEE.exec_query_fetch(query)
     assert len(result) == 0
+
+
+def test_duplicate_symbols():
+    """
+    重複するシンボルを指定してしまった場合
+
+    期待:
+        重複は無視される
+    """
+    factory_table_bar_alpaca_list(INSERT=True)
+    # AAPlが３つ重複してる
+    query = get_query_select_bar_alpaca_latest_timestamp_of_symbols(
+        symbols=['AAPL', 'GOOG', 'MSFT', 'AAPL', 'AAPL'],
+        timeframe=TimeframeTable.DAY,
+        adjustment=AdjustmentTable.RAW,
+    )
+    result = CLI_PEEWEE.exec_query_fetch(query)
+    # 重複が無視され、MSFTは存在しない。結果として２件
+    assert len(result) == 2
+    # 中身はAAPL,GOOGであり、日付も最新
+    assert result[0].symbol == 'AAPL'
+    assert result[0].timestamp == datetime(2020, 1, 3)
+    assert result[1].symbol == 'GOOG'
+    assert result[1].timestamp == datetime(2020, 1, 2)
