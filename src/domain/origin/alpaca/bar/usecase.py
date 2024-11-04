@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from typing import Sequence
 
 from src.domain.origin.alpaca.bar.const import Adjustment, Timeframe
-from src.domain.origin.alpaca.bar.model import Chart, SymbolTimestamp
+from src.domain.origin.alpaca.bar.model import Chart
 from src.domain.origin.alpaca.bar.repository import ChartRepository
 
 
