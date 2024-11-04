@@ -22,7 +22,7 @@ def test_fx_replace_api_alpaca_get_stock_bars_empty(
     フィクスチャにより、get_stock_bars_empty()の置き換えが成功しているかを確認。
     テスト内容はほぼtest_patch_get_stock_bars_emptyと同じ。
     """
-    barset_mock = cli_alpaca_bar.get_barset_alpaca_api(
+    barset_mock = cli_alpaca_bar._get_barset_alpaca_api(
         symbol='AAPL',
         timeframe=TimeFrame.Day,
         adjustment=Adjustment.RAW
@@ -35,7 +35,7 @@ def test_fx_replace_api_alpaca_get_stock_bars_empty(
 def test_patch_get_stock_bars(mocker):
     # パッチ適用
     patch_get_stock_bars(mocker)
-    barset_mock = cli_alpaca_bar.get_barset_alpaca_api(
+    barset_mock = cli_alpaca_bar._get_barset_alpaca_api(
         symbol='AAPL',
         timeframe=TimeFrame.Day,
         adjustment=Adjustment.RAW
@@ -48,7 +48,7 @@ def test_patch_get_stock_bars(mocker):
 
 def test_patch_get_stock_bars_empty(mocker):
     patch_get_stock_bars_empty(mocker)
-    barset_mock = cli_alpaca_bar.get_barset_alpaca_api(
+    barset_mock = cli_alpaca_bar._get_barset_alpaca_api(
         symbol='AAPL',
         timeframe=TimeFrame.Day,
         adjustment=Adjustment.RAW

@@ -14,7 +14,22 @@ from .client import ROOT_START_DATETIME, historical_cli
 class AlpacaApiBarClient:
     cli: StockHistoricalDataClient = historical_cli
 
-    def get_barset_alpaca_api(
+    def get_bar_alpaca_api_list(
+        self,
+        symbol: str,
+        timeframe: TimeFrame,
+        adjustment: Adjustment,
+        start: datetime | None = None,
+        limit: int | None = None
+    ) -> list[Bar]:
+        """
+        日足のヒストリカルバー情報を取得。
+        BarSetからBarのリストを取り出して返却するまで行う。
+        """
+        barset = self._get_barset_alpaca_api(symbol, timeframe, adjustment, start, limit)
+        return extract_bar_list_alpaca_api_from_barset(barset)
+
+    def _get_barset_alpaca_api(
         self,
         symbol: str,
         timeframe: TimeFrame,
@@ -32,21 +47,6 @@ class AlpacaApiBarClient:
             limit=limit
         )
         return self.cli.get_stock_bars(rq) # type: ignore
-
-    def get_bar_alpaca_api_list(
-        self,
-        symbol: str,
-        timeframe: TimeFrame,
-        adjustment: Adjustment,
-        start: datetime | None = None,
-        limit: int | None = None
-    ) -> list[Bar]:
-        """
-        日足のヒストリカルバー情報を取得。
-        BarSetからBarのリストを取り出して返却するまで行う。
-        """
-        barset = self.get_barset_alpaca_api(symbol, timeframe, adjustment, start, limit)
-        return extract_bar_list_alpaca_api_from_barset(barset)
 
 
 ### Helper ###

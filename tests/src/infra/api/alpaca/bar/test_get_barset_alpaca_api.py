@@ -18,7 +18,7 @@ def test_basic():
     デフォルト引数による動作検証。
     """
     # timeframe X adjustmentの組み合わせを全通り試す
-    barset = cli_alpaca.get_barset_alpaca_api(
+    barset = cli_alpaca._get_barset_alpaca_api(
         symbol="AAPL",
         timeframe=TimeFrameAlpaca.Day,
         adjustment=AdjustmentAlpaca.RAW,
@@ -57,7 +57,7 @@ def test_combination_tf_adj(timeframe, adjustment):
     通信が正常に行えているかという観点でのテスト。
     """
     # timeframe X adjustmentの組み合わせを全通り試す
-    barset = cli_alpaca.get_barset_alpaca_api(
+    barset = cli_alpaca._get_barset_alpaca_api(
         symbol="AAPL",
         timeframe=timeframe,
         adjustment=adjustment,
@@ -75,7 +75,7 @@ def test_response_is_empty_barset():
     存在しないシンボルを指定した場合の振る舞いテスト
     """
     SYMBOL_DUMMY = 'NOSYMBOL'
-    barset_empty = cli_alpaca.get_barset_alpaca_api(
+    barset_empty = cli_alpaca._get_barset_alpaca_api(
         symbol=SYMBOL_DUMMY,
         start=datetime(2024,1,1),
         timeframe=TimeFrameAlpaca.Day,
@@ -94,7 +94,7 @@ def test_future_start():
     startに未来を指定した場合エラーが発生する
     """
     with pytest.raises(ValueError, match="EID:3e00e226"):
-        barset = cli_alpaca.get_barset_alpaca_api(
+        barset = cli_alpaca._get_barset_alpaca_api(
             symbol='AAPL',
             start=datetime.now() + timedelta(days=1),
             timeframe=TimeFrameAlpaca.Day,
@@ -115,7 +115,7 @@ def test_valid_starts(start):
         2. 2020-01-01
         3. Noneを指定
     """
-    barset = cli_alpaca.get_barset_alpaca_api(
+    barset = cli_alpaca._get_barset_alpaca_api(
         symbol='AAPL',
         start=start,
         timeframe=TimeFrameAlpaca.Day,
