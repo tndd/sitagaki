@@ -32,25 +32,32 @@ def get_query_select_bar_alpaca(
 
 
 def get_query_select_bar_alpaca_latest_timestamp_of_symbols(
-    symbols: list[str],
     timeframe: TimeframeTable,
-    adjustment: AdjustmentTable
+    adjustment: AdjustmentTable,
+    symbols: list[str] | None = None
 ) -> ModelSelect:
     """
     指定されたtimeframe,adjustmentについて、
     渡されたシンボル一覧の最新取得日のモデルを返す
 
-    注意:
-        存在しないシンボルについての結果は返らない。
+    > シンボルの指定がない場合
+        DB状に存在する指定条件のシンボル全てを返す
+
+    > 存在しないシンボルを指定した場合
+        そのシンボルについては無視され結果は返らない
     """
     query = TableBarAlpaca.select(
         TableBarAlpaca.symbol,
         fn.MAX(TableBarAlpaca.timestamp)
     ).where(
-        TableBarAlpaca.symbol.in_(symbols),
         TableBarAlpaca.timeframe == timeframe,
         TableBarAlpaca.adjustment == adjustment
-    ).group_by(
+    )
+    # シンボル指定がある場合、絞り込み処理を追加で行う
+    if symbols is not None:
+        query = query.where(TableBarAlpaca.symbol.in_(symbols))
+    # groupby
+    query = query.group_by(
         TableBarAlpaca.symbol
     ).order_by(
         TableBarAlpaca.symbol

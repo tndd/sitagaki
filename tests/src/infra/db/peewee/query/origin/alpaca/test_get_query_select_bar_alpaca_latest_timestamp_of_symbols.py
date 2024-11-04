@@ -12,9 +12,12 @@ from src.infra.db.peewee.table.alpaca.bar import AdjustmentTable, TimeframeTable
 
 
 def test_basic():
+    """
+    AAPL,GOOGについてのレコードから最新の情報が取得できていることを確認する
+    さらにsymbol未指定時、きちんとAAPL,GOOG全ての情報が取得対象となっていることも確認
+    """
     factory_table_bar_alpaca_list(INSERT=True)
     query = get_query_select_bar_alpaca_latest_timestamp_of_symbols(
-        symbols=['AAPL', 'GOOG'],
         timeframe=TimeframeTable.DAY,
         adjustment=AdjustmentTable.RAW,
     )
@@ -27,6 +30,25 @@ def test_basic():
     # GOOGの日付
     assert result[1].symbol == 'GOOG'
     assert result[1].timestamp == datetime(2020, 1, 2)
+
+
+def test_designation_symbol():
+    """
+    symbolsにAAPLを指定することで、
+    GOOGの情報は除外されAAPLの最新の情報のみが取得できているか
+    """
+    factory_table_bar_alpaca_list(INSERT=True)
+    query = get_query_select_bar_alpaca_latest_timestamp_of_symbols(
+        timeframe=TimeframeTable.DAY,
+        adjustment=AdjustmentTable.RAW,
+        symbols=['AAPL']
+    )
+    result = CLI_PEEWEE.exec_query_fetch(query)
+    # symbolsの指定によりAAPLの１件のみが返るはず
+    assert len(result) == 1
+    # AAPLの日付
+    assert result[0].symbol == 'AAPL'
+    assert result[0].timestamp == datetime(2020, 1, 3)
 
 
 def test_tables_shuffled():
