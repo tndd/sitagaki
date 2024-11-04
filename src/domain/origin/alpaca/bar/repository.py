@@ -52,7 +52,12 @@ class ChartRepository:
                 limit=limit
             )
         except Exception as e:
-            # LATER: 通信失敗時のエラー処理
+            """
+            TODO: エラー処理
+                エラー発生時、そのエラーをログとして体系的に記録する仕組みを作る。
+                ログには失敗した関数やその引数など、のちに同様の動作が再現可能な分の情報を保存しておく。
+                ログの形式はどのようにするかはこれから検討。
+            """
             raise e
         # adapt: <= alpaca_api
         chart = arrive_chart_from_bar_alpaca_api_list(
