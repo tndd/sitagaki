@@ -210,7 +210,12 @@ def factory_table_bar_alpaca_list_times_shuffle() -> list[TableBarAlpaca]:
     timeframe=DAY, adjustment=RAWに固定。
     日付の違いに特化して生成を行う。
 
-    合計10件
+    > 合計
+        10件
+
+    > 最新の日付
+        AAPL=datetime(2020, 1, 5)
+        GOOG=datetime(2021, 1, 5)
     """
     def _create_bar_data(symbol, year, month, day_start):
         """
