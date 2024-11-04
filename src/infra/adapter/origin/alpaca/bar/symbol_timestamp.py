@@ -1,6 +1,5 @@
 from datetime import datetime
 
-from src.domain.origin.alpaca.bar.model import SymbolTimestamp
 from src.infra.db.peewee.table.alpaca.bar import TableBarAlpaca
 
 
