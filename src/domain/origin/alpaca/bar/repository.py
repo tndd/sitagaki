@@ -123,14 +123,16 @@ class ChartRepository:
 
     def fetch_latest_symbol_timestamp_set(
         self,
-        symbols: Sequence[str],
         timeframe: Timeframe,
-        adjustment: Adjustment
+        adjustment: Adjustment,
+        symbols: Sequence[str] | None = None,
     ) -> SymbolTimestampSet:
         """
-        指定されたシンボルリストに対する、
-        DBに保存されている最新の日付を取得する。
-        未取得のシンボルについては、timestamp=Noneとして返す。
+        指定されたtimeframe,adjustment,symbolsの条件の、
+        DB上のシンボルについての最新のtimestampを返す。
+
+        > 未取得のシンボルについて
+            timestamp=Noneとして返す
         """
         # シンボルごとの最新日付取得
         query = get_query_select_bar_alpaca_latest_timestamp_of_symbols(
@@ -144,6 +146,7 @@ class ChartRepository:
             # LATER: エラー処理
             raise e
         # 取得したシンボルと日付のペアのリストをSymbolTimestampSetに変換
+        # TODO: arrive_symbol_timestamp_ls_from_tableのsymbol=Noneへの対応
         symbol_timestamp_ls = arrive_symbol_timestamp_ls_from_table(
             symbols=symbols,
             tables=model_talbe_ls
