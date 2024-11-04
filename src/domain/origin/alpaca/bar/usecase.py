@@ -10,7 +10,7 @@ from src.domain.origin.alpaca.bar.repository import ChartRepository
 class ChartUsecase:
     rp_chart: ChartRepository = field(default_factory=ChartRepository)
 
-    def update_chart(
+    def update(
         self,
         symbols: Sequence[str],
         timeframe: Timeframe,
@@ -27,6 +27,7 @@ class ChartUsecase:
         # 更新対象のシンボルを抽出
         update_targets_symbol_timestamp = symbol_timestamp_set.update_target_symbols()
         # シンボルごとにデータ更新
+        # LATER: 並列化
         for symbol_timestamp in update_targets_symbol_timestamp:
             self.rp_chart.store_chart_from_online(
                 symbol=symbol_timestamp.symbol,
@@ -35,7 +36,7 @@ class ChartUsecase:
                 start=symbol_timestamp.timestamp
             )
 
-    def fetch_chart(
+    def fetch(
         self,
         symbol: str,
         timeframe: Timeframe,
@@ -51,6 +52,6 @@ class ChartUsecase:
         """
         # update_modeがtrueなら、データを最新にする
         if update_mode:
-            self.update_chart(symbol, timeframe, adjustment)
+            self.update(symbol, timeframe, adjustment)
         # データの取得
         return self.rp_chart.fetch_chart_from_local(symbol, timeframe, adjustment)
