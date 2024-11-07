@@ -3,8 +3,10 @@ annotated-types==0.7.0
 certifi==2024.8.30
 charset-normalizer==3.3.2
 decorator==5.1.1
+exceptiongroup==1.2.2
 idna==3.10
 iniconfig==2.0.0
+loguru==0.7.2
 msgpack==1.1.0
 numpy==2.1.2
 packaging==24.1
@@ -22,6 +24,7 @@ pytz==2024.2
 requests==2.32.3
 six==1.16.0
 sseclient-py==1.8.0
+tomli==2.0.2
 typing_extensions==4.12.2
 tzdata==2024.2
 urllib3==2.2.3
