@@ -4,10 +4,13 @@ from loguru import logger
 
 
 class LogClient:
-    def __init__(self):
+    def __init__(
+        self,
+        log_path: str = f"log/data/{datetime.now().strftime('%Y/%m/%d')}.log"
+    ):
         # ログの保存先は外部からも確認できるようにしておく
-        self.log_path = f"log/data/{datetime.now().strftime('%Y/%m/%d')}.log"
-        self._configure_logger()
+        self.log_path = log_path
+        self.setup_logger()
 
     def info(self, message: str, payload: dict | None = None):
         self._record_log("info", message, payload)
@@ -21,7 +24,7 @@ class LogClient:
     def err(self, message: str, payload: dict | None = None):
         self._record_log("error", message, payload)
 
-    def _configure_logger(self):
+    def setup_logger(self):
         """
         ログの形式と保存場所を設定
         """
