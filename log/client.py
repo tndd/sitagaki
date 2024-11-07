@@ -6,7 +6,7 @@ from loguru import logger
 class LogClient:
     def __init__(self):
         # ログの保存先は外部からも確認できるようにしておく
-        self.log_path = f"log/data/{datetime.now().strftime('%Y/%m/%d/%H:%M:%S:%f')}.log"
+        self.log_path = f"log/data/{datetime.now().strftime('%Y/%m/%d')}.log"
         self._configure_logger()
 
     def info(self, message: str, payload: dict | None = None):
@@ -27,7 +27,7 @@ class LogClient:
         """
         logger.add(
             self.log_path,
-            format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {file.path} | {function} | {message} | {extra}",
+            format="{time:YYYY-MM-DD at HH:mm:ss.SSS} | {level} | {file.path} | {function} | {message} | {extra}",
             encoding='utf-8'
         )
 
