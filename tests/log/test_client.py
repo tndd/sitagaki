@@ -54,6 +54,31 @@ def test_with_payload():
         assert "{'user': 'example_user', 'action': 'login'}" in lines[3]
 
 
+def test_exception():
+    """
+    exception発生時のログについての確認
+    """
+    def calc(x, y):
+        return x / y
+
+    clear_log(cli.log_path)
+    try:
+        # ゼロ除算によるエラー
+        calc(1, 0)
+    except Exception as e:
+        # エラー内容をログに落とし込む
+        payload = {
+            'class': str(e.__class__.__name__),
+            'args': str(e)
+        }
+        cli.err('zero div', payload=payload)
+    # ログ検証
+    with open(cli.log_path, 'r', encoding='utf-8') as f:
+        lines = f.readlines()
+        assert 'zero div' in lines[0]
+        assert "{'class': 'ZeroDivisionError', 'args': 'division by zero'}" in lines[0]
+
+
 def clear_log(path):
     """
     指定パスのログファイルの中身を空にする
