@@ -4,9 +4,11 @@ from loguru import logger
 
 # JSON形式でログを保存するための設定
 log_name = f"log/data/{datetime.now().strftime('%Y/%m/%d/%H:%M:%S:%f')}.log"
-logger.add(log_name, serialize=True, encoding='utf-8')
-
-
+logger.add(
+    log_name,
+    format="{time:YYYY-MM-DD at HH:mm:ss} |{level} | {file.path} | {function} | {message} | {extra}",
+    encoding='utf-8'
+)
 
 def main_f():
     # 辞書型の情報を含むログメッセージの出力
