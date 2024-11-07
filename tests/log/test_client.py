@@ -69,14 +69,14 @@ def test_exception():
         # エラー内容をログに落とし込む
         payload = {
             'class': str(e.__class__.__name__),
-            'args': str(e)
+            'args': e.args
         }
         cli.err('zero div', payload=payload)
     # ログ検証
     with open(cli.log_path, 'r', encoding='utf-8') as f:
         lines = f.readlines()
         assert 'zero div' in lines[0]
-        assert "{'class': 'ZeroDivisionError', 'args': 'division by zero'}" in lines[0]
+        assert "{'class': 'ZeroDivisionError', 'args': ('division by zero',)}" in lines[0]
 
 
 def clear_log(path):
