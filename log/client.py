@@ -39,9 +39,3 @@ class LogClient:
 
 
 CLI_LOG = LogClient()
-
-# 使用例
-CLI_LOG.info('これは情報メッセージです', {"user": "example_user", "action": "login"})
-CLI_LOG.debug('これはデバッグメッセージです', {"user": "example_user", "action": "login"})
-CLI_LOG.warn('これは警告メッセージです', {"user": "example_user", "action": "login"})
-CLI_LOG.err('これはエラーメッセージです', {"user": "example_user", "action": "login"})
