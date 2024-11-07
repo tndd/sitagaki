@@ -2,6 +2,13 @@ from datetime import datetime
 
 from loguru import logger
 
+"""
+TODO: クラス解体
+    変にクラス化してしまったせいで、ログ発生場所がすべてこのファイルになってしまった。
+    なのでクラス化は解除し、もっと一般的な形でログを実装する。
+    設定ファイル形式か、get_logger形式どちらで行くかはまだ未決定。
+"""
+
 
 class LogClient:
     def __init__(
