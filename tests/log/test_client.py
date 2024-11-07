@@ -66,17 +66,17 @@ def test_exception():
         # ゼロ除算によるエラー
         calc(1, 0)
     except Exception as e:
-        # エラー内容をログに落とし込む
-        payload = {
-            'class': str(e.__class__.__name__),
-            'args': e.args
-        }
-        cli.error('zero div', payload=payload)
+        payload = {'p_key': 'p_value'}
+        cli.error('zero div', payload=payload, exception=e)
     # ログ検証
     with open(cli.log_path, 'r', encoding='utf-8') as f:
         lines = f.readlines()
+        # メッセージ
         assert 'zero div' in lines[0]
-        assert "{'class': 'ZeroDivisionError', 'args': ('division by zero',)}" in lines[0]
+        # ペイロード
+        assert "'p_key': 'p_value'" in lines[0]
+        # 例外オブジェクト
+        assert "'__exception__': {'class': 'ZeroDivisionError', 'args': ('division by zero',)}" in lines[0]
 
 
 def clear_log(path):
