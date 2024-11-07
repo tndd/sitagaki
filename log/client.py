@@ -5,6 +5,8 @@ from loguru import logger
 
 class LogClient:
     def __init__(self):
+        # ログの保存先は外部からも確認できるようにしておく
+        self.log_path = f"log/data/{datetime.now().strftime('%Y/%m/%d/%H:%M:%S:%f')}.log"
         self._configure_logger()
 
     def info(self, message: str, payload: dict | None = None):
@@ -19,14 +21,12 @@ class LogClient:
     def err(self, message: str, payload: dict | None = None):
         self._record_log("error", message, payload)
 
-    def _configure_logger(self, log_path=None):
+    def _configure_logger(self):
         """
         ログの形式と保存場所を設定
         """
-        if log_path is None:
-            log_path = f"log/data/{datetime.now().strftime('%Y/%m/%d/%H:%M:%S:%f')}.log"
         logger.add(
-            log_path,
+            self.log_path,
             format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {file.path} | {function} | {message} | {extra}",
             encoding='utf-8'
         )
