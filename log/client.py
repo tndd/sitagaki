@@ -21,7 +21,7 @@ class LogClient:
     def warn(self, message: str, payload: dict | None = None):
         self._record_log("warning", message, payload)
 
-    def err(self, message: str, payload: dict | None = None):
+    def error(self, message: str, payload: dict | None = None):
         self._record_log("error", message, payload)
 
     def setup_logger(self):

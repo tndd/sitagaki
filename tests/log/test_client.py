@@ -15,7 +15,7 @@ def test_basic():
     cli.info('これは情報メッセージです')
     cli.debug('これはデバッグメッセージです')
     cli.warn('これは警告メッセージです')
-    cli.err('これはエラーメッセージです')
+    cli.error('これはエラーメッセージです')
     # ログの検証
     with open(cli.log_path, 'r', encoding='utf-8') as f:
         lines = f.readlines()
@@ -36,7 +36,7 @@ def test_with_payload():
     cli.info('これは情報メッセージです', {"user": "example_user", "action": "login"})
     cli.debug('これはデバッグメッセージです', {"user": "example_user", "action": "login"})
     cli.warn('これは警告メッセージです', {"user": "example_user", "action": "login"})
-    cli.err('これはエラーメッセージです', {"user": "example_user", "action": "login"})
+    cli.error('これはエラーメッセージです', {"user": "example_user", "action": "login"})
     # ログの検証
     with open(cli.log_path, 'r', encoding='utf-8') as f:
         lines = f.readlines()
@@ -71,7 +71,7 @@ def test_exception():
             'class': str(e.__class__.__name__),
             'args': e.args
         }
-        cli.err('zero div', payload=payload)
+        cli.error('zero div', payload=payload)
     # ログ検証
     with open(cli.log_path, 'r', encoding='utf-8') as f:
         lines = f.readlines()
