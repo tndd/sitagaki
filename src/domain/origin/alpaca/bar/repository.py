@@ -104,27 +104,31 @@ class ChartRepository:
             # 取得物をドメイン層のbarモデルのリストに変換して返す
             return arrive_chart_from_table_list(bar_list_table)
         except LookupError as le:
-            # LATER: error_logという同じ実装を排除したい
-            error_log = {
-                'exception': le,
-                'timestamp': datetime.now(),
-                'args': locals()
-            }
+            payload = build_payload(
+                payload={'args': locals()},
+                exception=e
+            )
             """
-            MEMO: raiseしたらまずいんじゃないのか？
-                もしエラーが発生したならば、そこでプログラムをクラッシュさせるのではなく、
-                エラーが起こったという情報をどこかに記録し、そのまま続行させるようにしなければ。
+            MEMO: ログの扱いがwarningであることの理由
+                エラーとして扱ってはいるが、それは期待される振る舞いと異なるからエラーとしているのであり、
+                プログラムの動作としては正常であるからエラーと断ずるのは違う。
+                だからログはwarningとして出す。
             """
-            raise LookupError(error_log)
+            LOG.warning('Barの取得件数が0件。おそらく条件指定が間違っている', **payload)
+            """
+            TODO: raiseの無効化
+                すぐにしたいところだが、テストがエラー発生を期待しているので、
+                そちらの修正を先に行わねばならない。
+            """
+            raise LookupError(le)
         except Exception as e:
-            # LATER: エラーログをログファイルに出力する
-            # LATER: 失敗時の処理を行う。ログ格納そして再実行のキューへの追加など。
-            error_log = {
-                'exception': e,
-                'timestamp': datetime.now(),
-                'args': locals()
-            }
-            raise Exception(error_log)
+            payload = build_payload(
+                payload={'args': locals()},
+                exception=e
+            )
+            LOG.error('DB通信箇所で失敗', **payload)
+            # TODO: raise削除
+            raise Exception(e)
 
     def fetch_latest_symbol_timestamp_set(
         self,
@@ -148,10 +152,17 @@ class ChartRepository:
         try:
             model_talbe_ls = self.cli_db.exec_query_fetch(query)
         except Exception as e:
-            # LATER: エラー処理
+            payload = build_payload(
+                payload={'args': locals()},
+                exception=e
+            )
+            LOG.error('DB通信箇所で失敗', **payload)
+            # TODO: raise削除
             raise e
-        # 取得したシンボルと日付のペアを辞書へ変換。
-        # 存在しない日付のtimestampのNoneへの置き換えも行う。
+        """
+        取得したシンボルと日付のペアを辞書へ変換。
+        存在しない日付のtimestampのNoneへの置き換えも行う。
+        """
         symbol_timestamp_dc = arrive_symbol_timestamp_dict_from_table(
             symbols=symbols,
             tables=model_talbe_ls
