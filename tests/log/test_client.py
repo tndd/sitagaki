@@ -1,8 +1,8 @@
-from log.client import LogClient
+from log.client import add_exception_to_payload, get_logger
 
 # テスト用にログパスを特別に変更している
-TEST_LOG_PATH ='log/data/test.log'
-cli = LogClient(log_path=TEST_LOG_PATH)
+TEST_PATH ='log/data/test.log'
+log = get_logger(path=TEST_PATH)
 
 
 def test_basic():
@@ -11,13 +11,13 @@ def test_basic():
     payload無しの単純なメッセージのみの動作確認
     """
     # ログをクリアしておく
-    clear_log(cli.log_path)
-    cli.info('これは情報メッセージです')
-    cli.debug('これはデバッグメッセージです')
-    cli.warn('これは警告メッセージです')
-    cli.error('これはエラーメッセージです')
+    clear_log(TEST_PATH)
+    log.info('これは情報メッセージです')
+    log.debug('これはデバッグメッセージです')
+    log.warning('これは警告メッセージです')
+    log.error('これはエラーメッセージです')
     # ログの検証
-    with open(cli.log_path, 'r', encoding='utf-8') as f:
+    with open(TEST_PATH, 'r', encoding='utf-8') as f:
         lines = f.readlines()
         # ログは４件保存されている
         assert len(lines) == 4
@@ -32,13 +32,13 @@ def test_with_payload():
     """
     payloadありのログ機能を確かめる
     """
-    clear_log(cli.log_path)
-    cli.info('これは情報メッセージです', {"user": "example_user", "action": "login"})
-    cli.debug('これはデバッグメッセージです', {"user": "example_user", "action": "login"})
-    cli.warn('これは警告メッセージです', {"user": "example_user", "action": "login"})
-    cli.error('これはエラーメッセージです', {"user": "example_user", "action": "login"})
+    clear_log(TEST_PATH)
+    log.info('これは情報メッセージです', **{"user": "info", "action": "login"})
+    log.debug('これはデバッグメッセージです', **{"user": "debug", "action": "login"})
+    log.warning('これは警告メッセージです', **{"user": "warning", "action": "login"})
+    log.error('これはエラーメッセージです', **{"user": "error", "action": "login"})
     # ログの検証
-    with open(cli.log_path, 'r', encoding='utf-8') as f:
+    with open(TEST_PATH, 'r', encoding='utf-8') as f:
         lines = f.readlines()
         # ログは４件保存されている
         assert len(lines) == 4
@@ -48,10 +48,10 @@ def test_with_payload():
         assert "これは警告メッセージです" in lines[2]
         assert "これはエラーメッセージです" in lines[3]
         # 各ログメッセージのpayload部分を検証
-        assert "{'user': 'example_user', 'action': 'login'}" in lines[0]
-        assert "{'user': 'example_user', 'action': 'login'}" in lines[1]
-        assert "{'user': 'example_user', 'action': 'login'}" in lines[2]
-        assert "{'user': 'example_user', 'action': 'login'}" in lines[3]
+        assert "{'user': 'info', 'action': 'login'}" in lines[0]
+        assert "{'user': 'debug', 'action': 'login'}" in lines[1]
+        assert "{'user': 'warning', 'action': 'login'}" in lines[2]
+        assert "{'user': 'error', 'action': 'login'}" in lines[3]
 
 
 def test_exception():
@@ -61,15 +61,16 @@ def test_exception():
     def calc(x, y):
         return x / y
 
-    clear_log(cli.log_path)
+    clear_log(TEST_PATH)
     try:
         # ゼロ除算によるエラー
         calc(1, 0)
     except Exception as e:
         payload = {'p_key': 'p_value'}
-        cli.error('zero div', payload=payload, exception=e)
+        payload = add_exception_to_payload(payload, e)
+        log.error('zero div', **payload)
     # ログ検証
-    with open(cli.log_path, 'r', encoding='utf-8') as f:
+    with open(TEST_PATH, 'r', encoding='utf-8') as f:
         lines = f.readlines()
         # メッセージ
         assert 'zero div' in lines[0]

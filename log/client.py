@@ -2,63 +2,27 @@ from datetime import datetime
 
 from loguru import logger
 
-"""
-TODO: クラス解体
-    変にクラス化してしまったせいで、ログ発生場所がすべてこのファイルになってしまった。
-    なのでクラス化は解除し、もっと一般的な形でログを実装する。
-    設定ファイル形式か、get_logger形式どちらで行くかはまだ未決定。
-"""
+
+def get_logger(
+    path: str = f"log/data/{datetime.now().strftime('%Y/%m/%d')}.log"
+):
+    logger.add(
+        path,
+        format="{time:YYYY-MM-DD at HH:mm:ss.SSS} | {level} | {file.path} | {function} | {message} | {extra}",
+        encoding='utf-8'
+    )
+    return logger
 
 
-class LogClient:
-    def __init__(
-        self,
-        log_path: str = f"log/data/{datetime.now().strftime('%Y/%m/%d')}.log"
-    ):
-        # ログの保存先は外部からも確認できるようにしておく
-        self.log_path = log_path
-        self.setup_logger()
-
-    def info(self, message: str, payload: dict = {}):
-        self._record_log("info", message, payload)
-
-    def debug(self, message: str, payload: dict = {}):
-        self._record_log("debug", message, payload)
-
-    def warn(self, message: str, payload: dict = {}):
-        self._record_log("warning", message, payload)
-
-    def error(
-        self,
-        message: str,
-        payload: dict = {},
-        exception: Exception | None = None
-    ):
-        """
-        これに関しては例外オブジェクトexceptionを受け取れるようにする
-        エラー情報はpayloadに統合されてログに記録される
-        """
-        if exception:
-            # exceptionというキーで例外オブジェクトの情報登録
-            payload['__exception__'] = {
-                'class': str(exception.__class__.__name__),
-                'args': exception.args
-            }
-        self._record_log("error", message, payload)
-
-    def setup_logger(self):
-        """
-        ログの形式と保存場所を設定
-        """
-        logger.add(
-            self.log_path,
-            format="{time:YYYY-MM-DD at HH:mm:ss.SSS} | {level} | {file.path} | {function} | {message} | {extra}",
-            encoding='utf-8'
-        )
-
-    def _record_log(self, level: str, message: str, payload: dict):
-        log_method = getattr(logger, level)
-        log_method(message, **payload)
+def add_exception_to_payload(payload: dict, exception: Exception):
+    """
+    payloadに例外オブジェクトの情報を追加して返す
+    """
+    payload['__exception__'] = {
+        'class': str(exception.__class__.__name__),
+        'args': exception.args
+    }
+    return payload
 
 
-CLI_LOG = LogClient()
+LOG = get_logger()
