@@ -14,14 +14,15 @@ def get_logger(
     return logger
 
 
-def add_exception_to_payload(payload: dict, exception: Exception):
+def build_payload(payload: dict, exception: Exception | None):
     """
     payloadに例外オブジェクトの情報を追加して返す
     """
-    payload['__exception__'] = {
-        'class': str(exception.__class__.__name__),
-        'args': exception.args
-    }
+    if exception:
+        payload['__exception__'] = {
+            'class': str(exception.__class__.__name__),
+            'args': exception.args
+        }
     return payload
 
 

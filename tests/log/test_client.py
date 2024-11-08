@@ -1,4 +1,4 @@
-from log.client import add_exception_to_payload, get_logger
+from log.client import build_payload, get_logger
 
 # テスト用に新たなログ記録パスを登録しておく
 TEST_PATH ='log/data/test.log'
@@ -66,8 +66,10 @@ def test_exception():
         # ゼロ除算によるエラー
         calc(1, 0)
     except Exception as e:
-        payload = {'p_key': 'p_value'}
-        payload = add_exception_to_payload(payload, e)
+        payload = build_payload(
+            payload={'p_key': 'p_value'},
+            exception=e
+        )
         log.error('zero div', **payload)
     # ログ検証
     with open(TEST_PATH, 'r', encoding='utf-8') as f:
