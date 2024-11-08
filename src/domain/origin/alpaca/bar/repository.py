@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Sequence
 
+from log.client import LOG, build_payload
 from src.domain.origin.alpaca.bar.const import Adjustment, Timeframe
 from src.domain.origin.alpaca.bar.model import Chart, SymbolTimestampSet
 from src.infra.adapter.origin.alpaca.bar import (
@@ -52,12 +53,11 @@ class ChartRepository:
                 limit=limit
             )
         except Exception as e:
-            """
-            TODO: エラー処理
-                エラー発生時、そのエラーをログとして体系的に記録する仕組みを作る。
-                ログには失敗した関数やその引数など、のちに同様の動作が再現可能な分の情報を保存しておく。
-                ログの形式はどのようにするかはこれから検討。
-            """
+            payload = build_payload(
+                payload={'args': locals()},
+                exception=e
+            )
+            LOG.error('Alpaca apiの通信部分で失敗', **payload)
             raise e
         # adapt: <= alpaca_api
         chart = arrive_chart_from_bar_alpaca_api_list(
