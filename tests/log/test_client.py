@@ -1,6 +1,6 @@
 from log.client import add_exception_to_payload, get_logger
 
-# テスト用にログパスを特別に変更している
+# テスト用に新たなログ記録パスを登録しておく
 TEST_PATH ='log/data/test.log'
 log = get_logger(path=TEST_PATH)
 
