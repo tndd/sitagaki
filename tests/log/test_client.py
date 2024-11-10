@@ -54,7 +54,7 @@ def test_with_payload():
         assert "{'user': 'error', 'action': 'login'}" in lines[3]
 
 
-def test_exception():
+def test_build_payload():
     """
     exception発生時のログについての確認
     """
