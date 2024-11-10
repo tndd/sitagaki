@@ -1,13 +1,13 @@
 import pytest
 
-import src.infra.db.common as common
+import common.workmode as workmode
+from common.workmode import is_test_mode
 from fixture.decorator import only_test
-from src.infra.db.common import is_test_mode
 
 
 @pytest.mark.parametrize(
     "work_mode",
-    list(common.WorkMode)
+    list(workmode.WorkMode)
 )
 def test_only_test(mocker, work_mode):
     """
@@ -15,7 +15,7 @@ def test_only_test(mocker, work_mode):
     """
     # ワークモードを強制変更
     mocker.patch(
-        "src.infra.db.common.CURRENT_WORK_MODE",
+        "common.workmode.CURRENT_WORK_MODE",
         work_mode
     )
     """
@@ -28,7 +28,7 @@ def test_only_test(mocker, work_mode):
         patchはモジュール側の値を書き換える。
         だがfromはモジュール側からのコピーをローカルに作る動作をするので、パッチの影響を受けない。
     """
-    assert work_mode is common.CURRENT_WORK_MODE
+    assert work_mode is workmode.CURRENT_WORK_MODE
     # デコレータ検証用関数
     @only_test
     def _f():

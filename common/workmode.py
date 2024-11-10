@@ -2,13 +2,6 @@ from enum import Enum
 from os import getenv
 from typing import Final
 
-"""
-TODO: 場所移動
-    ワークモードという概念はinfraという枠を超えたアプリ全体に影響を与える要素。
-    なら現状のinfra/dbという場所に存在しているのはおかしい。
-    むしろプロジェクトルートにcommon/workmode.pyという具合にするべきではないか？
-"""
-
 
 class WorkMode(Enum):
     """

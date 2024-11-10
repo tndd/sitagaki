@@ -3,7 +3,7 @@ from os import environ
 
 import pytest
 
-from src.infra.db.common import WorkMode, is_test_mode, read_work_mode_from_env
+from common.workmode import WorkMode, is_test_mode, read_work_mode_from_env
 
 
 @pytest.mark.parametrize(
@@ -38,7 +38,7 @@ def test_is_test_mode(mocker, work_mode):
     assert is_test_mode()
     # パッチ適用
     mocker.patch(
-        "src.infra.db.common.CURRENT_WORK_MODE",
+        "common.workmode.CURRENT_WORK_MODE",
         work_mode
     )
     if work_mode in (WorkMode.TEST, WorkMode.IN_MEMORY):

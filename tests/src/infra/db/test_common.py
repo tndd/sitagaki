@@ -1,6 +1,6 @@
 import pytest
 
-from src.infra.db.common import WorkMode, read_work_mode_from_env
+from common.workmode import WorkMode, read_work_mode_from_env
 
 
 def test_read_work_mode_from_env():

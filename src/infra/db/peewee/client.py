@@ -11,7 +11,7 @@ from peewee import (
     chunked,
 )
 
-from src.infra.db.common import CURRENT_WORK_MODE, WorkMode
+from common.workmode import CURRENT_WORK_MODE, WorkMode
 
 _DB_PROXY: DatabaseProxy = DatabaseProxy()
 

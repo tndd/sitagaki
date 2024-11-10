@@ -1,6 +1,6 @@
 from decorator import decorator
 
-from src.infra.db.common import is_test_mode
+from common.workmode import is_test_mode
 
 
 @decorator
