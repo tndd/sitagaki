@@ -1,7 +1,5 @@
 from datetime import datetime
 
-import pytest
-
 from fixture.infra.db.peewee.table.alpaca.bar import factory_table_bar_alpaca_list
 from src.domain.origin.alpaca.bar.const import Adjustment, Timeframe
 from src.domain.origin.alpaca.bar.model import Chart
