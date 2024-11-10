@@ -106,7 +106,7 @@ class ChartRepository:
         except LookupError as le:
             payload = build_payload(
                 payload={'args': locals()},
-                exception=e
+                exception=le
             )
             """
             MEMO: ログの扱いがwarningであることの理由
