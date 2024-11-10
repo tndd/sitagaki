@@ -4,12 +4,17 @@ from loguru import logger
 
 from common.workmode import CURRENT_WORK_MODE
 
-log_dir = CURRENT_WORK_MODE.value.lower()
+# ログの吐き先はワークモードによって変わる
+_log_dir = CURRENT_WORK_MODE.value.lower()
 
 
 def get_logger(
-    path: str = f"log/{log_dir}/{datetime.now().strftime('%Y/%m/%d')}.log"
+    path: str = f"log/{_log_dir}/{datetime.now().strftime('%Y/%m/%d')}.log"
 ):
+    """
+    ワークモードごとにログは独立している。
+    ログディレクトリは'年/月/日付.log'という単位で更新される形式。
+    """
     logger.add(
         path,
         format="{time:YYYY-MM-DD at HH:mm:ss.SSS} | {level} | {file.path} | {function} | {message} | {extra}",
