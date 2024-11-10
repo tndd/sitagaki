@@ -69,6 +69,7 @@ class ChartRepository:
         bar_table_list = depart_chart_to_table_list(chart)
         # DBのモデルリストを保存
         self.cli_db.insert_models(bar_table_list)
+        LOG.info(f'DB保存完了,symbol={symbol},{timeframe},{adjustment}')
 
     def fetch_chart_from_local(
         self,
