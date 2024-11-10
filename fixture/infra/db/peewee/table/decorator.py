@@ -13,9 +13,9 @@ def insertable(func):
         DBインサート機能のON,OFFを切り替え可能
 
     NOTE:
-        少しでも込み入ったことをするとなると、
-        pip-decoratorは使い物にならないので、
-        このデコレータは直書きしてる。
+        INSERT=Falseという引数を受け取れるようにしたい場合、
+        pip-decoratorは使い物にならない。
+        そのためこのデコレータは直書きしてる。
     """
     @wraps(func)
     def wrapper(*args, INSERT=False, **kwargs):
