@@ -14,6 +14,13 @@ def get_logger(
     """
     ワークモードごとにログは独立している。
     ログディレクトリは'年/月/日付.log'という単位で更新される形式。
+
+    NOTE: get_loggerの利用について
+        この関数は原則として外部からは呼ばれない。
+        ログ機能を利用する際には下部に定義されているLOGをインポートする。
+
+        ただしテストなどでログを部分的に複製したいという特別な用途において、
+        この関数が利用されることはあり得る。
     """
     logger.add(
         path,
@@ -35,4 +42,5 @@ def build_payload(payload: dict, exception: Exception | None):
     return payload
 
 
+# 基本的には、このLOGをインポートする形でログ機能を利用する。
 LOG = get_logger()
