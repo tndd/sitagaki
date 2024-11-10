@@ -3,4 +3,4 @@ tests/logs/
 .idea/
 !.vscode/
 .mock/
-log/data/*
+log/**/*.log

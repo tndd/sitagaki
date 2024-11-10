@@ -2,16 +2,13 @@ from datetime import datetime
 
 from loguru import logger
 
-"""
-TODO: ログの吐き先
-    今の状態ではテスト環境のものも本番のものも、
-    日付については分かれているが、すべて同じところに吐かれてしまう。
-    test,dev,prdの３つの動作環境ごとにログの吐き先は変える
-"""
+from common.workmode import CURRENT_WORK_MODE
+
+log_dir = CURRENT_WORK_MODE.value.lower()
 
 
 def get_logger(
-    path: str = f"log/data/{datetime.now().strftime('%Y/%m/%d')}.log"
+    path: str = f"log/{log_dir}/{datetime.now().strftime('%Y/%m/%d')}.log"
 ):
     logger.add(
         path,

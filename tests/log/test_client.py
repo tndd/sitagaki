@@ -1,7 +1,8 @@
+from common.workmode import CURRENT_WORK_MODE
 from log.client import build_payload, get_logger
 
 # テスト用に新たなログ記録パスを登録しておく
-TEST_PATH ='log/data/test.log'
+TEST_PATH = f'log/{CURRENT_WORK_MODE.value.lower()}/tmp.log'
 log = get_logger(path=TEST_PATH)
 
 
