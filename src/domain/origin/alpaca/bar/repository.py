@@ -96,39 +96,29 @@ class ChartRepository:
             bar_list_table = self.cli_db.exec_query_fetch(query)
             if not bar_list_table:
                 """
-                Barの取得件数が0件の場合、エラーを発生させる。
-                おそらく条件の指定が間違っている。
-                もし通信での失敗であれば0件という情報すら返らないだろう。
+                Barの取得件数が0件の場合、警告ログを発生させる。
+                取得結果が0というのは期待される動作ではないから。
+                おそらく条件の指定が誤っている。
                 """
-                raise LookupError('Barの取得件数が0件')
+                payload = {
+                    'locals': locals()
+                }
+                LOG.warning('Barの取得件数が0件。おそらく条件指定が間違っている', **payload)
+                # 空のChartを返す
+                return Chart(
+                    symbol=symbol,
+                    timeframe=timeframe,
+                    adjustment=adjustment,
+                    bars = []
+                )
             # 取得物をドメイン層のbarモデルのリストに変換して返す
             return arrive_chart_from_table_list(bar_list_table)
-        except LookupError as le:
-            payload = build_payload(
-                payload={'args': locals()},
-                exception=le
-            )
-            """
-            MEMO: ログの扱いがwarningであることの理由
-                エラーとして扱ってはいるが、それは期待される振る舞いと異なるからエラーとしているのであり、
-                プログラムの動作としては正常であるからエラーと断ずるのは違う。
-                だからログはwarningとして出す。
-            """
-            LOG.warning('Barの取得件数が0件。おそらく条件指定が間違っている', **payload)
-            """
-            TODO: raiseの無効化
-                すぐにしたいところだが、テストがエラー発生を期待しているので、
-                そちらの修正を先に行わねばならない。
-            """
-            raise LookupError(le)
         except Exception as e:
             payload = build_payload(
                 payload={'args': locals()},
                 exception=e
             )
             LOG.error('DB通信箇所で失敗', **payload)
-            # TODO: raise削除
-            raise Exception(e)
 
     def fetch_latest_symbol_timestamp_set(
         self,
@@ -157,8 +147,6 @@ class ChartRepository:
                 exception=e
             )
             LOG.error('DB通信箇所で失敗', **payload)
-            # TODO: raise削除
-            raise e
         """
         取得したシンボルと日付のペアを辞書へ変換。
         存在しない日付のtimestampのNoneへの置き換えも行う。
