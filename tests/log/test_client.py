@@ -1,4 +1,4 @@
-from log.client import LOG, build_payload, read_log
+from log.client import LOG, build_payload, read_log, read_log_latest_line
 
 
 def test_basic():
@@ -65,7 +65,6 @@ def test_build_payload():
     def calc(x, y):
         return x / y
 
-    clear_log(TEST_PATH)
     try:
         # ゼロ除算によるエラー
         calc(1, 0)
@@ -74,13 +73,12 @@ def test_build_payload():
             payload={'p_key': 'p_value'},
             exception=e
         )
-        log.error('zero div', **payload)
+        LOG.error('zero div', **payload)
     # ログ検証
-    with open(TEST_PATH, 'r', encoding='utf-8') as f:
-        lines = f.readlines()
-        # メッセージ
-        assert 'zero div' in lines[0]
-        # ペイロード
-        assert "'p_key': 'p_value'" in lines[0]
-        # 例外オブジェクト
-        assert "'__exception__': {'class': 'ZeroDivisionError', 'args': ('division by zero',)}" in lines[0]
+    line = read_log_latest_line()
+    # メッセージ
+    assert 'zero div' in line
+    # ペイロード
+    assert "'p_key': 'p_value'" in line
+    # 例外オブジェクト
+    assert "'__exception__': {'class': 'ZeroDivisionError', 'args': ('division by zero',)}" in line
