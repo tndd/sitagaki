@@ -15,16 +15,8 @@ def log_error(
     try:
         yield
     except Exception as e:
-        """
-        TODO: localsの中身
-            本当は呼び出し側のlocals()の結果が欲しいが、
-            このままではこのlog_errorのlocals()が呼び出されてしまう。
-        """
         payload = build_payload(
-            payload={
-                '__locals__': locals(),
-                '__extra__': extra,
-            },
+            extra,
             exception=e
         )
     LOG.error(message, **payload)

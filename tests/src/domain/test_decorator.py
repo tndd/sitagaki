@@ -1,15 +1,6 @@
 from log.client import read_log_latest_line
 from src.domain.decorator import log_error
 
-"""
-TODO: テスト拡充
-    もっとログの中身を詳細にassertする。
-
-    __locals__, __exception__というassertを追加したが、
-    この確かめ方ではテストとして貧弱すぎる。
-    それにまだlog_errorの仕様が変わりそうであるため、テストを完成できない。
-"""
-
 
 def test_log_error():
     """
@@ -17,9 +8,10 @@ def test_log_error():
     ログへの記録が自動的に行われていることを確認
     """
     error_id = '7d0b8f29'
-    with log_error(error_id):
+    payload = {'locals': locals()}
+    with log_error(error_id, payload):
         1 / 0
     log = read_log_latest_line()
     assert error_id in log
-    assert '__locals__' in log
     assert '__exception__' in log
+    assert "'locals': {" in log
