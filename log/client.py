@@ -3,6 +3,7 @@ from datetime import datetime
 from loguru import logger
 
 from common.workmode import CURRENT_WORK_MODE
+from fixture.decorator import only_test
 
 # ログの吐き先はワークモードによって変わる
 _log_dir = CURRENT_WORK_MODE.value.lower()
@@ -55,6 +56,16 @@ def read_log_latest_line():
     """
     lines = read_log()
     return lines[-1]
+
+
+@only_test
+def clear_log():
+    """
+    ログをクリアする。
+    危険な関数なのでテスト環境以外では実行できないようにしておく。
+    """
+    with open(_log_path, 'w') as f:
+        f.truncate(0)
 
 
 # 基本的には、このLOGをインポートする形でログ機能を利用する。
