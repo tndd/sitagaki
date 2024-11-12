@@ -43,13 +43,16 @@ def build_payload(payload: dict, exception: Exception | None):
 
 def read_log():
     """
-    直近のログファイルを読み込む
+    現在の吐き先ログファイルの全体を読み込む
     """
     with open(_log_path, 'r') as f:
         return f.readlines()
 
 
 def read_log_latest_line():
+    """
+    吐き先ログファイルの直近一行を読み込む
+    """
     lines = read_log()
     return lines[-1]
 
