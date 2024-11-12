@@ -28,25 +28,34 @@ def test_with_payload():
     """
     payloadありのログ機能を確かめる
     """
-    log.info('これは情報メッセージです', **{"user": "info", "action": "login"})
-    log.debug('これはデバッグメッセージです', **{"user": "debug", "action": "login"})
-    log.warning('これは警告メッセージです', **{"user": "warning", "action": "login"})
-    log.error('これはエラーメッセージです', **{"user": "error", "action": "login"})
+    # メッセージ一覧
+    msg_info = 'dfa1bd75'
+    msg_debug = 'a1a1262d'
+    msg_warning = '3970ff5a'
+    msg_error = '1683302f'
+    # Payload一覧
+    payload_info = {"user": "info", "action": "login"}
+    payload_debug = {"user": "debug", "action": "login"}
+    payload_warning = {"user": "warning", "action": "login"}
+    payload_error = {"user": "error", "action": "login"}
+    # ログ開始
+    LOG.info(msg_info, **payload_info)
+    LOG.debug(msg_debug, **payload_debug)
+    LOG.warning(msg_warning, **payload_warning)
+    LOG.error(msg_error, **payload_error)
     # ログの検証
-    with open(TEST_PATH, 'r', encoding='utf-8') as f:
-        lines = f.readlines()
-        # ログは４件保存されている
-        assert len(lines) == 4
-        # 各ログメッセージの内容を検証（任意で追加）
-        assert "これは情報メッセージです" in lines[0]
-        assert "これはデバッグメッセージです" in lines[1]
-        assert "これは警告メッセージです" in lines[2]
-        assert "これはエラーメッセージです" in lines[3]
-        # 各ログメッセージのpayload部分を検証
-        assert "{'user': 'info', 'action': 'login'}" in lines[0]
-        assert "{'user': 'debug', 'action': 'login'}" in lines[1]
-        assert "{'user': 'warning', 'action': 'login'}" in lines[2]
-        assert "{'user': 'error', 'action': 'login'}" in lines[3]
+    lines = read_log()
+    # 各ログメッセージの内容を検証
+    assert msg_info in lines[-4]
+    assert msg_debug in lines[-3]
+    assert msg_warning in lines[-2]
+    assert msg_error in lines[-1]
+    # 各ログメッセージのpayload部分を検証
+    assert str(payload_info) in lines[-4]
+    assert str(payload_debug) in lines[-3]
+    assert str(payload_warning) in lines[-2]
+    assert str(payload_error) in lines[-1]
+
 
 
 def test_build_payload():
