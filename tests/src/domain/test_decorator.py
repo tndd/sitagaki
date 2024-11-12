@@ -1,4 +1,4 @@
-from log.client import read_log_latest_line
+from log.service import read_log_latest_line
 from src.domain.decorator import log_error
 
 

@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Sequence
 
-from log.client import LOG, build_payload
+from log.service import LOG, build_payload
 from src.domain.origin.alpaca.bar.const import Adjustment, Timeframe
 from src.domain.origin.alpaca.bar.model import Chart, SymbolTimestampSet
 from src.infra.adapter.origin.alpaca.bar import (

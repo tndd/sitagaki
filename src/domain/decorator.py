@@ -1,6 +1,6 @@
 from contextlib import contextmanager
 
-from log.client import LOG, build_payload
+from log.service import LOG, build_payload
 
 
 @contextmanager
