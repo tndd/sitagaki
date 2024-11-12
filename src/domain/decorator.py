@@ -4,7 +4,7 @@ from log.client import LOG, build_payload
 
 
 @contextmanager
-def handle_error(
+def log_error(
     message: str,
     extra: dict = {},
 ):
@@ -16,7 +16,10 @@ def handle_error(
         yield
     except Exception as e:
         payload = build_payload(
-            payload={'f_args': locals()},
+            payload={
+                '__locals__': locals(),
+                '__extra__': extra,
+            },
             exception=e
         )
     LOG.error(message, **payload)

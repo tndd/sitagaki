@@ -6,11 +6,10 @@ from common.workmode import CURRENT_WORK_MODE
 
 # ログの吐き先はワークモードによって変わる
 _log_dir = CURRENT_WORK_MODE.value.lower()
+_log_path = f"log/{_log_dir}/{datetime.now().strftime('%Y/%m/%d')}.log"
 
 
-def get_logger(
-    path: str = f"log/{_log_dir}/{datetime.now().strftime('%Y/%m/%d')}.log"
-):
+def get_logger(path: str = _log_path):
     """
     ワークモードごとにログは独立している。
     ログディレクトリは'年/月/日付.log'という単位で更新される形式。
@@ -40,6 +39,19 @@ def build_payload(payload: dict, exception: Exception | None):
             'args': exception.args
         }
     return payload
+
+
+def read_log():
+    """
+    直近のログファイルを読み込む
+    """
+    with open(_log_path, 'r') as f:
+        return f.readlines()
+
+
+def read_log_latest_line():
+    lines = read_log()
+    return lines[-1]
 
 
 # 基本的には、このLOGをインポートする形でログ機能を利用する。
