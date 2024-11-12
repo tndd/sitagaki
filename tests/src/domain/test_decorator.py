@@ -1,6 +1,11 @@
 from log.client import read_log_latest_line
 from src.domain.decorator import log_error
 
+"""
+TODO: テスト拡充
+    もっとログの中身を詳細にassertする。
+"""
+
 
 def test_log_error():
     """
