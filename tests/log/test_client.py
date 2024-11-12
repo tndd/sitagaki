@@ -1,9 +1,4 @@
-from common.workmode import CURRENT_WORK_MODE
-from log.client import build_payload, get_logger
-
-# テスト用に新たなログ記録パスを登録しておく
-TEST_PATH = f'log/{CURRENT_WORK_MODE.value.lower()}/tmp.log'
-log = get_logger(path=TEST_PATH)
+from log.client import LOG, build_payload, read_log
 
 
 def test_basic():
@@ -11,29 +6,28 @@ def test_basic():
     基本的な一連のログ保存を検証
     payload無しの単純なメッセージのみの動作確認
     """
-    # ログをクリアしておく
-    clear_log(TEST_PATH)
-    log.info('これは情報メッセージです')
-    log.debug('これはデバッグメッセージです')
-    log.warning('これは警告メッセージです')
-    log.error('これはエラーメッセージです')
+    # メッセージ一覧
+    msg_info = 'info:00e19d1a'
+    msg_debug = 'debug:7e356b40'
+    msg_warning = 'warning:8a9b5dde'
+    msg_error = 'error:88d8cd57'
+    # ログ開始
+    LOG.info(msg_info)
+    LOG.debug(msg_debug)
+    LOG.warning(msg_warning)
+    LOG.error(msg_error)
     # ログの検証
-    with open(TEST_PATH, 'r', encoding='utf-8') as f:
-        lines = f.readlines()
-        # ログは４件保存されている
-        assert len(lines) == 4
-        # 各ログメッセージの内容を検証（任意で追加）
-        assert "これは情報メッセージです" in lines[0]
-        assert "これはデバッグメッセージです" in lines[1]
-        assert "これは警告メッセージです" in lines[2]
-        assert "これはエラーメッセージです" in lines[3]
+    lines = read_log()
+    assert msg_info in lines[-4]
+    assert msg_debug in lines[-3]
+    assert msg_warning in lines[-2]
+    assert msg_error in lines[-1]
 
 
 def test_with_payload():
     """
     payloadありのログ機能を確かめる
     """
-    clear_log(TEST_PATH)
     log.info('これは情報メッセージです', **{"user": "info", "action": "login"})
     log.debug('これはデバッグメッセージです', **{"user": "debug", "action": "login"})
     log.warning('これは警告メッセージです', **{"user": "warning", "action": "login"})
@@ -81,11 +75,3 @@ def test_build_payload():
         assert "'p_key': 'p_value'" in lines[0]
         # 例外オブジェクト
         assert "'__exception__': {'class': 'ZeroDivisionError', 'args': ('division by zero',)}" in lines[0]
-
-
-def clear_log(path):
-    """
-    指定パスのログファイルの中身を空にする
-    """
-    with open(path, 'w') as f:
-        f.truncate(0)
