@@ -4,6 +4,10 @@ from src.domain.decorator import log_error
 """
 TODO: テスト拡充
     もっとログの中身を詳細にassertする。
+
+    __locals__, __exception__というassertを追加したが、
+    この確かめ方ではテストとして貧弱すぎる。
+    それにまだlog_errorの仕様が変わりそうであるため、テストを完成できない。
 """
 
 
@@ -17,3 +21,5 @@ def test_log_error():
         1 / 0
     log = read_log_latest_line()
     assert error_id in log
+    assert '__locals__' in log
+    assert '__exception__' in log
