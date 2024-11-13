@@ -1,5 +1,5 @@
 from log.service import read_log_latest_line
-from src.domain.decorator import log_error
+from log.decorator import log_error
 
 
 def test_log_error():
