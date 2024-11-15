@@ -30,7 +30,10 @@ def get_logger(path: str = _log_path):
     return logger
 
 
-def build_payload(payload: dict, exception: Exception | None):
+def build_payload(
+    payload: dict,
+    exception: Exception | None
+):
     """
     payloadに例外オブジェクトの情報を追加して返す
     """
