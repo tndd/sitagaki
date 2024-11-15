@@ -6,6 +6,7 @@ from log.service import LOG, build_payload
 @contextmanager
 def log_error(
     message: str,
+    locals: dict = {},
     payload: dict = {},
 ):
     """
@@ -19,6 +20,7 @@ def log_error(
     except Exception as e:
         payload = build_payload(
             payload,
+            locals=locals,
             exception=e
         )
     LOG.error(message, **payload)
