@@ -1,9 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime
-from distutils.command import build
 from typing import Sequence
 
-from log.decorator import log_error
 from log.service import LOG, build_payload
 from src.domain.origin.alpaca.bar.const import Adjustment, Timeframe
 from src.domain.origin.alpaca.bar.model import Chart, SymbolTimestampSet
