@@ -1,4 +1,4 @@
-from log.service import LOG, build_payload, read_log, read_log_latest_line
+from common.logger import LOG, build_payload, read_log, read_log_latest_line
 
 
 def test_basic():
