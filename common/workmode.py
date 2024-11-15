@@ -2,6 +2,20 @@ from enum import Enum
 from os import getenv
 from typing import Final
 
+from decorator import decorator
+
+"""
+MEMO: ゴチャつきすぎ？
+    機能ベースで処理をまとめた結果、
+    それぞれの機能は密接に関連してはいるが、
+    イマイチ処理の種類ごとのまとまりがないように見える。
+    クラスがあったり関数だったりデコレータだったり。
+
+    だが機能をまとめる上では処理の類似性よりも、
+    処理の関連度でまとめる方がいいのかもしれない。
+    少しこれで運用してみる。
+"""
+
 
 class WorkMode(Enum):
     """
@@ -47,3 +61,13 @@ def is_test_mode() -> bool:
         WorkMode.TEST,
         WorkMode.IN_MEMORY,
     )
+
+
+@decorator
+def only_test(f, *args, **kwargs):
+    """
+    テストモード以外で実行するとエラーを吐き強制終了させるデコレータ。
+    """
+    if not is_test_mode():
+        raise ValueError("テストモードではないため、実行できません。 EID:019d3665")
+    return f(*args, **kwargs)
