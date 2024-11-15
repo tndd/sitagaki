@@ -15,6 +15,11 @@ def test_log_error():
     ):
         1 / 0
     log = read_log_latest_line()
-    assert error_id in log
-    assert '__exception__' in log
-    assert '__locals__' in log
+    # message
+    assert "| 7d0b8f29 |" in log
+    # payload
+    assert "'payload': 'payload_data'" in log
+    # __exception__
+    assert "'__exception__': {'class': 'ZeroDivisionError', 'args': ('division by zero',)}" in log
+    # __locals__
+    assert "'__locals__': {'error_id': '7d0b8f29'}" in log
