@@ -1,9 +1,10 @@
 from dataclasses import dataclass
 from datetime import datetime
+from distutils.command import build
 from typing import Sequence
 
 from log.decorator import log_error
-from log.service import LOG
+from log.service import LOG, build_payload
 from src.domain.origin.alpaca.bar.const import Adjustment, Timeframe
 from src.domain.origin.alpaca.bar.model import Chart, SymbolTimestampSet
 from src.infra.adapter.origin.alpaca.bar import (
@@ -44,10 +45,7 @@ class ChartRepository:
             基本的にオンライン上からデータを取得する場合、最新の日付までのデータを求めるから。
             endを指定したデータ取得の必要性を感じないし、いらない部分があるなら捨てればいい。
         """
-        with log_error(
-            message='Alpaca apiの通信部分で失敗',
-            locals={'aaa': 123}
-        ):
+        try:
             # barsデータを取得
             bar_alpaca_api_list = self.cli_alpaca.get_bar_alpaca_api_list(
                 symbol=symbol,
@@ -56,6 +54,17 @@ class ChartRepository:
                 start=start,
                 limit=limit
             )
+        except Exception as e:
+            payload = build_payload(
+                conditon={
+                    'symbol': symbol,
+                    'timeframe': timeframe.value,
+                    'adjustment': adjustment.value,
+                    'start': str(start)
+                },
+                exception=e
+            )
+            LOG.error('Alpaca api通信部分で失敗', **payload)
         # adapt: <= alpaca_api
         chart = arrive_chart_from_bar_alpaca_api_list(
             bars_alpaca_api=bar_alpaca_api_list,
@@ -81,6 +90,13 @@ class ChartRepository:
 
         不足データをオンラインから取得するみたいな気の利いた動作はさせていない。
         """
+        conditon={
+            'symbol': symbol,
+            'timeframe': timeframe.value,
+            'adjustment': adjustment.value,
+            'start': str(start),
+            'end': str(end)
+        }
         # 取得に必要なqueryを作成
         query = get_query_bar_alpaca(
             symbol=symbol,
@@ -89,26 +105,24 @@ class ChartRepository:
             start=start,
             end=end
         )
-        with log_error(
-            message='DB通信箇所で失敗',
-            locals=locals()
-        ):
+        try:
             # TableBarAlpacaのリストを取得
             bar_list_table = self.cli_db.exec_query_fetch(query)
-            if not bar_list_table:
-                """
-                Barの取得件数が0件の場合、警告ログを発生させる。
-                取得結果が0というのは期待される動作ではないから。
-                おそらく条件の指定が誤っている。
-                """
-                LOG.warning('Barの取得件数が0件。おそらく条件指定が間違っている', **locals())
-                # 空のChartを返す
-                return Chart(
-                    symbol=symbol,
-                    timeframe=timeframe,
-                    adjustment=adjustment,
-                    bars = []
-                )
+        except Exception as e:
+            payload = build_payload(
+                conditon=conditon,
+                exception=e
+            )
+            LOG.error('DBからの情報取得部分で失敗', **payload)
+        if not bar_list_table:
+            # 取得件数が0の場合、警告ログを残して空のChartを返す
+            LOG.warning('Barの取得件数が0件。おそらく条件指定が間違っている', **conditon())
+            return Chart(
+                symbol=symbol,
+                timeframe=timeframe,
+                adjustment=adjustment,
+                bars = []
+            )
         # 取得物をドメイン層のbarモデルのリストに変換して返す
         return arrive_chart_from_table_list(bar_list_table)
 
@@ -131,15 +145,20 @@ class ChartRepository:
             timeframe=depart_timeframe_to_table(timeframe),
             adjustment=depart_adjustment_to_table(adjustment)
         )
-        with log_error(
-            message='DB通信箇所で失敗',
-            locals=locals()
-        ):
+        try:
             model_talbe_ls = self.cli_db.exec_query_fetch(query)
-        """
-        取得したシンボルと日付のペアを辞書へ変換。
-        存在しない日付のtimestampのNoneへの置き換えも行う。
-        """
+        except Exception as e:
+            payload = build_payload(
+                conditon={
+                    'timeframe': timeframe.value,
+                    'adjustment': adjustment.value,
+                    'symbols': str(symbols)
+                },
+                exception=e
+            )
+            LOG.error('DBからの情報取得部分で失敗', **payload)
+        # 取得したシンボルと日付のペアを辞書へ変換。
+        # \ 存在しない日付のtimestampはNoneに置き換え。
         symbol_timestamp_dc = arrive_symbol_timestamp_dict_from_table(
             symbols=symbols,
             tables=model_talbe_ls
@@ -151,7 +170,7 @@ class ChartRepository:
         )
 
 
-# シングルトン
+# Singleton
 REPO_CHART = ChartRepository(
     cli_db=CLI_PEEWEE,
     cli_alpaca=AlpacaApiBarClient()
