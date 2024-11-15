@@ -2,8 +2,7 @@ from datetime import datetime
 
 from loguru import logger
 
-from common.workmode import CURRENT_WORK_MODE
-from fixture.decorator import only_test
+from common.workmode import CURRENT_WORK_MODE, only_test
 
 # ログの吐き先はワークモードによって変わる
 _log_dir = CURRENT_WORK_MODE.value.lower()
