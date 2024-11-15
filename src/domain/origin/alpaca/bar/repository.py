@@ -43,6 +43,12 @@ class ChartRepository:
             基本的にオンライン上からデータを取得する場合、最新の日付までのデータを求めるから。
             endを指定したデータ取得の必要性を感じないし、いらない部分があるなら捨てればいい。
         """
+        conditon={
+            'symbol': symbol,
+            'timeframe': timeframe.value,
+            'adjustment': adjustment.value,
+            'start': str(start)
+        }
         try:
             # barsデータを取得
             bar_alpaca_api_list = self.cli_alpaca.get_bar_alpaca_api_list(
@@ -54,12 +60,7 @@ class ChartRepository:
             )
         except Exception as e:
             payload = build_payload(
-                conditon={
-                    'symbol': symbol,
-                    'timeframe': timeframe.value,
-                    'adjustment': adjustment.value,
-                    'start': str(start)
-                },
+                conditon=conditon,
                 exception=e
             )
             LOG.error('Alpaca api通信部分で失敗', **payload)
@@ -73,7 +74,7 @@ class ChartRepository:
         bar_table_list = depart_chart_to_table_list(chart)
         # DBのモデルリストを保存
         self.cli_db.insert_models(bar_table_list)
-        LOG.info(f'オンラインからDBへ保存完了。 symbol={symbol},{timeframe},{adjustment},start={start}')
+        LOG.info(f'オンラインからDBへ保存完了。', **conditon)
 
     def fetch_chart_from_local(
         self,
