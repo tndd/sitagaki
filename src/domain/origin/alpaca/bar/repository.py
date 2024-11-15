@@ -114,7 +114,7 @@ class ChartRepository:
             LOG.error('DBからの情報取得部分で失敗', **payload)
         if not bar_list_table:
             # 取得件数が0の場合、警告ログを残して空のChartを返す
-            LOG.warning('Barの取得件数が0件。おそらく条件指定が間違っている', **conditon())
+            LOG.warning('Barの取得件数が0件。おそらく条件指定が間違っている', **conditon)
             return Chart(
                 symbol=symbol,
                 timeframe=timeframe,
