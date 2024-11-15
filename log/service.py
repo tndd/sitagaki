@@ -32,11 +32,14 @@ def get_logger(path: str = _log_path):
 
 def build_payload(
     payload: dict,
-    exception: Exception | None
+    locals: dict | None = None,
+    exception: Exception | None = None
 ):
     """
     payloadに例外オブジェクトの情報を追加して返す
     """
+    if locals:
+        payload['__locals__'] = locals
     if exception:
         payload['__exception__'] = {
             'class': str(exception.__class__.__name__),

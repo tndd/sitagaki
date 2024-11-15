@@ -58,7 +58,7 @@ def test_with_payload():
 
 
 
-def test_build_payload():
+def test_build_payload(x=1):
     """
     exception発生時のログについての確認
     """
@@ -71,6 +71,7 @@ def test_build_payload():
     except Exception as e:
         payload = build_payload(
             payload={'p_key': 'p_value'},
+            locals=locals(),
             exception=e
         )
         LOG.error('zero div', **payload)
@@ -80,5 +81,7 @@ def test_build_payload():
     assert 'zero div' in line
     # ペイロード
     assert "'p_key': 'p_value'" in line
+    # locals
+    assert "'__locals__': {'x': 1, 'calc'" in line
     # 例外オブジェクト
     assert "'__exception__': {'class': 'ZeroDivisionError', 'args': ('division by zero',)}" in line
