@@ -1,3 +1,13 @@
+"""
+TODO: デコレータ廃止？
+    デコレータでログを吐く機能自体を一元的に管理しようとした場合、
+    どうしてもログ内容と吐き場所に乖離が生じてしまう。
+
+    ログが必要な箇所側でログ内容をある程度構築するという手順は、
+    避けては通れないのかもしれない。
+"""
+
+
 from contextlib import contextmanager
 
 from log.service import LOG, build_payload
