@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Sequence
 
+from log.service import LOG, build_payload
 from src.domain.origin.alpaca.bar.const import Adjustment, Timeframe
 from src.domain.origin.alpaca.bar.model import Chart, SymbolTimestampSet
 from src.infra.adapter.origin.alpaca.bar import (
@@ -42,6 +43,12 @@ class ChartRepository:
             基本的にオンライン上からデータを取得する場合、最新の日付までのデータを求めるから。
             endを指定したデータ取得の必要性を感じないし、いらない部分があるなら捨てればいい。
         """
+        conditon={
+            'symbol': symbol,
+            'timeframe': timeframe.value,
+            'adjustment': adjustment.value,
+            'start': str(start)
+        }
         try:
             # barsデータを取得
             bar_alpaca_api_list = self.cli_alpaca.get_bar_alpaca_api_list(
@@ -52,13 +59,11 @@ class ChartRepository:
                 limit=limit
             )
         except Exception as e:
-            """
-            TODO: エラー処理
-                エラー発生時、そのエラーをログとして体系的に記録する仕組みを作る。
-                ログには失敗した関数やその引数など、のちに同様の動作が再現可能な分の情報を保存しておく。
-                ログの形式はどのようにするかはこれから検討。
-            """
-            raise e
+            payload = build_payload(
+                conditon=conditon,
+                exception=e
+            )
+            LOG.error('Alpaca api通信部分で失敗', **payload)
         # adapt: <= alpaca_api
         chart = arrive_chart_from_bar_alpaca_api_list(
             bars_alpaca_api=bar_alpaca_api_list,
@@ -69,6 +74,7 @@ class ChartRepository:
         bar_table_list = depart_chart_to_table_list(chart)
         # DBのモデルリストを保存
         self.cli_db.insert_models(bar_table_list)
+        LOG.info(f'オンラインからDBへ保存完了。', **conditon)
 
     def fetch_chart_from_local(
         self,
@@ -83,6 +89,13 @@ class ChartRepository:
 
         不足データをオンラインから取得するみたいな気の利いた動作はさせていない。
         """
+        conditon={
+            'symbol': symbol,
+            'timeframe': timeframe.value,
+            'adjustment': adjustment.value,
+            'start': str(start),
+            'end': str(end)
+        }
         # 取得に必要なqueryを作成
         query = get_query_bar_alpaca(
             symbol=symbol,
@@ -94,37 +107,23 @@ class ChartRepository:
         try:
             # TableBarAlpacaのリストを取得
             bar_list_table = self.cli_db.exec_query_fetch(query)
-            if not bar_list_table:
-                """
-                Barの取得件数が0件の場合、エラーを発生させる。
-                おそらく条件の指定が間違っている。
-                もし通信での失敗であれば0件という情報すら返らないだろう。
-                """
-                raise LookupError('Barの取得件数が0件')
-            # 取得物をドメイン層のbarモデルのリストに変換して返す
-            return arrive_chart_from_table_list(bar_list_table)
-        except LookupError as le:
-            # LATER: error_logという同じ実装を排除したい
-            error_log = {
-                'exception': le,
-                'timestamp': datetime.now(),
-                'args': locals()
-            }
-            """
-            MEMO: raiseしたらまずいんじゃないのか？
-                もしエラーが発生したならば、そこでプログラムをクラッシュさせるのではなく、
-                エラーが起こったという情報をどこかに記録し、そのまま続行させるようにしなければ。
-            """
-            raise LookupError(error_log)
         except Exception as e:
-            # LATER: エラーログをログファイルに出力する
-            # LATER: 失敗時の処理を行う。ログ格納そして再実行のキューへの追加など。
-            error_log = {
-                'exception': e,
-                'timestamp': datetime.now(),
-                'args': locals()
-            }
-            raise Exception(error_log)
+            payload = build_payload(
+                conditon=conditon,
+                exception=e
+            )
+            LOG.error('DBからの情報取得部分で失敗', **payload)
+        if not bar_list_table:
+            # 取得件数が0の場合、警告ログを残して空のChartを返す
+            LOG.warning('Barの取得件数が0件。おそらく条件指定が間違っている', **conditon)
+            return Chart(
+                symbol=symbol,
+                timeframe=timeframe,
+                adjustment=adjustment,
+                bars = []
+            )
+        # 取得物をドメイン層のbarモデルのリストに変換して返す
+        return arrive_chart_from_table_list(bar_list_table)
 
     def fetch_latest_symbol_timestamp_set(
         self,
@@ -148,10 +147,17 @@ class ChartRepository:
         try:
             model_talbe_ls = self.cli_db.exec_query_fetch(query)
         except Exception as e:
-            # LATER: エラー処理
-            raise e
+            payload = build_payload(
+                conditon={
+                    'timeframe': timeframe.value,
+                    'adjustment': adjustment.value,
+                    'symbols': str(symbols)
+                },
+                exception=e
+            )
+            LOG.error('DBからの情報取得部分で失敗', **payload)
         # 取得したシンボルと日付のペアを辞書へ変換。
-        # 存在しない日付のtimestampのNoneへの置き換えも行う。
+        # \ 存在しない日付のtimestampはNoneに置き換え。
         symbol_timestamp_dc = arrive_symbol_timestamp_dict_from_table(
             symbols=symbols,
             tables=model_talbe_ls
@@ -163,7 +169,7 @@ class ChartRepository:
         )
 
 
-# シングルトン
+# Singleton
 REPO_CHART = ChartRepository(
     cli_db=CLI_PEEWEE,
     cli_alpaca=AlpacaApiBarClient()

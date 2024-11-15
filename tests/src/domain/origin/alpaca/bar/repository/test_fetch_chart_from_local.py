@@ -1,7 +1,5 @@
 from datetime import datetime
 
-import pytest
-
 from fixture.infra.db.peewee.table.alpaca.bar import factory_table_bar_alpaca_list
 from src.domain.origin.alpaca.bar.const import Adjustment, Timeframe
 from src.domain.origin.alpaca.bar.model import Chart
@@ -71,8 +69,9 @@ def test_not_exist_symbol():
     """
     対象データが存在せず取得できない場合
 
-    factory_table_bar_alpaca_listで取得される情報に
-    以下のシンボルは存在しない。
+    factory_table_bar_alpaca_listで取得される情報に、
+    NOSYMBOLというシンボルは存在しないためchartを取得することはできない。
+    そのためbarsが空のChartモデルが返る。
 
     期待される結果:
         LookupErrorが発生
@@ -82,20 +81,17 @@ def test_not_exist_symbol():
         timeframe = Timeframe.DAY
         adjustment = Adjustment.RAW
         2020-01-02 <= timestamp <= 2020-01-03の間
-
-        NOSYMBOLというシンボルは存在しないためchartを取得することはできない。
-        そのため検索結果が見つからないことを表すLookupErrorを返す。
     """
     # テストデータをDBに登録
     factory_table_bar_alpaca_list(INSERT=True)
-    # まずエラーが発生することを確認
-    with pytest.raises(Exception) as excinfo:
-        REPO_CHART.fetch_chart_from_local(
-            symbol="NOSYMBOL",
-            timeframe=Timeframe.DAY,
-            adjustment=Adjustment.RAW,
-            start=datetime(2020, 1, 2),
-            end=datetime(2020, 1, 3)
-        )
-    # エラーがLookupErrorであることを確認
-    assert excinfo.type == LookupError
+    chart = REPO_CHART.fetch_chart_from_local(
+        symbol="NOSYMBOL",
+        timeframe=Timeframe.DAY,
+        adjustment=Adjustment.RAW,
+        start=datetime(2020, 1, 2),
+        end=datetime(2020, 1, 3)
+    )
+    # chartモデル自体の取得はできている
+    assert isinstance(chart, Chart)
+    # 取得件数が0
+    assert len(chart.bars) == 0
