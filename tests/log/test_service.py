@@ -78,14 +78,14 @@ def test_build_payload():
             },
             exception=e,
         )
-        LOG.error('zero div', **payload)
+        LOG.error('msg=zero div', **payload)
     # ログ検証
     line = read_log_latest_line()
     # メッセージ
-    assert 'zero div' in line
-    # locals
+    assert 'msg=zero div' in line
+    # condition
     assert "{'__COND__': {'a': 1, 'b': 0}" in line
-    # 例外オブジェクト
+    # exception
     assert "'__EXCP__'" in line
     # EXTRAは未指定であるから文字列内に含まれない
     assert not "'__EXTRA__'" in line
