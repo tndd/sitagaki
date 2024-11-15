@@ -2,7 +2,8 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Sequence
 
-from log.service import LOG, build_payload
+from log.decorator import log_error
+from log.service import LOG
 from src.domain.origin.alpaca.bar.const import Adjustment, Timeframe
 from src.domain.origin.alpaca.bar.model import Chart, SymbolTimestampSet
 from src.infra.adapter.origin.alpaca.bar import (
@@ -43,7 +44,10 @@ class ChartRepository:
             基本的にオンライン上からデータを取得する場合、最新の日付までのデータを求めるから。
             endを指定したデータ取得の必要性を感じないし、いらない部分があるなら捨てればいい。
         """
-        try:
+        with log_error(
+            message='Alpaca apiの通信部分で失敗',
+            locals={'aaa': 123}
+        ):
             # barsデータを取得
             bar_alpaca_api_list = self.cli_alpaca.get_bar_alpaca_api_list(
                 symbol=symbol,
@@ -52,13 +56,6 @@ class ChartRepository:
                 start=start,
                 limit=limit
             )
-        except Exception as e:
-            payload = build_payload(
-                payload={'args': locals()},
-                exception=e
-            )
-            LOG.error('Alpaca apiの通信部分で失敗', **payload)
-            raise e
         # adapt: <= alpaca_api
         chart = arrive_chart_from_bar_alpaca_api_list(
             bars_alpaca_api=bar_alpaca_api_list,
@@ -92,7 +89,10 @@ class ChartRepository:
             start=start,
             end=end
         )
-        try:
+        with log_error(
+            message='DB通信箇所で失敗',
+            locals=locals()
+        ):
             # TableBarAlpacaのリストを取得
             bar_list_table = self.cli_db.exec_query_fetch(query)
             if not bar_list_table:
@@ -101,10 +101,7 @@ class ChartRepository:
                 取得結果が0というのは期待される動作ではないから。
                 おそらく条件の指定が誤っている。
                 """
-                payload = {
-                    'locals': locals()
-                }
-                LOG.warning('Barの取得件数が0件。おそらく条件指定が間違っている', **payload)
+                LOG.warning('Barの取得件数が0件。おそらく条件指定が間違っている', **locals())
                 # 空のChartを返す
                 return Chart(
                     symbol=symbol,
@@ -112,14 +109,8 @@ class ChartRepository:
                     adjustment=adjustment,
                     bars = []
                 )
-            # 取得物をドメイン層のbarモデルのリストに変換して返す
-            return arrive_chart_from_table_list(bar_list_table)
-        except Exception as e:
-            payload = build_payload(
-                payload={'args': locals()},
-                exception=e
-            )
-            LOG.error('DB通信箇所で失敗', **payload)
+        # 取得物をドメイン層のbarモデルのリストに変換して返す
+        return arrive_chart_from_table_list(bar_list_table)
 
     def fetch_latest_symbol_timestamp_set(
         self,
@@ -140,14 +131,11 @@ class ChartRepository:
             timeframe=depart_timeframe_to_table(timeframe),
             adjustment=depart_adjustment_to_table(adjustment)
         )
-        try:
+        with log_error(
+            message='DB通信箇所で失敗',
+            locals=locals()
+        ):
             model_talbe_ls = self.cli_db.exec_query_fetch(query)
-        except Exception as e:
-            payload = build_payload(
-                payload={'args': locals()},
-                exception=e
-            )
-            LOG.error('DB通信箇所で失敗', **payload)
         """
         取得したシンボルと日付のペアを辞書へ変換。
         存在しない日付のtimestampのNoneへの置き換えも行う。
