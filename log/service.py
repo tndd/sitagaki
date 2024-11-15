@@ -31,20 +31,27 @@ def get_logger(path: str = _log_path):
 
 
 def build_payload(
-    payload: dict,
-    locals: dict | None = None,
-    exception: Exception | None = None
+    conditon: dict | None = None,
+    exception: Exception | None = None,
+    extra: dict | None = None,
 ):
     """
     payloadに例外オブジェクトの情報を追加して返す
+
+    condition:
+        引数など、これを呼び出した関数の実行状態を再現するための情報
+    exception:
+        例外オブジェクトなど、エラーについての詳細な情報
+    extra:
+        いずれにも当てはまらないが、必要な追記事項
     """
-    if locals:
-        payload['__locals__'] = locals
+    payload = {}
+    if conditon:
+        payload['__COND__'] = conditon
     if exception:
-        payload['__exception__'] = {
-            'class': str(exception.__class__.__name__),
-            'args': exception.args
-        }
+        payload['__EXCP__'] = exception.args
+    if extra:
+        payload['__EXTRA__'] = extra
     return payload
 
 
