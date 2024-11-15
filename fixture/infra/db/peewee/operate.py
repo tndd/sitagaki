@@ -3,6 +3,7 @@ from typing import Sequence, cast
 from common.workmode import only_test
 from src.infra.db.peewee.client import CLI_PEEWEE
 
+# データベースに対し、テストのための不可逆的で危険な操作を行う箇所。
 
 @only_test
 def cleanup_tables():
