@@ -1,14 +1,14 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Sequence
 
 from src.domain.origin.alpaca.bar.const import Adjustment, Timeframe
 from src.domain.origin.alpaca.bar.model import Chart
-from src.domain.origin.alpaca.bar.repository import ChartRepository
+from src.domain.origin.alpaca.bar.repository import REPO_CHART, ChartRepository
 
 
 @dataclass
 class ChartUsecase:
-    rp_chart: ChartRepository = field(default_factory=ChartRepository)
+    rp_chart: ChartRepository
 
     def update(
         self,
@@ -25,15 +25,15 @@ class ChartUsecase:
         # 最新のtimestampを取得
         symbol_timestamp_set = self.rp_chart.fetch_latest_symbol_timestamp_set(symbols, timeframe, adjustment)
         # 更新対象のシンボルを抽出
-        update_targets_symbol_timestamp = symbol_timestamp_set.update_target_symbols()
+        update_target_symbols = symbol_timestamp_set.get_update_target_symbols()
         # シンボルごとにデータ更新
         # LATER: 並列化
-        for symbol_timestamp in update_targets_symbol_timestamp:
+        for symbol in update_target_symbols:
             self.rp_chart.store_chart_from_online(
-                symbol=symbol_timestamp.symbol,
+                symbol=symbol,
                 timeframe=timeframe,
                 adjustment=adjustment,
-                start=symbol_timestamp.timestamp
+                start=symbol.timestamp
             )
 
     def fetch(
@@ -55,3 +55,8 @@ class ChartUsecase:
             self.update(symbol, timeframe, adjustment)
         # データの取得
         return self.rp_chart.fetch_chart_from_local(symbol, timeframe, adjustment)
+
+
+USE_CHART = ChartUsecase(
+    rp_chart=REPO_CHART
+)
