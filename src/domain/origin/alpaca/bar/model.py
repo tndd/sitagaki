@@ -38,6 +38,8 @@ class SymbolTimestampSet(BaseModel):
 
     メタ情報としてこの情報の出所としての
     timeframe,adjustmentを持つ。
+
+    dataはシンボルとタイムスタンプのペア
     """
     timeframe: Timeframe
     adjustment: Adjustment
@@ -46,7 +48,7 @@ class SymbolTimestampSet(BaseModel):
     def get_update_target_symbols(
         self,
         cutoff: datetime = datetime.now()
-    ) -> list[str]:
+    ) -> dict[str, datetime | None]:
         """
         データ更新対象のシンボルを抽出する。
 
@@ -54,9 +56,9 @@ class SymbolTimestampSet(BaseModel):
             timestampがNone
             timestampがcutoffよりも前の日付
         """
-        update_target_symbols = [
-            symbol
+        update_target_data = {
+            symbol: timestamp
             for symbol, timestamp in self.data.items()
             if timestamp is None or timestamp < cutoff
-        ]
-        return update_target_symbols
+        }
+        return update_target_data
