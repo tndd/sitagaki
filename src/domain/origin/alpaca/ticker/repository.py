@@ -1,35 +1,28 @@
 from dataclasses import dataclass
 
-from src.domain.origin.alpaca.ticker.model import Sector, Ticker
-from src.infra.api.alpaca.trade import get_assets
+"""
+MEMO: 簡易的な実装
+    ひとまず特定グループのticker文字列さえ取得できればいい。
+    現状ではそれ以上の機能を扱いきれないので、この簡易実装で開発を進める。
+"""
 
 
 @dataclass
 class TickerRepository:
-
-    def pull_tickers_from_online(self) -> None:
-        """
-        全ての株式のリストをonlineから取得し、DBに保存する。
-        """
-        tickers_alpaca = get_assets()
-        # LATER: ticker repository 続きの実装
-        # tickers_alpacaをドメインモデルに変換
-        # tickersの保存
-        pass
-
-    def fetch_tickers_from_local(self) -> list[Ticker]:
-        """
-        全ての株式のリストをDBから取得する。
-        """
-        pass
-
-    def fetch_tickers_of_sector_from_local(self) -> list[str]:
-        """
-        WARN: 臨時実装
-
-        セクターの株式リストをDBから取得する。
-        """
-        return [
-            sector.key
-            for sector in Sector
+    data = {
+        "dow": [
+            "AMZN","AXP","AMGN","AAPL","BA","CAT","CSCO","CVX","GS","HD","HON","IBM","INTC","JNJ","KO","JPM","MCD","MMM","MRK","MSFT","NKE","PG","TRV","UNH","CRM","VZ","V","WMT","DIS","DOW"
+        ],
+        "sector": [
+            "XLC","XLY","XLP","XLE","XLF","XLV","XLI","XLB","XLRE","XLK","XLU"
         ]
+    }
+
+    def get_dow(self):
+        return self.data['dow']
+
+    def get_sector(self):
+        return self.data['sector']
+
+
+REPO_TICKER = TickerRepository()
