@@ -1,5 +1,11 @@
 from dataclasses import dataclass
 
+"""
+MEMO: 簡易的な実装
+    ひとまず特定グループのticker文字列さえ取得できればいい。
+    現状ではそれ以上の機能を扱いきれないので、この簡易実装で開発を進める。
+"""
+
 
 @dataclass
 class TickerRepository:
