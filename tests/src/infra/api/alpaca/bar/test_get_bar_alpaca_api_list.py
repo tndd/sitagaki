@@ -23,8 +23,10 @@ def test_basic():
     assert isinstance(bar_alpaca_api_list, list)
     assert all(isinstance(bar, Bar) for bar in bar_alpaca_api_list)
     # モック化されているかの確認も兼ねたテスト
-    assert len(bar_alpaca_api_list) == 5
-    assert all(bar.symbol == 'MOCKSYMBOL_30C779F3' for bar in bar_alpaca_api_list)
+    assert len(bar_alpaca_api_list) == 10
+    # 渡された条件がsymbolに反映されているかを確認
+    symbol_expect = 'MOCK_AAPL|TF=1Day|AD=raw|START=2024-01-01 00:00:00|LIMIT=NONE'
+    assert all(bar.symbol == symbol_expect for bar in bar_alpaca_api_list)
 
 
 def test_response_is_empty_barset(fx_replace_api_alpaca_get_stock_bars_empty):

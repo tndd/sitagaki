@@ -27,7 +27,7 @@ def test_all_combinations(
         limit=5
     )
     bar_table_list = TableBarAlpaca.select()
-    assert len(bar_table_list) == 5
+    assert len(bar_table_list) == 10
     assert all(
         isinstance(bar, TableBarAlpaca) and
         arrive_timeframe_from_table(bar) == timeframe and

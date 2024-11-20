@@ -13,7 +13,7 @@ import pytest
 # テスト用fixture
 from fixture.infra.api.alpaca.bar import (
     fx_replace_api_alpaca_get_stock_bars_empty,
-    patch_get_stock_bars,
+    patch_get_stock_bars_with_args,
 )
 from fixture.infra.db.peewee.operate import cleanup_tables
 
@@ -31,7 +31,7 @@ def setup_function(request, mocker):
     # データの初期化
     cleanup_tables()
     # 通信関数のモック化
-    patch_get_stock_bars(mocker)
+    patch_get_stock_bars_with_args(mocker)
     # マーカーごとの特別処理
     if request.node.get_closest_marker('online') \
         or request.node.get_closest_marker('online_slow'):
