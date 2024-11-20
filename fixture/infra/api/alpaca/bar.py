@@ -9,11 +9,13 @@ from alpaca.data.timeframe import TimeFrame
 from src.infra.api.alpaca.bar import extract_bar_list_alpaca_api_from_barset
 
 
+### FIXTURE ###
 @pytest.fixture
 def fx_replace_api_alpaca_get_stock_bars_empty(mocker):
     patch_get_stock_bars_empty(mocker)
 
 
+### PATCH ###
 def patch_get_stock_bars(mocker):
     """
     通信をモックし、ダミーのBarSetを返す。
@@ -57,6 +59,8 @@ def patch_get_stock_bars_with_args(mocker):
 
     mock.side_effect = side_effect
 
+
+### FACTORY ###
 def factory_barset_alpaca() -> BarSet:
     """
     AAPLのデータを生成する。
