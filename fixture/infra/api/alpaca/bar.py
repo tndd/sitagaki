@@ -1,10 +1,11 @@
 from datetime import datetime, timedelta
 
 import pytest
+from alpaca.data.enums import Adjustment
 from alpaca.data.historical.stock import StockHistoricalDataClient
 from alpaca.data.models.bars import Bar, BarSet
+from alpaca.data.timeframe import TimeFrame
 
-from src.domain.origin.alpaca.bar.const import Adjustment, Timeframe
 from src.infra.api.alpaca.bar import extract_bar_list_alpaca_api_from_barset
 
 
@@ -35,6 +36,26 @@ def patch_get_stock_bars_empty(mocker):
         return_value=BarSet(raw_data={'NOSYMBOL_2602E09F': []})
     )
 
+def patch_get_stock_bars_with_args(mocker):
+    """
+    通信をモックし、受け取った引数に応じたダミーBarSetを返す。
+
+    モック対象はAlpacaSDKの関数であることに注意。
+    """
+    mock = mocker.patch.object(
+        StockHistoricalDataClient,
+        'get_stock_bars'
+    )
+    def side_effect(request_params):
+        return factory_barset_with_args(
+            symbol=request_params.symbol_or_symbols,
+            timeframe=request_params.timeframe,
+            adjustment=request_params.adjustment,
+            start=request_params.start,
+            limit=request_params.limit
+        )
+
+    mock.side_effect = side_effect
 
 def factory_barset_alpaca() -> BarSet:
     """
@@ -122,7 +143,7 @@ def factory_bar_alpaca_list() -> list[Bar]:
 
 def factory_barset_with_args(
     symbol: str,
-    timeframe: Timeframe,
+    timeframe: TimeFrame,
     adjustment: Adjustment,
     start: datetime | None = None,
     limit: int | None = None

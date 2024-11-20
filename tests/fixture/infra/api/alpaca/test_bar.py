@@ -14,9 +14,8 @@ from fixture.infra.api.alpaca.bar import (
     fx_replace_api_alpaca_get_stock_bars_empty,
     patch_get_stock_bars,
     patch_get_stock_bars_empty,
+    patch_get_stock_bars_with_args,
 )
-from src.domain.origin.alpaca.bar.const import Adjustment as AdjustmentDom
-from src.domain.origin.alpaca.bar.const import Timeframe as TimeframeDom
 from src.infra.api.alpaca.bar import AlpacaApiBarClient
 
 cli_alpaca_bar = AlpacaApiBarClient()
@@ -65,6 +64,18 @@ def test_patch_get_stock_bars_empty(mocker):
     assert len(barset_mock.data['NOSYMBOL_2602E09F']) == 0
 
 
+def test_patch_get_stock_bars_with_args(mocker):
+    patch_get_stock_bars_with_args(mocker)
+    barset_mock = cli_alpaca_bar._get_barset_alpaca_api(
+        symbol='AAPL',
+        timeframe=TimeFrame.Day,
+        adjustment=Adjustment.Raw
+    )
+    assert isinstance(barset_mock, BarSet)
+    symbol_str = next(iter(barset_mock.data))
+    assert symbol_str == 'MOCK_AAPL|TF=Day|AD=Raw|START=NONE|LIMIT=NONE'
+
+
 def test_factory_barset_alpaca():
     barset = factory_barset_alpaca()
     assert isinstance(barset, BarSet)
@@ -86,9 +97,9 @@ def test_factory_bar_alpaca_list():
 @pytest.mark.parametrize(
     'symbol, timeframe, adjustment',
     [
-        ('AAPL', tf, adj, )
-        for tf in TimeframeDom
-        for adj in AdjustmentDom
+        ('AAPL', tf, adj)
+        for tf in [TimeFrame.Day, TimeFrame.Hour, TimeFrame.Minute]
+        for adj in Adjustment
     ]
 )
 def test_factory_barset_with_args(symbol, timeframe, adjustment):
@@ -119,11 +130,11 @@ def test_factory_barset_with_args_start_limit(start, limit):
     """
     barset = factory_barset_with_args(
         symbol='AAPL',
-        timeframe=TimeframeDom.DAY,
-        adjustment=AdjustmentDom.RAW,
+        timeframe=TimeFrame.Day,
+        adjustment=Adjustment.RAW,
         start=start,
         limit=limit
     )
     symbol_str = next(iter(barset.data))
-    assert symbol_str == f'MOCK_AAPL|TF=Day|AD=Raw|START={start}|LIMIT={limit}'
+    assert symbol_str == f'MOCK_AAPL|TF=1Day|AD=raw|START={start}|LIMIT={limit}'
     LOG.info(f'symbol_str: {symbol_str}')
