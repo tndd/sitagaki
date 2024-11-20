@@ -117,6 +117,8 @@ def test_factory_barset_with_args(symbol, timeframe, adjustment):
     assert isinstance(barset, BarSet)
     symbol_str = next(iter(barset.data))
     assert symbol_str == f'MOCK_{symbol}|TF={timeframe.value}|AD={adjustment.value}|START=NONE|LIMIT=NONE'
+    # dataの中身については、とりあえず取得件数だけ確認しておく
+    assert len(barset.data[symbol_str]) == 10
 
 
 @pytest.mark.parametrize(
@@ -129,6 +131,9 @@ def test_factory_barset_with_args(symbol, timeframe, adjustment):
 def test_factory_barset_with_args_start_limit(start, limit):
     """
     start,limit指定時の挙動を確認
+
+    datetime(2000, 1, 1)という不完全な日付の入力であっても、
+    2000-01-01 00:00:00として処理されエラーは起こらない。
     """
     barset = factory_barset_with_args(
         symbol='AAPL',
@@ -140,3 +145,5 @@ def test_factory_barset_with_args_start_limit(start, limit):
     symbol_str = next(iter(barset.data))
     assert symbol_str == f'MOCK_AAPL|TF=1Day|AD=raw|START={start}|LIMIT={limit}'
     LOG.info(f'symbol_str: {symbol_str}')
+    # dataの中身については、とりあえず取得件数だけ確認しておく
+    assert len(barset.data[symbol_str]) == 10
