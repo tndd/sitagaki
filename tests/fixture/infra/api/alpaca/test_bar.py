@@ -69,11 +69,13 @@ def test_patch_get_stock_bars_with_args(mocker):
     barset_mock = cli_alpaca_bar._get_barset_alpaca_api(
         symbol='AAPL',
         timeframe=TimeFrame.Day,
-        adjustment=Adjustment.Raw
+        adjustment=Adjustment.RAW
     )
     assert isinstance(barset_mock, BarSet)
     symbol_str = next(iter(barset_mock.data))
-    assert symbol_str == 'MOCK_AAPL|TF=Day|AD=Raw|START=NONE|LIMIT=NONE'
+    # 実行される時点でAlpacaSDK側のstartには、
+    # \ Noneの場合2000-01-01 00:00:00が設定されるため、START=Noneではないのが正常。
+    assert symbol_str == 'MOCK_AAPL|TF=1Day|AD=raw|START=2000-01-01 00:00:00|LIMIT=NONE'
 
 
 def test_factory_barset_alpaca():
