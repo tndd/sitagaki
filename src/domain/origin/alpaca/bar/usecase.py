@@ -23,17 +23,21 @@ class ChartUsecase:
         DB上にある最新のtimestamp~可能な限り直近のデータ。
         """
         # 最新のtimestampを取得
-        symbol_timestamp_set = self.rp_chart.fetch_latest_symbol_timestamp_set(symbols, timeframe, adjustment)
+        symbol_timestamp_set = self.rp_chart.fetch_latest_symbol_timestamp_set(
+            timeframe=timeframe,
+            adjustment=adjustment,
+            symbols=symbols
+        )
         # 更新対象のシンボルを抽出
         update_target_symbols = symbol_timestamp_set.get_update_target_symbols()
         # シンボルごとにデータ更新
         # LATER: 並列化
-        for symbol in update_target_symbols:
+        for symbol, timestamp in update_target_symbols.items():
             self.rp_chart.store_chart_from_online(
                 symbol=symbol,
                 timeframe=timeframe,
                 adjustment=adjustment,
-                start=symbol.timestamp
+                start=timestamp
             )
 
     def fetch(
