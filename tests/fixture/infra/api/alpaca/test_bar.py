@@ -1,15 +1,22 @@
+from datetime import datetime
+
+import pytest
 from alpaca.data.enums import Adjustment
 from alpaca.data.models.bars import Bar, BarSet
 from alpaca.data.timeframe import TimeFrame
 
+from common.logger import LOG
 from fixture.infra.api.alpaca.bar import (
     factory_bar_alpaca,
     factory_bar_alpaca_list,
     factory_barset_alpaca,
+    factory_barset_with_args,
     fx_replace_api_alpaca_get_stock_bars_empty,
     patch_get_stock_bars,
     patch_get_stock_bars_empty,
 )
+from src.domain.origin.alpaca.bar.const import Adjustment as AdjustmentDom
+from src.domain.origin.alpaca.bar.const import Timeframe as TimeframeDom
 from src.infra.api.alpaca.bar import AlpacaApiBarClient
 
 cli_alpaca_bar = AlpacaApiBarClient()
@@ -73,3 +80,50 @@ def test_factory_bar_alpaca_list():
     bars = factory_bar_alpaca_list()
     assert isinstance(bars, list)
     assert all(isinstance(bar, Bar) for bar in bars)
+
+
+
+@pytest.mark.parametrize(
+    'symbol, timeframe, adjustment',
+    [
+        ('AAPL', tf, adj, )
+        for tf in TimeframeDom
+        for adj in AdjustmentDom
+    ]
+)
+def test_factory_barset_with_args(symbol, timeframe, adjustment):
+    """
+    timeframe,adjustmentとして渡された引数が正常に反映されているかを確認。
+    start,limitについては未指定であるため文字列がNONEであることを確認する。
+    """
+    barset = factory_barset_with_args(
+        symbol=symbol,
+        timeframe=timeframe,
+        adjustment=adjustment
+    )
+    assert isinstance(barset, BarSet)
+    symbol_str = next(iter(barset.data))
+    assert symbol_str == f'MOCK_{symbol}|TF={timeframe.value}|AD={adjustment.value}|START=NONE|LIMIT=NONE'
+
+
+@pytest.mark.parametrize(
+    'start, limit',
+    [
+        (datetime(2010, 1, 1, 12, 0, 0), 100),
+        (datetime(2000, 1, 1), 10),
+    ]
+)
+def test_factory_barset_with_args_start_limit(start, limit):
+    """
+    start,limit指定時の挙動を確認
+    """
+    barset = factory_barset_with_args(
+        symbol='AAPL',
+        timeframe=TimeframeDom.DAY,
+        adjustment=AdjustmentDom.RAW,
+        start=start,
+        limit=limit
+    )
+    symbol_str = next(iter(barset.data))
+    assert symbol_str == f'MOCK_AAPL|TF=Day|AD=Raw|START={start}|LIMIT={limit}'
+    LOG.info(f'symbol_str: {symbol_str}')

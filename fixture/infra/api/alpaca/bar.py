@@ -1,9 +1,10 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import pytest
 from alpaca.data.historical.stock import StockHistoricalDataClient
 from alpaca.data.models.bars import Bar, BarSet
 
+from src.domain.origin.alpaca.bar.const import Adjustment, Timeframe
 from src.infra.api.alpaca.bar import extract_bar_list_alpaca_api_from_barset
 
 
@@ -117,3 +118,68 @@ def factory_bar_alpaca_list() -> list[Bar]:
     そこからBarのリストを抜き出して返す機能を関数化した。
     """
     return extract_bar_list_alpaca_api_from_barset(factory_barset_alpaca())
+
+
+def factory_barset_with_args(
+    symbol: str,
+    timeframe: Timeframe,
+    adjustment: Adjustment,
+    start: datetime | None = None,
+    limit: int | None = None
+):
+    """
+    渡された引数を元に、本物のAPIのような戻り値を返す。
+    10件のBarSetを返すこととする。
+    日付は1年ずつずれていく。
+
+    基本的には引数が正常に渡されたことを確認する事が目的。
+
+    > 仕様
+        1. base_priceを基準として、年々緩やかに上昇（5ドルずつ）
+        2. 各日の価格変動幅は基準価格の2%で設定
+        3. OHLC（始値・高値・安値・終値）の関係性を保持
+            * 高値 > 始値・終値 > 安値
+            * 終値は高値と安値の間に設定
+        4. 取引量（volume）と取引回数（trade_count）も徐々に増加
+        5. VWAPは簡略化して始値と終値の平均に設定
+        6. 小数点以下2桁に丸めて現実的な表示に
+
+    > start
+        これが未指定の場合、2000-01-01を開始日とする
+
+    > limit
+        これは本来apiの取得件数を制限するためのものである。
+        ここではlimitの値は使われず10件を固定で返す仕様としている。
+        limitの値はsymbolの文字列内で確認できる。
+    """
+    if start is None:
+        start_date = datetime(2000, 1, 1, 12, 0, 0)
+    else:
+        start_date = start
+    # モックデータの生成
+    raw_data_mock = []
+    for i in range(10):
+        base_price = 100.0 + (i * 5)  # 基準価格は徐々に上昇
+        volatility = base_price * 0.02  # 価格変動幅は基準価格の2%
+        # OHLCの設定
+        open_price = base_price
+        high_price = base_price + volatility
+        low_price = base_price - volatility
+        close_price = base_price + (volatility * 0.3)  # 高値と安値の間で終わる
+
+        raw_data_mock.append({
+            "t": start_date + timedelta(days=365*i),
+            "o": round(open_price, 2),
+            "h": round(high_price, 2),
+            "l": round(low_price, 2),
+            "c": round(close_price, 2),
+            "v": 10000 + (i * 1000),  # 取引量も徐々に増加
+            "n": 500 + (i * 50),      # 取引回数も徐々に増加
+            "vw": round((open_price + close_price) / 2, 2)  # VWAPは単純化して始値と終値の平均に
+        })
+    # 引数が未指定のものについてはNONEと表示させるようにする
+    start_str = 'NONE' if start is None else start
+    limit_str = 'NONE' if limit is None else limit
+    # symbolから渡された引数を確認できるようにする
+    symbol = f'MOCK_{symbol}|TF={timeframe.value}|AD={adjustment.value}|START={start_str}|LIMIT={limit_str}'
+    return BarSet(raw_data={symbol: raw_data_mock})
