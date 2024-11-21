@@ -12,6 +12,8 @@ from src.infra.api.alpaca.bar import extract_bar_list_alpaca_api_from_barset
 
 class BarSetMock(BarSet):
     """
+    TODO: テスト
+
     BarSetをモックとして表現するクラス。
     テスト用に渡された引数を記録するためのpassed_args,
     そしてBarSetのsymbolを取得するためのfirst_symbolを追加している。
@@ -34,7 +36,17 @@ class BarSetMock(BarSet):
 
     @property
     def first_symbol(self) -> str:
+        """
+        BarSetのシンボル名を取得する
+
+        名前の通り、最初のシンボル名しか取得できない点には注意。
+        運用上、単一のBarSetに複数のシンボルが含まれることは今のところは無いが。
+        """
         return next(iter(self.data.keys()))
+
+    @property
+    def data_length(self) -> int:
+        return sum(len(bars) for bars in self.data.values())
 
 
 ### FIXTURE ###
