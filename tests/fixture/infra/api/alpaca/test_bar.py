@@ -128,10 +128,14 @@ def test_factory_barset_with_args(symbol, timeframe, adjustment):
         adjustment=adjustment
     )
     assert isinstance(barset, BarSet)
-    symbol_str = next(iter(barset.data))
-    assert symbol_str == f'MOCK_{symbol}|TF={timeframe.value}|AD={adjustment.value}|START=NONE|LIMIT=NONE'
+    assert barset.first_symbol == symbol
+    assert barset.passed_args['symbol'] == symbol
+    assert barset.passed_args['timeframe'] == timeframe.value
+    assert barset.passed_args['adjustment'] == adjustment.value
+    assert barset.passed_args['start'] == None
+    assert barset.passed_args['limit'] == None
     # dataの中身については、とりあえず取得件数だけ確認しておく
-    assert len(barset.data[symbol_str]) == 10
+    assert barset.data_length == 10
 
 
 @pytest.mark.parametrize(
@@ -155,8 +159,11 @@ def test_factory_barset_with_args_start_limit(start, limit):
         start=start,
         limit=limit
     )
-    symbol_str = next(iter(barset.data))
-    assert symbol_str == f'MOCK_AAPL|TF=1Day|AD=raw|START={start}|LIMIT={limit}'
-    LOG.info(f'symbol_str: {symbol_str}')
+    assert barset.first_symbol == 'AAPL'
+    assert barset.passed_args['symbol'] == 'AAPL'
+    assert barset.passed_args['timeframe'] == TimeFrame.Day.value
+    assert barset.passed_args['adjustment'] == Adjustment.RAW.value
+    assert barset.passed_args['start'] == start
+    assert barset.passed_args['limit'] == limit
     # dataの中身については、とりあえず取得件数だけ確認しておく
-    assert len(barset.data[symbol_str]) == 10
+    assert barset.data_length == 10
