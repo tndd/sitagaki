@@ -7,6 +7,7 @@ from alpaca.data.timeframe import TimeFrame
 
 from common.logger import LOG
 from fixture.infra.api.alpaca.bar import (
+    BarSetMock,
     factory_bar_alpaca,
     factory_bar_alpaca_list,
     factory_barset_alpaca,
@@ -65,17 +66,28 @@ def test_patch_get_stock_bars_empty(mocker):
 
 
 def test_patch_get_stock_bars_with_args(mocker):
+    """
+    NOTE: 置き換えられた関数とテスト対象が違う理由
+        関数の置き換えはalpaca sdkのメソッドに対して行っている。
+        だがこのプロジェクトに実装においてsdkを使用して通信を行っているのは_get_barset_alpaca_api()。
+        そのため、ここでは_get_barset_alpaca_api()の返り値をテストしている。
+    """
     patch_get_stock_bars_with_args(mocker)
-    barset_mock = CLI_ALPACA_BAR._get_barset_alpaca_api(
+    barset_mock: BarSetMock = CLI_ALPACA_BAR._get_barset_alpaca_api(
         symbol='AAPL',
         timeframe=TimeFrame.Day,
         adjustment=Adjustment.RAW
     )
+    # 実際の型はBarSetMockではあるが、BarSetという型を満たしているかを確認する
     assert isinstance(barset_mock, BarSet)
-    symbol_str = next(iter(barset_mock.data))
+    assert barset_mock.first_symbol == 'AAPL'
     # 実行される時点でAlpacaSDK側のstartには、
     # \ Noneの場合2000-01-01 00:00:00が設定されるため、START=Noneではないのが正常。
-    assert symbol_str == 'MOCK_AAPL|TF=1Day|AD=raw|START=2000-01-01 00:00:00|LIMIT=NONE'
+    assert barset_mock.passed_args['symbol'] == 'AAPL'
+    assert barset_mock.passed_args['timeframe'] == TimeFrame.Day.value
+    assert barset_mock.passed_args['adjustment'] == Adjustment.RAW.value
+    assert barset_mock.passed_args['start'] == datetime(2000, 1, 1)
+    assert barset_mock.passed_args['limit'] == None
 
 
 ### FACTORY ###
