@@ -79,3 +79,6 @@ def get_safe_start(start: datetime | None) -> datetime:
         """
         raise ValueError("入力されたStartが現在時刻よりも未来が指定されてる。 EID:3e00e226")
     return start
+
+
+CLI_ALPACA_BAR = AlpacaApiBarClient()
