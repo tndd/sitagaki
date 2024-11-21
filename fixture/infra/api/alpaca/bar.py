@@ -1,12 +1,40 @@
 from datetime import datetime, timedelta
 
 import pytest
+from alpaca.common.types import RawData
 from alpaca.data.enums import Adjustment
 from alpaca.data.historical.stock import StockHistoricalDataClient
 from alpaca.data.models.bars import Bar, BarSet
 from alpaca.data.timeframe import TimeFrame
 
 from src.infra.api.alpaca.bar import extract_bar_list_alpaca_api_from_barset
+
+
+class BarSetMock(BarSet):
+    """
+    BarSetをモックとして表現するクラス。
+    テスト用に渡された引数を記録するためのpassed_args,
+    そしてBarSetのsymbolを取得するためのfirst_symbolを追加している。
+
+    > passed_args
+        symbol: str
+        timeframe: str (valueの値を利用する)
+        adjustment: str (valueの値を利用する)
+        start: datetime | None
+        limit: int | None
+    """
+    def __init__(self, raw_data: RawData, passed_args: dict) -> None:
+        super().__init__(raw_data)
+        # pydanticの制約を回避するため、__dict__を直接使用
+        object.__setattr__(self, '_passed_args', passed_args)
+
+    @property
+    def passed_args(self) -> dict:
+        return self._passed_args
+
+    @property
+    def first_symbol(self) -> str:
+        return next(iter(self.data.keys()))
 
 
 ### FIXTURE ###
@@ -202,9 +230,15 @@ def factory_barset_with_args(
             "n": 500 + (i * 50),      # 取引回数も徐々に増加
             "vw": round((open_price + close_price) / 2, 2)  # VWAPは単純化して始値と終値の平均に
         })
-    # 引数が未指定のものについてはNONEと表示させるようにする
-    start_str = 'NONE' if start is None else start
-    limit_str = 'NONE' if limit is None else limit
-    # symbolから渡された引数を確認できるようにする
-    symbol = f'MOCK_{symbol}|TF={timeframe.value}|AD={adjustment.value}|START={start_str}|LIMIT={limit_str}'
-    return BarSet(raw_data={symbol: raw_data_mock})
+    # 渡された引数を記録
+    passed_args = {
+        'symbol': symbol,
+        'timeframe': timeframe.value,
+        'adjustment': adjustment.value,
+        'start': start,
+        'limit': limit
+    }
+    return BarSetMock(
+        raw_data={symbol: raw_data_mock},
+        passed_args=passed_args
+    )
