@@ -42,26 +42,43 @@ def test_basic():
 def test_multi_symbols():
     """
     複数のシンボルについてテストを行う。
-    複数指定をした場合でも、複数更新が行われているかを確認。
+    AAPL,GOOGという複数指定をした場合でも、複数更新が行われているかを確認。
     """
     factory_table_bar_alpaca_list_times_shuffle(INSERT=True)
-    symbols = ['AAPL', 'GOOG']
-    USE_CHART.update(symbols, Timeframe.DAY, Adjustment.RAW)
-    # 元々のファクトリによる10件 + モック分の10件 * 2シンボル分の合計30件
-    assert len(TableBarAlpaca.select()) == 30
-    # AAPLのモックデータが存在するかを確認
-    symbol_mock_aapl = 'MOCK_AAPL|TF=1Day|AD=raw|START=2020-01-05 00:00:00|LIMIT=NONE'
-    mock_records_aapl = TableBarAlpaca.select().where(TableBarAlpaca.symbol == symbol_mock_aapl)
-    assert mock_records_aapl.exists()
+    # この時点でのテーブル件数は10件
+    assert len(TableBarAlpaca.select()) == 10
+    # AAPLのモックデータに、今後取得予定の範囲のデータが存在しないことを確認
+    # \ AAPLのモックデータの最新の日付は2020-01-05
+    mock_records_aapl = TableBarAlpaca.select().where(
+        TableBarAlpaca.symbol == 'AAPL',
+        TableBarAlpaca.timestamp > datetime(2020, 1, 5)
+    )
+    assert len(mock_records_aapl) == 0
+    # GOOGのモックデータに、今後取得予定の範囲のデータが存在しないことを確認
+    # \ GOOGのモックデータの最新の日付は2021-01-05。
+    # \ AAPLとGOOGのモックデータの最古の日付は異なっているので注意。
+    mock_records_goog = TableBarAlpaca.select().where(
+        TableBarAlpaca.symbol == 'GOOG',
+        TableBarAlpaca.timestamp > datetime(2021, 1, 5)
+    )
+    assert len(mock_records_goog) == 0
+    # AAPLとGOOGのデータを取得。
+    # \ この時点でデータ件数は、
+    # \ 元データ10件 + 2シンボル分のモックデータ10件*2 - 最新（最古）の重複2シンボル分の2件
+    # \ 合計28件となることが期待される。
+    USE_CHART.update( ['AAPL', 'GOOG'], Timeframe.DAY, Adjustment.RAW)
+    assert len(TableBarAlpaca.select()) == 28
+    # AAPLの取得データ確認
+    # \ 2020-01-05(を含む)からのデータが10件存在することを確認
+    mock_records_aapl = TableBarAlpaca.select().where(
+        TableBarAlpaca.symbol == 'AAPL',
+        TableBarAlpaca.timestamp >= datetime(2020, 1, 5)
+    )
     assert len(mock_records_aapl) == 10
-    # 最古の日付が2020-01-05であることを確認
-    oldest_record = mock_records_aapl.order_by(TableBarAlpaca.timestamp.asc()).first()
-    assert oldest_record.timestamp == datetime(2020, 1, 5, 0, 0, 0)
-    # GOOGのモックデータが存在するかを確認 (GOOGのモックデータは2021-01-05から)
-    symbol_mock_goog = 'MOCK_GOOG|TF=1Day|AD=raw|START=2021-01-05 00:00:00|LIMIT=NONE'
-    mock_records_goog = TableBarAlpaca.select().where(TableBarAlpaca.symbol == symbol_mock_goog)
-    assert mock_records_goog.exists()
+    # GOOGのモックデータ確認
+    # \ 2021-01-05(を含む)からのデータが10件存在することを確認
+    mock_records_goog = TableBarAlpaca.select().where(
+        TableBarAlpaca.symbol == 'GOOG',
+        TableBarAlpaca.timestamp >= datetime(2021, 1, 5)
+    )
     assert len(mock_records_goog) == 10
-    # 最古の日付が2021-01-05であることを確認 (AAPLとGOOGの最古の日付は異なる)
-    oldest_record = mock_records_goog.order_by(TableBarAlpaca.timestamp.asc()).first()
-    assert oldest_record.timestamp == datetime(2021, 1, 5, 0, 0, 0)
