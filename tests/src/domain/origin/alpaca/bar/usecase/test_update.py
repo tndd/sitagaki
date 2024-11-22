@@ -17,23 +17,26 @@ def test_basic():
     話をシンプルにするため、AAPLのデータについてのみテストを行う。
     """
     factory_table_bar_alpaca_list_times_shuffle(INSERT=True)
-    symbols = ['AAPL']
-    USE_CHART.update(symbols, Timeframe.DAY, Adjustment.RAW)
-    # 元々のファクトリによる10件 + モック分の10件の合計20件
-    assert len(TableBarAlpaca.select()) == 20
+    # この時点でのテーブル件数は10件
+    assert len(TableBarAlpaca.select()) == 10
+    # ここでAAPLかつ2020-01-05（を含まない）より新しいデータの件数は0件であることを確認しておく。
+    # \ 2020-01-05よりも新しいデータは、これから取得されることが期待されているからだ。
+    mock_records = TableBarAlpaca.select().where(
+        TableBarAlpaca.symbol == 'AAPL',
+        TableBarAlpaca.timestamp > datetime(2020, 1, 5)
+    )
+    assert len(mock_records) == 0
+    # データを取得。ただしモックデータの最新の日付と取得データの最古の日付は重複する。
+    # \ つまり元々の件数10件 + モックの件数10件 から重複する1件を引いた19件が期待値となる。
+    USE_CHART.update(['AAPL'], Timeframe.DAY, Adjustment.RAW)
+    assert len(TableBarAlpaca.select()) == 19
     # ファクトリによるデータの最新タイムスタンプはAAPL=2020-01-05
-    # \ よってモック側のデータの最も古い日付は2020-01-05となる。
-    #
-    # \ まず情報の取得が行われたかを確認するため、モックシンボルが存在するかを確認する。
-    symbol_mock = 'MOCK_AAPL|TF=1Day|AD=raw|START=2020-01-05 00:00:00|LIMIT=NONE'
-    mock_records = TableBarAlpaca.select().where(TableBarAlpaca.symbol == symbol_mock)
-    assert mock_records.exists()
-    # モックデータ分の10件が存在することを確認
+    # \ つまりAAPLかつ2020-01-05（を含む）より新しいデータの件数は10件となっているはずだ。
+    mock_records = TableBarAlpaca.select().where(
+        TableBarAlpaca.symbol == 'AAPL',
+        TableBarAlpaca.timestamp >= datetime(2020, 1, 5)
+    )
     assert len(mock_records) == 10
-    # 次にモックシンボルのデータの最も古い日付が2020-01-05であるかを確認する。
-    oldest_record = mock_records.order_by(TableBarAlpaca.timestamp.asc()).first()
-    assert oldest_record.timestamp == datetime(2020, 1, 5, 0, 0, 0)
-    assert oldest_record.timestamp == datetime(2020, 1, 5)  # 0は省略しても大丈夫であることを念のため確認
 
 
 def test_multi_symbols():
