@@ -36,6 +36,7 @@ def test_basic():
         TableBarAlpaca.symbol == 'AAPL',
         TableBarAlpaca.timestamp >= datetime(2020, 1, 5)
     )
+    # 1回目の時と違い、0件ではなく10件データが存在する。
     assert len(mock_records) == 10
 
 
