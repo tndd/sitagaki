@@ -90,6 +90,28 @@ def test_patch_get_stock_bars_with_args(mocker):
     assert barset_mock.passed_args['limit'] == None
 
 
+def test_patch_get_stock_bars_with_args_patched_with_conftest(mocker):
+    """
+    conftestによってパッチが適用されているかを確認。
+    つまりpatch_get_stock_bars_with_args()がデフォルトでの置き換え先であることを確認する。
+    """
+    barset_mock: BarSetMock = CLI_ALPACA_BAR._get_barset_alpaca_api(
+        symbol='AAPL',
+        timeframe=TimeFrame.Day,
+        adjustment=Adjustment.RAW
+    )
+    # 実際の型はBarSetMockではあるが、BarSetという型を満たしているかを確認する
+    assert isinstance(barset_mock, BarSet)
+    assert barset_mock.first_symbol == 'AAPL'
+    # 実行される時点でAlpacaSDK側のstartには、
+    # \ Noneの場合2000-01-01 00:00:00が設定されるため、START=Noneではないのが正常。
+    assert barset_mock.passed_args['symbol'] == 'AAPL'
+    assert barset_mock.passed_args['timeframe'] == TimeFrame.Day.value
+    assert barset_mock.passed_args['adjustment'] == Adjustment.RAW.value
+    assert barset_mock.passed_args['start'] == datetime(2000, 1, 1)
+    assert barset_mock.passed_args['limit'] == None
+
+
 ### FACTORY ###
 def test_factory_barset_alpaca():
     barset = factory_barset_alpaca()
