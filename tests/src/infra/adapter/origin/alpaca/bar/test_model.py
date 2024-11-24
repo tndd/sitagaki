@@ -3,7 +3,7 @@ from datetime import datetime
 from fixture.infra.db.peewee.table.alpaca.bar import (
     factory_table_bar_alpaca_latest_timestamps,
 )
-from src.infra.adapter.origin.alpaca.bar.symbol_timestamp import (
+from src.infra.adapter.origin.alpaca.bar.model import (
     arrive_symbol_timestamp_dict_from_table,
 )
 

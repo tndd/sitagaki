@@ -2,6 +2,15 @@ from datetime import datetime
 
 from src.infra.db.peewee.table.alpaca.bar import TableBarAlpaca
 
+"""
+NOTE: model.pyという命名について
+    ここは特定のクラスが対象となっていない。
+    分類が困難なadapterが集まる箇所として用意している。
+
+    ほかのbar.pyであったりchart.pyみたいなのは、
+    ここからスピンオフしたというイメージ。
+"""
+
 
 def arrive_symbol_timestamp_dict_from_table(
     tables: list[TableBarAlpaca],
