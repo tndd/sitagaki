@@ -20,6 +20,50 @@ from fixture.infra.api.alpaca.bar import (
 from src.infra.api.alpaca.bar import CLI_ALPACA_BAR
 
 
+### CLASS ###
+def test_barset_mock():
+    """
+    BarSetMockが機能しているのかの確認。
+
+    """
+    symbol = 'MOCKSYMBOL_0E01F700'
+    raw_data = {symbol: [
+            {
+                "t": datetime(2023, 4, 1, 10, 0),
+                "o": 100.0,
+                "h": 105.0,
+                "l": 99.0,
+                "c": 102.0,
+                "v": 1000,
+                "n": 50,
+                "vw": 101.5
+            },
+            {
+                "t": datetime(2023, 4, 1, 11, 0),
+                "o": 102.0,
+                "h": 106.0,
+                "l": 101.0,
+                "c": 105.0,
+                "v": 1200,
+                "n": 60,
+                "vw": 103.5
+            },
+        ]
+    }
+    passed_args = {
+        'symbol': symbol,
+        'timeframe': TimeFrame.Day.value,
+        'adjustment': Adjustment.RAW.value,
+    }
+    barset_mock = BarSetMock(raw_data=raw_data, passed_args=passed_args)
+    assert isinstance(barset_mock, BarSet)
+    assert barset_mock.first_symbol == symbol
+    assert barset_mock.passed_args['symbol'] == symbol
+    assert barset_mock.passed_args['timeframe'] == TimeFrame.Day.value
+    assert barset_mock.passed_args['adjustment'] == Adjustment.RAW.value
+    assert barset_mock.data_length == 2
+
+
 ### FIXTURE ###
 def test_fx_replace_api_alpaca_get_stock_bars_empty(
     fx_replace_api_alpaca_get_stock_bars_empty

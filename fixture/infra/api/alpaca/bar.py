@@ -10,10 +10,9 @@ from alpaca.data.timeframe import TimeFrame
 from src.infra.api.alpaca.bar import extract_bar_list_alpaca_api_from_barset
 
 
+### CLASS ###
 class BarSetMock(BarSet):
     """
-    TODO: テスト
-
     BarSetをモックとして表現するクラス。
     テスト用に渡された引数を記録するためのpassed_args,
     そしてBarSetのsymbolを取得するためのfirst_symbolを追加している。
